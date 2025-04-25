@@ -10,18 +10,21 @@ jobs:
       matrix:
         os: [ubuntu-latest]
         node-version: [20.x]
-
     steps:
       - uses: actions/checkout@v4
-      - name: Use Node.js {{$matrix.node-version}}
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - name: Use Node.js ${{matrix.node-version}}
         uses: actions/setup-node@v4
         with:
           node-version: ${{matrix.node-version}}
-          cache: "npm"
-      - name: "Install Modules"
-        run: npm ci
+          cache: "pnpm"
+      - name: "Install dependencies"
+        run: pnpm install
       - name: "Run Tests"
-        run: npm run test
+        run: pnpm run test
       - name: Upload Codacy
         env:
           CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
