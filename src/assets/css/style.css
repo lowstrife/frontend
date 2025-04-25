@@ -1,0 +1,34 @@
+@import "tailwindcss";
+
+@config "../../../tailwind.config.js";
+
+@import "./materials.css";
+
+@theme {
+	--text-md: 12px;
+	--text-lg: 14px;
+}
+
+body {
+	font-size: 12px;
+}
+
+html {
+	font-size: 14px;
+	background-color: rgb(33, 37, 41);
+}
+
+::-webkit-scrollbar {
+	width: 12px;
+}
+
+::-webkit-scrollbar-track {
+	box-shadow: inset 0 0 10px 10px #1e1e1e;
+	border: solid 1px #1e1e1e;
+}
+
+::-webkit-scrollbar-thumb {
+	box-shadow: inset 0 0 10px 10px rgb(64, 64, 64);
+	border: solid 3px transparent;
+	border-radius: 10px;
+}
