@@ -4,7 +4,7 @@ import { router } from "@/router/router";
 import { useUserStore } from "@/stores/userStore";
 import { API } from "@/lib/apiService.types";
 
-const setAxiosHeader = (
+export const setAxiosHeader = (
 	config: InternalAxiosRequestConfig<unknown>
 ): InternalAxiosRequestConfig<unknown> => {
 	const userStore = useUserStore();
