@@ -1,26 +1,25 @@
 <script setup lang="ts">
-	// Theme
-	import { NConfigProvider, NModalProvider, darkTheme } from "naive-ui";
-	import { prunplannerTheme } from "@/layout/prunplannerNaiveUI";
+// Theme
+import { NConfigProvider, NModalProvider, darkTheme } from "naive-ui";
+import { prunplannerTheme } from "@/layout/prunplannerNaiveUI";
 
-	// Components
-	import HomepageView from "@/views/HomepageView.vue";
-	import Navigation from "@/components/menu/Navigation.vue";
-	import MobileToggle from "@/components/menu/MobileToggle.vue";
+// Components
+import HomepageView from "@/views/HomepageView.vue";
+import NavigationBar from "@/features/navigation/components/NavigationBar.vue";
+import MobileToggle from "@/features/navigation/components/MobileToggle.vue";
 
-	// Stores
-	import { useUserStore } from "@/stores/userStore";
-	const userStore = useUserStore();
+// Stores
+import { useUserStore } from "@/stores/userStore";
+
+const userStore = useUserStore();
 </script>
 
 <template>
 	<n-config-provider :theme="darkTheme" :theme-overrides="prunplannerTheme">
 		<n-modal-provider>
-			<div @click="userStore.setTokens('foo', 'moo')">login</div>
-			<div @click="userStore.logout()">logout</div>
 			<main class="flex h-screen w-full bg-black text-white/80">
 				<template v-if="userStore.isLoggedIn">
-					<Navigation />
+					<NavigationBar />
 					<div class="flex flex-col flex-1 overflow-y-auto">
 						<div class="h-screen text-white/80">
 							<MobileToggle />
