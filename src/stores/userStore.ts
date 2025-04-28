@@ -73,7 +73,7 @@ export const useUserStore = defineStore(
 	},
 	{
 		persist: {
-			pick: ["refreshToken"],
+			pick: ["accessToken", "refreshToken"],
 		},
 	}
 );

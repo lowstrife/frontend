@@ -1,17 +1,18 @@
 <script setup lang="ts">
-// Theme
-import { NConfigProvider, NModalProvider, darkTheme } from "naive-ui";
-import { prunplannerTheme } from "@/layout/prunplannerNaiveUI";
+	// Theme
+	import { NConfigProvider, NModalProvider, darkTheme } from "naive-ui";
+	import { prunplannerTheme } from "@/layout/prunplannerNaiveUI";
 
-// Components
-import HomepageView from "@/views/HomepageView.vue";
-import NavigationBar from "@/features/navigation/components/NavigationBar.vue";
-import MobileToggle from "@/features/navigation/components/MobileToggle.vue";
+	// Components
+	import HomepageView from "@/views/HomepageView.vue";
+	import NavigationBar from "@/features/navigation/components/NavigationBar.vue";
+	import MobileToggle from "@/features/navigation/components/MobileToggle.vue";
+	import GameDataWrapper from "@/features/game_data/components/GameDataWrapper.vue";
 
-// Stores
-import { useUserStore } from "@/stores/userStore";
+	// Stores
+	import { useUserStore } from "@/stores/userStore";
 
-const userStore = useUserStore();
+	const userStore = useUserStore();
 </script>
 
 <template>
@@ -23,7 +24,15 @@ const userStore = useUserStore();
 					<div class="flex flex-col flex-1 overflow-y-auto">
 						<div class="h-screen text-white/80">
 							<MobileToggle />
-							<RouterView />
+							<GameDataWrapper
+								:load-materials="true"
+								:load-exchanges="true"
+								:load-recipes="true"
+								:load-buildings="true"
+								:load-planet="'OT-580c'"
+							>
+								<RouterView />
+							</GameDataWrapper>
 						</div>
 					</div>
 				</template>
