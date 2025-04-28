@@ -5,10 +5,16 @@ export const LoginPayloadSchema: z.ZodType<Account.ILoginPayload> = z.object({
 	password: z.string().min(1),
 });
 
-export const LoginResponseSchema: z.ZodType<Account.ILoginResponse> = z.object({
+export const TokenResponseSchema: z.ZodType<Account.ITokenResponse> = z.object({
 	access_token: z.string().min(127),
 	refresh_token: z.string().min(127),
 });
 
+export const RefreshPayloadSchema: z.ZodType<Account.IRefreshPayload> =
+	z.object({
+		refresh_token: z.string().min(127),
+	});
+
 export type LoginPayloadType = z.infer<typeof LoginPayloadSchema>;
-export type LoginResponseType = z.infer<typeof LoginResponseSchema>;
+export type TokenResponseType = z.infer<typeof TokenResponseSchema>;
+export type RefreshPayloadType = z.infer<typeof RefreshPayloadSchema>;

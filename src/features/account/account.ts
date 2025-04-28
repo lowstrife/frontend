@@ -2,12 +2,14 @@ import { apiService } from "@/lib/apiService";
 import {
 	LoginPayloadSchema,
 	LoginPayloadType,
-	LoginResponseSchema,
-	LoginResponseType,
+	TokenResponseSchema,
+	TokenResponseType,
+	RefreshPayloadType,
+	RefreshPayloadSchema,
 } from "@/features/account/account.schemas";
 
 /**
- * Calls the backends Login endpoint
+ * Calls the backends Login endpoint to return Token
  * @author jplacht
  *
  * @export
@@ -19,15 +21,29 @@ import {
 export async function callUserLogin(
 	username: string,
 	password: string
-): Promise<Account.ILoginResponse> {
-	return apiService.post<LoginPayloadType, LoginResponseType>(
+): Promise<Account.ITokenResponse> {
+	return apiService.post<LoginPayloadType, TokenResponseType>(
 		"/user/login",
 		{
 			username,
 			password,
 		},
 		LoginPayloadSchema,
-		LoginResponseSchema,
+		TokenResponseSchema,
+		true
+	);
+}
+
+export async function callRefreshToken(
+	refresh_token: string
+): Promise<Account.ITokenResponse> {
+	return apiService.post<RefreshPayloadType, TokenResponseType>(
+		"/user/refresh",
+		{
+			refresh_token,
+		},
+		RefreshPayloadSchema,
+		TokenResponseSchema,
 		true
 	);
 }

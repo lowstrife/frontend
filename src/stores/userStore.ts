@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { callUserLogin } from "@/features/account/account";
+import { callRefreshToken, callUserLogin } from "@/features/account/account";
 import { computed, ComputedRef, ref, Ref } from "vue";
 
 export const useUserStore = defineStore(
@@ -30,7 +30,7 @@ export const useUserStore = defineStore(
 			password: string
 		): Promise<boolean> {
 			try {
-				const tokenData: Account.ILoginResponse = await callUserLogin(
+				const tokenData: Account.ITokenResponse = await callUserLogin(
 					username,
 					password
 				);
@@ -44,8 +44,19 @@ export const useUserStore = defineStore(
 		}
 
 		async function performTokenRefresh(): Promise<boolean> {
-			console.error("TO BE IMPLEMENTED");
-			return false;
+			if (refreshToken.value) {
+				try {
+					const tokenData: Account.ITokenResponse = await callRefreshToken(
+						refreshToken.value
+					);
+					setToken(tokenData.access_token, tokenData.refresh_token);
+					return true;
+				} catch {
+					return false;
+				}
+			} else {
+				return false;
+			}
 		}
 
 		return {
