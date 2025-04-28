@@ -33,12 +33,24 @@
 								:to="item.routerLink"
 								class="flex items-center px-4 py-2 hover:bg-white/20 hover:rounded-sm group"
 								active-class="bg-white/10 rounded-sm"
+								:key="'ROUTER#' + section.label + '#' + item.label"
 							>
 								<n-icon class="mr-2" size="20" v-if="item.icon">
 									<component :is="item.icon" />
 								</n-icon>
 								{{ item.label }}
 							</RouterLink>
+							<template v-else-if="!item.children && item.functionCall">
+								<div
+									class="flex items-center px-4 py-2 hover:bg-white/20 hover:rounded-sm group hover:cursor-pointer"
+									v-on:click="item.functionCall()"
+								>
+									<n-icon class="mr-2" size="20" v-if="item.icon">
+										<component :is="item.icon" />
+									</n-icon>
+									<span>{{ item.label }}</span>
+								</div>
+							</template>
 							<template v-else>
 								<div class="relative group">
 									<input
@@ -79,6 +91,7 @@
 											class="flex items-center px-4 py-2 hover:bg-white/20 hover:rounded-sm group"
 											:class="children.icon ? 'pl-6' : 'pl-12'"
 											active-class="bg-white/10 rounded-sm"
+											:key="'ROUTER#' + children.label + '#' + children.label"
 										>
 											<n-icon class="mr-2" size="20" v-if="children.icon">
 												<component :is="children.icon" />
@@ -97,174 +110,168 @@
 </template>
 
 <script setup lang="ts">
-	import { NIcon } from "naive-ui";
-	import { type Component } from "vue";
+import { IMenuSection } from "@/features/navigation/navigation.types";
+import { useUserStore } from "@/stores/userStore";
 
-	// Icons
-	import {
-		HomeSharp,
-		SearchRound,
-		SettingsRound,
-		ApiSharp,
-		LogOutRound,
-		GroupWorkRound,
-		ShoppingBasketSharp,
-		PermDataSettingSharp,
-		CandlestickChartSharp,
-		UpgradeSharp,
-		CompareSharp,
-		ProductionQuantityLimitsSharp,
-		StarsSharp,
-		PersonSharp,
-		HelpOutlineSharp,
-		ExtensionSharp,
-	} from "@vicons/material";
+import { NIcon } from "naive-ui";
 
-	interface IMenuItem {
-		label: string;
-		routerLink?: string;
-		children?: IMenuItem[];
-		icon?: Component;
-	}
+// Icons
+import {
+	HomeSharp,
+	SearchRound,
+	SettingsRound,
+	ApiSharp,
+	LogOutRound,
+	GroupWorkRound,
+	ShoppingBasketSharp,
+	PermDataSettingSharp,
+	CandlestickChartSharp,
+	UpgradeSharp,
+	CompareSharp,
+	ProductionQuantityLimitsSharp,
+	StarsSharp,
+	PersonSharp,
+	HelpOutlineSharp,
+	ExtensionSharp,
+} from "@vicons/material";
 
-	interface IMenuSection {
-		label: string;
-		children: IMenuItem[];
-	}
+const userStore = useUserStore();
 
-	const menuItems: IMenuSection[] = [
-		{
-			label: "Home",
-			children: [
-				{
-					label: "Empire",
-					routerLink: "/",
-					icon: HomeSharp,
-				},
-				{
-					label: "Planet Search",
-					routerLink: "/none",
-					icon: SearchRound,
-				},
-				{
-					label: "Projects",
-					routerLink: "/none",
-					icon: GroupWorkRound,
-				},
-			],
-		},
-		{
-			label: "Configuration",
-			children: [
-				{
-					label: "Empire Management",
-					routerLink: "/none",
-					icon: SettingsRound,
-				},
-				{
-					label: "Exchanges",
-					routerLink: "/none",
-					icon: ShoppingBasketSharp,
-				},
-				{
-					label: "Project Settings",
-					routerLink: "/none",
-					icon: PermDataSettingSharp,
-				},
-			],
-		},
+const menuItems: IMenuSection[] = [
+	{
+		label: "Home",
+		children: [
+			{
+				label: "Empire",
+				routerLink: "/",
+				icon: HomeSharp,
+			},
+			{
+				label: "Planet Search",
+				routerLink: "/none",
+				icon: SearchRound,
+			},
+			{
+				label: "Projects",
+				routerLink: "/none",
+				icon: GroupWorkRound,
+			},
+		],
+	},
+	{
+		label: "Configuration",
+		children: [
+			{
+				label: "Empire Management",
+				routerLink: "/none",
+				icon: SettingsRound,
+			},
+			{
+				label: "Exchanges",
+				routerLink: "/none",
+				icon: ShoppingBasketSharp,
+			},
+			{
+				label: "Project Settings",
+				routerLink: "/none",
+				icon: PermDataSettingSharp,
+			},
+		],
+	},
 
-		{
-			label: "Tools",
-			children: [
-				{
-					label: "Market Data",
-					routerLink: "/none",
-					icon: CandlestickChartSharp,
-					children: [
-						{
-							label: "Market Exploration",
-							routerLink: "/none",
-						},
-						{
-							label: "ROI Overview",
-							routerLink: "/none",
-						},
-						{
-							label: "Resource ROI Overview",
-							routerLink: "/none",
-						},
-					],
+	{
+		label: "Tools",
+		children: [
+			{
+				label: "Market Data",
+				routerLink: "/none",
+				icon: CandlestickChartSharp,
+				children: [
+					{
+						label: "Market Exploration",
+						routerLink: "/none",
+					},
+					{
+						label: "ROI Overview",
+						routerLink: "/none",
+					},
+					{
+						label: "Resource ROI Overview",
+						routerLink: "/none",
+					},
+				],
+			},
+			{
+				label: "HQ Upgrade Calculator",
+				routerLink: "/none",
+				icon: ProductionQuantityLimitsSharp,
+			},
+			{
+				label: "Production Chains",
+				routerLink: "/none",
+				icon: CompareSharp,
+			},
+			{
+				label: "Base Compare",
+				routerLink: "/none",
+				icon: UpgradeSharp,
+			},
+			{
+				label: "Government",
+				routerLink: "/none",
+				icon: StarsSharp,
+			},
+			{
+				label: "FIO",
+				routerLink: "/none",
+				icon: ApiSharp,
+				children: [
+					{
+						label: "Burn",
+						routerLink: "/none",
+					},
+					{
+						label: "Storage",
+						routerLink: "/none",
+					},
+					{
+						label: "Repair",
+						routerLink: "/none",
+					},
+					{
+						label: "Plan Import",
+						routerLink: "/none",
+					},
+				],
+			},
+		],
+	},
+	{
+		label: "Account",
+		children: [
+			{
+				label: "API",
+				routerLink: "/none",
+				icon: ExtensionSharp,
+			},
+			{
+				label: "Profile",
+				routerLink: "/none",
+				icon: PersonSharp,
+			},
+			{
+				label: "Help",
+				routerLink: "/none",
+				icon: HelpOutlineSharp,
+			},
+			{
+				label: "Logout",
+				icon: LogOutRound,
+				functionCall: () => {
+					userStore.logout();
 				},
-				{
-					label: "HQ Upgrade Calculator",
-					routerLink: "/none",
-					icon: ProductionQuantityLimitsSharp,
-				},
-				{
-					label: "Production Chains",
-					routerLink: "/none",
-					icon: CompareSharp,
-				},
-				{
-					label: "Base Compare",
-					routerLink: "/none",
-					icon: UpgradeSharp,
-				},
-				{
-					label: "Government",
-					routerLink: "/none",
-					icon: StarsSharp,
-				},
-				{
-					label: "FIO",
-					routerLink: "/none",
-					icon: ApiSharp,
-					children: [
-						{
-							label: "Burn",
-							routerLink: "/none",
-						},
-						{
-							label: "Storage",
-							routerLink: "/none",
-						},
-						{
-							label: "Repair",
-							routerLink: "/none",
-						},
-						{
-							label: "Plan Import",
-							routerLink: "/none",
-						},
-					],
-				},
-			],
-		},
-		{
-			label: "Account",
-			children: [
-				{
-					label: "API",
-					routerLink: "/none",
-					icon: ExtensionSharp,
-				},
-				{
-					label: "Profile",
-					routerLink: "/none",
-					icon: PersonSharp,
-				},
-				{
-					label: "Help",
-					routerLink: "/none",
-					icon: HelpOutlineSharp,
-				},
-				{
-					label: "Logout",
-					routerLink: "/none",
-					icon: LogOutRound,
-				},
-			],
-		},
-	];
+			},
+		],
+	},
+];
 </script>

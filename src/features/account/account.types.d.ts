@@ -4,7 +4,11 @@ declare namespace Account {
 		password: string;
 	}
 
-	interface ILoginResponse {
+	interface IRefreshPayload {
+		refresh_token: string;
+	}
+
+	interface ITokenResponse {
 		access_token: string;
 		refresh_token: string;
 	}
