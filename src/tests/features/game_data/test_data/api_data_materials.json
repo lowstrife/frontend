@@ -1,0 +1,29 @@
+[
+	{
+		"MaterialId": "d4a247f1ae7a17b6e80057866ecdf90d",
+		"CategoryName": "electronic devices",
+		"CategoryId": "19d621bb3f297c0425e34cdf0b138ece",
+		"Name": "antennaArray",
+		"Ticker": "AAR",
+		"Weight": 0.7799999713897705,
+		"Volume": 0.5
+	},
+	{
+		"MaterialId": "274e35935b4ba9f4032f657b0ab6e0e5",
+		"CategoryName": "construction prefabs",
+		"CategoryId": "ef423f673d9e8c82043b4c5c63f6b55e",
+		"Name": "advancedBulkhead",
+		"Ticker": "ABH",
+		"Weight": 0.6000000238418579,
+		"Volume": 0.8999999761581421
+	},
+	{
+		"MaterialId": "a7a19eb0c3f253884c901bf1d05f2369",
+		"CategoryName": "electronic systems",
+		"CategoryId": "1e1a3a579c46d5f9c4e9959650c6b7a3",
+		"Name": "automatedCoolingSystem",
+		"Ticker": "ACS",
+		"Weight": 0.30000001192092896,
+		"Volume": 0.20000000298023224
+	}
+]

@@ -21,6 +21,8 @@ pnpm run dev
 
 ## Testing and Coverage
 
+[![Codacy Badge](https://app.codacy.com/project/badge/Coverage/23225951d9584a80b51256487975453b)](https://app.codacy.com/gh/PRUNplanner/frontend/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_coverage)
+
 PRUNplanners frontend currently lacks proper and full-scope testing of its non-visual features and data validation. One aim of this rewrite is to reach full test coverage and `zod` validation.
 
 Backend calls can be mocked easily with [axios-mock-adapter](https://github.com/ctimmerm/axios-mock-adapter).
@@ -35,7 +37,12 @@ pnpm run test:ui
 
 ## .env
 
-Following variables are to be defined in the .env file
-
-- VITE_APP_VERSION
-- VITE_API_BASE_URL
+| Key                               | Type   | Default Value                 |
+| --------------------------------- | ------ | ----------------------------- |
+| VITE_APP_VERSION                  | string | "0.xx"                        |
+| VITE_API_BASE_URL                 | string | "https://api.prunplanner.org" |
+| GAME_DATA_STALE_MINUTES_BUILDINGS | int    | 1440                          |
+| GAME_DATA_STALE_MINUTES_RECIPES   | int    | 1440                          |
+| GAME_DATA_STALE_MINUTES_MATERIALS | int    | 1440                          |
+| GAME_DATA_STALE_MINUTES_EXCHANGES | int    | 30                            |
+| GAME_DATA_STALE_MINUTES_PLANETS   | int    | 180                           |

@@ -1,12 +1,19 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, beforeAll } from "vitest";
 import { z } from "zod";
 import { apiService } from "@/lib/apiService";
 import AxiosMockAdapter from "axios-mock-adapter";
+import axiosSetup from "@/util/axiosSetup";
+import { createPinia, setActivePinia } from "pinia";
 
 // mock apiService client
 const mock = new AxiosMockAdapter(apiService.client);
 
 describe("ApiService", () => {
+	beforeAll(() => {
+		setActivePinia(createPinia());
+		axiosSetup();
+	});
+
 	describe("setup", () => {
 		it("service defined", () => {
 			expect(apiService).toBeDefined();

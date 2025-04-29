@@ -1,0 +1,35 @@
+[
+	{
+		"TickerId": "CL.PP7D_IC1",
+		"MaterialTicker": "CL",
+		"ExchangeCode": "PP7D_IC1",
+		"Ask": null,
+		"Bid": null,
+		"PriceAverage": 4021.4425856697817,
+		"Supply": null,
+		"Demand": null,
+		"Traded": 138
+	},
+	{
+		"TickerId": "TPU.NC2",
+		"MaterialTicker": "TPU",
+		"ExchangeCode": "NC2",
+		"Ask": null,
+		"Bid": null,
+		"PriceAverage": 1000.0,
+		"Supply": 0,
+		"Demand": 0,
+		"Traded": 0
+	},
+	{
+		"TickerId": "FSE.CI1",
+		"MaterialTicker": "FSE",
+		"ExchangeCode": "CI1",
+		"Ask": 999000.0,
+		"Bid": 500000.0,
+		"PriceAverage": 1000000.0,
+		"Supply": 8,
+		"Demand": 2,
+		"Traded": 1
+	}
+]

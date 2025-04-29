@@ -7,17 +7,7 @@ export default defineConfig({
 	test: {
 		globals: true,
 		env: loadEnv("", ""),
-		exclude: [
-			"**/node_modules/**",
-			"**/dist/**",
-			"**/coverage/**",
-			"*.config.js",
-			"*.config.ts",
-			"src/layout/*",
-			"**/components/**",
-			"src/views/*",
-			"src/router/*",
-		],
+		exclude: ["**/node_modules/**", "**/dist/**", "**/coverage/**"],
 		coverage: {
 			enabled: true,
 			provider: "v8",

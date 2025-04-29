@@ -1,17 +1,17 @@
 <script setup lang="ts">
-// Theme
-import { NConfigProvider, NModalProvider, darkTheme } from "naive-ui";
-import { prunplannerTheme } from "@/layout/prunplannerNaiveUI";
+	// Theme
+	import { NConfigProvider, NModalProvider, darkTheme } from "naive-ui";
+	import { prunplannerTheme } from "@/layout/prunplannerNaiveUI";
 
-// Components
-import HomepageView from "@/views/HomepageView.vue";
-import NavigationBar from "@/features/navigation/components/NavigationBar.vue";
-import MobileToggle from "@/features/navigation/components/MobileToggle.vue";
+	// Components
+	import HomepageView from "@/views/HomepageView.vue";
+	import NavigationBar from "@/features/navigation/components/NavigationBar.vue";
+	import MobileToggle from "@/features/navigation/components/MobileToggle.vue";
 
-// Stores
-import { useUserStore } from "@/stores/userStore";
+	// Stores
+	import { useUserStore } from "@/stores/userStore";
 
-const userStore = useUserStore();
+	const userStore = useUserStore();
 </script>
 
 <template>

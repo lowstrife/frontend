@@ -1,6 +1,5 @@
 import axios, { AxiosRequestConfig, InternalAxiosRequestConfig } from "axios";
 
-import { API } from "@/lib/apiService.types";
 import { router } from "@/router/router";
 import { useUserStore } from "@/stores/userStore";
 
@@ -19,8 +18,6 @@ export const setAxiosHeader = (
 };
 
 export default function axiosSetup() {
-	const userStore = useUserStore();
-
 	// Interceptors
 
 	// Request Authorization Header
@@ -31,54 +28,33 @@ export default function axiosSetup() {
 		}
 	);
 
-	// Response Token Refresh
-	const refreshRetryQueue: API.QueueRetryItem[] = [];
-	let isRefreshing = false;
-
+	// Response Token Expiry interceptor
 	axios.interceptors.response.use(
 		(response) => response,
 		async (error) => {
+			const userStore = useUserStore();
 			const originalRequest: AxiosRequestConfig = error.config;
 
-			// error response with 401
-			if (
-				originalRequest.url &&
-				error.response &&
-				error.response.status === 401
-			) {
-				// error already on 401
-				if (originalRequest.url.includes("/refresh")) {
+			if (error.response && error.response.status === 401) {
+				if (
+					originalRequest.url &&
+					originalRequest.url.includes("/user/refresh")
+				) {
 					userStore.logout();
 					router.push("/");
+					return Promise.reject(error);
 				}
 
-				if (!isRefreshing) {
-					isRefreshing = true;
+				const tokenRefreshStatus: boolean =
+					await userStore.performTokenRefresh();
 
-					// call userStore and token refresh
-					const tokenRefreshStatus: boolean =
-						await userStore.performTokenRefresh();
-
-					if (tokenRefreshStatus) {
-						// got a new access token, retry
-						refreshRetryQueue.forEach(({ config, resolve, reject }) => {
-							axios(config)
-								.then((response) => resolve(response))
-								.catch((err) => reject(err));
-						});
-						refreshRetryQueue.length = 0;
-						isRefreshing = false;
-					} else {
-						// token refresh failed, logout
-						userStore.logout();
-						router.push("/");
-						isRefreshing = false;
-						return Promise.reject(error);
-					}
+				if (tokenRefreshStatus) {
+					return axios(originalRequest);
+				} else {
+					userStore.logout();
+					router.push("/");
+					return Promise.reject(error);
 				}
-				return new Promise<void>((resolve, reject) => {
-					refreshRetryQueue.push({ config: originalRequest, resolve, reject });
-				});
 			}
 
 			return Promise.reject(error);
