@@ -1,6 +1,5 @@
 import axios, { AxiosRequestConfig, InternalAxiosRequestConfig } from "axios";
 
-import { API } from "@/lib/apiService.types";
 import { router } from "@/router/router";
 import { useUserStore } from "@/stores/userStore";
 
@@ -29,6 +28,7 @@ export default function axiosSetup() {
 		}
 	);
 
+	// Response Token Expiry interceptor
 	axios.interceptors.response.use(
 		(response) => response,
 		async (error) => {
