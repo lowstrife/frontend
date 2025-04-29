@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeAll, beforeEach } from "vitest";
+import { describe, it, expect, beforeAll } from "vitest";
 import { z } from "zod";
 import { apiService } from "@/lib/apiService";
 import AxiosMockAdapter from "axios-mock-adapter";

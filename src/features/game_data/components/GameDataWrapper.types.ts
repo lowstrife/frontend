@@ -15,14 +15,15 @@ export type WrapperLoaderTypes =
 	| "EXCHANGES"
 	| "RECIPES"
 	| "BUILDINGS"
-	| "PLANET";
+	| "PLANET"
+	| "MULTIPLE_PLANETS";
 
 export interface WrapperLoader {
 	[WrapperLoaderTypes: string]: WrapperLoaderElement;
 }
 
 export interface WrapperTask {
-	prop: boolean | string | undefined;
+	prop: boolean | string | string[] | undefined;
 	statusKey: WrapperLoaderTypes;
 	fct: () => Promise<boolean>;
 }

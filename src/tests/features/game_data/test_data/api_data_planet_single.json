@@ -1,0 +1,110 @@
+{
+	"PlanetId": "60c64441d754b04b30f7ab531cc4aae7",
+	"PlanetNaturalId": "KW-020c",
+	"PlanetName": "Milliways",
+	"SystemId": "57b0be081b45ebbe72f76eff065d951b",
+	"HasLocalMarket": true,
+	"HasChamberOfCommerce": true,
+	"HasWarehouse": true,
+	"HasAdministrationCenter": true,
+	"HasShipyard": false,
+	"Pressure": 0.25226354598999023,
+	"Surface": true,
+	"Temperature": 18.875593185424805,
+	"Fertility": -1.0,
+	"Gravity": 1.1190704107284546,
+	"FactionCode": "CI",
+	"FactionName": "Castillo-Ito Mercantile",
+	"GovernorUserName": null,
+	"COGCProgramStatus": "ACTIVE",
+	"Resources": [
+		{
+			"MaterialId": "eeff5ee913d34354be84177847fbfe48",
+			"ResourceType": "MINERAL",
+			"Factor": 0.025807511061429977,
+			"DailyExtraction": 1.8065257743000984,
+			"MaterialTicker": "SIO",
+			"ExtractionMax": 53.825785517692566
+		},
+		{
+			"MaterialId": "6e16dbf050b98d9c4fc9c615b3367a0f",
+			"ResourceType": "GASEOUS",
+			"Factor": 0.34338557720184326,
+			"DailyExtraction": 20.603134632110596,
+			"MaterialTicker": "O",
+			"ExtractionMax": 43.26020121574402
+		}
+	],
+	"COGCPrograms": [
+		{
+			"ProgramType": "ADVERTISING_FOOD_INDUSTRIES",
+			"StartEpochMs": 1746434719829,
+			"EndEpochMs": 1747039519829
+		},
+		{
+			"ProgramType": "ADVERTISING_FOOD_INDUSTRIES",
+			"StartEpochMs": 1741596319829,
+			"EndEpochMs": 1742201119829
+		},
+		{
+			"ProgramType": "ADVERTISING_FOOD_INDUSTRIES",
+			"StartEpochMs": 1742201119829,
+			"EndEpochMs": 1742805919829
+		},
+		{
+			"ProgramType": "ADVERTISING_FOOD_INDUSTRIES",
+			"StartEpochMs": 1742805919829,
+			"EndEpochMs": 1743410719829
+		},
+		{
+			"ProgramType": "ADVERTISING_FOOD_INDUSTRIES",
+			"StartEpochMs": 1743410719829,
+			"EndEpochMs": 1744015519829
+		},
+		{
+			"ProgramType": "ADVERTISING_FOOD_INDUSTRIES",
+			"StartEpochMs": 1744015519829,
+			"EndEpochMs": 1744620319829
+		},
+		{
+			"ProgramType": "ADVERTISING_FOOD_INDUSTRIES",
+			"StartEpochMs": 1744620319829,
+			"EndEpochMs": 1745225119829
+		},
+		{
+			"ProgramType": "ADVERTISING_FOOD_INDUSTRIES",
+			"StartEpochMs": 1745225119829,
+			"EndEpochMs": 1745829919829
+		},
+		{
+			"ProgramType": "ADVERTISING_FOOD_INDUSTRIES",
+			"StartEpochMs": 1745829919829,
+			"EndEpochMs": 1746434719829
+		},
+		{
+			"ProgramType": "ADVERTISING_FOOD_INDUSTRIES",
+			"StartEpochMs": 1740991519829,
+			"EndEpochMs": 1741596319829
+		}
+	],
+	"CheckDistances": null,
+	"Distances": [
+		{
+			"name": "Moria Station",
+			"distance": 7
+		},
+		{
+			"name": "Antares Station",
+			"distance": 8
+		},
+		{
+			"name": "Benten Station",
+			"distance": 1
+		},
+		{
+			"name": "Hortus Station",
+			"distance": 12
+		}
+	],
+	"COGCProgramActive": "ADVERTISING_FOOD_INDUSTRIES"
+}

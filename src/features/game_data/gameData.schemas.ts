@@ -74,6 +74,7 @@ export const BuildingHabitationSchema: z.ZodType<IBuildingHabitation> =
 		Technician: PositiveOrZeroNumber,
 		Engineer: PositiveOrZeroNumber,
 		Scientist: PositiveOrZeroNumber,
+		Area: z.number().gt(0),
 	});
 
 const BUILDING_TYPE_ZOD = z.enum(["INFRASTRUCTURE", "PLANETARY", "PRODUCTION"]);
@@ -155,7 +156,7 @@ const PLANET_COGCPROGRAM_TYPE_ZOD = z.enum([
 ]);
 
 const PlanetCOGCProgramSchema: z.ZodType<IPlanetCOGCProgram> = z.object({
-	ProgramType: PLANET_COGCPROGRAM_TYPE_ZOD,
+	ProgramType: PLANET_COGCPROGRAM_TYPE_ZOD.nullable(),
 	StartEpochMs: z.number(),
 	EndEpochMs: z.number(),
 });
@@ -179,6 +180,7 @@ export const PlanetSchema: z.ZodType<IPlanet> = z.object({
 	Pressure: z.number(),
 	Surface: z.boolean(),
 	Temperature: z.number(),
+	Fertility: z.number(),
 	Gravity: z.number(),
 	FactionCode: z.string().nullable(),
 	FactionName: z.string().nullable(),
@@ -195,6 +197,10 @@ export const PlanetSchema: z.ZodType<IPlanet> = z.object({
 export const PlanetMultiplePayload: z.ZodType<IPlanet[]> =
 	z.array(PlanetSchema);
 
+export const PlanetMultipleRequestPayload: z.ZodType<string[]> = z.array(
+	z.string()
+);
+
 // Schema Types
 export type MaterialType = z.infer<typeof MaterialSchema>;
 export type MaterialPayloadType = z.infer<typeof MaterialPayloadSchema>;
@@ -207,3 +213,6 @@ export type BuildingPayloadType = z.infer<typeof BuildingPayloadSchema>;
 export type PlanetType = z.infer<typeof PlanetSchema>;
 export type PlanetPayloadType = z.infer<typeof PlanetSchema>;
 export type PlanetMultiplePayloadType = z.infer<typeof PlanetMultiplePayload>;
+export type PlanetMultipleRequestType = z.infer<
+	typeof PlanetMultipleRequestPayload
+>;

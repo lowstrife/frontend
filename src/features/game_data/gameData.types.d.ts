@@ -47,6 +47,7 @@ export interface IBuildingHabitation {
 	Technician: number;
 	Engineer: number;
 	Scientist: number;
+	Area: number;
 }
 
 export type BUILDING_EXPERTISE_TYPE =
@@ -122,7 +123,7 @@ export type PLANET_COGCPROGRAM_TYPE =
 	| "WORKFORCE_SCIENTISTS";
 
 export interface IPlanetCOGCProgram {
-	ProgramType: PLANET_COGCPROGRAM_TYPE;
+	ProgramType: PLANET_COGCPROGRAM_TYPE | null;
 	StartEpochMs: number;
 	EndEpochMs: number;
 }
@@ -142,6 +143,7 @@ export interface IPlanet {
 	Pressure: number;
 	Surface: boolean;
 	Temperature: number;
+	Fertility: number;
 	Gravity: number;
 	FactionCode: string | null;
 	FactionName: string | null;

@@ -7,6 +7,7 @@ import {
 	RecipeSchema,
 } from "@/features/game_data/gameData.schemas";
 
+// test data
 import recipes from "@/tests/features/game_data/test_data/api_data_recipes.json";
 import buildings from "@/tests/features/game_data/test_data/api_data_buildings.json";
 import materials from "@/tests/features/game_data/test_data/api_data_materials.json";

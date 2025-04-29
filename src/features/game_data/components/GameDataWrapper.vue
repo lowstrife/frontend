@@ -1,7 +1,7 @@
 <template>
 	<template v-if="!fullyLoaded">
 		<div
-			class="relative w-full h-full bg-[url('public/images/bg_striped_prunplanner.png')] bg-center bg-repeat"
+			class="relative w-full h-full bg-[url('/images/bg_striped_prunplanner.png')] bg-center bg-repeat"
 		>
 			<div class="relative w-full h-full bg-black/60">
 				<div class="absolute inset-0 flex items-center justify-center">
@@ -37,7 +37,7 @@
 </template>
 
 <script setup lang="ts">
-	import { computed, ComputedRef, onMounted, ref, Ref } from "vue";
+	import { computed, ComputedRef, onMounted, PropType, ref, Ref } from "vue";
 
 	// UI
 	import { NSpin, NIcon } from "naive-ui";
@@ -77,6 +77,10 @@
 			type: String,
 			required: false,
 		},
+		loadMultiplePlanets: {
+			type: Array as PropType<string[]>,
+			required: false,
+		},
 	});
 
 	const loadingStatus: Ref<WrapperLoader> = ref({
@@ -107,6 +111,12 @@
 		PLANET: {
 			name: "Planet Data",
 			status: gameDataStore.hasPlanet(props.loadPlanet ?? "")
+				? LOADING_STATUS_ENUM.DONE
+				: LOADING_STATUS_ENUM.LOAD,
+		},
+		MULTIPLE_PLANETS: {
+			name: "Multiple Planets",
+			status: gameDataStore.hasMultiplePlanets(props.loadMultiplePlanets ?? [])
 				? LOADING_STATUS_ENUM.DONE
 				: LOADING_STATUS_ENUM.LOAD,
 		},
@@ -149,6 +159,14 @@
 				prop: props.loadPlanet,
 				statusKey: "PLANET",
 				fct: () => gameDataStore.performLoadPlanet(props.loadPlanet ?? ""),
+			},
+			{
+				prop: props.loadMultiplePlanets,
+				statusKey: "MULTIPLE_PLANETS",
+				fct: () =>
+					gameDataStore.performLoadMultiplePlanets(
+						props.loadMultiplePlanets ?? []
+					),
 			},
 		];
 
