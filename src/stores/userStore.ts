@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
-import { callRefreshToken, callUserLogin } from "@/features/account/account";
 import { computed, ComputedRef, ref, Ref } from "vue";
+
+import { callRefreshToken, callUserLogin } from "@/features/account/account";
 
 export const useUserStore = defineStore(
 	"prunplanner_user",
@@ -49,9 +50,11 @@ export const useUserStore = defineStore(
 					const tokenData: Account.ITokenResponse = await callRefreshToken(
 						refreshToken.value
 					);
+
 					setToken(tokenData.access_token, tokenData.refresh_token);
 					return true;
-				} catch {
+				} catch (error) {
+					console.error(error);
 					return false;
 				}
 			} else {

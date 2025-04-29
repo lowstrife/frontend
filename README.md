@@ -21,6 +21,8 @@ pnpm run dev
 
 ## Testing and Coverage
 
+[![Codacy Badge](https://app.codacy.com/project/badge/Coverage/23225951d9584a80b51256487975453b)](https://app.codacy.com/gh/PRUNplanner/frontend/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_coverage)
+
 PRUNplanners frontend currently lacks proper and full-scope testing of its non-visual features and data validation. One aim of this rewrite is to reach full test coverage and `zod` validation.
 
 Backend calls can be mocked easily with [axios-mock-adapter](https://github.com/ctimmerm/axios-mock-adapter).

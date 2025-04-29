@@ -15,9 +15,8 @@ export class ApiService {
 	public readonly client: AxiosInstance;
 
 	constructor() {
-		// base URL
-		const baseURL = config.API_BASE_URL;
-		this.client = axios.create({ baseURL });
+		this.client = axios;
+		this.client.defaults.baseURL = config.API_BASE_URL;
 	}
 
 	/**
