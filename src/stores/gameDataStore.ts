@@ -60,6 +60,16 @@ export const useGameDataStore = defineStore(
 		/** Key: Planet.PlanetNaturalId */
 		const lastRefreshedPlanets: Ref<IPlanetsLastRefreshedRecord> = ref({});
 
+		let promiseRefreshingMaterials: Promise<boolean> | null = null;
+		let promiseRefreshingExchanges: Promise<boolean> | null = null;
+		let promiseRefreshingRecipes: Promise<boolean> | null = null;
+		let promiseRefreshingBuildings: Promise<boolean> | null = null;
+
+		let isRefreshingMaterials: Ref<boolean> = ref(false);
+		let isRefreshingExchanges: Ref<boolean> = ref(false);
+		let isRefreshingRecipes: Ref<boolean> = ref(false);
+		let isRefreshingBuildings: Ref<boolean> = ref(false);
+
 		// getters
 
 		/**
@@ -138,25 +148,37 @@ export const useGameDataStore = defineStore(
 		 * @returns {Promise<boolean>} Sucess indicator
 		 */
 		async function performLoadMaterials(): Promise<boolean> {
-			try {
-				const materialData: IMaterial[] = await callDataMaterials();
-
-				// initially reset
-				materials.value = {};
-
-				// store material data as record
-				materialData.forEach((m) => {
-					materials.value[m.Ticker] = m;
-				});
-
-				// set last refreshed
-				lastRefreshedMaterials.value = new Date();
-
-				return true;
-			} catch (error) {
-				console.error(error);
-				return false;
+			if (isRefreshingMaterials.value) {
+				return promiseRefreshingMaterials!;
 			}
+
+			isRefreshingMaterials.value = true;
+			promiseRefreshingMaterials = new Promise<boolean>(async (resolve) => {
+				try {
+					const materialData: IMaterial[] = await callDataMaterials();
+
+					// initially reset
+					materials.value = {};
+
+					// store material data as record
+					materialData.forEach((m) => {
+						materials.value[m.Ticker] = m;
+					});
+
+					// set last refreshed
+					lastRefreshedMaterials.value = new Date();
+
+					resolve(true);
+				} catch (error) {
+					console.error(error);
+					resolve(false);
+				} finally {
+					isRefreshingMaterials.value = false;
+					promiseRefreshingMaterials = null;
+				}
+			});
+
+			return promiseRefreshingMaterials;
 		}
 
 		/**
@@ -167,25 +189,36 @@ export const useGameDataStore = defineStore(
 		 * @returns {Promise<boolean>} Success indicator
 		 */
 		async function performLoadExchanges(): Promise<boolean> {
-			try {
-				const exchangeData: IExchange[] = await callDataExchanges();
-
-				// initially reset
-				exchanges.value = {};
-
-				// store data as record
-				exchangeData.forEach((e) => {
-					exchanges.value[e.TickerId] = e;
-				});
-
-				// set last refreshed
-				lastRefreshedExchanges.value = new Date();
-
-				return true;
-			} catch (error) {
-				console.error(error);
-				return false;
+			if (isRefreshingExchanges.value) {
+				return promiseRefreshingExchanges!;
 			}
+
+			isRefreshingExchanges.value = true;
+			promiseRefreshingExchanges = new Promise<boolean>(async (resolve) => {
+				try {
+					const exchangeData: IExchange[] = await callDataExchanges();
+
+					// initially reset
+					exchanges.value = {};
+
+					// store data as record
+					exchangeData.forEach((e) => {
+						exchanges.value[e.TickerId] = e;
+					});
+
+					// set last refreshed
+					lastRefreshedExchanges.value = new Date();
+					resolve(true);
+				} catch (error) {
+					console.error(error);
+					resolve(false);
+				} finally {
+					isRefreshingExchanges.value = false;
+					promiseRefreshingExchanges = null;
+				}
+			});
+
+			return promiseRefreshingExchanges;
 		}
 
 		/**
@@ -197,29 +230,40 @@ export const useGameDataStore = defineStore(
 		 * @returns {Promise<boolean>}
 		 */
 		async function performLoadRecipes(): Promise<boolean> {
-			try {
-				const recipeData: IRecipe[] = await callDataRecipes();
-
-				// initially reset
-				recipes.value = {};
-
-				// store data as record
-				recipeData.forEach((r) => {
-					if (Object.keys(recipes.value).includes(r.BuildingTicker)) {
-						recipes.value[r.BuildingTicker].push(r);
-					} else {
-						recipes.value[r.BuildingTicker] = [r];
-					}
-				});
-
-				// set last refreshed
-				lastRefreshedRecipes.value = new Date();
-
-				return true;
-			} catch (error) {
-				console.error(error);
-				return false;
+			if (isRefreshingRecipes.value) {
+				return promiseRefreshingRecipes!;
 			}
+
+			isRefreshingRecipes.value = true;
+			promiseRefreshingRecipes = new Promise<boolean>(async (resolve) => {
+				try {
+					const recipeData: IRecipe[] = await callDataRecipes();
+
+					// initially reset
+					recipes.value = {};
+
+					// store data as record
+					recipeData.forEach((r) => {
+						if (Object.keys(recipes.value).includes(r.BuildingTicker)) {
+							recipes.value[r.BuildingTicker].push(r);
+						} else {
+							recipes.value[r.BuildingTicker] = [r];
+						}
+					});
+
+					// set last refreshed
+					lastRefreshedRecipes.value = new Date();
+					resolve(true);
+				} catch (error) {
+					console.error(error);
+					resolve(false);
+				} finally {
+					isRefreshingRecipes.value = false;
+					promiseRefreshingRecipes = null;
+				}
+			});
+
+			return promiseRefreshingRecipes;
 		}
 
 		/**
@@ -230,24 +274,36 @@ export const useGameDataStore = defineStore(
 		 * @returns {Promise<boolean>} Success indicator
 		 */
 		async function performLoadBuildings(): Promise<boolean> {
-			try {
-				const buildingData: IBuilding[] = await callDataBuildings();
-
-				// initially rest
-				buildings.value = {};
-
-				// store data as record
-				buildingData.forEach((b) => {
-					buildings.value[b.Ticker] = b;
-				});
-
-				// set last refreshed
-				lastRefreshedBuildings.value = new Date();
-				return true;
-			} catch (error) {
-				console.error(error);
-				return false;
+			if (isRefreshingBuildings.value) {
+				return promiseRefreshingBuildings!;
 			}
+
+			isRefreshingBuildings.value = true;
+			promiseRefreshingBuildings = new Promise<boolean>(async (resolve) => {
+				try {
+					const buildingData: IBuilding[] = await callDataBuildings();
+
+					// initially rest
+					buildings.value = {};
+
+					// store data as record
+					buildingData.forEach((b) => {
+						buildings.value[b.Ticker] = b;
+					});
+
+					// set last refreshed
+					lastRefreshedBuildings.value = new Date();
+					resolve(true);
+				} catch (error) {
+					console.error(error);
+					resolve(false);
+				} finally {
+					isRefreshingBuildings.value = false;
+					promiseRefreshingBuildings = null;
+				}
+			});
+
+			return promiseRefreshingBuildings;
 		}
 
 		/**
@@ -389,6 +445,10 @@ export const useGameDataStore = defineStore(
 			);
 		}
 
+		function foo() {
+			return "moo";
+		}
+
 		return {
 			// state
 			materials,
@@ -401,6 +461,10 @@ export const useGameDataStore = defineStore(
 			lastRefreshedRecipes,
 			lastRefreshedBuildings,
 			lastRefreshedPlanets,
+			isRefreshingMaterials,
+			isRefreshingExchanges,
+			isRefreshingRecipes,
+			isRefreshingBuildings,
 			// getters
 			hasMaterials,
 			hasExchanges,

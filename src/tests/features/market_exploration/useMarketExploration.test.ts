@@ -1,0 +1,49 @@
+import { beforeAll, describe, expect, it, vi } from "vitest";
+import { apiService } from "@/lib/apiService";
+import AxiosMockAdapter from "axios-mock-adapter";
+
+// test data
+import exploration_7d_dw from "@/tests/features/market_exploration/test_data/api_data_exploration_7d_dw.json";
+import { useMarketExploration } from "@/features/market_exploration/useMarketExploration";
+
+// mock apiService client
+const mock = new AxiosMockAdapter(apiService.client);
+
+describe("useMarketExploration", async () => {
+	describe("callExplorationData", async () => {
+		it("Call API and Validate response", async () => {
+			const { callExplorationData } = useMarketExploration();
+
+			mock.onPost("/data/market/NC1/DW").reply(200, exploration_7d_dw);
+
+			const result = await callExplorationData("NC1", "DW", {
+				start: "2025-04-01",
+				end: "2025-04-29",
+			});
+
+			expect(result.length).toBe(exploration_7d_dw.length);
+		});
+	});
+
+	describe("getMaterialExplorationData", async () => {
+		it("Call API 4 times and create structured result", async () => {
+			const { getMaterialExplorationData } = useMarketExploration();
+
+			const spyPostCalls = vi.spyOn(apiService, "post");
+
+			mock.onPost("/data/market/AI1/DW").reply(200, exploration_7d_dw);
+			mock.onPost("/data/market/CI1/DW").reply(200, exploration_7d_dw);
+			mock.onPost("/data/market/IC1/DW").reply(200, exploration_7d_dw);
+			mock.onPost("/data/market/NC1/DW").reply(200, exploration_7d_dw);
+
+			const result = await getMaterialExplorationData("DW");
+
+			expect(spyPostCalls).toBeCalledTimes(4);
+
+			expect(result["AI1"]).toStrictEqual(exploration_7d_dw);
+			expect(result["CI1"]).toStrictEqual(exploration_7d_dw);
+			expect(result["IC1"]).toStrictEqual(exploration_7d_dw);
+			expect(result["NC1"]).toStrictEqual(exploration_7d_dw);
+		});
+	});
+});

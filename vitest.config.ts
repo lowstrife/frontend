@@ -7,7 +7,15 @@ export default defineConfig({
 	test: {
 		globals: true,
 		env: loadEnv("", ""),
-		exclude: ["**/node_modules/**", "**/dist/**", "**/coverage/**"],
+		exclude: [
+			"**/node_modules/**",
+			"**/dist/**",
+			"**/coverage/**",
+			"**/{karma,rollup,webpack,vite,vitest,jest,ava,babel,nyc,cypress,tsup,build}.config.*",
+			"**/cypress/**",
+			"**/.{idea,git,cache,output,temp}/**",
+		],
+		environment: "jsdom",
 		coverage: {
 			enabled: true,
 			provider: "v8",
@@ -20,6 +28,8 @@ export default defineConfig({
 				"src/views/*",
 				"src/router/*",
 				"**/components/**",
+				"**/dist/**",
+				"src/tests/**",
 			],
 			reportOnFailure: true,
 		},
