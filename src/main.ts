@@ -23,5 +23,15 @@ import axiosSetup from "@/util/axiosSetup";
 
 axiosSetup();
 
+// highcharts
+import HighChartsVue from "highcharts-vue";
+
+import * as Highcharts from "highcharts";
+import { highchartsOptions } from "@/layout/highcartsOptions";
+
+Highcharts.setOptions(highchartsOptions);
+
+app.use(HighChartsVue);
+
 // mount
 app.mount("#app");

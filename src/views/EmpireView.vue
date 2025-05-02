@@ -21,6 +21,9 @@
 
 	import { ref, type Ref } from "vue";
 
+	// Components
+	import MaterialTile from "@/features/material_tile/components/MaterialTile.vue";
+
 	const refPlanName: Ref<string> = ref("My awesome plan");
 	const refNumber: Ref<number> = ref(0);
 	const refBoolan: Ref<boolean> = ref(false);
@@ -82,6 +85,30 @@
 			in: 0,
 			out: 2292.86,
 			money: 111396.67,
+		},
+		{
+			name: "ABH",
+			in: 0,
+			out: 0,
+			money: 0,
+		},
+		{
+			name: "HMS",
+			in: 0,
+			out: 0,
+			money: 0,
+		},
+		{
+			name: "DW",
+			in: 0,
+			out: 0,
+			money: 0,
+		},
+		{
+			name: "RAT",
+			in: 0,
+			out: 0,
+			money: 0,
 		},
 	];
 </script>
@@ -447,12 +474,7 @@
 						<tbody>
 							<tr v-for="material in materialIO" :key="material.name">
 								<td>
-									<span
-										:class="'Material-' + material.name"
-										class="p1 px-2 font-bold"
-									>
-										{{ material.name }}
-									</span>
+									<MaterialTile :ticker="material.name" :amount="material.in" />
 								</td>
 								<td :class="material.in === 0 ? '!text-white/20' : ''">
 									{{ material.in }}

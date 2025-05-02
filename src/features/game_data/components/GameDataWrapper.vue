@@ -3,7 +3,7 @@
 		<div
 			class="relative w-full h-full bg-[url('/images/bg_striped_prunplanner.png')] bg-center bg-repeat"
 		>
-			<div class="relative w-full h-full bg-black/60">
+			<div v-if="!minimal" class="relative w-full h-full bg-black/60">
 				<div class="absolute inset-0 flex items-center justify-center">
 					<div class="bg-black p-8 rounded shadow-lg">
 						<h1 class="text-2xl font-bold font-mono mb-3">Loading Data..</h1>
@@ -30,6 +30,11 @@
 					</div>
 				</div>
 			</div>
+			<div v-else class="relative w-full h-full">
+				<div class="absolute inset-0 flex items-center justify-center">
+					<n-spin :size="15" />
+				</div>
+			</div>
 		</div>
 	</template>
 
@@ -45,14 +50,14 @@
 
 	// Stores
 	import { useGameDataStore } from "@/stores/gameDataStore";
+
+	// Types
 	import {
 		LOADING_STATUS_ENUM,
 		WrapperLoader,
 		WrapperLoaderElement,
 		WrapperTask,
 	} from "@/features/game_data/components/GameDataWrapper.types";
-
-	// Types
 
 	const gameDataStore = useGameDataStore();
 
@@ -81,7 +86,14 @@
 			type: Array as PropType<string[]>,
 			required: false,
 		},
+		minimal: {
+			type: Boolean,
+			required: false,
+			default: false,
+		},
 	});
+
+	const emit = defineEmits(["success"]);
 
 	const loadingStatus: Ref<WrapperLoader> = ref({
 		MATERIALS: {
@@ -123,11 +135,17 @@
 	});
 
 	const fullyLoaded: ComputedRef<boolean> = computed(() => {
-		return Object.values(loadingStatus.value).every(
+		const status = Object.values(loadingStatus.value).every(
 			(item: WrapperLoaderElement) =>
 				item.status === LOADING_STATUS_ENUM.DONE ||
 				item.status === LOADING_STATUS_ENUM.SKIP
 		);
+
+		if (status) {
+			emit("success");
+		}
+
+		return status;
 	});
 
 	onMounted(async () => {

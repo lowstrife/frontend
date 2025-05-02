@@ -22,6 +22,21 @@ vi.mock("@/features/game_data/gameData", async () => {
 	};
 });
 
+vi.mock("@/lib/config", async () => {
+	const original: any = await vi.importActual("@/lib/config");
+	return {
+		...original,
+		default: {
+			...original.default,
+			GAME_DATA_STALE_MINUTES_BUILDINGS: 30,
+			GAME_DATA_STALE_MINUTES_RECIPES: 30,
+			GAME_DATA_STALE_MINUTES_MATERIALS: 30,
+			GAME_DATA_STALE_MINUTES_EXCHANGES: 30,
+			GAME_DATA_STALE_MINUTES_PLANETS: 30,
+		},
+	};
+});
+
 import {
 	callDataMaterials,
 	callDataExchanges,
@@ -36,17 +51,68 @@ import {
 import { useGameDataStore } from "@/stores/gameDataStore";
 import { useUserStore } from "@/stores/userStore";
 
-describe("GameData Store", () => {
+describe("GameData Store", async () => {
 	let gameDataStore: any;
 
 	beforeEach(() => {
 		setActivePinia(createPinia());
 		gameDataStore = useGameDataStore();
 
-		vi.clearAllMocks();
+		vi.resetAllMocks();
 	});
 
-	describe("GameData functions", () => {
+	describe("Prevent parallel refreshes", async () => {
+		it("Materials singular refresh", async () => {
+			vi.mocked(callDataMaterials).mockResolvedValueOnce(materials);
+
+			gameDataStore.$state.isRefreshingMaterials = true;
+			gameDataStore.$state.promiseRefreshingMaterials = Promise.resolve(true);
+
+			const result = await gameDataStore.performLoadMaterials();
+
+			expect(result).toBe(null);
+			expect(callDataMaterials).not.toHaveBeenCalled();
+		});
+
+		it("Buildings singular refresh", async () => {
+			// @ts-expect-error mock
+			vi.mocked(callDataBuildings).mockResolvedValueOnce(buildings);
+
+			gameDataStore.$state.isRefreshingBuildings = true;
+			gameDataStore.$state.promiseRefreshingBuildings = Promise.resolve(true);
+
+			const result = await gameDataStore.performLoadBuildings();
+
+			expect(result).toBe(null);
+			expect(callDataBuildings).not.toHaveBeenCalled();
+		});
+
+		it("Exchanges singular refresh", async () => {
+			vi.mocked(callDataExchanges).mockResolvedValueOnce(exchanges);
+
+			gameDataStore.$state.isRefreshingExchanges = true;
+			gameDataStore.$state.promiseRefreshingExchanges = Promise.resolve(true);
+
+			const result = await gameDataStore.performLoadExchanges();
+
+			expect(result).toBe(null);
+			expect(callDataExchanges).not.toHaveBeenCalled();
+		});
+
+		it("Recipes singular refresh", async () => {
+			vi.mocked(callDataRecipes).mockResolvedValueOnce(recipes);
+
+			gameDataStore.$state.isRefreshingRecipes = true;
+			gameDataStore.$state.promiseRefreshingRecipes = Promise.resolve(true);
+
+			const result = await gameDataStore.performLoadRecipes();
+
+			expect(result).toBe(null);
+			expect(callDataRecipes).not.toHaveBeenCalled();
+		});
+	});
+
+	describe("Functions", () => {
 		it("hasPlanet", () => {
 			expect(
 				gameDataStore.hasPlanet(planet_single.PlanetNaturalId)
@@ -76,7 +142,7 @@ describe("GameData Store", () => {
 		});
 	});
 
-	describe("GameData functions: Data Loader", () => {
+	describe("Data Loader", async () => {
 		it("performLoadMaterials: success", async () => {
 			gameDataStore.materials[materials[0].Ticker] = materials[0];
 
@@ -222,5 +288,27 @@ describe("GameData Store", () => {
 
 			expect(result).toBeTruthy();
 		});
+	});
+});
+
+describe("performStaleDataRefresh", async () => {
+	beforeEach(() => {
+		setActivePinia(createPinia());
+	});
+
+	it("should refresh stale data", async () => {
+		/*
+			This needs more testing, have not yet found a way to properly create
+			test casees for this.
+
+			PR highly welcome!
+		*/
+
+		const gameDataStore = useGameDataStore();
+		const spyPerform = vi.spyOn(gameDataStore, "performStaleDataRefresh");
+
+		await gameDataStore.performStaleDataRefresh();
+
+		expect(spyPerform).toBeCalledTimes(1);
 	});
 });
