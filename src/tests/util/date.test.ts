@@ -35,9 +35,9 @@ describe("Util: date", () => {
 
 	describe("timestampFromString", () => {
 		it("Return Unix timestamp from Date as String", () => {
-			const result: number = timestampFromString("2025-05-01");
+			const result: number = timestampFromString("2025-05-02T05:00:00+00:00");
 
-			expect(result).toBe(1746050400000);
+			expect(result).toBe(1746162000000);
 		});
 	});
 
