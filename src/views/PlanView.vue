@@ -11,6 +11,7 @@ const { getPlanet } = usePlanetData();
 
 // Components
 import MaterialTile from "@/features/material_tile/components/MaterialTile.vue";
+import PlanBonuses from "@/features/planning/components/PlanBonuses.vue";
 
 // UI
 import {
@@ -32,6 +33,7 @@ import {
 	AutoAwesomeMosaicOutlined,
 	AutoAwesomeMosaicFilled,
 } from "@vicons/material";
+import { usePlanCalculation } from "@/features/planning/usePlanCalculation";
 
 const props = defineProps({
 	planData: {
@@ -45,11 +47,14 @@ const props = defineProps({
 	},
 });
 
+const refPlanData: Ref<IPlan> = ref(props.planData);
+
+const { result, handleUpdateCorpHQ, handleUpdateCOGC } = usePlanCalculation(refPlanData);
+
 const planetData: IPlanet = getPlanet(props.planData.planet_id);
 
 const refPlanName: Ref<string> = ref("My awesome plan");
 const refNumber: Ref<number> = ref(0);
-const refBoolan: Ref<boolean> = ref(false);
 
 const refVisualShowConfiguration: Ref<boolean> = ref(true);
 
@@ -208,21 +213,14 @@ const materialIO: IMaterial[] = [
 			</div>
 			<div class="p-6">
 				<h2 class="text-white/80 font-bold text-lg pb-3">Bonuses</h2>
-				<n-form
-					label-placement="left"
-					label-width="auto"
-					label-align="left"
-					size="small"
-				>
-					<n-form-item label="Coporation HQ">
-						<n-checkbox v-model:checked="refBoolan" />
-					</n-form-item>
-					<n-form-item label="COGC">
-						<n-select
-							:options="[{ label: 'Chemistry' }, { label: 'Electronics' }]"
-						/>
-					</n-form-item>
-				</n-form>
+
+				<PlanBonuses 
+					:disabled="disabled"
+					:corphq="result.bonus.corphq" 
+					:cogc="result.bonus.cogc" 
+					v-on:update:corphq="handleUpdateCorpHQ" 
+					v-on:update:cogc="handleUpdateCOGC"
+				/>
 			</div>
 			<div class="p-6">
 				<h2 class="text-white/80 font-bold text-lg pb-3">Experts</h2>
@@ -492,6 +490,9 @@ const materialIO: IMaterial[] = [
 					</div>
 					<div class="pt-6">
 						{{ disabled }}
+						<br />
+						<br />
+						{{  result }}
 						<br />
 						<br />
 						{{ planData }}
