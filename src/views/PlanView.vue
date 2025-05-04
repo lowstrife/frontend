@@ -1,144 +1,146 @@
 <script setup lang="ts">
-import { PropType, ref, type Ref } from "vue";
+	import { PropType, ref, type Ref } from "vue";
 
-// Types & Interfaces
-import { IPlan } from "@/features/planning/usePlan.types";
-import { IPlanet } from "@/features/game_data/gameData.types";
+	// Types & Interfaces
+	import { IPlan } from "@/features/planning/usePlan.types";
+	import { IPlanet } from "@/features/game_data/gameData.types";
 
-// Composables
-import { usePlanetData } from "@/features/game_data/usePlanetData";
-const { getPlanet } = usePlanetData();
+	// Composables
+	import { usePlanetData } from "@/features/game_data/usePlanetData";
+	const { getPlanet } = usePlanetData();
 
-// Components
-import MaterialTile from "@/features/material_tile/components/MaterialTile.vue";
-import PlanBonuses from "@/features/planning/components/PlanBonuses.vue";
+	// Components
+	import MaterialTile from "@/features/material_tile/components/MaterialTile.vue";
+	import PlanBonuses from "@/features/planning/components/PlanBonuses.vue";
+	import PlanArea from "@/features/planning/components/PlanArea.vue";
 
-// UI
-import {
-	NCard,
-	NForm,
-	NCheckbox,
-	NFormItem,
-	NInput,
-	NInputNumber,
-	NSelect,
-	NTable,
-	NButton,
-	NIcon,
-} from "naive-ui";
+	// UI
+	import {
+		NCard,
+		NForm,
+		NCheckbox,
+		NFormItem,
+		NInput,
+		NInputNumber,
+		NSelect,
+		NTable,
+		NButton,
+		NIcon,
+	} from "naive-ui";
 
-import {
-	CheckSharp,
-	RadioButtonUncheckedSharp,
-	AutoAwesomeMosaicOutlined,
-	AutoAwesomeMosaicFilled,
-} from "@vicons/material";
-import { usePlanCalculation } from "@/features/planning/usePlanCalculation";
+	import {
+		CheckSharp,
+		RadioButtonUncheckedSharp,
+		AutoAwesomeMosaicOutlined,
+		AutoAwesomeMosaicFilled,
+	} from "@vicons/material";
+	import { usePlanCalculation } from "@/features/planning/usePlanCalculation";
 
-const props = defineProps({
-	planData: {
-		type: Object as PropType<IPlan>,
-		required: true,
-	},
-	disabled: {
-		type: Boolean,
-		required: false,
-		default: false,
-	},
-});
+	const props = defineProps({
+		planData: {
+			type: Object as PropType<IPlan>,
+			required: true,
+		},
+		disabled: {
+			type: Boolean,
+			required: false,
+			default: false,
+		},
+	});
 
-const refPlanData: Ref<IPlan> = ref(props.planData);
+	const refPlanData: Ref<IPlan> = ref(props.planData);
 
-const { result, handleUpdateCorpHQ, handleUpdateCOGC } = usePlanCalculation(refPlanData);
+	const { result, handleUpdateCorpHQ, handleUpdateCOGC, handleUpdatePermits } =
+		usePlanCalculation(refPlanData);
 
-const planetData: IPlanet = getPlanet(props.planData.planet_id);
+	const planetData: IPlanet = getPlanet(props.planData.planet_id);
 
-const refPlanName: Ref<string> = ref("My awesome plan");
-const refNumber: Ref<number> = ref(0);
+	const refPlanName: Ref<string> = ref("My awesome plan");
+	const refNumber: Ref<number> = ref(0);
 
-const refVisualShowConfiguration: Ref<boolean> = ref(true);
+	const refVisualShowConfiguration: Ref<boolean> = ref(true);
 
-interface IMaterial {
-	name: string;
-	in: number;
-	out: number;
-	money: number;
-}
+	interface IMaterial {
+		name: string;
+		in: number;
+		out: number;
+		money: number;
+	}
 
-const materialIO: IMaterial[] = [
-	{
-		name: "ALE",
-		in: 4.9,
-		out: 0,
-		money: -6848.72,
-	},
-	{
-		name: "C",
-		in: 45.86,
-		out: 0,
-		money: -6848.72,
-	},
-	{
-		name: "COF",
-		in: 0.5,
-		out: 0,
-		money: -458.1,
-	},
-	{
-		name: "EPO",
-		in: 702.19,
-		out: 0,
-		money: -66.707,
-	},
-	{
-		name: "H",
-		in: 45.86,
-		out: 0,
-		money: -5205.23,
-	},
-	{
-		name: "NCS",
-		in: 1053.28,
-		out: 0,
-		money: -9479.53,
-	},
-	{
-		name: "NR",
-		in: 0,
-		out: 702.19,
-		money: 297742.56,
-	},
-	{
-		name: "PG",
-		in: 0,
-		out: 2292.86,
-		money: 111396.67,
-	},
-	{
-		name: "ABH",
-		in: 0,
-		out: 0,
-		money: 0,
-	},
-	{
-		name: "HMS",
-		in: 0,
-		out: 0,
-		money: 0,
-	},
-	{
-		name: "DW",
-		in: 0,
-		out: 0,
-		money: 0,
-	},
-	{
-		name: "RAT",
-		in: 0,
-		out: 0,
-		money: 0,
-	},
-];
+	const materialIO: IMaterial[] = [
+		{
+			name: "ALE",
+			in: 4.9,
+			out: 0,
+			money: -6848.72,
+		},
+		{
+			name: "C",
+			in: 45.86,
+			out: 0,
+			money: -6848.72,
+		},
+		{
+			name: "COF",
+			in: 0.5,
+			out: 0,
+			money: -458.1,
+		},
+		{
+			name: "EPO",
+			in: 702.19,
+			out: 0,
+			money: -66.707,
+		},
+		{
+			name: "H",
+			in: 45.86,
+			out: 0,
+			money: -5205.23,
+		},
+		{
+			name: "NCS",
+			in: 1053.28,
+			out: 0,
+			money: -9479.53,
+		},
+		{
+			name: "NR",
+			in: 0,
+			out: 702.19,
+			money: 297742.56,
+		},
+		{
+			name: "PG",
+			in: 0,
+			out: 2292.86,
+			money: 111396.67,
+		},
+		{
+			name: "ABH",
+			in: 0,
+			out: 0,
+			money: 0,
+		},
+		{
+			name: "HMS",
+			in: 0,
+			out: 0,
+			money: 0,
+		},
+		{
+			name: "DW",
+			in: 0,
+			out: 0,
+			money: 0,
+		},
+		{
+			name: "RAT",
+			in: 0,
+			out: 0,
+			money: 0,
+		},
+	];
 </script>
 
 <template>
@@ -169,7 +171,15 @@ const materialIO: IMaterial[] = [
 				</n-form>
 			</div>
 
-			<div class="p-6">
+			<div class="p-6 pt-0">
+				<h2 class="text-white/80 font-bold text-lg pb-3">Area</h2>
+				<PlanArea
+					:disabled="disabled"
+					:area-data="result.area"
+					v-on:update:permits="handleUpdatePermits"
+				/>
+			</div>
+			<div class="p-6 pt-0">
 				<h2 class="text-white/80 font-bold text-lg pb-3">Infrastructure</h2>
 				<n-form
 					label-placement="left"
@@ -211,18 +221,18 @@ const materialIO: IMaterial[] = [
 					</div>
 				</n-form>
 			</div>
-			<div class="p-6">
+			<div class="p-6 pt-0">
 				<h2 class="text-white/80 font-bold text-lg pb-3">Bonuses</h2>
 
-				<PlanBonuses 
+				<PlanBonuses
 					:disabled="disabled"
-					:corphq="result.bonus.corphq" 
-					:cogc="result.bonus.cogc" 
-					v-on:update:corphq="handleUpdateCorpHQ" 
+					:corphq="result.bonus.corphq"
+					:cogc="result.bonus.cogc"
+					v-on:update:corphq="handleUpdateCorpHQ"
 					v-on:update:cogc="handleUpdateCOGC"
 				/>
 			</div>
-			<div class="p-6">
+			<div class="p-6 pt-0">
 				<h2 class="text-white/80 font-bold text-lg pb-3">Experts</h2>
 				<div
 					class="grid grid-cols-1 lg:grid-cols-[auto_auto_auto] gap-3 child:my-auto child:text-nowrap"
@@ -492,7 +502,7 @@ const materialIO: IMaterial[] = [
 						{{ disabled }}
 						<br />
 						<br />
-						{{  result }}
+						{{ result }}
 						<br />
 						<br />
 						{{ planData }}

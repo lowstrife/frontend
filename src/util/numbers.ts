@@ -1,4 +1,5 @@
 import numbro from "numbro";
+import { number } from "zod";
 
 /**
  * Formats Number as String of 0,0.00
@@ -25,4 +26,18 @@ export function formatNumber(
 			mantissa: decimals,
 		});
 	}
+}
+
+/**
+ * Returns a number whose value is limited to given range
+ * @author jplacht
+ *
+ * @export
+ * @param {number} value Number
+ * @param {number} min Min range limiter
+ * @param {number} max Max range lmiter
+ * @returns {number}
+ */
+export function clamp(value: number, min: number, max: number): number {
+	return Math.max(min, Math.min(value, max));
 }

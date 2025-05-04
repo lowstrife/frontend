@@ -22,12 +22,12 @@ import { IPlanet, PLANET_COGCPROGRAM_TYPE } from "../game_data/gameData.types";
 
 export function usePlan() {
 	const gameDataStore = useGameDataStore();
-	
+
 	/**
 	 * Loads a plan definition from given route parameters
 	 * for either a new plan, an existing plan or using data
 	 * from a shared plan uuid.
-	 * 
+	 *
 	 * @author jplacht
 	 *
 	 * @async
@@ -43,6 +43,15 @@ export function usePlan() {
 				`/shared/${routeParams.sharedPlanUuid}`,
 				PlanShareSchema
 			);
+
+			// ensure planet is loaded
+
+			const sharePlanetLoadResult: boolean =
+				await gameDataStore.performLoadPlanet(planData.baseplanner.planet_id);
+
+			if (!sharePlanetLoadResult) {
+				throw new PlanLoadError("PLANET_FAILURE", "Error loading planet data.");
+			}
 
 			return planData.baseplanner;
 		}
@@ -90,11 +99,10 @@ export function usePlan() {
 		}
 	}
 
-	
 	/**
-	 * Checks if route parameters contain the uuid of a 
+	 * Checks if route parameters contain the uuid of a
 	 * shared plan, if so the whole plan is read-only
-	 * 
+	 *
 	 * @author jplacht
 	 *
 	 * @param {IPlanRouteParams} routeParams Route Parameters
@@ -108,10 +116,9 @@ export function usePlan() {
 		}
 	}
 
-	
 	/**
 	 * Maps planets COGC Program Type to Plans COGC Program Type
-	 * 
+	 *
 	 * @author jplacht
 	 *
 	 * @param {(PLANET_COGCPROGRAM_TYPE | null | undefined)} input Planet COGC Type
@@ -125,10 +132,9 @@ export function usePlan() {
 		return parts.slice(1).join("_").toUpperCase() as PLAN_COGCPROGRAM_TYPE;
 	}
 
-	
 	/**
 	 * Generates a new plan definition from Planet Natural Id
-	 * 
+	 *
 	 * @author jplacht
 	 *
 	 * @param {string} planetNaturalId Planet Natural Id (e.g. 'OT-580b')
