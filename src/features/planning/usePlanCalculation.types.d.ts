@@ -9,6 +9,7 @@ export namespace PlanResult {
 		| "scientist";
 
 	interface WorkforceElement {
+		name: WORKFORCE_TYPE;
 		required: number;
 		capacity: number;
 		left: number;
@@ -24,12 +25,15 @@ export namespace PlanResult {
 		areaLeft: number;
 	}
 
+	interface WorkforceRecord
+		extends Required<Record<WORKFORCE_TYPE, WorkforceElement>> {}
+
 	interface Result {
 		bonus: {
 			corphq: boolean;
 			cogc: PLAN_COGCPROGRAM_TYPE;
 		};
-		workforce: Required<Record<WORKFORCE_TYPE, WorkforceElement>>;
+		workforce: WorkforceRecord;
 		area: AreaResult;
 	}
 }

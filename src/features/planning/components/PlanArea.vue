@@ -10,8 +10,7 @@
 	const props = defineProps({
 		disabled: {
 			type: Boolean,
-			required: false,
-			default: false,
+			required: true,
 		},
 		areaData: {
 			type: Object as PropType<PlanResult.AreaResult>,
@@ -62,11 +61,13 @@
 				<div class="flex-grow">
 					{{ areaData.areaUsed }} / {{ areaData.areaTotal }}
 				</div>
-				<div
-					class="font-bold"
-					:class="areaData.areaLeft >= 0 ? 'text-positive' : 'text-negative'"
-				>
-					{{ areaData.areaLeft }}
+				<div>
+					<span
+						class="font-bold"
+						:class="areaData.areaLeft >= 0 ? 'text-positive' : 'text-negative'"
+						>{{ areaData.areaLeft }}</span
+					>
+					Free
 				</div>
 			</div>
 		</n-form-item>

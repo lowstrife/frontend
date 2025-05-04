@@ -11,8 +11,7 @@
 	const props = defineProps({
 		disabled: {
 			type: Boolean,
-			required: false,
-			default: false,
+			required: true,
 		},
 		corphq: {
 			type: Boolean,

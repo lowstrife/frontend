@@ -13,12 +13,12 @@
 	import MaterialTile from "@/features/material_tile/components/MaterialTile.vue";
 	import PlanBonuses from "@/features/planning/components/PlanBonuses.vue";
 	import PlanArea from "@/features/planning/components/PlanArea.vue";
+	import PlanWorkforce from "@/features/planning/components/PlanWorkforce.vue";
 
 	// UI
 	import {
 		NCard,
 		NForm,
-		NCheckbox,
 		NFormItem,
 		NInput,
 		NInputNumber,
@@ -34,7 +34,6 @@
 		AutoAwesomeMosaicOutlined,
 		AutoAwesomeMosaicFilled,
 	} from "@vicons/material";
-	import { usePlanCalculation } from "@/features/planning/usePlanCalculation";
 
 	const props = defineProps({
 		planData: {
@@ -50,8 +49,14 @@
 
 	const refPlanData: Ref<IPlan> = ref(props.planData);
 
-	const { result, handleUpdateCorpHQ, handleUpdateCOGC, handleUpdatePermits } =
-		usePlanCalculation(refPlanData);
+	import { usePlanCalculation } from "@/features/planning/usePlanCalculation";
+	const {
+		result,
+		handleUpdateCorpHQ,
+		handleUpdateCOGC,
+		handleUpdatePermits,
+		handleUpdateWorkforceLux,
+	} = usePlanCalculation(refPlanData);
 
 	const planetData: IPlanet = getPlanet(props.planData.planet_id);
 
@@ -351,151 +356,16 @@
 				<div>
 					<div class="grid grid-cols-1 2xl:grid-cols-[60%_auto] gap-6">
 						<div>
-							<n-card title="Workforce">
-								<n-table striped>
-									<thead>
-										<tr>
-											<th>Type</th>
-											<th>Required</th>
-											<th>Capacity</th>
-											<th>Left</th>
-											<th>Lux 1</th>
-											<th>Lux 2</th>
-											<th>Efficiency</th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr>
-											<td>Pioneer</td>
-											<td>100</td>
-											<td>100</td>
-											<td>0</td>
-											<td>
-												<n-button size="tiny" type="success">
-													<template #icon>
-														<n-icon>
-															<CheckSharp />
-														</n-icon>
-													</template>
-												</n-button>
-											</td>
-											<td>
-												<n-button size="tiny" type="error">
-													<template #icon>
-														<n-icon>
-															<RadioButtonUncheckedSharp />
-														</n-icon>
-													</template>
-												</n-button>
-											</td>
-											<td>100.00 %</td>
-										</tr>
-										<tr>
-											<td>Settler</td>
-											<td>390</td>
-											<td>400</td>
-											<td>10</td>
-											<td>
-												<n-button size="tiny" type="success">
-													<template #icon>
-														<n-icon>
-															<CheckSharp />
-														</n-icon>
-													</template>
-												</n-button>
-											</td>
-											<td>
-												<n-button size="tiny" type="success">
-													<template #icon>
-														<n-icon>
-															<CheckSharp />
-														</n-icon>
-													</template>
-												</n-button>
-											</td>
-											<td>100.00 %</td>
-										</tr>
-										<tr>
-											<td>Technician</td>
-											<td>490</td>
-											<td>500</td>
-											<td>10</td>
-											<td>
-												<n-button size="tiny" type="success">
-													<template #icon>
-														<n-icon>
-															<CheckSharp />
-														</n-icon>
-													</template>
-												</n-button>
-											</td>
-											<td>
-												<n-button size="tiny" type="success">
-													<template #icon>
-														<n-icon>
-															<CheckSharp />
-														</n-icon>
-													</template>
-												</n-button>
-											</td>
-											<td>100.00 %</td>
-										</tr>
-										<tr>
-											<td>Engineer</td>
-											<td>0</td>
-											<td>0</td>
-											<td>0</td>
-											<td>
-												<n-button size="tiny" type="success">
-													<template #icon>
-														<n-icon>
-															<CheckSharp />
-														</n-icon>
-													</template>
-												</n-button>
-											</td>
-											<td>
-												<n-button size="tiny" type="success">
-													<template #icon>
-														<n-icon>
-															<CheckSharp />
-														</n-icon>
-													</template>
-												</n-button>
-											</td>
-											<td>100.00 %</td>
-										</tr>
-										<tr>
-											<td>Scientist</td>
-											<td>0</td>
-											<td>0</td>
-											<td>0</td>
-											<td>
-												<n-button size="tiny" type="success">
-													<template #icon>
-														<n-icon>
-															<CheckSharp />
-														</n-icon>
-													</template>
-												</n-button>
-											</td>
-											<td>
-												<n-button size="tiny" type="success">
-													<template #icon>
-														<n-icon>
-															<CheckSharp />
-														</n-icon>
-													</template>
-												</n-button>
-											</td>
-											<td>100.00 %</td>
-										</tr>
-									</tbody>
-								</n-table>
-							</n-card>
+							<h2 class="text-white/80 font-bold text-lg pb-3">Workforce</h2>
+							<PlanWorkforce
+								:disabled="disabled"
+								:workforce-data="result.workforce"
+								v-on:update:lux="handleUpdateWorkforceLux"
+							/>
 						</div>
 						<div>
-							<n-card title="Overview"></n-card>
+							<h2 class="text-white/80 font-bold text-lg pb-3">Overview</h2>
+							foo
 						</div>
 					</div>
 					<div class="pt-6">

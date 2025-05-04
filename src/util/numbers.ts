@@ -29,6 +29,22 @@ export function formatNumber(
 }
 
 /**
+ * Formats a number representing an amount as String
+ * with thousand separation.
+ * @author jplacht
+ *
+ * @export
+ * @param {number} value numeric input
+ * @returns {string} formatted number as string
+ */
+export function formatAmount(value: number): string {
+	if (value == Infinity) {
+		return "∞";
+	}
+	return numbro(value).format({ thousandSeparated: true });
+}
+
+/**
  * Returns a number whose value is limited to given range
  * @author jplacht
  *
