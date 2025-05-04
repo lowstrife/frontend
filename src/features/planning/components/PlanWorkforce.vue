@@ -75,6 +75,7 @@
 				<td>
 					<n-button
 						v-if="workforce.lux1"
+						:disabled="disabled"
 						size="tiny"
 						type="success"
 						@click="
@@ -87,6 +88,7 @@
 					</n-button>
 					<n-button
 						v-else
+						:disabled="disabled"
 						size="tiny"
 						type="error"
 						@click="
@@ -101,6 +103,7 @@
 				<td>
 					<n-button
 						v-if="workforce.lux2"
+						:disabled="disabled"
 						size="tiny"
 						type="success"
 						@click="
@@ -113,6 +116,7 @@
 					</n-button>
 					<n-button
 						v-else
+						:disabled="disabled"
 						size="tiny"
 						type="error"
 						@click="
