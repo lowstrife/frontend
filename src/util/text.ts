@@ -10,6 +10,8 @@ export function capitalizeString(text: string): string {
 	let transformedText: string =
 		text[0].toUpperCase() + text.slice(1).toLocaleLowerCase();
 
+	transformedText = transformedText.replace("_", " ");
+
 	const words: string[] = transformedText.split(" ");
 	if (words.length > 0) {
 		for (let i = 0; i < words.length; i++) {

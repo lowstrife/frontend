@@ -14,14 +14,14 @@
 	import PlanBonuses from "@/features/planning/components/PlanBonuses.vue";
 	import PlanArea from "@/features/planning/components/PlanArea.vue";
 	import PlanWorkforce from "@/features/planning/components/PlanWorkforce.vue";
+	import PlanInfrastructure from "@/features/planning/components/PlanInfrastructure.vue";
+	import PlanExperts from "@/features/planning/components/PlanExperts.vue";
 
 	// UI
 	import {
-		NCard,
 		NForm,
 		NFormItem,
 		NInput,
-		NInputNumber,
 		NSelect,
 		NTable,
 		NButton,
@@ -29,8 +29,6 @@
 	} from "naive-ui";
 
 	import {
-		CheckSharp,
-		RadioButtonUncheckedSharp,
 		AutoAwesomeMosaicOutlined,
 		AutoAwesomeMosaicFilled,
 	} from "@vicons/material";
@@ -56,12 +54,13 @@
 		handleUpdateCOGC,
 		handleUpdatePermits,
 		handleUpdateWorkforceLux,
+		handleUpdateInfrastructure,
+		handleUpdateExpert,
 	} = usePlanCalculation(refPlanData);
 
 	const planetData: IPlanet = getPlanet(props.planData.planet_id);
 
 	const refPlanName: Ref<string> = ref("My awesome plan");
-	const refNumber: Ref<number> = ref(0);
 
 	const refVisualShowConfiguration: Ref<boolean> = ref(true);
 
@@ -186,45 +185,11 @@
 			</div>
 			<div class="p-6 pt-0">
 				<h2 class="text-white/80 font-bold text-lg pb-3">Infrastructure</h2>
-				<n-form
-					label-placement="left"
-					label-width="auto"
-					label-align="left"
-					size="small"
-				>
-					<div class="grid grid-cols-1 lg:grid-cols-2 gap-3">
-						<n-form-item label="HB1">
-							<n-input-number v-model:value="refNumber" class="w-full" />
-						</n-form-item>
-						<n-form-item label="HBB">
-							<n-input-number v-model:value="refNumber" class="w-full" />
-						</n-form-item>
-						<n-form-item label="HB2">
-							<n-input-number v-model:value="refNumber" class="w-full" />
-						</n-form-item>
-						<n-form-item label="HBC">
-							<n-input-number v-model:value="refNumber" class="w-full" />
-						</n-form-item>
-						<n-form-item label="HB3">
-							<n-input-number v-model:value="refNumber" class="w-full" />
-						</n-form-item>
-						<n-form-item label="HBM">
-							<n-input-number v-model:value="refNumber" class="w-full" />
-						</n-form-item>
-						<n-form-item label="HB4">
-							<n-input-number v-model:value="refNumber" class="w-full" />
-						</n-form-item>
-						<n-form-item label="HBL">
-							<n-input-number v-model:value="refNumber" class="w-full" />
-						</n-form-item>
-						<n-form-item label="HB5">
-							<n-input-number v-model:value="refNumber" class="w-full" />
-						</n-form-item>
-						<n-form-item label="STO">
-							<n-input-number v-model:value="refNumber" class="w-full" />
-						</n-form-item>
-					</div>
-				</n-form>
+				<PlanInfrastructure
+					:disabled="disabled"
+					:infrastructure-data="result.infrastructure"
+					v-on:update:infrastructure="handleUpdateInfrastructure"
+				/>
 			</div>
 			<div class="p-6 pt-0">
 				<h2 class="text-white/80 font-bold text-lg pb-3">Bonuses</h2>
@@ -239,73 +204,11 @@
 			</div>
 			<div class="p-6 pt-0">
 				<h2 class="text-white/80 font-bold text-lg pb-3">Experts</h2>
-				<div
-					class="grid grid-cols-1 lg:grid-cols-[auto_auto_auto] gap-3 child:my-auto child:text-nowrap"
-				>
-					<div>Agriculture</div>
-					<n-input-number
-						v-model:value="refNumber"
-						size="small"
-						class="w-full"
-					/>
-					<div>0.00 %</div>
-					<div>Chemistry</div>
-					<n-input-number
-						v-model:value="refNumber"
-						size="small"
-						class="w-full"
-					/>
-					<div>28.50 %</div>
-					<div>Construction</div>
-					<n-input-number
-						v-model:value="refNumber"
-						size="small"
-						class="w-full"
-					/>
-					<div>0.00 %</div>
-					<div>Electronics</div>
-					<n-input-number
-						v-model:value="refNumber"
-						size="small"
-						class="w-full"
-					/>
-					<div>0.00 %</div>
-					<div>Food Industries</div>
-					<n-input-number
-						v-model:value="refNumber"
-						size="small"
-						class="w-full"
-					/>
-					<div>0.00 %</div>
-					<div>Fuel Refining</div>
-					<n-input-number
-						v-model:value="refNumber"
-						size="small"
-						class="w-full"
-					/>
-					<div>0.00 %</div>
-					<div>Manufacturing</div>
-					<n-input-number
-						v-model:value="refNumber"
-						size="small"
-						class="w-full"
-					/>
-					<div>0.00 %</div>
-					<div>Metallurgy</div>
-					<n-input-number
-						v-model:value="refNumber"
-						size="small"
-						class="w-full"
-					/>
-					<div>0.00 %</div>
-					<div>Resource Extraction</div>
-					<n-input-number
-						v-model:value="refNumber"
-						size="small"
-						class="w-full"
-					/>
-					<div>0.00 %</div>
-				</div>
+				<PlanExperts
+					:disabled="disabled"
+					:expert-data="result.experts"
+					v-on:update:expert="handleUpdateExpert"
+				/>
 			</div>
 		</div>
 		<div class="">

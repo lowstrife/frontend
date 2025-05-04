@@ -2,7 +2,7 @@
 	import { PropType, ref, Ref, watch } from "vue";
 
 	// Types & Interfaces
-	import { PlanResult } from "../usePlanCalculation.types";
+	import { PlanResult } from "@/features/planning/usePlanCalculation.types";
 
 	// UI
 	import { NForm, NFormItem, NInputNumber } from "naive-ui";

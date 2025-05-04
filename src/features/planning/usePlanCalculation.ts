@@ -6,17 +6,22 @@ import { useBuildingData } from "@/features/game_data/useBuildingData";
 // Util
 import { clamp } from "@/util/numbers";
 
+// Calculations
+import { calculateSatisfaction } from "@/features/planning/calculations/workforceCalculations";
+import { calculateExpertBonus } from "@/features/planning/calculations/bonusCalculations";
+
 // Types & Interfaces
 import { PlanResult } from "@/features/planning/usePlanCalculation.types";
 import {
 	IPlan,
 	IPlanData,
+	IPlanDataExpert,
+	IPlanDataInfrastructure,
 	IPlanDataPlanet,
 	IPlanDataWorkforce,
 	PLAN_COGCPROGRAM_TYPE,
 } from "@/features/planning/usePlan.types";
 import { IBuilding } from "@/features/game_data/gameData.types";
-import { calculateSatisfaction } from "./calculations/workforceCalculations";
 
 export function usePlanCalculation(plan: Ref<IPlan>) {
 	const data: Ref<IPlanData> = toRef(plan.value.baseplanner_data);
@@ -32,6 +37,31 @@ export function usePlanCalculation(plan: Ref<IPlan>) {
 		"technician",
 		"engineer",
 		"scientist",
+	];
+
+	const infrastructureBuildingNames: string[] = [
+		"HB1",
+		"HB2",
+		"HB3",
+		"HB4",
+		"HB5",
+		"HBB",
+		"HBC",
+		"HBM",
+		"HBL",
+		"STO",
+	];
+
+	const expertNames: string[] = [
+		"Agriculture",
+		"Chemistry",
+		"Construction",
+		"Electronics",
+		"Food_Industries",
+		"Fuel_Refining",
+		"Manufacturing",
+		"Metallurgy",
+		"Resource_Extraction",
 	];
 
 	function calculateWorkforceResult(): Required<
@@ -145,6 +175,43 @@ export function usePlanCalculation(plan: Ref<IPlan>) {
 		};
 	}
 
+	function calculateInfrastructureResult(): PlanResult.InfrastructureRecord {
+		const result: PlanResult.InfrastructureRecord = Object.fromEntries(
+			infrastructureBuildingNames.map((key) => {
+				const currentInf: IPlanDataInfrastructure | undefined =
+					data.value.infrastructure.find((e) => e.building === key);
+
+				if (currentInf) {
+					return [key, currentInf.amount];
+				}
+				return [key, 0];
+			})
+		) as PlanResult.InfrastructureRecord;
+
+		return result;
+	}
+
+	function calculateExpertResult(): PlanResult.ExpertRecord {
+		const result: PlanResult.ExpertRecord = Object.fromEntries(
+			expertNames.map((key) => {
+				const currentExpert: IPlanDataExpert | undefined =
+					planet.value.experts.find((e) => e.type === key);
+
+				let amount: number = 0;
+				let bonus: number = 0;
+
+				if (currentExpert) {
+					amount = currentExpert.amount;
+					bonus = calculateExpertBonus(amount);
+				}
+
+				return [key, { name: key, amount: amount, bonus: bonus }];
+			})
+		) as PlanResult.ExpertRecord;
+
+		return result;
+	}
+
 	// handler
 
 	function handleUpdateCorpHQ(value: boolean): void {
@@ -176,9 +243,37 @@ export function usePlanCalculation(plan: Ref<IPlan>) {
 		}
 	}
 
+	function handleUpdateExpert(
+		expert: PlanResult.EXPERT_TYPE,
+		value: number
+	): void {
+		const expertData: IPlanDataExpert | undefined = planet.value.experts.find(
+			(e) => e.type === expert
+		);
+
+		if (expertData) {
+			expertData.amount = clamp(value, 0, 5);
+		}
+	}
+
+	function handleUpdateInfrastructure(
+		infrastructure: PlanResult.INFRASTRUCTURE_TYPE,
+		value: number
+	): void {
+		const infData: IPlanDataInfrastructure | undefined =
+			data.value.infrastructure.find((i) => i.building === infrastructure);
+
+		if (infData) {
+			infData.amount = value;
+		}
+	}
+
 	const result: ComputedRef<PlanResult.Result> = computed(() => {
+		// pre-calculate individual results
 		const workforceResult = calculateWorkforceResult();
 		const areaResult = calculateAreaResult();
+		const infrastructureResult = calculateInfrastructureResult();
+		const expertResult = calculateExpertResult();
 
 		return {
 			bonus: {
@@ -187,6 +282,8 @@ export function usePlanCalculation(plan: Ref<IPlan>) {
 			},
 			workforce: workforceResult,
 			area: areaResult,
+			infrastructure: infrastructureResult,
+			experts: expertResult,
 		};
 	});
 
@@ -197,5 +294,7 @@ export function usePlanCalculation(plan: Ref<IPlan>) {
 		handleUpdateCOGC,
 		handleUpdatePermits,
 		handleUpdateWorkforceLux,
+		handleUpdateInfrastructure,
+		handleUpdateExpert,
 	};
 }

@@ -6,7 +6,7 @@
 	import { formatAmount, formatNumber } from "@/util/numbers";
 
 	// Types & Interfaces
-	import { PlanResult } from "../usePlanCalculation.types";
+	import { PlanResult } from "@/features/planning/usePlanCalculation.types";
 
 	// UI
 	import { NTable, NButton } from "naive-ui";

@@ -8,6 +8,29 @@ export namespace PlanResult {
 		| "engineer"
 		| "scientist";
 
+	type INFRASTRUCTURE_TYPE =
+		| "HB1"
+		| "HB2"
+		| "HB3"
+		| "HB4"
+		| "HB5"
+		| "HBB"
+		| "HBC"
+		| "HBM"
+		| "HBL"
+		| "STO";
+
+	type EXPERT_TYPE =
+		| "Agriculture"
+		| "Chemistry"
+		| "Construction"
+		| "Electronics"
+		| "Food_Industries"
+		| "Fuel_Refining"
+		| "Manufacturing"
+		| "Metallurgy"
+		| "Resource_Extraction";
+
 	interface WorkforceElement {
 		name: WORKFORCE_TYPE;
 		required: number;
@@ -25,8 +48,19 @@ export namespace PlanResult {
 		areaLeft: number;
 	}
 
+	interface ExpertElement {
+		name: EXPERT_TYPE;
+		amount: number;
+		bonus: number;
+	}
+
 	interface WorkforceRecord
 		extends Required<Record<WORKFORCE_TYPE, WorkforceElement>> {}
+
+	interface InfrastructureRecord
+		extends Required<Record<INFRASTRUCTURE_TYPE, number>> {}
+
+	interface ExpertRecord extends Required<Record<EXPERT_TYPE, ExpertElement>> {}
 
 	interface Result {
 		bonus: {
@@ -35,5 +69,7 @@ export namespace PlanResult {
 		};
 		workforce: WorkforceRecord;
 		area: AreaResult;
+		infrastructure: InfrastructureRecord;
+		experts: ExpertRecord;
 	}
 }
