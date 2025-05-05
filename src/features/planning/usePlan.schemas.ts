@@ -11,10 +11,11 @@ import {
 	IPlanDataWorkforce,
 	IPlanEmpire,
 	IPlanShare,
+	PLAN_COGCPROGRAM_TYPE,
 } from "./usePlan.types";
 import { PositiveOrZeroNumber } from "@/util/zodValidators";
 
-const PLAN_COGCPROGRAM_TYPE = z.enum([
+const PLAN_COGCPROGRAM_TYPE_ENUM = z.enum([
 	"---",
 	"AGRICULTURE",
 	"CHEMISTRY",
@@ -57,7 +58,10 @@ const PlanDataPlanetSchema: z.ZodType<IPlanDataPlanet> = z.object({
 	planetid: z.string(),
 	permits: z.number().min(1),
 	corphq: z.boolean(),
-	cogc: PLAN_COGCPROGRAM_TYPE,
+	cogc: z.preprocess(
+		(val) => (typeof val === "string" ? val.toUpperCase() : val),
+		PLAN_COGCPROGRAM_TYPE_ENUM
+	) as z.ZodType<z.infer<typeof PLAN_COGCPROGRAM_TYPE_ENUM>>,
 	experts: z.array(PlanDataExpertSchema),
 	workforce: z.array(PlanDataWorkforceSchema),
 });
@@ -97,7 +101,7 @@ const PlanDataSchema: z.ZodType<IPlanData> = z.object({
 	buildings: z.array(PlanDataBuildingSchema),
 });
 
-const PLAN_FACTION_TYPE_ZOD = z.enum([
+const PLAN_FACTION_TYPE_ZOD_ENUM = z.enum([
 	"NONE",
 	"ANTARES",
 	"BENTEN",
@@ -107,7 +111,10 @@ const PLAN_FACTION_TYPE_ZOD = z.enum([
 ]);
 
 const PlanEmpireSchema: z.ZodType<IPlanEmpire> = z.object({
-	faction: PLAN_FACTION_TYPE_ZOD,
+	faction: z.preprocess(
+		(val) => (typeof val === "string" ? val.toUpperCase() : val),
+		PLAN_FACTION_TYPE_ZOD_ENUM
+	) as z.ZodType<z.infer<typeof PLAN_FACTION_TYPE_ZOD_ENUM>>,
 	permits_used: z.number().min(1),
 	permits_total: z.number().min(3),
 	uuid: z.string().uuid(),
@@ -119,7 +126,10 @@ export const PlanSchema: z.ZodType<IPlan> = z.object({
 	name: z.string(),
 	uuid: z.string().uuid(),
 	planet_id: z.string(),
-	faction: PLAN_FACTION_TYPE_ZOD,
+	faction: z.preprocess(
+		(val) => (typeof val === "string" ? val.toUpperCase() : val),
+		PLAN_FACTION_TYPE_ZOD_ENUM
+	) as z.ZodType<z.infer<typeof PLAN_FACTION_TYPE_ZOD_ENUM>>,
 	permits_used: z.number().min(1),
 	permits_total: z.number().min(3),
 	override_empire: z.boolean(),
@@ -129,11 +139,9 @@ export const PlanSchema: z.ZodType<IPlan> = z.object({
 
 export const PlanShareSchema: z.ZodType<IPlanShare> = z.object({
 	uuid: z.string().uuid(),
-	created_date: z
-		.string()
-		.refine((val) => !isNaN(Date.parse(val)), {
-			message: "Invalid date string",
-		}),
+	created_date: z.string().refine((val) => !isNaN(Date.parse(val)), {
+		message: "Invalid date string",
+	}),
 	view_count: PositiveOrZeroNumber,
 	baseplanner: PlanSchema,
 });
