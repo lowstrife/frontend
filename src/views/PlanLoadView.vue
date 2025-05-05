@@ -1,82 +1,82 @@
 <script setup lang="ts">
-import { onMounted, Ref, ref } from "vue";
+	import { onMounted, Ref, ref } from "vue";
 
-// Types & Interfaces
-import {
-	IPlan,
-	IPlanRouteParams,
-	LOAD_STATUS,
-} from "@/features/planning/usePlan.types";
-import { PlanLoadError } from "@/features/planning/usePlan.errors";
+	// Types & Interfaces
+	import {
+		IPlan,
+		IPlanRouteParams,
+		LOAD_STATUS,
+	} from "@/features/planning/usePlan.types";
+	import { PlanLoadError } from "@/features/planning/usePlan.errors";
 
-import { usePlan } from "@/features/planning/usePlan";
-const { loadDefinitionFromRouteParams, isEditDisabled } = usePlan();
+	import { usePlan } from "@/features/planning/usePlan";
+	const { loadDefinitionFromRouteParams, isEditDisabled } = usePlan();
 
-// Views
-import PlanView from "@/views/PlanView.vue";
+	// Views
+	import PlanView from "@/views/PlanView.vue";
 
-// Components
-import GameDataWrapper from "@/features/game_data/components/GameDataWrapper.vue";
+	// Components
+	import GameDataWrapper from "@/features/game_data/components/GameDataWrapper.vue";
 
-// UI
-import { NSpin } from "naive-ui";
+	// UI
+	import { NSpin } from "naive-ui";
 
-const props = defineProps({
-	planetNaturalId: {
-		type: String,
-		required: false,
-	},
-	planUuid: {
-		type: String,
-		required: false,
-	},
-	sharedPlanUuid: {
-		type: String,
-		required: false,
-	},
-});
+	const props = defineProps({
+		planetNaturalId: {
+			type: String,
+			required: false,
+		},
+		planUuid: {
+			type: String,
+			required: false,
+		},
+		sharedPlanUuid: {
+			type: String,
+			required: false,
+		},
+	});
 
-const routeStatus: IPlanRouteParams = {
-	planetNaturalId: props.planetNaturalId,
-	planUuid: props.planUuid,
-	sharedPlanUuid: props.sharedPlanUuid,
-};
+	const routeStatus: IPlanRouteParams = {
+		planetNaturalId: props.planetNaturalId,
+		planUuid: props.planUuid,
+		sharedPlanUuid: props.sharedPlanUuid,
+	};
 
-const refPlanDefiniton: Ref<IPlan | undefined> = ref(undefined);
-const refLoadStatus: Ref<LOAD_STATUS> = ref("LOADING");
-const refDisablePlan: Ref<boolean> = ref(true);
+	const refPlanDefiniton: Ref<IPlan | undefined> = ref(undefined);
+	const refLoadStatus: Ref<LOAD_STATUS> = ref("LOADING");
+	const refDisablePlan: Ref<boolean> = ref(true);
 
-onMounted(async () => {
-	refDisablePlan.value = isEditDisabled(routeStatus);
+	onMounted(async () => {
+		refDisablePlan.value = isEditDisabled(routeStatus);
 
-	try {
-		refPlanDefiniton.value = await loadDefinitionFromRouteParams(routeStatus);
-		refLoadStatus.value = "DONE";
-	} catch (error) {
-		if (error instanceof PlanLoadError) {
-			switch (error.code) {
-				case "UNIMPLEMENTED": {
-					refLoadStatus.value = "LOAD_FAILURE";
-					break;
+		try {
+			refPlanDefiniton.value = await loadDefinitionFromRouteParams(routeStatus);
+			refLoadStatus.value = "DONE";
+		} catch (error) {
+			if (error instanceof PlanLoadError) {
+				switch (error.code) {
+					case "UNIMPLEMENTED": {
+						refLoadStatus.value = "LOAD_FAILURE";
+						break;
+					}
+					case "MISSING_PLANET_ID": {
+						refLoadStatus.value = "MISSING_PLANET_ID";
+						break;
+					}
+					case "PLANET_FAILURE": {
+						refLoadStatus.value = "LOAD_FAILURE";
+						break;
+					}
+					case "API_FAILURE": {
+						refLoadStatus.value = "LOAD_FAILURE";
+						break;
+					}
 				}
-				case "MISSING_PLANET_ID": {
-					refLoadStatus.value = "MISSING_PLANET_ID";
-					break;
-				}
-				case "PLANET_FAILURE": {
-					refLoadStatus.value = "LOAD_FAILURE";
-					break;
-				}
-				case "API_FAILURE": {
-					refLoadStatus.value = "LOAD_FAILURE";
-					break;
-				}
+			} else {
+				console.error("Unexpected error while loading data", error);
 			}
-		} else {
-			console.error("Unexpected error while loading data", error);
 		}
-	}
-});
+	});
 </script>
 
 <template>

@@ -139,6 +139,7 @@ const PlanetCheckDistanceSchema: z.ZodType<IPlanetCheckDistance> = z.object({
 });
 
 const PLANET_COGCPROGRAM_TYPE_ZOD = z.enum([
+	"Invalid",
 	"ADVERTISING_AGRICULTURE",
 	"ADVERTISING_CHEMISTRY",
 	"ADVERTISING_CONSTRUCTION",

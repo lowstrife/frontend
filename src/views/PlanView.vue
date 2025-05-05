@@ -9,6 +9,9 @@
 	import { usePlanetData } from "@/features/game_data/usePlanetData";
 	const { getPlanet } = usePlanetData();
 
+	// Util
+	import { formatNumber } from "@/util/numbers";
+
 	// Components
 	import MaterialTile from "@/features/material_tile/components/MaterialTile.vue";
 	import PlanBonuses from "@/features/planning/components/PlanBonuses.vue";
@@ -16,6 +19,7 @@
 	import PlanWorkforce from "@/features/planning/components/PlanWorkforce.vue";
 	import PlanInfrastructure from "@/features/planning/components/PlanInfrastructure.vue";
 	import PlanExperts from "@/features/planning/components/PlanExperts.vue";
+	import PlanProduction from "@/features/planning/components/PlanProduction.vue";
 
 	// UI
 	import {
@@ -26,6 +30,7 @@
 		NTable,
 		NButton,
 		NIcon,
+		NTooltip,
 	} from "naive-ui";
 
 	import {
@@ -34,117 +39,42 @@
 	} from "@vicons/material";
 
 	const props = defineProps({
-		planData: {
-			type: Object as PropType<IPlan>,
-			required: true,
-		},
 		disabled: {
 			type: Boolean,
 			required: false,
 			default: false,
+		},
+		planData: {
+			type: Object as PropType<IPlan>,
+			required: true,
 		},
 	});
 
 	const refPlanData: Ref<IPlan> = ref(props.planData);
 
 	import { usePlanCalculation } from "@/features/planning/usePlanCalculation";
+	import { resourceLimits } from "worker_threads";
 	const {
 		result,
+		activeEmpire,
 		handleUpdateCorpHQ,
 		handleUpdateCOGC,
 		handleUpdatePermits,
 		handleUpdateWorkforceLux,
 		handleUpdateInfrastructure,
 		handleUpdateExpert,
+		handleUpdateBuildingAmount,
+		handleDeleteBuilding,
+		handleCreateBuilding,
+		handleUpdateBuildingRecipeAmount,
+		handleDeleteBuildingRecipe,
+		handleAddBuildingRecipe,
 	} = usePlanCalculation(refPlanData);
 
 	const planetData: IPlanet = getPlanet(props.planData.planet_id);
-
 	const refPlanName: Ref<string> = ref("My awesome plan");
 
 	const refVisualShowConfiguration: Ref<boolean> = ref(true);
-
-	interface IMaterial {
-		name: string;
-		in: number;
-		out: number;
-		money: number;
-	}
-
-	const materialIO: IMaterial[] = [
-		{
-			name: "ALE",
-			in: 4.9,
-			out: 0,
-			money: -6848.72,
-		},
-		{
-			name: "C",
-			in: 45.86,
-			out: 0,
-			money: -6848.72,
-		},
-		{
-			name: "COF",
-			in: 0.5,
-			out: 0,
-			money: -458.1,
-		},
-		{
-			name: "EPO",
-			in: 702.19,
-			out: 0,
-			money: -66.707,
-		},
-		{
-			name: "H",
-			in: 45.86,
-			out: 0,
-			money: -5205.23,
-		},
-		{
-			name: "NCS",
-			in: 1053.28,
-			out: 0,
-			money: -9479.53,
-		},
-		{
-			name: "NR",
-			in: 0,
-			out: 702.19,
-			money: 297742.56,
-		},
-		{
-			name: "PG",
-			in: 0,
-			out: 2292.86,
-			money: 111396.67,
-		},
-		{
-			name: "ABH",
-			in: 0,
-			out: 0,
-			money: 0,
-		},
-		{
-			name: "HMS",
-			in: 0,
-			out: 0,
-			money: 0,
-		},
-		{
-			name: "DW",
-			in: 0,
-			out: 0,
-			money: 0,
-		},
-		{
-			name: "RAT",
-			in: 0,
-			out: 0,
-			money: 0,
-		},
-	];
 </script>
 
 <template>
@@ -244,6 +174,24 @@
 				</div>
 			</div>
 			<div class="border-b border-white/10 px-6 py-3 flex">
+				<div class="my-auto pr-3 font-bold">Resources</div>
+				<div class="my-auto pr-3 flex gap-x-1">
+					<n-tooltip
+						trigger="hover"
+						v-for="resource in planetData.Resources"
+						:key="`PLANET#RESOURCE#${resource.MaterialTicker}`"
+					>
+						<template #trigger>
+							<div class="hover:cursor-help">
+								<MaterialTile
+									:ticker="resource.MaterialTicker"
+									:amount="parseFloat(formatNumber(resource.DailyExtraction))"
+								/>
+							</div>
+						</template>
+						{{ resource.ResourceType }}
+					</n-tooltip>
+				</div>
 				<div class="flex-grow text-end my-auto pr-6 font-bold">Tools</div>
 				<div class="flex justify-end gap-x-3">
 					<n-button size="small" secondary>Empire Override</n-button>
@@ -272,51 +220,63 @@
 						</div>
 					</div>
 					<div class="pt-6">
-						{{ disabled }}
-						<br />
-						<br />
-						{{ result }}
-						<br />
-						<br />
-						{{ planData }}
+						<PlanProduction
+							:disabled="disabled"
+							:production-data="result.production"
+							:cogc="result.bonus.cogc"
+							v-on:update:building:amount="handleUpdateBuildingAmount"
+							v-on:delete:building="handleDeleteBuilding"
+							v-on:create:building="handleCreateBuilding"
+							v-on:update:building:recipe:amount="
+								handleUpdateBuildingRecipeAmount
+							"
+							v-on:delete:building:recipe="handleDeleteBuildingRecipe"
+							v-on:add:building:recipe="handleAddBuildingRecipe"
+						/>
 					</div>
 				</div>
-				<div class="">
-					<h2 class="text-white/80 font-bold text-lg pb-3">Material I/O</h2>
-					<n-table striped>
-						<thead>
-							<tr>
-								<th></th>
-								<th>Input</th>
-								<th>Output</th>
-								<th>Δ</th>
-								<th>$ / day</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr v-for="material in materialIO" :key="material.name">
-								<td>
-									<MaterialTile :ticker="material.name" :amount="material.in" />
-								</td>
-								<td :class="material.in === 0 ? '!text-white/20' : ''">
-									{{ material.in }}
-								</td>
-								<td :class="material.out === 0 ? '!text-white/20' : ''">
-									{{ material.out }}
-								</td>
-								<td
-									:class="
-										material.out - material.in > 0
-											? '!text-positive'
-											: '!text-negative'
-									"
+				<div>
+					<div class="sticky top-3">
+						<h2 class="text-white/80 font-bold text-lg pb-3">Material I/O</h2>
+						<n-table striped>
+							<thead>
+								<tr>
+									<th></th>
+									<th>Input</th>
+									<th>Output</th>
+									<th>Δ</th>
+									<th>$ / day</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr
+									v-for="material in result.materialio"
+									:key="material.ticker"
 								>
-									{{ material.out - material.in }}
-								</td>
-								<td class="!text-negative">{{ material.money }}</td>
-							</tr>
-						</tbody>
-					</n-table>
+									<td>
+										<MaterialTile
+											:ticker="material.ticker"
+											:disable-drawer="false"
+										/>
+									</td>
+									<td :class="material.input === 0 ? '!text-white/20' : ''">
+										{{ formatNumber(material.input) }}
+									</td>
+									<td :class="material.output === 0 ? '!text-white/20' : ''">
+										{{ formatNumber(material.output) }}
+									</td>
+									<td
+										:class="
+											material.delta > 0 ? '!text-positive' : '!text-negative'
+										"
+									>
+										{{ formatNumber(material.delta) }}
+									</td>
+									<td class="!text-negative">N/A</td>
+								</tr>
+							</tbody>
+						</n-table>
+					</div>
 				</div>
 			</div>
 		</div>

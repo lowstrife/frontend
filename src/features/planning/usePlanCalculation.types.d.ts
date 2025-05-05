@@ -1,4 +1,6 @@
 import { PLAN_COGCPROGRAM_TYPE } from "@/features/planning/usePlan.types";
+import { IRecipe } from "../game_data/gameData.types";
+import { IBuildingEfficiency } from "./calculations/bonusCalculations.types";
 
 export namespace PlanResult {
 	type WORKFORCE_TYPE =
@@ -62,6 +64,47 @@ export namespace PlanResult {
 
 	interface ExpertRecord extends Required<Record<EXPERT_TYPE, ExpertElement>> {}
 
+	interface IRecipeBuildingOption extends IRecipe {
+		dailyRevenue: number;
+		roi: number;
+	}
+
+	interface ProductionBuildingRecipe {
+		recipeId: string;
+		amount: number;
+		recipe: IRecipeBuildingOption;
+		dailyShare: number;
+		time: number;
+	}
+
+	interface ProductionBuilding {
+		name: string;
+		amount: number;
+		activeRecipes: ProductionBuildingRecipe[];
+		recipeOptions: IRecipeBuildingOption[];
+		totalEfficiency: number;
+		efficiencyElements: IBuildingEfficiency[];
+		totalBatchTime: number;
+	}
+
+	interface ProductionResult {
+		buildings: ProductionBuilding[];
+		materialio: MaterialIOMinimal[];
+	}
+	interface MaterialIOMinimal {
+		ticker: string;
+		input: number;
+		output: number;
+	}
+
+	interface MaterialIO extends MaterialIOMinimal {
+		delta: number;
+		individualWeight: number;
+		individualVolume: number;
+		totalWeight: number;
+		totalVolume: number;
+	}
+
 	interface Result {
 		bonus: {
 			corphq: boolean;
@@ -71,5 +114,7 @@ export namespace PlanResult {
 		area: AreaResult;
 		infrastructure: InfrastructureRecord;
 		experts: ExpertRecord;
+		production: ProductionResult;
+		materialio: MaterialIO[];
 	}
 }

@@ -91,6 +91,7 @@ export function usePlan() {
 
 				return planData;
 			} catch (err) {
+				console.error(err);
 				throw new PlanLoadError(
 					"API_FAILURE",
 					"Failed to load plan data from API"

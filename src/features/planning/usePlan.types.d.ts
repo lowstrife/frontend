@@ -73,8 +73,15 @@ export interface IPlanDataExpert {
 	amount: number;
 }
 
+export type PLAN_WORKFORCE_TYPE =
+	| "pioneer"
+	| "settler"
+	| "technician"
+	| "engineer"
+	| "scientist";
+
 export interface IPlanDataWorkforce {
-	type: "pioneer" | "settler" | "technician" | "engineer" | "scientist";
+	type: PLAN_WORKFORCE_TYPE;
 	lux1: boolean;
 	lux2: boolean;
 }

@@ -115,8 +115,8 @@ const PlanEmpireSchema: z.ZodType<IPlanEmpire> = z.object({
 		(val) => (typeof val === "string" ? val.toUpperCase() : val),
 		PLAN_FACTION_TYPE_ZOD_ENUM
 	) as z.ZodType<z.infer<typeof PLAN_FACTION_TYPE_ZOD_ENUM>>,
-	permits_used: z.number().min(1),
-	permits_total: z.number().min(3),
+	permits_used: z.number().min(0),
+	permits_total: z.number().min(0),
 	uuid: z.string().uuid(),
 	name: z.string(),
 	use_fio_storage: z.boolean(),
@@ -130,8 +130,8 @@ export const PlanSchema: z.ZodType<IPlan> = z.object({
 		(val) => (typeof val === "string" ? val.toUpperCase() : val),
 		PLAN_FACTION_TYPE_ZOD_ENUM
 	) as z.ZodType<z.infer<typeof PLAN_FACTION_TYPE_ZOD_ENUM>>,
-	permits_used: z.number().min(1),
-	permits_total: z.number().min(3),
+	permits_used: z.number().min(0),
+	permits_total: z.number().min(0),
 	override_empire: z.boolean(),
 	baseplanner_data: PlanDataSchema,
 	empires: z.array(PlanEmpireSchema),

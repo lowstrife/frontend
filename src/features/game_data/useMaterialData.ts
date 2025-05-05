@@ -1,3 +1,5 @@
+import { toRaw } from "vue";
+
 // Stores
 import { useGameDataStore } from "@/stores/gameDataStore";
 
@@ -21,7 +23,7 @@ export function useMaterialData() {
 			);
 		}
 
-		return gameDataStore.materials[ticker];
+		return toRaw(gameDataStore.materials[ticker]);
 	}
 
 	return {

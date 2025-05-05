@@ -1,3 +1,55 @@
+import { PlanResult } from "../usePlanCalculation.types";
+import { combineMaterialIOMinimal } from "../util/materialIO.util";
+import {
+	WorkforceConsumptionElement,
+	WorkforceConsumptionMap,
+} from "./workforceCalculations.types";
+
+const WORKFORCE_CONSUMPTION_MAP: WorkforceConsumptionMap = {
+	pioneer: [
+		{ ticker: "DW", need: 4 / 100, lux1: false, lux2: false },
+		{ ticker: "RAT", need: 4 / 100, lux1: false, lux2: false },
+		{ ticker: "OVE", need: 0.5 / 100, lux1: false, lux2: false },
+		{ ticker: "PWO", need: 0.2 / 100, lux1: true, lux2: false },
+		{ ticker: "COF", need: 0.5 / 100, lux1: false, lux2: true },
+	],
+	settler: [
+		{ ticker: "DW", need: 5 / 100, lux1: false, lux2: false },
+		{ ticker: "RAT", need: 6 / 100, lux1: false, lux2: false },
+		{ ticker: "EXO", need: 0.5 / 100, lux1: false, lux2: false },
+		{ ticker: "PT", need: 0.5 / 100, lux1: false, lux2: false },
+		{ ticker: "REP", need: 0.2 / 100, lux1: true, lux2: false },
+		{ ticker: "KOM", need: 1 / 100, lux1: false, lux2: true },
+	],
+	technician: [
+		{ ticker: "DW", need: 7.5 / 100, lux1: false, lux2: false },
+		{ ticker: "RAT", need: 7 / 100, lux1: false, lux2: false },
+		{ ticker: "MED", need: 0.5 / 100, lux1: false, lux2: false },
+		{ ticker: "HMS", need: 0.5 / 100, lux1: false, lux2: false },
+		{ ticker: "SCN", need: 0.1 / 100, lux1: false, lux2: false },
+		{ ticker: "SC", need: 0.1 / 100, lux1: true, lux2: false },
+		{ ticker: "ALE", need: 1 / 100, lux1: false, lux2: true },
+	],
+	engineer: [
+		{ ticker: "DW", need: 10 / 100, lux1: false, lux2: false },
+		{ ticker: "MED", need: 0.5 / 100, lux1: false, lux2: false },
+		{ ticker: "FIM", need: 7 / 100, lux1: false, lux2: false },
+		{ ticker: "HSS", need: 0.2 / 100, lux1: false, lux2: false },
+		{ ticker: "PDA", need: 0.1 / 100, lux1: false, lux2: false },
+		{ ticker: "VG", need: 0.2 / 100, lux1: true, lux2: false },
+		{ ticker: "GIN", need: 1 / 100, lux1: false, lux2: true },
+	],
+	scientist: [
+		{ ticker: "DW", need: 10 / 100, lux1: false, lux2: false },
+		{ ticker: "MED", need: 0.5 / 100, lux1: false, lux2: false },
+		{ ticker: "MEA", need: 7 / 100, lux1: false, lux2: false },
+		{ ticker: "LC", need: 0.2 / 100, lux1: false, lux2: false },
+		{ ticker: "WS", need: 0.1 / 100, lux1: false, lux2: false },
+		{ ticker: "NST", need: 0.1 / 100, lux1: true, lux2: false },
+		{ ticker: "WIN", need: 1 / 100, lux1: false, lux2: true },
+	],
+};
+
 /**
  * Calculates workforce satisfaction based on capacity and luxuries
  * following ingame logc
@@ -45,4 +97,61 @@ export function calculateSatisfaction(
 	}
 
 	return satisfaction * efficiency;
+}
+
+export function calculateSingleWorkforceConsumption(
+	workforce: PlanResult.WorkforceElement
+): PlanResult.MaterialIOMinimal[] {
+	const consuming: number =
+		workforce.required > workforce.capacity
+			? workforce.capacity
+			: workforce.required;
+
+	// if no one is consuming, no materials are required
+	if (consuming === 0) return [];
+
+	const mapData: WorkforceConsumptionElement[] =
+		WORKFORCE_CONSUMPTION_MAP[workforce.name];
+
+	const materialIO: PlanResult.MaterialIOMinimal[] = [];
+
+	mapData.forEach((material: WorkforceConsumptionElement) => {
+		const element: PlanResult.MaterialIOMinimal = {
+			ticker: material.ticker,
+			input: material.need * consuming,
+			output: 0,
+		};
+
+		if (!material.lux1 && !material.lux2) {
+			materialIO.push(element);
+		} else if (
+			// lux1 required
+			material.lux1 &&
+			!material.lux2 &&
+			workforce.lux1
+		) {
+			materialIO.push(element);
+		} else if (
+			// lux2 required
+			!material.lux1 &&
+			material.lux2 &&
+			workforce.lux2
+		) {
+			materialIO.push(element);
+		}
+	});
+
+	return materialIO;
+}
+
+export function calculateWorkforceConsumption(
+	workforce: PlanResult.WorkforceRecord
+): PlanResult.MaterialIOMinimal[] {
+	return combineMaterialIOMinimal([
+		calculateSingleWorkforceConsumption(workforce.pioneer),
+		calculateSingleWorkforceConsumption(workforce.settler),
+		calculateSingleWorkforceConsumption(workforce.technician),
+		calculateSingleWorkforceConsumption(workforce.engineer),
+		calculateSingleWorkforceConsumption(workforce.scientist),
+	]);
 }
