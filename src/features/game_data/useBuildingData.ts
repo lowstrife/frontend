@@ -43,7 +43,7 @@ export function useBuildingData() {
 			if (building.Habitation === null && !existing.includes(building.Ticker)) {
 				// check for matching COGC
 				if (cogc && building.Expertise != cogc) {
-					return;
+					return [];
 				}
 
 				options.push({

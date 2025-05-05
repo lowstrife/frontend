@@ -37,10 +37,9 @@ import {
 	IPlanet,
 	IRecipe,
 } from "@/features/game_data/gameData.types";
-import {
-	combineMaterialIOMinimal,
-	enhanceMaterialIOMinimal,
-} from "./util/materialIO.util";
+
+// composables
+import { useMaterialIOUtil } from "./util/materialIO.util";
 import { calculateMaterialIO } from "./calculations/buildingCalculations";
 
 export function usePlanCalculation(
@@ -52,6 +51,8 @@ export function usePlanCalculation(
 
 	// composables
 	const { getBuilding, getBuildingRecipes } = useBuildingData();
+	const { combineMaterialIOMinimal, enhanceMaterialIOMinimal } =
+		useMaterialIOUtil();
 
 	// data references
 	const data: Ref<IPlanData> = toRef(plan.value.baseplanner_data);

@@ -1,7 +1,9 @@
 import { PlanResult } from "../usePlanCalculation.types";
-import { combineMaterialIOMinimal } from "../util/materialIO.util";
+import { useMaterialIOUtil } from "../util/materialIO.util";
 
 const TOTALMSDAY: number = 24 * 60 * 60 * 1000;
+
+const { combineMaterialIOMinimal } = useMaterialIOUtil();
 
 export function calculateMaterialIO(
 	data: PlanResult.ProductionBuilding[]

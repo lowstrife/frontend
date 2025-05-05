@@ -1,9 +1,11 @@
 import { PlanResult } from "../usePlanCalculation.types";
-import { combineMaterialIOMinimal } from "../util/materialIO.util";
+import { useMaterialIOUtil } from "../util/materialIO.util";
 import {
 	WorkforceConsumptionElement,
 	WorkforceConsumptionMap,
 } from "./workforceCalculations.types";
+
+const { combineMaterialIOMinimal } = useMaterialIOUtil();
 
 const WORKFORCE_CONSUMPTION_MAP: WorkforceConsumptionMap = {
 	pioneer: [
