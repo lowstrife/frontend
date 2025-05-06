@@ -3,6 +3,7 @@ import {
 	formatDate,
 	getDifferenceMinutes,
 	timestampFromString,
+	humanizeTimeMs,
 } from "@/util/date";
 
 describe("Util: date", () => {
@@ -57,5 +58,19 @@ describe("Util: date", () => {
 
 			expect(result).toBe("2025-01");
 		});
+	});
+
+	it("humanizeTimeMs", () => {
+		const recipe = humanizeTimeMs(190080000);
+		expect(recipe).toBe("2d 4h 48m");
+
+		const year = humanizeTimeMs(205390080000);
+		expect(year).toBe("6y 6m 4d 16h 48m");
+
+		const month = humanizeTimeMs(27390080000);
+		expect(month).toBe("10m 12d 20h 21m");
+
+		const hour = humanizeTimeMs(27390000);
+		expect(hour).toBe("7h 36m");
 	});
 });

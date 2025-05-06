@@ -1,0 +1,39 @@
+{
+	"Name": "technetiumProcessing",
+	"Ticker": "TNP",
+	"Expertise": "CHEMISTRY",
+	"Pioneers": 0,
+	"Settlers": 0,
+	"Technicians": 80,
+	"Engineers": 0,
+	"Scientists": 0,
+	"AreaCost": 30,
+	"BuildingCosts": [
+		{
+			"CommodityTicker": "TRU",
+			"Weight": 0.10000000149011612,
+			"Volume": 1.5,
+			"Amount": 8
+		},
+		{
+			"CommodityTicker": "LSE",
+			"Weight": 0.30000001192092896,
+			"Volume": 1.2000000476837158,
+			"Amount": 12
+		},
+		{
+			"CommodityTicker": "LBH",
+			"Weight": 0.20000000298023224,
+			"Volume": 0.6000000238418579,
+			"Amount": 6
+		},
+		{
+			"CommodityTicker": "LDE",
+			"Weight": 0.10000000149011612,
+			"Volume": 1.2000000476837158,
+			"Amount": 8
+		}
+	],
+	"Habitation": null,
+	"Type": "PRODUCTION"
+}

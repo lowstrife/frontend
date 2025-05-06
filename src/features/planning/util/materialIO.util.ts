@@ -1,15 +1,20 @@
-import { PlanResult } from "../usePlanCalculation.types";
-
+// Composables
 import { useMaterialData } from "@/features/game_data/useMaterialData";
+
+// Types & Interfaces
+import {
+	IMaterialIO,
+	IMaterialIOMinimal,
+} from "@/features/planning/usePlanCalculation.types";
 
 export function useMaterialIOUtil() {
 	const { getMaterial } = useMaterialData();
 
 	function combineMaterialIOMinimal(
-		arrays: PlanResult.MaterialIOMinimal[][]
-	): PlanResult.MaterialIOMinimal[] {
-		const combinedArray: PlanResult.MaterialIOMinimal[] = arrays.flat();
-		const tickerMap: { [key: string]: PlanResult.MaterialIOMinimal } = {};
+		arrays: IMaterialIOMinimal[][]
+	): IMaterialIOMinimal[] {
+		const combinedArray: IMaterialIOMinimal[] = arrays.flat();
+		const tickerMap: { [key: string]: IMaterialIOMinimal } = {};
 
 		combinedArray.forEach(({ ticker, input, output }) => {
 			if (!tickerMap[ticker]) {
@@ -23,10 +28,8 @@ export function useMaterialIOUtil() {
 		return Object.values(tickerMap);
 	}
 
-	function enhanceMaterialIOMinimal(
-		data: PlanResult.MaterialIOMinimal[]
-	): PlanResult.MaterialIO[] {
-		const enhancedArray: PlanResult.MaterialIO[] = [];
+	function enhanceMaterialIOMinimal(data: IMaterialIOMinimal[]): IMaterialIO[] {
+		const enhancedArray: IMaterialIO[] = [];
 
 		data.forEach((minimal) => {
 			const material = getMaterial(minimal.ticker);

@@ -69,6 +69,7 @@
 		handleUpdateBuildingRecipeAmount,
 		handleDeleteBuildingRecipe,
 		handleAddBuildingRecipe,
+		handleChangeBuildingRecipe,
 	} = usePlanCalculation(refPlanData);
 
 	const planetData: IPlanet = getPlanet(props.planData.planet_id);
@@ -232,6 +233,7 @@
 							"
 							v-on:delete:building:recipe="handleDeleteBuildingRecipe"
 							v-on:add:building:recipe="handleAddBuildingRecipe"
+							v-on:update:building:recipe="handleChangeBuildingRecipe"
 						/>
 					</div>
 				</div>

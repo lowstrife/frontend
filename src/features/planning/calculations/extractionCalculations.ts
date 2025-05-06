@@ -1,3 +1,4 @@
+// Types & Interfaces
 import { PLANET_RESOURCETYPE_TYPE } from "@/features/game_data/gameData.types";
 
 const TOTALMSDAY: number = 24 * 60 * 60 * 1000;

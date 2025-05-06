@@ -2,119 +2,118 @@ import { PLAN_COGCPROGRAM_TYPE } from "@/features/planning/usePlan.types";
 import { IRecipe } from "../game_data/gameData.types";
 import { IBuildingEfficiency } from "./calculations/bonusCalculations.types";
 
-export namespace PlanResult {
-	type WORKFORCE_TYPE =
-		| "pioneer"
-		| "settler"
-		| "technician"
-		| "engineer"
-		| "scientist";
+export type WORKFORCE_TYPE =
+	| "pioneer"
+	| "settler"
+	| "technician"
+	| "engineer"
+	| "scientist";
 
-	type INFRASTRUCTURE_TYPE =
-		| "HB1"
-		| "HB2"
-		| "HB3"
-		| "HB4"
-		| "HB5"
-		| "HBB"
-		| "HBC"
-		| "HBM"
-		| "HBL"
-		| "STO";
+export type INFRASTRUCTURE_TYPE =
+	| "HB1"
+	| "HB2"
+	| "HB3"
+	| "HB4"
+	| "HB5"
+	| "HBB"
+	| "HBC"
+	| "HBM"
+	| "HBL"
+	| "STO";
 
-	type EXPERT_TYPE =
-		| "Agriculture"
-		| "Chemistry"
-		| "Construction"
-		| "Electronics"
-		| "Food_Industries"
-		| "Fuel_Refining"
-		| "Manufacturing"
-		| "Metallurgy"
-		| "Resource_Extraction";
+export type EXPERT_TYPE =
+	| "Agriculture"
+	| "Chemistry"
+	| "Construction"
+	| "Electronics"
+	| "Food_Industries"
+	| "Fuel_Refining"
+	| "Manufacturing"
+	| "Metallurgy"
+	| "Resource_Extraction";
 
-	interface WorkforceElement {
-		name: WORKFORCE_TYPE;
-		required: number;
-		capacity: number;
-		left: number;
-		lux1: boolean;
-		lux2: boolean;
-		efficiency: number;
-	}
+export interface IWorkforceElement {
+	name: WORKFORCE_TYPE;
+	required: number;
+	capacity: number;
+	left: number;
+	lux1: boolean;
+	lux2: boolean;
+	efficiency: number;
+}
 
-	interface AreaResult {
-		permits: number;
-		areaUsed: number;
-		areaTotal: number;
-		areaLeft: number;
-	}
+export interface IAreaResult {
+	permits: number;
+	areaUsed: number;
+	areaTotal: number;
+	areaLeft: number;
+}
 
-	interface ExpertElement {
-		name: EXPERT_TYPE;
-		amount: number;
-		bonus: number;
-	}
+export interface IExpertElement {
+	name: EXPERT_TYPE;
+	amount: number;
+	bonus: number;
+}
 
-	interface WorkforceRecord
-		extends Required<Record<WORKFORCE_TYPE, WorkforceElement>> {}
+export interface IWorkforceRecord
+	extends Required<Record<WORKFORCE_TYPE, IWorkforceElement>> {}
 
-	interface InfrastructureRecord
-		extends Required<Record<INFRASTRUCTURE_TYPE, number>> {}
+export interface IInfrastructureRecord
+	extends Required<Record<INFRASTRUCTURE_TYPE, number>> {}
 
-	interface ExpertRecord extends Required<Record<EXPERT_TYPE, ExpertElement>> {}
+export interface IExpertRecord
+	extends Required<Record<EXPERT_TYPE, IExpertElement>> {}
 
-	interface IRecipeBuildingOption extends IRecipe {
-		dailyRevenue: number;
-		roi: number;
-	}
+export interface IRecipeBuildingOption extends IRecipe {
+	dailyRevenue: number;
+	roi: number;
+}
 
-	interface ProductionBuildingRecipe {
-		recipeId: string;
-		amount: number;
-		recipe: IRecipeBuildingOption;
-		dailyShare: number;
-		time: number;
-	}
+export interface IProductionBuildingRecipe {
+	recipeId: string;
+	amount: number;
+	recipe: IRecipeBuildingOption;
+	dailyShare: number;
+	time: number;
+}
 
-	interface ProductionBuilding {
-		name: string;
-		amount: number;
-		activeRecipes: ProductionBuildingRecipe[];
-		recipeOptions: IRecipeBuildingOption[];
-		totalEfficiency: number;
-		efficiencyElements: IBuildingEfficiency[];
-		totalBatchTime: number;
-	}
+export interface IProductionBuilding {
+	name: string;
+	amount: number;
+	activeRecipes: IProductionBuildingRecipe[];
+	recipeOptions: IRecipeBuildingOption[];
+	totalEfficiency: number;
+	efficiencyElements: IBuildingEfficiency[];
+	totalBatchTime: number;
+}
 
-	interface ProductionResult {
-		buildings: ProductionBuilding[];
-		materialio: MaterialIOMinimal[];
-	}
-	interface MaterialIOMinimal {
-		ticker: string;
-		input: number;
-		output: number;
-	}
+export interface IProductionResult {
+	buildings: IProductionBuilding[];
+	materialio: IMaterialIOMinimal[];
+}
+export interface IMaterialIOMinimal {
+	ticker: string;
+	input: number;
+	output: number;
+}
 
-	interface MaterialIO extends MaterialIOMinimal {
-		delta: number;
-		individualWeight: number;
-		individualVolume: number;
-		totalWeight: number;
-		totalVolume: number;
-	}
+export interface IMaterialIO extends IMaterialIOMinimal {
+	delta: number;
+	individualWeight: number;
+	individualVolume: number;
+	totalWeight: number;
+	totalVolume: number;
+}
 
-	interface Result {
-		bonus: {
-			corphq: boolean;
-			cogc: PLAN_COGCPROGRAM_TYPE;
-		};
-		workforce: WorkforceRecord;
-		area: AreaResult;
-		infrastructure: InfrastructureRecord;
-		experts: ExpertRecord;
-		production: ProductionResult;
-		materialio: MaterialIO[];
-	}
+export interface IPlanResult {
+	bonus: {
+		corphq: boolean;
+		cogc: PLAN_COGCPROGRAM_TYPE;
+	};
+	workforce: IWorkforceRecord;
+	area: IAreaResult;
+	infrastructure: IInfrastructureRecord;
+	experts: IExpertRecord;
+	production: IProductionResult;
+	materialio: IMaterialIO[];
 }

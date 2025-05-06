@@ -46,6 +46,12 @@
 			recipeIndex: number
 		): void;
 		(e: "add:building:recipe", buildingIndex: number): void;
+		(
+			e: "update:building:recipe",
+			buildingIndex: number,
+			recipeIndex: number,
+			recipeid: string
+		): void;
 	}>();
 
 	// Local State
@@ -128,6 +134,10 @@
 		"
 		v-on:add:building:recipe="
 			(buildingIndex: number) => emit('add:building:recipe', buildingIndex)
+		"
+		v-on:update:building:recipe="
+			(buildingIndex: number, recipeIndex: number, recipeId: string) =>
+				emit('update:building:recipe', buildingIndex, recipeIndex, recipeId)
 		"
 	/>
 </template>

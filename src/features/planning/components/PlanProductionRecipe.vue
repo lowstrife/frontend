@@ -35,8 +35,9 @@
 	});
 
 	const emit = defineEmits<{
-		(e: "update:recipe:amount", index: number, value: number): void;
+		(e: "update:building:recipe:amount", index: number, value: number): void;
 		(e: "delete:building:recipe", index: number): void;
+		(e: "update:building:recipe", index: number, recipeid: string): void;
 	}>();
 
 	// Local State
@@ -48,6 +49,7 @@
 	);
 
 	const localRecipeAmount: Ref<number> = ref(props.recipeData.amount);
+	const localRecipeIndex: Ref<number> = ref(props.recipeIndex.valueOf());
 
 	const refShowRecipeOptions: Ref<boolean> = ref(false);
 
@@ -67,6 +69,12 @@
 		},
 		{ deep: true }
 	);
+	watch(
+		() => props.recipeIndex,
+		(newIndex: number) => {
+			localRecipeIndex.value = newIndex;
+		}
+	);
 </script>
 
 <template>
@@ -79,7 +87,7 @@
 			v-on:update:value="
 				(value: number | null) => {
 					if (value !== null) {
-						emit('update:recipe:amount', recipeIndex, value);
+						emit('update:building:recipe:amount', recipeIndex, value);
 					}
 				}
 			"
@@ -128,6 +136,9 @@
 						v-for="(recipe, index) in localRecipeOptions"
 						:key="`${recipe.BuildingTicker}#${recipe.RecipeId}`"
 						class="child:whitespace-nowrap hover:cursor-pointer"
+						@click="
+							emit('update:building:recipe', localRecipeIndex, recipe.RecipeId)
+						"
 					>
 						<td
 							:class="
@@ -174,7 +185,7 @@
 				type="error"
 				@click="
 					() => {
-						emit('delete:building:recipe', recipeIndex);
+						emit('delete:building:recipe', localRecipeIndex);
 					}
 				"
 			>

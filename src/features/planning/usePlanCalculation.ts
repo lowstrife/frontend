@@ -5,23 +5,15 @@ import { useGameDataStore } from "@/stores/gameDataStore";
 
 // Composables
 import { useBuildingData } from "@/features/game_data/useBuildingData";
+import { useBonusCalculation } from "@/features/planning/calculations/bonusCalculations";
+import { useWorkforceCalculation } from "@/features/planning/calculations/workforceCalculations";
+import { useBuildingCalculation } from "@/features/planning/calculations/buildingCalculations";
+import { useMaterialIOUtil } from "@/features/planning/util/materialIO.util";
 
 // Util
 import { clamp } from "@/util/numbers";
 
-// Calculations
-import {
-	calculateSatisfaction,
-	calculateSingleWorkforceConsumption,
-	calculateWorkforceConsumption,
-} from "@/features/planning/calculations/workforceCalculations";
-import {
-	calculateExpertBonus,
-	calculateBuildingEfficiency,
-} from "@/features/planning/calculations/bonusCalculations";
-
 // Types & Interfaces
-import { PlanResult } from "@/features/planning/usePlanCalculation.types";
 import {
 	IPlan,
 	IPlanData,
@@ -37,10 +29,23 @@ import {
 	IPlanet,
 	IRecipe,
 } from "@/features/game_data/gameData.types";
-
-// composables
-import { useMaterialIOUtil } from "./util/materialIO.util";
-import { calculateMaterialIO } from "./calculations/buildingCalculations";
+import {
+	EXPERT_TYPE,
+	IAreaResult,
+	IExpertRecord,
+	IInfrastructureRecord,
+	IMaterialIO,
+	IMaterialIOMinimal,
+	INFRASTRUCTURE_TYPE,
+	IPlanResult,
+	IProductionBuilding,
+	IProductionBuildingRecipe,
+	IProductionResult,
+	IRecipeBuildingOption,
+	IWorkforceElement,
+	IWorkforceRecord,
+	WORKFORCE_TYPE,
+} from "@/features/planning/usePlanCalculation.types";
 
 export function usePlanCalculation(
 	plan: Ref<IPlan>,
@@ -53,6 +58,11 @@ export function usePlanCalculation(
 	const { getBuilding, getBuildingRecipes } = useBuildingData();
 	const { combineMaterialIOMinimal, enhanceMaterialIOMinimal } =
 		useMaterialIOUtil();
+	const { calculateExpertBonus, calculateBuildingEfficiency } =
+		useBonusCalculation();
+	const { calculateSatisfaction, calculateWorkforceConsumption } =
+		useWorkforceCalculation();
+	const { calculateMaterialIO } = useBuildingCalculation();
 
 	// data references
 	const data: Ref<IPlanData> = toRef(plan.value.baseplanner_data);
@@ -119,31 +129,29 @@ export function usePlanCalculation(
 	];
 
 	function calculateWorkforceResult(): Required<
-		Record<PlanResult.WORKFORCE_TYPE, PlanResult.WorkforceElement>
+		Record<WORKFORCE_TYPE, IWorkforceElement>
 	> {
-		const result: Record<
-			PlanResult.WORKFORCE_TYPE,
-			PlanResult.WorkforceElement
-		> = Object.fromEntries(
-			workforceTypeNames.map((key) => {
-				// get current workforce value from planet data
-				const dataLuxuries: IPlanDataWorkforce | undefined =
-					planet.value.workforce.find((e) => e.type == key);
+		const result: Record<WORKFORCE_TYPE, IWorkforceElement> =
+			Object.fromEntries(
+				workforceTypeNames.map((key) => {
+					// get current workforce value from planet data
+					const dataLuxuries: IPlanDataWorkforce | undefined =
+						planet.value.workforce.find((e) => e.type == key);
 
-				return [
-					key,
-					{
-						name: key,
-						required: 0,
-						capacity: 0,
-						left: 0,
-						lux1: dataLuxuries ? dataLuxuries.lux1 : true,
-						lux2: dataLuxuries ? dataLuxuries.lux2 : true,
-						efficiency: 0,
-					} as PlanResult.WorkforceElement,
-				];
-			})
-		) as Record<PlanResult.WORKFORCE_TYPE, PlanResult.WorkforceElement>;
+					return [
+						key,
+						{
+							name: key,
+							required: 0,
+							capacity: 0,
+							left: 0,
+							lux1: dataLuxuries ? dataLuxuries.lux1 : true,
+							lux2: dataLuxuries ? dataLuxuries.lux2 : true,
+							efficiency: 0,
+						} as IWorkforceElement,
+					];
+				})
+			) as Record<WORKFORCE_TYPE, IWorkforceElement>;
 
 		// calculate capacity from infrastructure buildings
 		data.value.infrastructure.forEach((infrastructure) => {
@@ -199,7 +207,7 @@ export function usePlanCalculation(
 		return result;
 	}
 
-	function calculateAreaResult(): PlanResult.AreaResult {
+	function calculateAreaResult(): IAreaResult {
 		// Core Module holds 25 area
 		let areaUsed: number = 25;
 		let areaTotal: number = 250 + planet.value.permits * 250;
@@ -229,8 +237,8 @@ export function usePlanCalculation(
 		};
 	}
 
-	function calculateInfrastructureResult(): PlanResult.InfrastructureRecord {
-		const result: PlanResult.InfrastructureRecord = Object.fromEntries(
+	function calculateInfrastructureResult(): IInfrastructureRecord {
+		const result: IInfrastructureRecord = Object.fromEntries(
 			infrastructureBuildingNames.map((key) => {
 				const currentInf: IPlanDataInfrastructure | undefined =
 					data.value.infrastructure.find((e) => e.building === key);
@@ -240,13 +248,13 @@ export function usePlanCalculation(
 				}
 				return [key, 0];
 			})
-		) as PlanResult.InfrastructureRecord;
+		) as IInfrastructureRecord;
 
 		return result;
 	}
 
-	function calculateExpertResult(): PlanResult.ExpertRecord {
-		const result: PlanResult.ExpertRecord = Object.fromEntries(
+	function calculateExpertResult(): IExpertRecord {
+		const result: IExpertRecord = Object.fromEntries(
 			expertNames.map((key) => {
 				const currentExpert: IPlanDataExpert | undefined =
 					planet.value.experts.find((e) => e.type === key);
@@ -261,7 +269,7 @@ export function usePlanCalculation(
 
 				return [key, { name: key, amount: amount, bonus: bonus }];
 			})
-		) as PlanResult.ExpertRecord;
+		) as IExpertRecord;
 
 		return result;
 	}
@@ -269,10 +277,10 @@ export function usePlanCalculation(
 	function calculateProduction(
 		corphq: boolean,
 		cogc: PLAN_COGCPROGRAM_TYPE,
-		workforce: PlanResult.WorkforceRecord,
-		experts: PlanResult.ExpertRecord
-	): PlanResult.ProductionResult {
-		let buildings: PlanResult.ProductionBuilding[] = [];
+		workforce: IWorkforceRecord,
+		experts: IExpertRecord
+	): IProductionResult {
+		let buildings: IProductionBuilding[] = [];
 
 		// add buildings from data
 		data.value.buildings.forEach((b) => {
@@ -289,7 +297,7 @@ export function usePlanCalculation(
 				activeEmpire.value
 			);
 
-			const activeRecipes: PlanResult.ProductionBuildingRecipe[] = [];
+			const activeRecipes: IProductionBuildingRecipe[] = [];
 			const buildingRecipes: IRecipe[] = getBuildingRecipes(
 				b.name,
 				planetData.Resources
@@ -331,22 +339,24 @@ export function usePlanCalculation(
 			);
 
 			// get recipe options
-			const recipeOptions: PlanResult.IRecipeBuildingOption[] =
-				getBuildingRecipes(b.name, planetData.Resources).map((br) => {
-					return {
-						RecipeId: br.RecipeId,
-						BuildingTicker: br.BuildingTicker,
-						RecipeName: br.RecipeName,
-						// Time adjusted to Efficiency
-						TimeMs: br.TimeMs / totalEfficiency,
-						Inputs: br.Inputs,
-						Outputs: br.Outputs,
-						dailyRevenue: 0,
-						roi: 0,
-					};
-				});
+			const recipeOptions: IRecipeBuildingOption[] = getBuildingRecipes(
+				b.name,
+				planetData.Resources
+			).map((br) => {
+				return {
+					RecipeId: br.RecipeId,
+					BuildingTicker: br.BuildingTicker,
+					RecipeName: br.RecipeName,
+					// Time adjusted to Efficiency
+					TimeMs: br.TimeMs / totalEfficiency,
+					Inputs: br.Inputs,
+					Outputs: br.Outputs,
+					dailyRevenue: 0,
+					roi: 0,
+				};
+			});
 
-			const building: PlanResult.ProductionBuilding = {
+			const building: IProductionBuilding = {
 				name: b.name,
 				amount: b.amount,
 				activeRecipes: activeRecipes,
@@ -380,7 +390,7 @@ export function usePlanCalculation(
 	}
 
 	function handleUpdateWorkforceLux(
-		workforce: PlanResult.WORKFORCE_TYPE,
+		workforce: WORKFORCE_TYPE,
 		luxType: "lux1" | "lux2",
 		value: boolean
 	): void {
@@ -396,10 +406,7 @@ export function usePlanCalculation(
 		}
 	}
 
-	function handleUpdateExpert(
-		expert: PlanResult.EXPERT_TYPE,
-		value: number
-	): void {
+	function handleUpdateExpert(expert: EXPERT_TYPE, value: number): void {
 		const expertData: IPlanDataExpert | undefined = planet.value.experts.find(
 			(e) => e.type === expert
 		);
@@ -410,7 +417,7 @@ export function usePlanCalculation(
 	}
 
 	function handleUpdateInfrastructure(
-		infrastructure: PlanResult.INFRASTRUCTURE_TYPE,
+		infrastructure: INFRASTRUCTURE_TYPE,
 		value: number
 	): void {
 		const infData: IPlanDataInfrastructure | undefined =
@@ -530,21 +537,45 @@ export function usePlanCalculation(
 		});
 	}
 
+	function handleChangeBuildingRecipe(
+		buildingIndex: number,
+		recipeIndex: number,
+		recipeId: string
+	): void {
+		// validate building index
+		if (typeof data.value.buildings[buildingIndex] === "undefined") {
+			throw new Error(`Building at index '${buildingIndex}' does not exist.`);
+		}
+
+		// validate recipe index
+		if (
+			typeof data.value.buildings[buildingIndex].active_recipes[recipeIndex] ===
+			"undefined"
+		) {
+			throw new Error(
+				`Building at index '${buildingIndex}' has no recipe at index '${recipeIndex}.`
+			);
+		}
+
+		// change recipeId at this point
+		data.value.buildings[buildingIndex].active_recipes[recipeIndex].recipeid =
+			recipeId;
+	}
+
 	// calculations
 
-	const result: ComputedRef<PlanResult.Result> = computed(() => {
+	const result: ComputedRef<IPlanResult> = computed(() => {
 		// pre-calculate individual results
 		const bonusResult = {
 			corphq: planet.value.corphq,
 			cogc: planet.value.cogc,
 		};
-		const workforceResult: PlanResult.WorkforceRecord =
-			calculateWorkforceResult();
-		const areaResult: PlanResult.AreaResult = calculateAreaResult();
-		const infrastructureResult: PlanResult.InfrastructureRecord =
+		const workforceResult: IWorkforceRecord = calculateWorkforceResult();
+		const areaResult: IAreaResult = calculateAreaResult();
+		const infrastructureResult: IInfrastructureRecord =
 			calculateInfrastructureResult();
-		const expertResult: PlanResult.ExpertRecord = calculateExpertResult();
-		const productionResult: PlanResult.ProductionResult = calculateProduction(
+		const expertResult: IExpertRecord = calculateExpertResult();
+		const productionResult: IProductionResult = calculateProduction(
 			bonusResult.corphq,
 			bonusResult.cogc,
 			workforceResult,
@@ -552,20 +583,20 @@ export function usePlanCalculation(
 		);
 
 		// get individual material IOs
-		const workforceMaterialIO: PlanResult.MaterialIOMinimal[] =
+		const workforceMaterialIO: IMaterialIOMinimal[] =
 			calculateWorkforceConsumption(workforceResult);
-		const productionMaterialIO: PlanResult.MaterialIOMinimal[] =
+		const productionMaterialIO: IMaterialIOMinimal[] =
 			productionResult.materialio;
 
 		// combina and enhance
-		const combinedMaterialIOMinimal: PlanResult.MaterialIOMinimal[] =
+		const combinedMaterialIOMinimal: IMaterialIOMinimal[] =
 			combineMaterialIOMinimal([workforceMaterialIO, productionMaterialIO]);
-		const materialIOResult: PlanResult.MaterialIO[] = enhanceMaterialIOMinimal(
+		const materialIOResult: IMaterialIO[] = enhanceMaterialIOMinimal(
 			combinedMaterialIOMinimal
 		);
 
 		// patch-in to full result
-		const resultData: PlanResult.Result = {
+		const resultData: IPlanResult = {
 			bonus: bonusResult,
 			workforce: workforceResult,
 			area: areaResult,
@@ -594,5 +625,6 @@ export function usePlanCalculation(
 		handleUpdateBuildingRecipeAmount,
 		handleDeleteBuildingRecipe,
 		handleAddBuildingRecipe,
+		handleChangeBuildingRecipe,
 	};
 }

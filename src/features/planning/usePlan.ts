@@ -18,7 +18,10 @@ import {
 	PlanShareSchemaType,
 } from "@/features/planning/usePlan.schemas";
 import { PlanLoadError } from "@/features/planning/usePlan.errors";
-import { IPlanet, PLANET_COGCPROGRAM_TYPE } from "../game_data/gameData.types";
+import {
+	IPlanet,
+	PLANET_COGCPROGRAM_TYPE,
+} from "@/features/game_data/gameData.types";
 
 export function usePlan() {
 	const gameDataStore = useGameDataStore();

@@ -1,11 +1,16 @@
-import { PlanResult } from "../usePlanCalculation.types";
-import { useMaterialIOUtil } from "../util/materialIO.util";
+// Composables
+import { useMaterialIOUtil } from "@/features/planning/util/materialIO.util";
+
+// Types & Interfaces
+import {
+	IMaterialIOMinimal,
+	IWorkforceElement,
+	IWorkforceRecord,
+} from "@/features/planning/usePlanCalculation.types";
 import {
 	WorkforceConsumptionElement,
 	WorkforceConsumptionMap,
-} from "./workforceCalculations.types";
-
-const { combineMaterialIOMinimal } = useMaterialIOUtil();
+} from "@/features/planning/calculations/workforceCalculations.types";
 
 const WORKFORCE_CONSUMPTION_MAP: WorkforceConsumptionMap = {
 	pioneer: [
@@ -52,108 +57,115 @@ const WORKFORCE_CONSUMPTION_MAP: WorkforceConsumptionMap = {
 	],
 };
 
-/**
- * Calculates workforce satisfaction based on capacity and luxuries
- * following ingame logc
- * @author jplacht
- *
- * @export
- * @param {number} capacity Workforce available capacity
- * @param {number} required Required Workforce
- * @param {boolean} lux1 If Lux1 are provided
- * @param {boolean} lux2 If Lux2 are provided
- * @returns {number} Satisfaction
- */
-export function calculateSatisfaction(
-	capacity: number,
-	required: number,
-	lux1: boolean,
-	lux2: boolean
-): number {
-	let satisfaction: number = 0;
+export function useWorkforceCalculation() {
+	const { combineMaterialIOMinimal } = useMaterialIOUtil();
 
-	if (required > 0) {
-		if (required < capacity) {
-			satisfaction = 1;
-		} else {
-			satisfaction = capacity / required;
+	/**
+	 * Calculates workforce satisfaction based on capacity and luxuries
+	 * following ingame logc
+	 * @author jplacht
+	 *
+	 * @export
+	 * @param {number} capacity Workforce available capacity
+	 * @param {number} required Required Workforce
+	 * @param {boolean} lux1 If Lux1 are provided
+	 * @param {boolean} lux2 If Lux2 are provided
+	 * @returns {number} Satisfaction
+	 */
+	function calculateSatisfaction(
+		capacity: number,
+		required: number,
+		lux1: boolean,
+		lux2: boolean
+	): number {
+		let satisfaction: number = 0;
+
+		if (required > 0) {
+			if (required < capacity) {
+				satisfaction = 1;
+			} else {
+				satisfaction = capacity / required;
+			}
 		}
-	} else {
-		satisfaction = 0;
+
+		let efficiency: number = 0;
+		const baseEfficiency: number = 0.02 * (1 + 10 / 3) * (1 + 4) * (1 + 5 / 6);
+		const lux1Efficiency: number = 1 + 1 / 11;
+		const lux2Efficiency: number = 1 + 2 / 13;
+
+		if (required > 0) {
+			efficiency += baseEfficiency;
+			if (lux1 == true && lux2 == true) {
+				efficiency = efficiency * lux1Efficiency * lux2Efficiency;
+			} else if (lux1 == true && lux2 == false) {
+				efficiency = efficiency * lux1Efficiency;
+			} else if (lux1 == false && lux2 == true) {
+				efficiency = efficiency * lux2Efficiency;
+			}
+		}
+
+		return satisfaction * efficiency;
 	}
 
-	let efficiency: number = 0;
-	const baseEfficiency: number = 0.02 * (1 + 10 / 3) * (1 + 4) * (1 + 5 / 6);
-	const lux1Efficiency: number = 1 + 1 / 11;
-	const lux2Efficiency: number = 1 + 2 / 13;
+	function calculateSingleWorkforceConsumption(
+		workforce: IWorkforceElement
+	): IMaterialIOMinimal[] {
+		const consuming: number =
+			workforce.required > workforce.capacity
+				? workforce.capacity
+				: workforce.required;
 
-	if (required > 0) {
-		efficiency += baseEfficiency;
-		if (lux1 == true && lux2 == true) {
-			efficiency = efficiency * lux1Efficiency * lux2Efficiency;
-		} else if (lux1 == true && lux2 == false) {
-			efficiency = efficiency * lux1Efficiency;
-		} else if (lux1 == false && lux2 == true) {
-			efficiency = efficiency * lux2Efficiency;
-		}
+		// if no one is consuming, no materials are required
+		if (consuming === 0) return [];
+
+		const mapData: WorkforceConsumptionElement[] =
+			WORKFORCE_CONSUMPTION_MAP[workforce.name];
+
+		const materialIO: IMaterialIOMinimal[] = [];
+
+		mapData.forEach((material: WorkforceConsumptionElement) => {
+			const element: IMaterialIOMinimal = {
+				ticker: material.ticker,
+				input: material.need * consuming,
+				output: 0,
+			};
+
+			if (!material.lux1 && !material.lux2) {
+				materialIO.push(element);
+			} else if (
+				// lux1 required
+				material.lux1 &&
+				!material.lux2 &&
+				workforce.lux1
+			) {
+				materialIO.push(element);
+			} else if (
+				// lux2 required
+				!material.lux1 &&
+				material.lux2 &&
+				workforce.lux2
+			) {
+				materialIO.push(element);
+			}
+		});
+
+		return materialIO;
 	}
 
-	return satisfaction * efficiency;
-}
-
-export function calculateSingleWorkforceConsumption(
-	workforce: PlanResult.WorkforceElement
-): PlanResult.MaterialIOMinimal[] {
-	const consuming: number =
-		workforce.required > workforce.capacity
-			? workforce.capacity
-			: workforce.required;
-
-	// if no one is consuming, no materials are required
-	if (consuming === 0) return [];
-
-	const mapData: WorkforceConsumptionElement[] =
-		WORKFORCE_CONSUMPTION_MAP[workforce.name];
-
-	const materialIO: PlanResult.MaterialIOMinimal[] = [];
-
-	mapData.forEach((material: WorkforceConsumptionElement) => {
-		const element: PlanResult.MaterialIOMinimal = {
-			ticker: material.ticker,
-			input: material.need * consuming,
-			output: 0,
-		};
-
-		if (!material.lux1 && !material.lux2) {
-			materialIO.push(element);
-		} else if (
-			// lux1 required
-			material.lux1 &&
-			!material.lux2 &&
-			workforce.lux1
-		) {
-			materialIO.push(element);
-		} else if (
-			// lux2 required
-			!material.lux1 &&
-			material.lux2 &&
-			workforce.lux2
-		) {
-			materialIO.push(element);
-		}
-	});
-
-	return materialIO;
-}
-
-export function calculateWorkforceConsumption(
-	workforce: PlanResult.WorkforceRecord
-): PlanResult.MaterialIOMinimal[] {
-	return combineMaterialIOMinimal([
-		calculateSingleWorkforceConsumption(workforce.pioneer),
-		calculateSingleWorkforceConsumption(workforce.settler),
-		calculateSingleWorkforceConsumption(workforce.technician),
-		calculateSingleWorkforceConsumption(workforce.engineer),
-		calculateSingleWorkforceConsumption(workforce.scientist),
-	]);
+	function calculateWorkforceConsumption(
+		workforce: IWorkforceRecord
+	): IMaterialIOMinimal[] {
+		return combineMaterialIOMinimal([
+			calculateSingleWorkforceConsumption(workforce.pioneer),
+			calculateSingleWorkforceConsumption(workforce.settler),
+			calculateSingleWorkforceConsumption(workforce.technician),
+			calculateSingleWorkforceConsumption(workforce.engineer),
+			calculateSingleWorkforceConsumption(workforce.scientist),
+		]);
+	}
+	return {
+		calculateSatisfaction,
+		calculateSingleWorkforceConsumption,
+		calculateWorkforceConsumption,
+	};
 }
