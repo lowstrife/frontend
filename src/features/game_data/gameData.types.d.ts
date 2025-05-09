@@ -18,6 +18,8 @@ export interface IExchange {
 	Supply: number | null;
 	Demand: number | null;
 	Traded: number | null;
+
+	[key: string]: string | number | null;
 }
 
 export interface IRecipeMaterial {
@@ -76,6 +78,14 @@ export interface IBuilding {
 	Habitation: IBuildingHabitation | null;
 	Expertise: BUILDING_EXPERTISE_TYPE | null;
 	Type: BUILDING_TYPE;
+
+	[key: string]:
+		| string
+		| number
+		| null
+		| IBuildingCost[]
+		| IBuildingHabitation
+		| BUILDING_TYPE;
 }
 
 export type PLANET_RESOURCETYPE_TYPE = "MINERAL" | "GASEOUS" | "LIQUID";
@@ -107,6 +117,7 @@ export interface IPlanetCheckDistance {
 }
 
 export type PLANET_COGCPROGRAM_TYPE =
+	| "Invalid"
 	| "ADVERTISING_AGRICULTURE"
 	| "ADVERTISING_CHEMISTRY"
 	| "ADVERTISING_CONSTRUCTION"

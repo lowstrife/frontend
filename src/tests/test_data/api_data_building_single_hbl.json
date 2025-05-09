@@ -1,0 +1,46 @@
+{
+	"Name": "habitationLuxury",
+	"Ticker": "HBL",
+	"Expertise": null,
+	"Pioneers": 0,
+	"Settlers": 0,
+	"Technicians": 0,
+	"Engineers": 0,
+	"Scientists": 0,
+	"AreaCost": 22,
+	"BuildingCosts": [
+		{
+			"CommodityTicker": "ADE",
+			"Weight": 0.4000000059604645,
+			"Volume": 1.5,
+			"Amount": 8
+		},
+		{
+			"CommodityTicker": "ABH",
+			"Weight": 0.6000000238418579,
+			"Volume": 0.8999999761581421,
+			"Amount": 8
+		},
+		{
+			"CommodityTicker": "ASE",
+			"Weight": 0.5,
+			"Volume": 0.6000000238418579,
+			"Amount": 6
+		},
+		{
+			"CommodityTicker": "ATA",
+			"Weight": 0.30000001192092896,
+			"Volume": 0.4000000059604645,
+			"Amount": 6
+		}
+	],
+	"Habitation": {
+		"Pioneer": 0,
+		"Settler": 0,
+		"Technician": 0,
+		"Engineer": 75,
+		"Scientist": 75,
+		"Area": 22
+	},
+	"Type": "INFRASTRUCTURE"
+}

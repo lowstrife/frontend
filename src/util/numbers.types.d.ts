@@ -1,0 +1,1 @@
+type BOUNDARY_DESCRIPTOR = "HIGH" | "LOW" | "NORMAL";

@@ -1,10 +1,10 @@
-import { beforeAll, describe, expect, it, vi } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { apiService } from "@/lib/apiService";
 import AxiosMockAdapter from "axios-mock-adapter";
+import { useMarketExploration } from "@/features/market_exploration/useMarketExploration";
 
 // test data
-import exploration_7d_dw from "@/tests/features/market_exploration/test_data/api_data_exploration_7d_dw.json";
-import { useMarketExploration } from "@/features/market_exploration/useMarketExploration";
+import exploration_7d_dw from "@/tests/test_data/api_data_exploration_7d_dw.json";
 
 // mock apiService client
 const mock = new AxiosMockAdapter(apiService.client);

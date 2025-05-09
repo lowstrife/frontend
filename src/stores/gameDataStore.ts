@@ -15,7 +15,7 @@ import {
 	callDataMultiplePlanets,
 	callDataPlanet,
 	callDataRecipes,
-} from "@/features/game_data/gameData";
+} from "@/features/game_data/gameData.api";
 import {
 	IBuildingsRecord,
 	IExchangesRecord,
@@ -64,13 +64,16 @@ export const useGameDataStore = defineStore(
 		let promiseRefreshingExchanges: Promise<boolean> | null = null;
 		let promiseRefreshingRecipes: Promise<boolean> | null = null;
 		let promiseRefreshingBuildings: Promise<boolean> | null = null;
+		let promiseRefreshingPlanets: Ref<Record<string, Promise<boolean> | null>> =
+			ref({});
 
 		let isRefreshingMaterials: Ref<boolean> = ref(false);
 		let isRefreshingExchanges: Ref<boolean> = ref(false);
 		let isRefreshingRecipes: Ref<boolean> = ref(false);
 		let isRefreshingBuildings: Ref<boolean> = ref(false);
+		let isRefreshingPlanets: Ref<Record<string, boolean>> = ref({});
 
-		// getters
+		// computed getters
 
 		/**
 		 * Store holds material data
@@ -112,7 +115,41 @@ export const useGameDataStore = defineStore(
 			() => Object.keys(buildings.value).length > 0
 		);
 
-		// functions
+		async function getPlanet(
+			planetNaturalId: string,
+			force: boolean = false
+		): Promise<IPlanet> {
+			// if force = false, only fetch new if data is not already available
+			if (!force) {
+				const findPlanet: IPlanet | undefined = planets.value[planetNaturalId];
+
+				if (findPlanet) return findPlanet;
+
+				// nothing found, fetch first, then return
+				const fetchedPlanet: boolean = await performLoadPlanet(planetNaturalId);
+
+				if (fetchedPlanet) {
+					return planets.value[planetNaturalId];
+				} else {
+					throw new Error(
+						`Unable to fetch Planet with Natural Id '${planetNaturalId}'`
+					);
+				}
+			} else {
+				// we're forced to fetch first, then return
+				const fetchedPlanet: boolean = await performLoadPlanet(planetNaturalId);
+
+				if (fetchedPlanet) {
+					return planets.value[planetNaturalId];
+				} else {
+					throw new Error(
+						`Unable to fetch Planet with Natural Id '${planetNaturalId}'`
+					);
+				}
+			}
+		}
+
+		// data loader functions
 
 		/**
 		 * Checks for existance of specific planets data
@@ -317,20 +354,40 @@ export const useGameDataStore = defineStore(
 		async function performLoadPlanet(
 			planetNaturalId: string
 		): Promise<boolean> {
-			try {
-				const planetData: IPlanet = await callDataPlanet(planetNaturalId);
+			// find out if the planet is currently refreshing
+			const isPlanetRefreshing: boolean | undefined =
+				isRefreshingPlanets.value[planetNaturalId];
 
-				// store data
-				planets.value[planetData.PlanetNaturalId] = planetData;
-
-				// set last refreshed
-				lastRefreshedPlanets.value[planetData.PlanetNaturalId] = new Date();
-
-				return true;
-			} catch (error) {
-				console.error(error);
-				return false;
+			if (isPlanetRefreshing && isPlanetRefreshing === true) {
+				return promiseRefreshingPlanets.value[planetNaturalId]!;
 			}
+
+			// trigger a new refresh as there is none running at the moment
+			isRefreshingPlanets.value[planetNaturalId] = true;
+
+			promiseRefreshingPlanets.value[planetNaturalId] = new Promise<boolean>(
+				async (resolve) => {
+					try {
+						const planetData: IPlanet = await callDataPlanet(planetNaturalId);
+
+						// overwrite data
+						planets.value[planetNaturalId] = planetData;
+
+						// set last refreshed
+						lastRefreshedPlanets.value[planetNaturalId] = new Date();
+
+						resolve(true);
+					} catch (error) {
+						console.error(error);
+						resolve(false);
+					} finally {
+						isRefreshingPlanets.value[planetNaturalId] = false;
+						promiseRefreshingPlanets.value[planetNaturalId] = null;
+					}
+				}
+			);
+
+			return promiseRefreshingPlanets.value[planetNaturalId];
 		}
 
 		/**
@@ -445,10 +502,6 @@ export const useGameDataStore = defineStore(
 			);
 		}
 
-		function foo() {
-			return "moo";
-		}
-
 		return {
 			// state
 			materials,
@@ -465,6 +518,7 @@ export const useGameDataStore = defineStore(
 			isRefreshingExchanges,
 			isRefreshingRecipes,
 			isRefreshingBuildings,
+			isRefreshingPlanets,
 			// getters
 			hasMaterials,
 			hasExchanges,
@@ -473,6 +527,8 @@ export const useGameDataStore = defineStore(
 			hasPlanet,
 			hasMultiplePlanets,
 			// functions
+			getPlanet,
+			// functions data loader
 			performLoadMaterials,
 			performLoadExchanges,
 			performLoadRecipes,

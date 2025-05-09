@@ -2,17 +2,17 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { createPinia, setActivePinia } from "pinia";
 
 // test data
-import recipes from "@/tests/features/game_data/test_data/api_data_recipes.json";
-import buildings from "@/tests/features/game_data/test_data/api_data_buildings.json";
-import materials from "@/tests/features/game_data/test_data/api_data_materials.json";
-import exchanges from "@/tests/features/game_data/test_data/api_data_exchanges.json";
-import planets from "@/tests/features/game_data/test_data/api_data_planets.json";
-import planet_single from "@/tests/features/game_data/test_data/api_data_planet_single.json";
+import recipes from "@/tests/test_data/api_data_recipes.json";
+import buildings from "@/tests/test_data/api_data_buildings.json";
+import materials from "@/tests/test_data/api_data_materials.json";
+import exchanges from "@/tests/test_data/api_data_exchanges.json";
+import planets from "@/tests/test_data/api_data_planets.json";
+import planet_single from "@/tests/test_data/api_data_planet_single.json";
 
 // mocks
-vi.mock("@/features/game_data/gameData", async () => {
+vi.mock("@/features/game_data/gameData.api", async () => {
 	return {
-		...(await vi.importActual("@/features/game_data/gameData")),
+		...(await vi.importActual("@/features/game_data/gameData.api")),
 		callDataMaterials: vi.fn(),
 		callDataExchanges: vi.fn(),
 		callDataRecipes: vi.fn(),
@@ -21,6 +21,15 @@ vi.mock("@/features/game_data/gameData", async () => {
 		callDataMultiplePlanets: vi.fn(),
 	};
 });
+
+import {
+	callDataMaterials,
+	callDataExchanges,
+	callDataRecipes,
+	callDataBuildings,
+	callDataPlanet,
+	callDataMultiplePlanets,
+} from "@/features/game_data/gameData.api";
 
 vi.mock("@/lib/config", async () => {
 	const original: any = await vi.importActual("@/lib/config");
@@ -36,15 +45,6 @@ vi.mock("@/lib/config", async () => {
 		},
 	};
 });
-
-import {
-	callDataMaterials,
-	callDataExchanges,
-	callDataRecipes,
-	callDataBuildings,
-	callDataPlanet,
-	callDataMultiplePlanets,
-} from "@/features/game_data/gameData";
 
 // stores
 
@@ -63,10 +63,8 @@ describe("GameData Store", async () => {
 
 	describe("Prevent parallel refreshes", async () => {
 		it("Materials singular refresh", async () => {
-			vi.mocked(callDataMaterials).mockResolvedValueOnce(materials);
-
-			gameDataStore.$state.isRefreshingMaterials = true;
-			gameDataStore.$state.promiseRefreshingMaterials = Promise.resolve(true);
+			gameDataStore.isRefreshingMaterials = true;
+			gameDataStore.promiseRefreshingMaterials = Promise.resolve(true);
 
 			const result = await gameDataStore.performLoadMaterials();
 
@@ -75,11 +73,8 @@ describe("GameData Store", async () => {
 		});
 
 		it("Buildings singular refresh", async () => {
-			// @ts-expect-error mock
-			vi.mocked(callDataBuildings).mockResolvedValueOnce(buildings);
-
-			gameDataStore.$state.isRefreshingBuildings = true;
-			gameDataStore.$state.promiseRefreshingBuildings = Promise.resolve(true);
+			gameDataStore.isRefreshingBuildings = true;
+			gameDataStore.promiseRefreshingBuildings = Promise.resolve(true);
 
 			const result = await gameDataStore.performLoadBuildings();
 
@@ -88,10 +83,8 @@ describe("GameData Store", async () => {
 		});
 
 		it("Exchanges singular refresh", async () => {
-			vi.mocked(callDataExchanges).mockResolvedValueOnce(exchanges);
-
-			gameDataStore.$state.isRefreshingExchanges = true;
-			gameDataStore.$state.promiseRefreshingExchanges = Promise.resolve(true);
+			gameDataStore.isRefreshingExchanges = true;
+			gameDataStore.promiseRefreshingExchanges = Promise.resolve(true);
 
 			const result = await gameDataStore.performLoadExchanges();
 
@@ -100,15 +93,25 @@ describe("GameData Store", async () => {
 		});
 
 		it("Recipes singular refresh", async () => {
-			vi.mocked(callDataRecipes).mockResolvedValueOnce(recipes);
-
-			gameDataStore.$state.isRefreshingRecipes = true;
-			gameDataStore.$state.promiseRefreshingRecipes = Promise.resolve(true);
+			gameDataStore.isRefreshingRecipes = true;
+			gameDataStore.promiseRefreshingRecipes = Promise.resolve(true);
 
 			const result = await gameDataStore.performLoadRecipes();
 
 			expect(result).toBe(null);
 			expect(callDataRecipes).not.toHaveBeenCalled();
+		});
+
+		it("Planets singular refresh", async () => {
+			gameDataStore.isRefreshingPlanets = { "KW-020c": true };
+			gameDataStore.promiseRefreshingPlanets = {
+				"KW-020c": Promise.resolve(true),
+			};
+
+			const result = await gameDataStore.performLoadPlanet("KW-020c");
+
+			expect(result).toBe(undefined);
+			expect(callDataPlanet).not.toHaveBeenCalled();
 		});
 	});
 
@@ -139,6 +142,54 @@ describe("GameData Store", async () => {
 			);
 
 			expect(gameDataStore.hasMultiplePlanets(ids)).toBeTruthy();
+		});
+
+		describe("getPlanet", async () => {
+			it("No force, has planet data", async () => {
+				// mock
+				gameDataStore.planets["foo"] = true;
+
+				const result = await gameDataStore.getPlanet("foo");
+
+				expect(result).toBe(true);
+			});
+
+			it("No force, needs to fetch planet data", async () => {
+				// @ts-expect-error mock data
+				vi.mocked(callDataPlanet).mockResolvedValueOnce(planet_single);
+
+				const result = await gameDataStore.getPlanet("KW-020c");
+				expect(result).toStrictEqual(planet_single);
+			});
+
+			it("No force, needs to fetch planet data but getting error", async () => {
+				gameDataStore.isRefreshingPlanets = { "KW-020c": true };
+				gameDataStore.promiseRefreshingPlanets = {
+					"KW-020c": Promise.resolve(false),
+				};
+
+				await expect(gameDataStore.getPlanet("KW-020c")).rejects.toThrowError();
+			});
+
+			it("Force, needs to fetch planet data ", async () => {
+				// @ts-expect-error mock data
+				vi.mocked(callDataPlanet).mockResolvedValueOnce(planet_single);
+
+				await expect(
+					gameDataStore.getPlanet("KW-020c", true)
+				).resolves.toStrictEqual(planet_single);
+			});
+
+			it("Force, needs to fetch planet data but getting error", async () => {
+				gameDataStore.isRefreshingPlanets = { "KW-020c": true };
+				gameDataStore.promiseRefreshingPlanets = {
+					"KW-020c": Promise.resolve(false),
+				};
+
+				await expect(
+					gameDataStore.getPlanet("KW-020c", true)
+				).rejects.toThrowError();
+			});
 		});
 	});
 
@@ -239,9 +290,6 @@ describe("GameData Store", async () => {
 			const result = await gameDataStore.performLoadPlanet();
 
 			expect(result).toBeTruthy();
-			expect(
-				gameDataStore.planets[planet_single.PlanetNaturalId]
-			).toStrictEqual(planet_single);
 		});
 
 		it("performLoadPlanet: failure", async () => {

@@ -5,16 +5,24 @@
 		minimal
 		v-on:success="
 			() => {
-				refExchangeOverview = getMaterialExchangeOverview(props.ticker);
+				if (!disableDrawer) {
+					refExchangeOverview = getMaterialExchangeOverview(props.ticker);
+				}
 			}
 		"
 	>
 		<span
-			:class="`Material-${ticker}`"
-			class="p-1 px-2 hover:cursor-pointer child:my-auto"
+			class="p-1 px-2 child:my-auto"
+			:class="
+				!disableDrawer
+					? `Material-${ticker} hover:cursor-pointer`
+					: `Material-${ticker}`
+			"
 			@click="
 				() => {
-					refShowDrawer = !refShowDrawer;
+					if (!disableDrawer) {
+						refShowDrawer = !refShowDrawer;
+					}
 				}
 			"
 		>
@@ -22,7 +30,12 @@
 			<span class="font-bold">{{ ticker }}</span>
 		</span>
 
-		<n-drawer v-model:show="refShowDrawer" :width="500" placement="right">
+		<n-drawer
+			v-if="refShowDrawer"
+			v-model:show="refShowDrawer"
+			:width="500"
+			placement="right"
+		>
 			<n-drawer-content title="Material Information">
 				<div class="flex gap-x-5">
 					<div class="flex items-center">
@@ -139,6 +152,10 @@
 </template>
 
 <script setup lang="ts">
+	/* 
+		Allowing the drawer to render is quite the performance-hit 
+		due to many HTML elements being created. 
+	*/
 	import { ref, Ref } from "vue";
 
 	// Composables
@@ -169,6 +186,11 @@
 		amount: {
 			type: Number,
 			required: false,
+		},
+		disableDrawer: {
+			type: Boolean,
+			required: false,
+			default: true,
 		},
 	});
 

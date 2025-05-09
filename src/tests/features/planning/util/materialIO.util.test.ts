@@ -1,0 +1,156 @@
+import { ref } from "vue";
+import { setActivePinia, createPinia } from "pinia";
+import { beforeAll, describe, expect, it } from "vitest";
+
+// Stores
+import { useGameDataStore } from "@/stores/gameDataStore";
+
+// Composables
+import { useMaterialIOUtil } from "@/features/planning/util/materialIO.util";
+import { usePrice } from "@/features/cx/usePrice";
+
+// Types & Interfaces
+import { IMaterialIOMinimal } from "@/features/planning/usePlanCalculation.types";
+
+// test data
+import materials from "@/tests/test_data/api_data_materials.json";
+
+describe("Util: materialIO ", async () => {
+	let gameDataStore: any;
+
+	beforeAll(() => {
+		setActivePinia(createPinia());
+		gameDataStore = useGameDataStore();
+	});
+
+	it("combineMaterialIOMinimal", async () => {
+		const { combineMaterialIOMinimal } = useMaterialIOUtil();
+		const firstArray: IMaterialIOMinimal[] = [
+			{
+				ticker: "C",
+				input: 1,
+				output: 0,
+			},
+			{
+				ticker: "H2O",
+				input: 0,
+				output: 10,
+			},
+		];
+
+		const secondArray: IMaterialIOMinimal[] = [
+			{
+				ticker: "C",
+				input: 5,
+				output: 0,
+			},
+			{
+				ticker: "H2O",
+				input: 2,
+				output: 0,
+			},
+			{
+				ticker: "DW",
+				input: 7,
+				output: 12,
+			},
+		];
+
+		const result = combineMaterialIOMinimal([firstArray, secondArray]);
+
+		expect(result.length).toBe(3);
+
+		const findC = result.find((e) => e.ticker === "C");
+
+		expect(findC).toBeDefined();
+		expect(findC?.input).toBe(6);
+		expect(findC?.output).toBe(0);
+
+		const findWater = result.find((e) => e.ticker === "H2O");
+
+		expect(findWater).toBeDefined();
+		expect(findWater?.input).toBe(2);
+		expect(findWater?.output).toBe(10);
+
+		const findDW = result.find((e) => e.ticker === "DW");
+
+		expect(findDW).toBeDefined();
+		expect(findDW?.input).toBe(7);
+		expect(findDW?.output).toBe(12);
+	});
+
+	it("enhanceMaterialIOMinimal", async () => {
+		// prepare, add all materials
+		materials.forEach((m) => {
+			gameDataStore.materials[m.Ticker] = m;
+		});
+
+		const { enhanceMaterialIOMinimal } = useMaterialIOUtil();
+
+		const fakeArray: IMaterialIOMinimal[] = [
+			{
+				ticker: "C",
+				input: 1,
+				output: 0,
+			},
+			{
+				ticker: "H2O",
+				input: 2,
+				output: 7,
+			},
+		];
+
+		const result = enhanceMaterialIOMinimal(fakeArray);
+
+		expect(result.length).toBe(fakeArray.length);
+
+		const findC = result.find((e) => e.ticker === "C");
+		const findWater = result.find((e) => e.ticker === "H2O");
+
+		expect(findC).toBeDefined();
+		expect(findWater).toBeDefined();
+
+		// deltas
+		expect(findC?.delta).toBe(-1);
+		expect(findWater?.delta).toBe(5);
+
+		// individual weight
+		expect(findC?.individualVolume).toBe(gameDataStore.materials["C"].Volume);
+		expect(findC?.individualWeight).toBe(gameDataStore.materials["C"].Weight);
+
+		// total
+		expect(findWater?.totalVolume).toBe(
+			gameDataStore.materials["H2O"].Volume * 5
+		);
+		expect(findWater?.totalWeight).toBe(
+			gameDataStore.materials["H2O"].Weight * 5
+		);
+
+		// sorted alphabetically
+		expect(result[0].ticker).toBe("C");
+		expect(result[1].ticker).toBe("H2O");
+	});
+
+	it("enhanceMaterialIOMaterial", async () => {
+		const { enhanceMaterialIOMaterial } = usePrice(
+			ref(undefined),
+			ref(undefined)
+		);
+
+		gameDataStore.exchanges["OVE.PP30D_UNIVERSE"] = { PriceAverage: 10 };
+
+		// SELL
+		const resultSell = enhanceMaterialIOMaterial(
+			// @ts-expect-error mock data
+			[{ ticker: "OVE", delta: 1 }]
+		);
+		// BUY
+		const resultBuy = enhanceMaterialIOMaterial(
+			// @ts-expect-error mock data
+			[{ ticker: "OVE", delta: -1 }]
+		);
+
+		expect(resultSell).toStrictEqual([{ ticker: "OVE", delta: 1, price: 10 }]);
+		expect(resultBuy).toStrictEqual([{ ticker: "OVE", delta: -1, price: -10 }]);
+	});
+});

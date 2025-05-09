@@ -33,11 +33,11 @@ module.exports = {
 		extend: {
 			colors: {
 				background: "#212529",
-				"gray-dark": "#202020",
+				"gray-dark": "#151515",
 				"link-primary": "#6ea8fe",
 				"pp-primary": "#1e1e1e", // Primary content color
 				"pp-secondary": "#212d40", // Secondary content color7
-				"pp-border": "#242323",
+				"pp-border": "#2d2d30",
 				"pp-card-header": "#d66853",
 				row: "#1e1e1e",
 				"row-alternate": "#222222",

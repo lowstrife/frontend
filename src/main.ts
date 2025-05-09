@@ -33,5 +33,10 @@ Highcharts.setOptions(highchartsOptions);
 
 app.use(HighChartsVue);
 
+// directives
+import clickOutsideDirective from "@/layout/directives/clickOutsideDirective";
+
+app.directive("click-outside", clickOutsideDirective);
+
 // mount
 app.mount("#app");

@@ -3,6 +3,7 @@ import {
 	formatDate,
 	getDifferenceMinutes,
 	timestampFromString,
+	humanizeTimeMs,
 } from "@/util/date";
 
 describe("Util: date", () => {
@@ -37,7 +38,7 @@ describe("Util: date", () => {
 		it("Return Unix timestamp from Date as String", () => {
 			const result: number = timestampFromString("2025-05-02T05:00:00+00:00");
 
-			expect(result).toBe(1746162000000);
+			expect(result).toStrictEqual(1746162000000);
 		});
 	});
 
@@ -47,7 +48,7 @@ describe("Util: date", () => {
 
 			const result: string = formatDate(testDate);
 
-			expect(result).toBe("2025-01-01");
+			expect(result).toStrictEqual("2025-01-01");
 		});
 
 		it("Custom YYYY-MM format", () => {
@@ -55,7 +56,24 @@ describe("Util: date", () => {
 
 			const result: string = formatDate(testDate, "YYYY-MM");
 
-			expect(result).toBe("2025-01");
+			expect(result).toStrictEqual("2025-01");
 		});
+	});
+
+	it("humanizeTimeMs", () => {
+		const recipe = humanizeTimeMs(190080000);
+		expect(recipe).toStrictEqual("2d 4h 48m");
+
+		const year = humanizeTimeMs(205390080000);
+		expect(year).toStrictEqual("6y 6m 4d 16h 48m");
+
+		const month = humanizeTimeMs(27390080000);
+		expect(month).toStrictEqual("10m 12d 20h 21m");
+
+		const hour = humanizeTimeMs(27390000);
+		expect(hour).toStrictEqual("7h 36m");
+
+		const nan = humanizeTimeMs(NaN);
+		expect(nan).toStrictEqual("∞");
 	});
 });

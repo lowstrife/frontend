@@ -1,3 +1,5 @@
+import { toRaw } from "vue";
+
 // Stores
 import { useGameDataStore } from "@/stores/gameDataStore";
 
@@ -15,13 +17,15 @@ export function useMaterialData() {
 	 * @returns {IMaterial} Material Data
 	 */
 	function getMaterial(ticker: string): IMaterial {
-		if (!Object.keys(gameDataStore.materials).includes(ticker)) {
-			throw new Error(
-				`No data: Material '${ticker}'. Ensure ticker is valid and game data has been loaded.`
-			);
-		}
+		const findMaterial: IMaterial | undefined = toRaw(
+			gameDataStore.materials[ticker]
+		);
 
-		return gameDataStore.materials[ticker];
+		if (findMaterial) return findMaterial;
+
+		throw new Error(
+			`No data: Material '${ticker}'. Ensure ticker is valid and game data has been loaded.`
+		);
 	}
 
 	return {
