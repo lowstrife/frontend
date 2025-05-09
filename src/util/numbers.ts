@@ -11,7 +11,7 @@ export function formatNumber(
 	decimals: number = 2,
 	optionalDecimals: boolean = false
 ): string {
-	if (value == Infinity) {
+	if (value === Infinity || isNaN(value)) {
 		return "∞";
 	}
 	if (!optionalDecimals) {
@@ -38,7 +38,7 @@ export function formatNumber(
  * @returns {string} formatted number as string
  */
 export function formatAmount(value: number): string {
-	if (value == Infinity) {
+	if (value == Infinity || isNaN(value)) {
 		return "∞";
 	}
 	return numbro(value).format({ thousandSeparated: true });
@@ -56,4 +56,25 @@ export function formatAmount(value: number): string {
  */
 export function clamp(value: number, min: number, max: number): number {
 	return Math.max(min, Math.min(max, value));
+}
+
+/**
+ * Checks a value against boundaries and returns a
+ * descriptor, used in planetary features
+ * @author jplacht
+ *
+ * @export
+ * @param {number} value Value
+ * @param {number} lower Lower Boundary
+ * @param {number} upper Upper Boundary
+ * @returns {BOUNDARY_DESCRIPTOR} "HIGH", "LOW", "NORMAL"
+ */
+export function boundaryDescriptor(
+	value: number,
+	lower: number,
+	upper: number
+): BOUNDARY_DESCRIPTOR {
+	if (value < lower) return "LOW";
+	else if (value > upper) return "HIGH";
+	else return "NORMAL";
 }

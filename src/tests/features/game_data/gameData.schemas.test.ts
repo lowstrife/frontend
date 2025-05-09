@@ -8,11 +8,11 @@ import {
 } from "@/features/game_data/gameData.schemas";
 
 // test data
-import recipes from "@/tests/features/game_data/test_data/api_data_recipes.json";
-import buildings from "@/tests/features/game_data/test_data/api_data_buildings.json";
-import materials from "@/tests/features/game_data/test_data/api_data_materials.json";
-import exchanges from "@/tests/features/game_data/test_data/api_data_exchanges.json";
-import planets from "@/tests/features/game_data/test_data/api_data_planets.json";
+import recipes from "@/tests/test_data/api_data_recipes.json";
+import buildings from "@/tests/test_data/api_data_buildings.json";
+import materials from "@/tests/test_data/api_data_materials.json";
+import exchanges from "@/tests/test_data/api_data_exchanges.json";
+import planets from "@/tests/test_data/api_data_planets.json";
 
 describe("RecipeSchema validation", () => {
 	recipes.forEach((recipe: any) => {

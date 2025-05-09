@@ -6,7 +6,7 @@ import { IMaterial } from "@/features/game_data/gameData.types";
 import { useMaterialData } from "@/features/game_data/useMaterialData";
 
 // test data
-import materials from "@/tests/features/game_data/test_data/api_data_materials.json";
+import materials from "@/tests/test_data/api_data_materials.json";
 
 describe("useMaterialData", () => {
 	let gameDataStore: any;

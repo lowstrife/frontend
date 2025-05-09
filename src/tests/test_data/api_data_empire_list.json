@@ -1,0 +1,52 @@
+[
+	{
+		"faction": "OUTSIDEREGION",
+		"permits_used": 1,
+		"permits_total": 3,
+		"uuid": "a208d74e-d07f-4722-8192-9b55d4140f58",
+		"name": "Share",
+		"use_fio_storage": false,
+		"baseplanners": [
+			{
+				"name": "Fabian Proxion",
+				"uuid": "5512c514-d53b-481e-8009-6b0a8615b212",
+				"planet_id": "UV-796b"
+			},
+			{
+				"name": "CAAP: Aceland PP3/PP4",
+				"uuid": "3b440416-e814-4c9a-9216-f4860cc1e316",
+				"planet_id": "QJ-684b"
+			},
+			{
+				"name": "Vallis Shared",
+				"uuid": "0fa56f16-a1cc-496a-9a39-bb93f172b9f4",
+				"planet_id": "OT-580c"
+			}
+		]
+	},
+	{
+		"faction": "MORIA",
+		"permits_used": 27,
+		"permits_total": 28,
+		"uuid": "32aed118-c4ed-4a4e-9eb4-3cf6aa0068da",
+		"name": "Sky Productions",
+		"use_fio_storage": true,
+		"baseplanners": [
+			{
+				"name": "Vallis Shared",
+				"uuid": "0fa56f16-a1cc-496a-9a39-bb93f172b9f4",
+				"planet_id": "OT-580c"
+			},
+			{
+				"name": "Demeter RCO",
+				"uuid": "c45efaea-e7c7-48f6-947b-7d439376aba4",
+				"planet_id": "KI-446b"
+			},
+			{
+				"name": "Montem Full",
+				"uuid": "44c6bfcb-75ae-4117-9983-da55cc211a30",
+				"planet_id": "OT-580b"
+			}
+		]
+	}
+]

@@ -1,0 +1,118 @@
+{
+	"PlanetId": "8403b6809cda4c6adf1362a5c2801ad0",
+	"PlanetNaturalId": "KW-688c",
+	"PlanetName": "Etherwind",
+	"SystemId": "239e36f2a61041e0952d9c9741c195c9",
+	"HasLocalMarket": true,
+	"HasChamberOfCommerce": true,
+	"HasWarehouse": true,
+	"HasAdministrationCenter": true,
+	"HasShipyard": true,
+	"Pressure": 0.3981054127216339,
+	"Surface": true,
+	"Temperature": 31.400123596191406,
+	"Fertility": -0.699999988079071,
+	"Gravity": 0.5614709854125977,
+	"FactionCode": null,
+	"FactionName": null,
+	"GovernorUserName": null,
+	"COGCProgramStatus": "ACTIVE",
+	"Resources": [
+		{
+			"MaterialId": "ec8dbb1d3f51d89c61b6f58fdd64a7f0",
+			"ResourceType": "LIQUID",
+			"Factor": 0.6000000238418579,
+			"DailyExtraction": 42.000001668930054,
+			"MaterialTicker": "H2O",
+			"ExtractionMax": 62.82984256744385
+		},
+		{
+			"MaterialId": "eeff5ee913d34354be84177847fbfe48",
+			"ResourceType": "MINERAL",
+			"Factor": 0.30000001192092896,
+			"DailyExtraction": 21.000000834465027,
+			"MaterialTicker": "SIO",
+			"ExtractionMax": 53.825785517692566
+		},
+		{
+			"MaterialId": "6e16dbf050b98d9c4fc9c615b3367a0f",
+			"ResourceType": "GASEOUS",
+			"Factor": 0.44999998807907104,
+			"DailyExtraction": 26.999999284744263,
+			"MaterialTicker": "O",
+			"ExtractionMax": 43.26020121574402
+		}
+	],
+	"COGCPrograms": [
+		{
+			"ProgramType": "ADVERTISING_RESOURCE_EXTRACTION",
+			"StartEpochMs": 1747141200904,
+			"EndEpochMs": 1747746000904
+		},
+		{
+			"ProgramType": "ADVERTISING_RESOURCE_EXTRACTION",
+			"StartEpochMs": 1746536400904,
+			"EndEpochMs": 1747141200904
+		},
+		{
+			"ProgramType": "ADVERTISING_RESOURCE_EXTRACTION",
+			"StartEpochMs": 1745931600904,
+			"EndEpochMs": 1746536400904
+		},
+		{
+			"ProgramType": "ADVERTISING_RESOURCE_EXTRACTION",
+			"StartEpochMs": 1745326800904,
+			"EndEpochMs": 1745931600904
+		},
+		{
+			"ProgramType": "ADVERTISING_RESOURCE_EXTRACTION",
+			"StartEpochMs": 1744722000904,
+			"EndEpochMs": 1745326800904
+		},
+		{
+			"ProgramType": "ADVERTISING_RESOURCE_EXTRACTION",
+			"StartEpochMs": 1741698000904,
+			"EndEpochMs": 1742302800904
+		},
+		{
+			"ProgramType": "ADVERTISING_RESOURCE_EXTRACTION",
+			"StartEpochMs": 1744117200904,
+			"EndEpochMs": 1744722000904
+		},
+		{
+			"ProgramType": "ADVERTISING_RESOURCE_EXTRACTION",
+			"StartEpochMs": 1742302800904,
+			"EndEpochMs": 1742907600904
+		},
+		{
+			"ProgramType": "ADVERTISING_RESOURCE_EXTRACTION",
+			"StartEpochMs": 1743512400904,
+			"EndEpochMs": 1744117200904
+		},
+		{
+			"ProgramType": "ADVERTISING_RESOURCE_EXTRACTION",
+			"StartEpochMs": 1742907600904,
+			"EndEpochMs": 1743512400904
+		}
+	],
+	"CheckDistances": null,
+	"Distances": [
+		{
+			"name": "Moria Station",
+			"distance": 6
+		},
+		{
+			"name": "Antares Station",
+			"distance": 7
+		},
+		{
+			"name": "Benten Station",
+			"distance": 4
+		},
+		{
+			"name": "Hortus Station",
+			"distance": 11
+		}
+	],
+	"COGCProgramActive": "ADVERTISING_RESOURCE_EXTRACTION"
+}

@@ -11,15 +11,15 @@ import {
 	callDataMultiplePlanets,
 	callDataPlanet,
 	callDataRecipes,
-} from "@/features/game_data/gameData";
+} from "@/features/game_data/gameData.api";
 
 // test data
-import recipes from "@/tests/features/game_data/test_data/api_data_recipes.json";
-import buildings from "@/tests/features/game_data/test_data/api_data_buildings.json";
-import materials from "@/tests/features/game_data/test_data/api_data_materials.json";
-import exchanges from "@/tests/features/game_data/test_data/api_data_exchanges.json";
-import planets from "@/tests/features/game_data/test_data/api_data_planets.json";
-import planet_single from "@/tests/features/game_data/test_data/api_data_planet_single.json";
+import recipes from "@/tests/test_data/api_data_recipes.json";
+import buildings from "@/tests/test_data/api_data_buildings.json";
+import materials from "@/tests/test_data/api_data_materials.json";
+import exchanges from "@/tests/test_data/api_data_exchanges.json";
+import planets from "@/tests/test_data/api_data_planets.json";
+import planet_single from "@/tests/test_data/api_data_planet_single.json";
 
 // mock apiService client
 const mock = new AxiosMockAdapter(apiService.client);

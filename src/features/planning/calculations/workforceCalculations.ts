@@ -57,6 +57,27 @@ const WORKFORCE_CONSUMPTION_MAP: WorkforceConsumptionMap = {
 	],
 };
 
+export const workforceTypeNames: string[] = [
+	"pioneer",
+	"settler",
+	"technician",
+	"engineer",
+	"scientist",
+];
+
+export const infrastructureBuildingNames: string[] = [
+	"HB1",
+	"HB2",
+	"HB3",
+	"HB4",
+	"HB5",
+	"HBB",
+	"HBC",
+	"HBM",
+	"HBL",
+	"STO",
+];
+
 export function useWorkforceCalculation() {
 	const { combineMaterialIOMinimal } = useMaterialIOUtil();
 
@@ -107,6 +128,15 @@ export function useWorkforceCalculation() {
 		return satisfaction * efficiency;
 	}
 
+	/**
+	 * Calculates the material consumption of a single plan
+	 * workforce based on its amount and luxury setup
+	 *
+	 * @author jplacht
+	 *
+	 * @param {IWorkforceElement} workforce Workforce
+	 * @returns {IMaterialIOMinimal[]} Consumption Material IO
+	 */
 	function calculateSingleWorkforceConsumption(
 		workforce: IWorkforceElement
 	): IMaterialIOMinimal[] {
@@ -152,6 +182,15 @@ export function useWorkforceCalculation() {
 		return materialIO;
 	}
 
+	/**
+	 * Calculates the workforce consumption for all workforce
+	 * types and combines it into a single material io.
+	 *
+	 * @author jplacht
+	 *
+	 * @param {IWorkforceRecord} workforce Workforce Data
+	 * @returns {IMaterialIOMinimal[]} Total Workforce Consumption
+	 */
 	function calculateWorkforceConsumption(
 		workforce: IWorkforceRecord
 	): IMaterialIOMinimal[] {

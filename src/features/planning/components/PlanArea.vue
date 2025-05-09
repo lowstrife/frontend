@@ -2,7 +2,7 @@
 	import { PropType, ref, Ref, watch } from "vue";
 
 	// Types & Interfaces
-	import { PlanResult } from "@/features/planning/usePlanCalculation.types";
+	import { IAreaResult } from "@/features/planning/usePlanCalculation.types";
 
 	// UI
 	import { NForm, NFormItem, NInputNumber } from "naive-ui";
@@ -13,7 +13,7 @@
 			required: true,
 		},
 		areaData: {
-			type: Object as PropType<PlanResult.AreaResult>,
+			type: Object as PropType<IAreaResult>,
 			required: true,
 		},
 	});

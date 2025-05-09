@@ -4,8 +4,6 @@ import { setActivePinia, createPinia } from "pinia";
 // Stores
 import { useGameDataStore } from "@/stores/gameDataStore";
 
-// Composables
-
 // Types & Interfaces
 import { useBonusCalculation } from "@/features/planning/calculations/bonusCalculations";
 import { IWorkforceRecord } from "@/features/planning/usePlanCalculation.types";
@@ -235,7 +233,7 @@ describe("Planning: Bonus Calculations ", async () => {
 	});
 
 	describe("calculateBuildingEfficiency", async () => {
-		it("Calculate all Efficiency factors and total", async () => {
+		it("Calculate all Efficiency factors and total, advertising COGC", async () => {
 			const { calculateBuildingEfficiency } = useBonusCalculation();
 
 			const testBuilding = {
@@ -335,6 +333,118 @@ describe("Planning: Bonus Calculations ", async () => {
 					{
 						efficiencyType: "EXPERT",
 						value: 1.1248,
+					},
+					{
+						efficiencyType: "WORKFORCE",
+						value: 1.3138888888888889,
+					},
+					{
+						efficiencyType: "FACTION",
+						value: 1.0438095238095237,
+					},
+				],
+			});
+		});
+		it("Calculate all Efficiency factors and total, workforce COGC", async () => {
+			const { calculateBuildingEfficiency } = useBonusCalculation();
+
+			const testBuilding = {
+				Ticker: "FRM",
+				Pioneers: 20,
+				Settlers: 50,
+				Technicians: 10,
+				Engineers: 5,
+				Scientists: 5,
+				Expertise: "METALLURGY",
+			};
+			const testPlanet = { Fertility: 0.85 };
+			const testCorpHQ = true;
+			const testCOGC = "SETTLERS";
+			const testWorkforce = {
+				pioneer: {
+					name: "pioneer",
+					required: 100,
+					capacity: 100,
+					left: 0,
+					lux1: true,
+					lux2: true,
+					efficiency: 1.25,
+				},
+				settler: {
+					name: "settler",
+					required: 100,
+					capacity: 100,
+					left: 0,
+					lux1: true,
+					lux2: true,
+					efficiency: 1.625,
+				},
+				technician: {
+					name: "technician",
+					required: 100,
+					capacity: 150,
+					left: 50,
+					lux1: true,
+					lux2: false,
+					efficiency: 0.4,
+				},
+				engineer: {
+					name: "engineer",
+					required: 100,
+					capacity: 150,
+					left: 50,
+					lux1: true,
+					lux2: false,
+					efficiency: 0.1,
+				},
+				scientist: {
+					name: "scientist",
+					required: 100,
+					capacity: 150,
+					left: 50,
+					lux1: true,
+					lux2: false,
+					efficiency: 1.5,
+				},
+			};
+			const testExpert = {
+				Metallurgy: { name: "Metallurgy", amount: 3, bonus: 0.1248 },
+			};
+			const testEmpire = {
+				faction: "MORIA",
+				permits_used: 20,
+				permits_total: 21,
+			};
+
+			const result = calculateBuildingEfficiency(
+				// @ts-expect-error mock test data
+				testBuilding,
+				testPlanet,
+				testCorpHQ,
+				testCOGC,
+				testWorkforce,
+				testExpert,
+				testEmpire
+			);
+
+			expect(result).toStrictEqual({
+				totalEfficiency: 1.0464015193509704,
+				elements: [
+					{
+						efficiencyType: "FERTILITY",
+						value: 0.5606060606060607,
+					},
+					{
+						efficiencyType: "HQ",
+						value: 1.1,
+					},
+					{
+						efficiencyType: "EXPERT",
+						value: 1.1248,
+					},
+					{
+						efficiencyType: "COGC",
+						value: 1.1,
 					},
 					{
 						efficiencyType: "WORKFORCE",

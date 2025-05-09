@@ -1,30 +1,29 @@
-// Services
-import { apiService } from "@/lib/apiService";
+// API
+import { callGetShared } from "@/features/planning_data/planData.api";
 
 // Stores
 import { useGameDataStore } from "@/stores/gameDataStore";
+import { usePlanningStore } from "@/stores/planningStore";
 
 // Typees & Interfaces
-import {
-	IPlan,
-	IPlanRouteParams,
-	IPlanShare,
-	PLAN_COGCPROGRAM_TYPE,
-} from "@/features/planning/usePlan.types";
-import {
-	PlanSchema,
-	PlanSchemaType,
-	PlanShareSchema,
-	PlanShareSchemaType,
-} from "@/features/planning/usePlan.schemas";
-import { PlanLoadError } from "@/features/planning/usePlan.errors";
+import { IPlanRouteParams } from "@/features/planning_data/usePlan.types";
+
+import { PlanLoadError } from "@/features/planning_data/usePlan.errors";
 import {
 	IPlanet,
 	PLANET_COGCPROGRAM_TYPE,
 } from "@/features/game_data/gameData.types";
+import {
+	IPlan,
+	IPlanEmpireElement,
+	IPlanLoadData,
+	IPlanShare,
+	PLAN_COGCPROGRAM_TYPE,
+} from "@/stores/planningStore.types";
 
 export function usePlan() {
 	const gameDataStore = useGameDataStore();
+	const planningStore = usePlanningStore();
 
 	/**
 	 * Loads a plan definition from given route parameters
@@ -39,12 +38,11 @@ export function usePlan() {
 	 */
 	async function loadDefinitionFromRouteParams(
 		routeParams: IPlanRouteParams
-	): Promise<IPlan> {
+	): Promise<IPlanLoadData> {
 		// shared plan, only shared uuid given
 		if (routeParams.sharedPlanUuid) {
-			const planData: IPlanShare = await apiService.get<PlanShareSchemaType>(
-				`/shared/${routeParams.sharedPlanUuid}`,
-				PlanShareSchema
+			const planData: IPlanShare = await callGetShared(
+				routeParams.sharedPlanUuid
 			);
 
 			// ensure planet is loaded
@@ -56,7 +54,10 @@ export function usePlan() {
 				throw new PlanLoadError("PLANET_FAILURE", "Error loading planet data.");
 			}
 
-			return planData.baseplanner;
+			return {
+				planData: planData.baseplanner,
+				empires: [],
+			};
 		}
 
 		// other routes must have the planets natural id in url
@@ -66,33 +67,42 @@ export function usePlan() {
 				"PlanetNaturalId is required to obtain plan data."
 			);
 		} else {
-			const planetLoadResult: boolean = await gameDataStore.performLoadPlanet(
-				routeParams.planetNaturalId
-			);
+			// Load Planet Data
 
-			if (!planetLoadResult) {
+			let planet: IPlanet | undefined = undefined;
+
+			try {
+				planet = await gameDataStore.getPlanet(routeParams.planetNaturalId);
+			} catch {
 				throw new PlanLoadError("PLANET_FAILURE", "Error loading planet data.");
 			}
 
-			const planet: IPlanet =
-				gameDataStore.planets[routeParams.planetNaturalId];
+			// Load Empire Data
+
+			const empireData: IPlanEmpireElement[] =
+				await planningStore.getAllEmpires();
 
 			// if no plan uuid is present, create a blank definition
 			if (!routeParams.planUuid) {
-				return createBlankDefinition(
-					routeParams.planetNaturalId,
-					planet.COGCProgramActive
-				);
+				return {
+					planData: createBlankDefinition(
+						routeParams.planetNaturalId,
+						planet.COGCProgramActive
+					),
+					empires: empireData,
+				};
 			}
 
 			// plan uuid is present, use the existing plan data
 			try {
-				const planData: IPlan = await apiService.get<PlanSchemaType>(
-					`/baseplanner/${routeParams.planUuid}`,
-					PlanSchema
+				const planData: IPlan = await planningStore.getPlan(
+					routeParams.planUuid
 				);
 
-				return planData;
+				return {
+					planData: planData,
+					empires: empireData,
+				};
 			} catch (err) {
 				console.error(err);
 				throw new PlanLoadError(
@@ -239,5 +249,7 @@ export function usePlan() {
 	return {
 		loadDefinitionFromRouteParams,
 		isEditDisabled,
+		mapPlanetToPlanType,
+		createBlankDefinition,
 	};
 }

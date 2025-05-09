@@ -1,0 +1,126 @@
+{
+	"uuid": "2a83a2ca-db0c-49d2-9c43-0db08c1675bb",
+	"name": "34",
+	"empires": [
+		{
+			"faction": "ANTARES",
+			"permits_used": 1,
+			"permits_total": 2,
+			"uuid": "f39c84a5-e7ba-4aeb-a04d-0618df58fd74",
+			"name": "CAAP",
+			"use_fio_storage": false,
+			"baseplanners": []
+		}
+	],
+	"cx_data": {
+		"name": "34",
+		"cx_empire": [
+			{
+				"type": "BUY",
+				"exchange": "NC1_AVG"
+			},
+			{
+				"type": "SELL",
+				"exchange": "PP7D_UNIVERSE"
+			}
+		],
+		"cx_planets": [
+			{
+				"planet": "OT-580c",
+				"preferences": [
+					{
+						"type": "BOTH",
+						"exchange": "PP7D_NC1"
+					}
+				]
+			},
+			{
+				"planet": "UV-796b",
+				"preferences": [
+					{
+						"type": "BUY",
+						"exchange": "NC1_AVG"
+					},
+					{
+						"type": "SELL",
+						"exchange": "PP30D_UNIVERSE"
+					}
+				]
+			},
+			{
+				"planet": "QJ-684b",
+				"preferences": [
+					{
+						"type": "BUY",
+						"exchange": "PP7D_AI1"
+					}
+				]
+			},
+			{
+				"planet": "QJ-650c",
+				"preferences": []
+			},
+			{
+				"planet": "ZV-194a",
+				"preferences": []
+			}
+		],
+		"ticker_empire": [
+			{
+				"ticker": "FEO",
+				"type": "BUY",
+				"value": 500.0
+			},
+			{
+				"ticker": "ABH",
+				"type": "BUY",
+				"value": 1.0
+			}
+		],
+		"ticker_planets": [
+			{
+				"planet": "OT-580c",
+				"preferences": [
+					{
+						"ticker": "LSE",
+						"type": "BOTH",
+						"value": 25.0
+					}
+				]
+			},
+			{
+				"planet": "UV-796b",
+				"preferences": [
+					{
+						"ticker": "C",
+						"type": "BUY",
+						"value": 333.0
+					},
+					{
+						"ticker": "C",
+						"type": "SELL",
+						"value": 123.0
+					}
+				]
+			},
+			{
+				"planet": "QJ-684b",
+				"preferences": [
+					{
+						"ticker": "STL",
+						"type": "SELL",
+						"value": 500.0
+					}
+				]
+			},
+			{
+				"planet": "QJ-650c",
+				"preferences": []
+			},
+			{
+				"planet": "ZV-194a",
+				"preferences": []
+			}
+		]
+	}
+}

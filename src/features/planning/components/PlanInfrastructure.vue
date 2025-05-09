@@ -2,7 +2,10 @@
 	import { PropType, ref, Ref, watch } from "vue";
 
 	// Types & Interfaces
-	import { PlanResult } from "@/features/planning/usePlanCalculation.types";
+	import {
+		IInfrastructureRecord,
+		INFRASTRUCTURE_TYPE,
+	} from "@/features/planning/usePlanCalculation.types";
 
 	// UI
 	import { NForm, NFormItem, NInputNumber } from "naive-ui";
@@ -13,7 +16,7 @@
 			required: true,
 		},
 		infrastructureData: {
-			type: Object as PropType<PlanResult.InfrastructureRecord>,
+			type: Object as PropType<IInfrastructureRecord>,
 			required: true,
 		},
 	});
@@ -21,26 +24,26 @@
 	const emit = defineEmits<{
 		(
 			e: "update:infrastructure",
-			infrastructure: PlanResult.INFRASTRUCTURE_TYPE,
+			infrastructure: INFRASTRUCTURE_TYPE,
 			value: number
 		): void;
 	}>();
 
 	// Local State
-	const localInfrastructureData: Ref<PlanResult.InfrastructureRecord> = ref(
+	const localInfrastructureData: Ref<IInfrastructureRecord> = ref(
 		props.infrastructureData
 	);
 
 	// Prop Watcher
 	watch(
 		() => props.infrastructureData,
-		(newData: PlanResult.InfrastructureRecord) => {
+		(newData: IInfrastructureRecord) => {
 			localInfrastructureData.value = newData;
 		},
 		{ deep: true }
 	);
 
-	const infrastructureOrder: PlanResult.INFRASTRUCTURE_TYPE[] = [
+	const infrastructureOrder: INFRASTRUCTURE_TYPE[] = [
 		"HB1",
 		"HBB",
 		"HB2",

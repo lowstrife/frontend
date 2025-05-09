@@ -1,37 +1,81 @@
+import { toRaw } from "vue";
+
 // Stores
 import { useGameDataStore } from "@/stores/gameDataStore";
+
+// Composables
+import { usePlanetData } from "@/features/game_data/usePlanetData";
+import { useMaterialIOUtil } from "@/features/planning/util/materialIO.util";
+import { useWorkforceCalculation } from "@/features/planning/calculations/workforceCalculations";
+
+// Util
+import { calculateExtraction } from "../planning/calculations/extractionCalculations";
 
 // Interfaces & Types
 import {
 	IBuilding,
+	IPlanet,
 	IPlanetResource,
 	IRecipe,
 	PLANET_RESOURCETYPE_TYPE,
 } from "@/features/game_data/gameData.types";
-import { PLAN_COGCPROGRAM_TYPE } from "@/features/planning/usePlan.types";
 import { SelectMixedOption } from "naive-ui/es/select/src/interface";
-import { calculateExtraction } from "../planning/calculations/extractionCalculations";
-import { toRaw } from "vue";
+import {
+	IMaterialIOMinimal,
+	IWorkforceRecord,
+} from "../planning/usePlanCalculation.types";
+import { PLAN_COGCPROGRAM_TYPE } from "@/stores/planningStore.types";
 
 export function useBuildingData() {
 	const gameDataStore = useGameDataStore();
 
+	const { getPlanetSpecialMaterials } = usePlanetData();
+	const { combineMaterialIOMinimal } = useMaterialIOUtil();
+	const { calculateWorkforceConsumption } = useWorkforceCalculation();
+
+	/**
+	 * Maps resource buildings to their respective extraction / collection
+	 * types to check against planetary resources
+	 * @author jplacht
+	 *
+	 * @type {Record<string, PLANET_RESOURCETYPE_TYPE>} e.g. {EXT: "MINERAL"}
+	 */
 	const resourceBuildingTicker: Record<string, PLANET_RESOURCETYPE_TYPE> = {
 		EXT: "MINERAL",
 		COL: "GASEOUS",
 		RIG: "LIQUID",
 	};
 
+	/**
+	 * Gets building data by building ticker from gamedata store
+	 *
+	 * @author jplacht
+	 *
+	 * @param {string} buildingTicker Ticker, e.g. "PP1"
+	 * @returns {IBuilding} Building Data
+	 */
 	function getBuilding(buildingTicker: string): IBuilding {
-		if (!Object.keys(gameDataStore.buildings).includes(buildingTicker)) {
-			throw new Error(
-				`No data: Building '${buildingTicker}'. Ensure ticker is valid and game data has been loaded.`
-			);
-		}
+		const findBuilding: IBuilding | undefined =
+			gameDataStore.buildings[buildingTicker];
 
-		return gameDataStore.buildings[buildingTicker];
+		if (findBuilding) return findBuilding;
+
+		throw new Error(
+			`No data: Building '${buildingTicker}'. Ensure ticker is valid and game data has been loaded.`
+		);
 	}
 
+	/**
+	 * Transforms all gamedata store building information to Naive UI
+	 * n-select component options, allows to check for COGC and only
+	 * return those options where the cogc matches
+	 *
+	 * @author jplacht
+	 *
+	 * @param {string[]} [existing=[]] Buildingticker to be excluded
+	 * @param {(PLAN_COGCPROGRAM_TYPE | undefined)} [cogc=undefined] COGC to match against
+	 * @returns {SelectMixedOption[]} {label: string, value: string}[]
+	 */
 	function getProductionBuildingOptions(
 		existing: string[] = [],
 		cogc: PLAN_COGCPROGRAM_TYPE | undefined = undefined
@@ -66,10 +110,26 @@ export function useBuildingData() {
 		return options;
 	}
 
+	/**
+	 * Gets all available recipes for given buildingTicker and
+	 * available planetary resources, creates new recipes for resource
+	 * extraction as those are not part of the recipe data payloads.
+	 *
+	 * @author jplacht
+	 *
+	 * @param {string} buildingTicker Buildigticker e.g. "EXT"
+	 * @param {IPlanetResource[]} [planetResources=[]] Planetary Resource
+	 * @returns {IRecipe[]} Recipe Data
+	 */
 	function getBuildingRecipes(
 		buildingTicker: string,
 		planetResources: IPlanetResource[] = []
 	): IRecipe[] {
+		/**
+		 * Resource extraction buildings can only hold recipe options if
+		 * there is a planetary resource available matching their potential
+		 * extraction type.
+		 */
 		if (Object.keys(resourceBuildingTicker).includes(buildingTicker)) {
 			// use planet resources to fetch recipes
 			if (planetResources.length === 0) return [];
@@ -107,10 +167,23 @@ export function useBuildingData() {
 				);
 			}
 
+			/**
+			 * Loose reactivity as recipe information gets transformed in
+			 * plan calculations. E.g. by setting the correct times based
+			 * on building efficiency
+			 */
 			return toRaw(gameDataStore.recipes[buildingTicker]);
 		}
 	}
 
+	/**
+	 * Sums up all building workforces
+	 *
+	 * @author jplacht
+	 *
+	 * @param {IBuilding} building Building Data
+	 * @returns {number} Sum of all workforce types
+	 */
 	function getTotalWorkforce(building: IBuilding): number {
 		return (
 			building.Pioneers +
@@ -121,10 +194,117 @@ export function useBuildingData() {
 		);
 	}
 
+	/**
+	 * Gets a buildings construction materials based on the
+	 * building costs itself and potentially existing additional
+	 * planetary building requirements based on the planets conditions.
+	 *
+	 * @author jplacht
+	 *
+	 * @param {IBuilding} building Building data
+	 * @param {(IPlanet | undefined)} planet Planet data
+	 * @returns {IMaterialIOMinimal[]} Array of construction materials
+	 */
+	function getBuildingConstructionMaterials(
+		building: IBuilding,
+		planet: IPlanet | undefined
+	): IMaterialIOMinimal[] {
+		const materials: IMaterialIOMinimal[] = [];
+
+		building.BuildingCosts.forEach((m) => {
+			materials.push({
+				ticker: m.CommodityTicker,
+				input: m.Amount,
+				output: 0,
+			});
+		});
+
+		// get and add additional planet construction materials
+		if (planet) {
+			return combineMaterialIOMinimal([
+				materials,
+				getPlanetSpecialMaterials(planet, building.AreaCost),
+			]);
+		} else {
+			return materials;
+		}
+	}
+
+	/**
+	 * Gets a buildings workforce consumption materials by using its
+	 * required workforce to fake a WorkforceRecord and calculate
+	 * consumption materials based on this
+	 *
+	 * @author jplacht
+	 *
+	 * @param {IBuilding} building Building Data
+	 * @param {boolean} [lux1=true] Lux1 given
+	 * @param {boolean} [lux2=true] Lux2 given
+	 * @returns {IMaterialIOMinimal[]} Workforce Consumption Material IO
+	 */
+	function getBuildingWorkforceMaterials(
+		building: IBuilding,
+		lux1: boolean = true,
+		lux2: boolean = true
+	): IMaterialIOMinimal[] {
+		// create a faked WorkforceRecord based on the buildings workforce
+		const buildingWorkforce: IWorkforceRecord = {
+			pioneer: {
+				name: "pioneer",
+				required: building.Pioneers,
+				capacity: building.Pioneers,
+				left: 0,
+				lux1: lux1,
+				lux2: lux2,
+				efficiency: 1,
+			},
+			settler: {
+				name: "settler",
+				required: building.Settlers,
+				capacity: building.Settlers,
+				left: 0,
+				lux1: lux1,
+				lux2: lux2,
+				efficiency: 1,
+			},
+			technician: {
+				name: "technician",
+				required: building.Technicians,
+				capacity: building.Technicians,
+				left: 0,
+				lux1: lux1,
+				lux2: lux2,
+				efficiency: 1,
+			},
+			engineer: {
+				name: "engineer",
+				required: building.Engineers,
+				capacity: building.Engineers,
+				left: 0,
+				lux1: lux1,
+				lux2: lux2,
+				efficiency: 1,
+			},
+			scientist: {
+				name: "scientist",
+				required: building.Scientists,
+				capacity: building.Scientists,
+				left: 0,
+				lux1: lux1,
+				lux2: lux2,
+				efficiency: 1,
+			},
+		};
+
+		return calculateWorkforceConsumption(buildingWorkforce);
+	}
+
 	return {
 		getBuilding,
 		getProductionBuildingOptions,
 		getBuildingRecipes,
 		getTotalWorkforce,
+		getBuildingConstructionMaterials,
+		getBuildingWorkforceMaterials,
 	};
 }

@@ -21,13 +21,14 @@ export function useExchangeData() {
 	 * @returns {IExchange} Exchange data
 	 */
 	function getExchangeTicker(tickerId: string): IExchange {
-		if (!Object.keys(gameDataStore.exchanges).includes(tickerId)) {
-			throw new Error(
-				`Exchange data for ticker '${tickerId}' not found. Ensure game data is loaded and ticker is valid.`
-			);
-		}
+		const findExchange: IExchange | undefined =
+			gameDataStore.exchanges[tickerId];
 
-		return gameDataStore.exchanges[tickerId];
+		if (findExchange) return findExchange;
+
+		throw new Error(
+			`Exchange data for ticker '${tickerId}' not found. Ensure game data is loaded and ticker is valid.`
+		);
 	}
 
 	/**

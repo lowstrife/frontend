@@ -1,6 +1,6 @@
-import { PLAN_COGCPROGRAM_TYPE } from "@/features/planning/usePlan.types";
-import { IRecipe } from "../game_data/gameData.types";
-import { IBuildingEfficiency } from "./calculations/bonusCalculations.types";
+import { IBuilding, IRecipe } from "@/features/game_data/gameData.types";
+import { IBuildingEfficiency } from "@/features/planning/calculations/bonusCalculations.types";
+import { PLAN_COGCPROGRAM_TYPE } from "@/stores/planningStore.types";
 
 export type WORKFORCE_TYPE =
 	| "pioneer"
@@ -85,6 +85,10 @@ export interface IProductionBuilding {
 	totalEfficiency: number;
 	efficiencyElements: IBuildingEfficiency[];
 	totalBatchTime: number;
+	constructionMaterials: IMaterialIOMinimal[];
+	constructionCost: number;
+	workforceMaterials: IMaterialIOMinimal[];
+	workforceDailyCost: number;
 }
 
 export interface IProductionResult {
@@ -97,7 +101,7 @@ export interface IMaterialIOMinimal {
 	output: number;
 }
 
-export interface IMaterialIO extends IMaterialIOMinimal {
+export interface IMaterialIOMaterial extends IMaterialIOMinimal {
 	delta: number;
 	individualWeight: number;
 	individualVolume: number;
@@ -105,11 +109,13 @@ export interface IMaterialIO extends IMaterialIOMinimal {
 	totalVolume: number;
 }
 
+export interface IMaterialIO extends IMaterialIOMaterial {
+	price: number;
+}
+
 export interface IPlanResult {
-	bonus: {
-		corphq: boolean;
-		cogc: PLAN_COGCPROGRAM_TYPE;
-	};
+	corphq: boolean;
+	cogc: PLAN_COGCPROGRAM_TYPE;
 	workforce: IWorkforceRecord;
 	area: IAreaResult;
 	infrastructure: IInfrastructureRecord;
@@ -117,3 +123,16 @@ export interface IPlanResult {
 	production: IProductionResult;
 	materialio: IMaterialIO[];
 }
+
+// Procomputational values
+export interface IPreBuildingInformation {
+	ticker: string;
+	buildingData: IBuilding;
+	buildingRecipes: IRecipe[];
+	constructionMaterials: IMaterialIOMinimal[];
+	constructionCost: number;
+	workforceMaterials: IMaterialIOMinimal[];
+}
+
+export interface IPreBuildingRecord
+	extends Record<string, IPreBuildingInformation> {}

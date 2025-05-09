@@ -44,6 +44,8 @@ export function formatDate(value: Date, format: string = "YYYY-MM-DD"): string {
 }
 
 export function humanizeTimeMs(value: number): string {
+	if (value === Infinity || isNaN(value)) return "∞";
+
 	const mduration = dayjs.duration(value, "milliseconds");
 
 	const years: number = mduration.years();

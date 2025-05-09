@@ -2,10 +2,10 @@ import { setActivePinia, createPinia } from "pinia";
 import { beforeAll, describe, expect, it } from "vitest";
 
 import { useGameDataStore } from "@/stores/gameDataStore";
+import { useExchangeData } from "@/features/game_data/useExchangeData";
 
 // test data
-import exchanges from "@/tests/features/game_data/test_data/api_data_exchanges.json";
-import { useExchangeData } from "@/features/game_data/useExchangeData";
+import exchanges from "@/tests/test_data/api_data_exchanges.json";
 
 describe("useExchangeData", () => {
 	describe("getExchangeTicker", () => {
@@ -57,13 +57,13 @@ describe("useExchangeData", () => {
 			expect(result.PP7D).toBeDefined();
 			expect(result.Supply).toBeDefined();
 			expect(result.Ask).toStrictEqual({
-				AI1: 3490,
-				CI1: 4350,
-				IC1: 4900,
-				NC1: 3890,
+				AI1: 3500,
+				CI1: 3850,
+				IC1: 4490,
+				NC1: 3980,
 			});
-			expect(result.Universe30D).toEqual(4042.1691183178923);
-			expect(result.Universe7D).toEqual(3741.6387937743198);
+			expect(result.Universe30D).toEqual(3910.124333455047);
+			expect(result.Universe7D).toEqual(3600.871248110732);
 		});
 	});
 });

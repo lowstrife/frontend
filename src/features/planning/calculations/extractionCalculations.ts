@@ -12,6 +12,17 @@ const DAILY_TYPE_SHARE: Record<PLANET_RESOURCETYPE_TYPE, number> = {
 	LIQUID: TIME_RIG / TOTALMSDAY,
 };
 
+/**
+ * Calculates a planets extraction value based on the
+ * resource type and their individual extraction durations.
+ *
+ * @author jplacht
+ *
+ * @export
+ * @param {PLANET_RESOURCETYPE_TYPE} resourceType Planet Resource Type
+ * @param {number} dailyExtraction Daily Extraction Value
+ * @returns {{ timeMs: number; extractionAmount: number }} Extraction Time and Amount
+ */
 export function calculateExtraction(
 	resourceType: PLANET_RESOURCETYPE_TYPE,
 	dailyExtraction: number

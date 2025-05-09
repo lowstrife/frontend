@@ -6,7 +6,10 @@
 	import { formatAmount, formatNumber } from "@/util/numbers";
 
 	// Types & Interfaces
-	import { PlanResult } from "@/features/planning/usePlanCalculation.types";
+	import {
+		IWorkforceRecord,
+		WORKFORCE_TYPE,
+	} from "@/features/planning/usePlanCalculation.types";
 
 	// UI
 	import { NTable, NButton } from "naive-ui";
@@ -18,7 +21,7 @@
 			required: true,
 		},
 		workforceData: {
-			type: Object as PropType<PlanResult.WorkforceRecord>,
+			type: Object as PropType<IWorkforceRecord>,
 			required: true,
 		},
 	});
@@ -26,21 +29,19 @@
 	const emit = defineEmits<{
 		(
 			e: "update:lux",
-			workforce: PlanResult.WORKFORCE_TYPE,
+			workforce: WORKFORCE_TYPE,
 			luxType: "lux1" | "lux2",
 			value: boolean
 		): void;
 	}>();
 
 	// Local State
-	const localWorkforceData: Ref<PlanResult.WorkforceRecord> = ref(
-		props.workforceData
-	);
+	const localWorkforceData: Ref<IWorkforceRecord> = ref(props.workforceData);
 
 	// Prop Watcher
 	watch(
 		() => props.workforceData,
-		(newData: PlanResult.WorkforceRecord) => {
+		(newData: IWorkforceRecord) => {
 			localWorkforceData.value = newData;
 		},
 		{ deep: true }

@@ -2,7 +2,7 @@
 	import { PropType, ref, Ref, watch } from "vue";
 
 	// Types & Interfaces
-	import { PlanResult } from "@/features/planning/usePlanCalculation.types";
+	import { IProductionBuilding } from "@/features/planning/usePlanCalculation.types";
 
 	// Components
 	import PlanProductionRecipe from "@/features/planning/components/PlanProductionRecipe.vue";
@@ -20,7 +20,7 @@
 			required: true,
 		},
 		buildingData: {
-			type: Object as PropType<PlanResult.ProductionBuilding>,
+			type: Object as PropType<IProductionBuilding>,
 			required: true,
 		},
 		buildingIndex: {
@@ -53,14 +53,12 @@
 	}>();
 
 	// Local State
-	const localBuildingData: Ref<PlanResult.ProductionBuilding> = ref(
-		props.buildingData
-	);
+	const localBuildingData: Ref<IProductionBuilding> = ref(props.buildingData);
 
 	// Prop Watcher
 	watch(
 		() => props.buildingData,
-		(newData: PlanResult.ProductionBuilding) => {
+		(newData: IProductionBuilding) => {
 			localBuildingData.value = newData;
 		},
 		{ deep: true }
@@ -152,7 +150,7 @@
 			<div>
 				<n-tooltip trigger="hover">
 					<template #trigger>
-						<div class="flex gap-x-1 hover:cursor-help">
+						<div class="flex gap-x-3 hover:cursor-help">
 							<span>Efficiency</span>
 							<span class="font-bold">
 								{{ formatNumber(localBuildingData.totalEfficiency * 100) }} %
@@ -170,9 +168,11 @@
 					</div>
 				</n-tooltip>
 			</div>
-			<div class="flex gap-x-1">
-				<span>Cost</span>
-				<span class="font-bold"> {{ formatNumber(123.45) }} $ </span>
+			<div class="flex gap-x-3">
+				<span>Construction Cost</span>
+				<span class="font-bold">
+					{{ formatNumber(localBuildingData.constructionCost * -1) }} $
+				</span>
 			</div>
 		</div>
 	</div>

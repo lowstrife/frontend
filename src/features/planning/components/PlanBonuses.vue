@@ -2,7 +2,7 @@
 	import { PropType, ref, Ref, watch } from "vue";
 
 	// Types & Interfaces
-	import { PLAN_COGCPROGRAM_TYPE } from "@/features/planning/usePlan.types";
+	import { PLAN_COGCPROGRAM_TYPE } from "@/stores/planningStore.types";
 
 	// UI
 	import { NForm, NFormItem, NCheckbox, NSelect } from "naive-ui";

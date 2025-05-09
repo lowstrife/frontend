@@ -12,6 +12,14 @@ const TOTALMSDAY: number = 24 * 60 * 60 * 1000;
 export function useBuildingCalculation() {
 	const { combineMaterialIOMinimal } = useMaterialIOUtil();
 
+	/**
+	 * Calculates a plans production buildings total material io based
+	 * on their running active recipe batches
+	 * @author jplacht
+	 *
+	 * @param {IProductionBuilding[]} data Production Buildings
+	 * @returns {IMaterialIOMinimal[]} Material IO
+	 */
 	function calculateMaterialIO(
 		data: IProductionBuilding[]
 	): IMaterialIOMinimal[] {

@@ -12,15 +12,27 @@ import {
 	IBuildingEfficiency,
 } from "@/features/planning/calculations/bonusCalculations.types";
 import {
-	IPlanEmpire,
-	PLAN_COGCPROGRAM_TYPE,
-} from "@/features/planning/usePlan.types";
-import {
 	EXPERT_TYPE,
 	IExpertElement,
 	IExpertRecord,
 	IWorkforceRecord,
 } from "@/features/planning/usePlanCalculation.types";
+import {
+	IPlanEmpire,
+	PLAN_COGCPROGRAM_TYPE,
+} from "@/stores/planningStore.types";
+
+export const expertNames: string[] = [
+	"Agriculture",
+	"Chemistry",
+	"Construction",
+	"Electronics",
+	"Food_Industries",
+	"Fuel_Refining",
+	"Manufacturing",
+	"Metallurgy",
+	"Resource_Extraction",
+];
 
 export function useBonusCalculation() {
 	const { getTotalWorkforce } = useBuildingData();
@@ -111,6 +123,17 @@ export function useBonusCalculation() {
 		return 0;
 	}
 
+	/**
+	 * Calculates the buildings workforce efficiency by using the
+	 * workforces efficiencies and the weighted efficiency by
+	 * the buildings actual individual workforce type requirements
+	 *
+	 * @author jplacht
+	 *
+	 * @param {IBuilding} building Building Data
+	 * @param {IWorkforceRecord} workforce Plan Workforce Result
+	 * @returns {number} Building Workforce Efficiency
+	 */
 	function calculateBuildingWorkforceEfficiency(
 		building: IBuilding,
 		workforce: IWorkforceRecord
@@ -132,12 +155,21 @@ export function useBonusCalculation() {
 		return efficiency;
 	}
 
+	/**
+	 * Calculates the buildings potential faction efficiency bonus
+	 * @author jplacht
+	 *
+	 * @param {IBuilding} building Building Data
+	 * @param {(IPlanEmpire | undefined)} empire Empire Data
+	 * @returns {(IBuildingEfficiency | undefined)} Faction Bonus
+	 */
 	function calculateBuildingFactionBonus(
 		building: IBuilding,
 		empire: IPlanEmpire | undefined
 	): IBuildingEfficiency | undefined {
 		if (!empire || building.Expertise === null) return undefined;
 
+		// multiplier using share of used and total available permits
 		const multiplier: number =
 			2 * (-2 * (empire.permits_used / empire.permits_total) + 3);
 
@@ -152,6 +184,25 @@ export function useBonusCalculation() {
 		};
 	}
 
+	/**
+	 * Calculates a buildings total efficiency by taking into account
+	 * all available factors that influence it like CorpHQ availability,
+	 * COGC programs, workforce efficiency, expert setup and empire information
+	 *
+	 * @author jplacht
+	 *
+	 * @param {IBuilding} building Building Data
+	 * @param {IPlanet} planet Planet Data
+	 * @param {boolean} corphq Is Corporation HQ on Planet
+	 * @param {PLAN_COGCPROGRAM_TYPE} cogc COGC
+	 * @param {IWorkforceRecord} workforce Workforce Efficiencies
+	 * @param {IExpertRecord} experts Expert Setup
+	 * @param {(IPlanEmpire | undefined)} empire Plan Empire
+	 * @returns {{
+	 * 		totalEfficiency: number;
+	 * 		elements: IBuildingEfficiency[];
+	 * 	}} Total Efficiency and individual contributing factors
+	 */
 	function calculateBuildingEfficiency(
 		building: IBuilding,
 		planet: IPlanet,
@@ -166,7 +217,7 @@ export function useBonusCalculation() {
 	} {
 		let elements: IBuildingEfficiency[] = [];
 
-		// fertility on farming buildings
+		// Fertility and Farming buildings
 		if (["FRM", "ORC"].includes(building.Ticker)) {
 			elements.push({
 				efficiencyType: "FERTILITY",
@@ -174,7 +225,7 @@ export function useBonusCalculation() {
 			});
 		}
 
-		// corporation HQ
+		// Corporation HQ
 		if (corphq) {
 			elements.push({
 				efficiencyType: "HQ",
@@ -182,7 +233,7 @@ export function useBonusCalculation() {
 			});
 		}
 
-		// Expert + COGC
+		// Expert + Advertising COGC
 		if (building.Expertise !== null) {
 			// COGC on programs
 			if (cogc === building.Expertise) {
@@ -203,13 +254,42 @@ export function useBonusCalculation() {
 			}
 		}
 
-		// workforce
+		// Workforce COGC
+		if (
+			[
+				"PIONEERS",
+				"SETTLERS",
+				"TECHNICIANS",
+				"ENGINEERS",
+				"SCIENTISTS",
+			].includes(cogc)
+		) {
+			// Create a MAP of Workforce COGC and buildings workforce
+			// number to then check for existance
+
+			const workforceMap: Record<string, number> = {
+				PIONEERS: building.Pioneers,
+				SETTLERS: building.Settlers,
+				TECHNICIANS: building.Technicians,
+				ENGINEERS: building.Engineers,
+				SCIENTISTS: building.Scientists,
+			};
+
+			if (workforceMap[cogc] > 0) {
+				elements.push({
+					efficiencyType: "COGC",
+					value: 1.1,
+				});
+			}
+		}
+
+		// Workforce
 		elements.push({
 			efficiencyType: "WORKFORCE",
 			value: calculateBuildingWorkforceEfficiency(building, workforce),
 		});
 
-		// faction bonus
+		// Faction Bonus
 		const factionEfficiency: IBuildingEfficiency | undefined =
 			calculateBuildingFactionBonus(building, empire);
 

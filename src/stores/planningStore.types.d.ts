@@ -1,14 +1,6 @@
-export interface IPlanRouteParams {
-	planetNaturalId: string | undefined;
-	planUuid: string | undefined;
-	sharedPlanUuid: string | undefined;
-}
-
-export type LOAD_STATUS =
-	| "LOADING"
-	| "DONE"
-	| "LOAD_FAILURE"
-	| "MISSING_PLANET_ID";
+interface IPlanRecord extends Record<string, IPlan> {}
+interface IEmpireRecord extends Record<string, IPlanEmpireElement> {}
+interface ICXRecord extends Record<string, ICX> {}
 
 export type PLAN_COGCPROGRAM_TYPE =
 	| "---"
@@ -112,6 +104,14 @@ export interface IPlanEmpire {
 	use_fio_storage: boolean;
 }
 
+export interface IPlanEmpireElement extends IPlanEmpire {
+	baseplanners: {
+		name: string;
+		uuid: string;
+		planet_id: string;
+	}[];
+}
+
 export interface IPlan {
 	name: string | undefined;
 	uuid: string | undefined;
@@ -129,4 +129,71 @@ export interface IPlanShare {
 	created_date: string;
 	view_count: number;
 	baseplanner: IPlan;
+}
+
+export interface IPlanLoadData {
+	planData: IPlan;
+	empires: IPlanEmpireElement[];
+}
+
+export type CX_EXCHANGE_OPTION_TYPE =
+	| "AI1_BUY"
+	| "AI1_SELL"
+	| "AI1_AVG"
+	| "IC1_BUY"
+	| "IC1_SELL"
+	| "IC1_AVG"
+	| "CI1_BUY"
+	| "CI1_SELL"
+	| "CI1_AVG"
+	| "CI2_BUY"
+	| "CI2_SELL"
+	| "CI2_AVG"
+	| "NC1_BUY"
+	| "NC1_SELL"
+	| "NC1_AVG"
+	| "NC2_BUY"
+	| "NC2_SELL"
+	| "NC2_AVG"
+	| "PP7D_AI1"
+	| "PP7D_IC1"
+	| "PP7D_CI1"
+	| "PP7D_CI2"
+	| "PP7D_NC1"
+	| "PP7D_NC2"
+	| "PP30D_AI1"
+	| "PP30D_IC1"
+	| "PP30D_CI1"
+	| "PP30D_CI2"
+	| "PP30D_NC1"
+	| "PP30D_NC2"
+	| "PP7D_UNIVERSE"
+	| "PP30D_UNIVERSE";
+
+export type CX_PREFERENCE_TYPE = "BUY" | "SELL" | "BOTH";
+
+export interface ICXDataExchangeOption {
+	type: CX_PREFERENCE_TYPE;
+	exchange: CX_EXCHANGE_OPTION_TYPE;
+}
+
+export interface ICXDataTickerOption {
+	type: CX_PREFERENCE_TYPE;
+	ticker: string;
+	value: number;
+}
+
+export interface ICXData {
+	name: string;
+	cx_empire: ICXDataExchangeOption[];
+	cx_planets: { planet: string; preferences: ICXDataExchangeOption[] }[];
+	ticker_empire: ICXDataTickerOption[];
+	ticker_planets: { planet: string; preferences: ICXDataTickerOption[] }[];
+}
+
+export interface ICX {
+	uuid: string;
+	name: string;
+	empires: IPlanEmpireElement[];
+	cx_data: ICXData;
 }

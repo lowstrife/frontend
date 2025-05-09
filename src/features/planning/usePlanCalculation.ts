@@ -5,25 +5,26 @@ import { useGameDataStore } from "@/stores/gameDataStore";
 
 // Composables
 import { useBuildingData } from "@/features/game_data/useBuildingData";
-import { useBonusCalculation } from "@/features/planning/calculations/bonusCalculations";
-import { useWorkforceCalculation } from "@/features/planning/calculations/workforceCalculations";
 import { useBuildingCalculation } from "@/features/planning/calculations/buildingCalculations";
 import { useMaterialIOUtil } from "@/features/planning/util/materialIO.util";
+import { usePrice } from "@/features/cx/usePrice";
 
-// Util
-import { clamp } from "@/util/numbers";
+// Calculation Utils
+import {
+	expertNames,
+	useBonusCalculation,
+} from "@/features/planning/calculations/bonusCalculations";
+import {
+	infrastructureBuildingNames,
+	useWorkforceCalculation,
+	workforceTypeNames,
+} from "@/features/planning/calculations/workforceCalculations";
+
+// Submodule composables
+import { usePlanCalculationHandlers } from "@/features/planning/usePlanCalculationHandlers";
+import { usePlanCalculationPreComputes } from "@/features/planning/usePlanCalculationPreComputes";
 
 // Types & Interfaces
-import {
-	IPlan,
-	IPlanData,
-	IPlanDataExpert,
-	IPlanDataInfrastructure,
-	IPlanDataPlanet,
-	IPlanDataWorkforce,
-	IPlanEmpire,
-	PLAN_COGCPROGRAM_TYPE,
-} from "@/features/planning/usePlan.types";
 import {
 	IBuilding,
 	IPlanet,
@@ -35,6 +36,7 @@ import {
 	IExpertRecord,
 	IInfrastructureRecord,
 	IMaterialIO,
+	IMaterialIOMaterial,
 	IMaterialIOMinimal,
 	INFRASTRUCTURE_TYPE,
 	IPlanResult,
@@ -46,88 +48,80 @@ import {
 	IWorkforceRecord,
 	WORKFORCE_TYPE,
 } from "@/features/planning/usePlanCalculation.types";
+import {
+	IPlan,
+	IPlanData,
+	IPlanDataBuilding,
+	IPlanDataExpert,
+	IPlanDataInfrastructure,
+	IPlanDataPlanet,
+	IPlanDataWorkforce,
+	IPlanEmpire,
+	IPlanEmpireElement,
+	PLAN_COGCPROGRAM_TYPE,
+} from "@/stores/planningStore.types";
 
 export function usePlanCalculation(
 	plan: Ref<IPlan>,
-	empireUuid: Ref<string | undefined> = ref(undefined)
+	empireUuid: Ref<string | undefined> = ref(undefined),
+	empireOptions: Ref<IPlanEmpireElement[] | undefined> = ref(undefined),
+	cxUuid: Ref<string | undefined> = ref(undefined)
 ) {
 	// stores
+
 	const gameDataStore = useGameDataStore();
 
+	// data references
+
+	const planName: Ref<string | undefined> = toRef(plan.value.name);
+	const data: Ref<IPlanData> = toRef(plan.value.baseplanner_data);
+	const planet: Ref<IPlanDataPlanet> = toRef(data.value.planet);
+	const planetNaturalId: Ref<string> = toRef(data.value.planet.planetid);
+	const empires: Ref<IPlanEmpire[]> = toRef([]);
+	const planEmpires: Ref<IPlanEmpire[]> = toRef(plan.value.empires);
+	const planetData: IPlanet = gameDataStore.planets[planet.value.planetid];
+	const buildings: Ref<IPlanDataBuilding[]> = toRef(data.value.buildings);
+
 	// composables
-	const { getBuilding, getBuildingRecipes } = useBuildingData();
+
+	const { getBuilding } = useBuildingData();
 	const { combineMaterialIOMinimal, enhanceMaterialIOMinimal } =
 		useMaterialIOUtil();
 	const { calculateExpertBonus, calculateBuildingEfficiency } =
 		useBonusCalculation();
 	const { calculateSatisfaction, calculateWorkforceConsumption } =
 		useWorkforceCalculation();
+	const { getMaterialIOTotalPrice, enhanceMaterialIOMaterial } = usePrice(
+		cxUuid,
+		planetNaturalId
+	);
 	const { calculateMaterialIO } = useBuildingCalculation();
 
-	// data references
-	const data: Ref<IPlanData> = toRef(plan.value.baseplanner_data);
-	const planet: Ref<IPlanDataPlanet> = toRef(data.value.planet);
-	const empires: Ref<IPlanEmpire[]> = toRef(plan.value.empires);
+	// pre-computations
+
+	const { computedActiveEmpire, computedBuildingInformation } =
+		usePlanCalculationPreComputes(
+			buildings,
+			cxUuid,
+			empireUuid,
+			empireOptions,
+			planetNaturalId,
+			planetData
+		);
+
+	// calculations
 
 	/**
-	 * Holds data of the currently active empire based on all available
-	 * empires and the empireUuid passed to this composable, will return
-	 * the first empire if none is selected but multiple are available
+	 * Calculates plan workforce based on infrastructure provisioning and
+	 * production building needs. This also includes the efficiency calculation
+	 * based on capacity and required workforce under given luxury provision.
+	 *
 	 * @author jplacht
 	 *
-	 * @type {ComputedRef<IPlanEmpire | undefined>}	Empire Information
+	 * @returns {Required<
+	 * 		Record<WORKFORCE_TYPE, IWorkforceElement>
+	 * 	>} Calculated Workforce Result
 	 */
-	const activeEmpire: ComputedRef<IPlanEmpire | undefined> = computed(() => {
-		if (empireUuid.value === undefined) {
-			if (empires.value.length > 0) return empires.value[0];
-			else return undefined;
-		} else {
-			const e: IPlanEmpire | undefined = empires.value.find(
-				(f) => f.uuid === empireUuid.value
-			);
-
-			if (e) return e;
-		}
-		return undefined;
-	});
-
-	// static data
-	const planetData: IPlanet = gameDataStore.planets[planet.value.planetid];
-
-	// helper
-	const workforceTypeNames: string[] = [
-		"pioneer",
-		"settler",
-		"technician",
-		"engineer",
-		"scientist",
-	];
-
-	const infrastructureBuildingNames: string[] = [
-		"HB1",
-		"HB2",
-		"HB3",
-		"HB4",
-		"HB5",
-		"HBB",
-		"HBC",
-		"HBM",
-		"HBL",
-		"STO",
-	];
-
-	const expertNames: string[] = [
-		"Agriculture",
-		"Chemistry",
-		"Construction",
-		"Electronics",
-		"Food_Industries",
-		"Fuel_Refining",
-		"Manufacturing",
-		"Metallurgy",
-		"Resource_Extraction",
-	];
-
 	function calculateWorkforceResult(): Required<
 		Record<WORKFORCE_TYPE, IWorkforceElement>
 	> {
@@ -207,6 +201,17 @@ export function usePlanCalculation(
 		return result;
 	}
 
+	/**
+	 * Calculates the plans area result by determining the total amount of
+	 * usable area based on permits and the used area by infrastructure
+	 * and production buildings. C
+	 *
+	 * @remark Core Modul Area of 25 is always included
+	 *
+	 * @author jplacht
+	 *
+	 * @returns {IAreaResult} Plan Area Result
+	 */
 	function calculateAreaResult(): IAreaResult {
 		// Core Module holds 25 area
 		let areaUsed: number = 25;
@@ -237,6 +242,14 @@ export function usePlanCalculation(
 		};
 	}
 
+	/**
+	 * Calculates a result record with all infrastructure buildings and
+	 * their currently used amount in the plan
+	 *
+	 * @author jplacht
+	 *
+	 * @returns {IInfrastructureRecord} Infrastructure Record
+	 */
 	function calculateInfrastructureResult(): IInfrastructureRecord {
 		const result: IInfrastructureRecord = Object.fromEntries(
 			infrastructureBuildingNames.map((key) => {
@@ -253,6 +266,15 @@ export function usePlanCalculation(
 		return result;
 	}
 
+	/**
+	 * Calculates the result for expert setup of the plan returning a
+	 * record with each expert type, its planned amount and the bonus
+	 * efficiency provided by it
+	 *
+	 * @author jplacht
+	 *
+	 * @returns {IExpertRecord} Expert Result Record
+	 */
 	function calculateExpertResult(): IExpertRecord {
 		const result: IExpertRecord = Object.fromEntries(
 			expertNames.map((key) => {
@@ -274,6 +296,19 @@ export function usePlanCalculation(
 		return result;
 	}
 
+	/**
+	 * Calculates plan production taking into account efficiency factors
+	 * for certain production lines, buildings, experts and workforce
+	 * based on the plans active recipes
+	 *
+	 * @author jplacht
+	 *
+	 * @param {boolean} corphq Has CORPHQ on planet
+	 * @param {PLAN_COGCPROGRAM_TYPE} cogc COGC value
+	 * @param {IWorkforceRecord} workforce Workforce result
+	 * @param {IExpertRecord} experts Plans experts
+	 * @returns {IProductionResult} Production Result
+	 */
 	function calculateProduction(
 		corphq: boolean,
 		cogc: PLAN_COGCPROGRAM_TYPE,
@@ -285,7 +320,8 @@ export function usePlanCalculation(
 		// add buildings from data
 		data.value.buildings.forEach((b) => {
 			// efficiency calculations
-			const buildingData: IBuilding = getBuilding(b.name);
+			const buildingData: IBuilding =
+				computedBuildingInformation.value[b.name].buildingData;
 
 			const { totalEfficiency, elements } = calculateBuildingEfficiency(
 				buildingData,
@@ -294,14 +330,12 @@ export function usePlanCalculation(
 				cogc,
 				workforce,
 				experts,
-				activeEmpire.value
+				computedActiveEmpire.value
 			);
 
 			const activeRecipes: IProductionBuildingRecipe[] = [];
-			const buildingRecipes: IRecipe[] = getBuildingRecipes(
-				b.name,
-				planetData.Resources
-			);
+			const buildingRecipes: IRecipe[] =
+				computedBuildingInformation.value[b.name].buildingRecipes;
 
 			// add currently active recipes
 			b.active_recipes.forEach((r) => {
@@ -338,23 +372,76 @@ export function usePlanCalculation(
 					(updateDailyShare.dailyShare = updateDailyShare.time / totalBatchTime)
 			);
 
+			// get construction materials
+			const constructionMaterials: IMaterialIOMinimal[] =
+				computedBuildingInformation.value[b.name].constructionMaterials;
+
+			// calculate construction costs
+			const constructionCost: number =
+				computedBuildingInformation.value[b.name].constructionCost;
+
+			const workforceMaterials: IMaterialIOMinimal[] =
+				computedBuildingInformation.value[b.name].workforceMaterials;
+			const workforceDailyCost: number = getMaterialIOTotalPrice(
+				workforceMaterials,
+				"BUY"
+			);
+
 			// get recipe options
-			const recipeOptions: IRecipeBuildingOption[] = getBuildingRecipes(
-				b.name,
-				planetData.Resources
-			).map((br) => {
-				return {
-					RecipeId: br.RecipeId,
-					BuildingTicker: br.BuildingTicker,
-					RecipeName: br.RecipeName,
-					// Time adjusted to Efficiency
-					TimeMs: br.TimeMs / totalEfficiency,
-					Inputs: br.Inputs,
-					Outputs: br.Outputs,
-					dailyRevenue: 0,
-					roi: 0,
-				};
-			});
+			const recipeOptions: IRecipeBuildingOption[] = buildingRecipes.map(
+				(br) => {
+					// calculate daily revenue
+					// output revenue
+					const dailyIncome: number = getMaterialIOTotalPrice(
+						br.Outputs.map((o) => {
+							return { ticker: o.Ticker, output: o.Amount, input: 0 };
+						}),
+						"SELL"
+					);
+					// input cost
+					const dailyCost: number = getMaterialIOTotalPrice(
+						br.Inputs.map((i) => {
+							return { ticker: i.Ticker, output: 0, input: i.Amount };
+						}),
+						"SELL"
+					);
+
+					/**
+					 * Daily Revenue of a recipe option:
+					 *
+					 * 	= Daily Income (selling recipe outputs)
+					 * 	- Daily Cost (buying recipe inputs)
+					 * 	- Building Degradation (1/180 of construction cost)
+					 * 	- Building Daily Workforce Cost (lux1 + lux2)
+					 */
+
+					const dailyRevenue: number =
+						dailyIncome -
+						dailyCost -
+						constructionCost * -1 * (1 / 180) -
+						-1 * workforceDailyCost;
+
+					/**
+					 * Recipe option ROI
+					 *
+					 * Time it takes for the recipes daily revenue to offset
+					 * the total construction cost of this building
+					 */
+					const roi: number = (constructionCost * -1) / dailyRevenue;
+
+					return {
+						RecipeId: br.RecipeId,
+						BuildingTicker: br.BuildingTicker,
+						RecipeName: br.RecipeName,
+						// Time adjusted to Efficiency
+						TimeMs: br.TimeMs / totalEfficiency,
+						Inputs: br.Inputs,
+						Outputs: br.Outputs,
+						dailyRevenue: dailyRevenue,
+						roi: roi,
+					};
+				}
+			);
 
 			const building: IProductionBuilding = {
 				name: b.name,
@@ -364,6 +451,10 @@ export function usePlanCalculation(
 				totalEfficiency: totalEfficiency,
 				efficiencyElements: elements,
 				totalBatchTime: totalBatchTime,
+				constructionMaterials: constructionMaterials,
+				constructionCost: constructionCost,
+				workforceMaterials: workforceMaterials,
+				workforceDailyCost: workforceDailyCost,
 			};
 
 			buildings.push(building);
@@ -375,209 +466,30 @@ export function usePlanCalculation(
 		};
 	}
 
-	// handler
+	// result composing
 
-	function handleUpdateCorpHQ(value: boolean): void {
-		planet.value.corphq = value;
-	}
-
-	function handleUpdateCOGC(value: PLAN_COGCPROGRAM_TYPE): void {
-		planet.value.cogc = value;
-	}
-
-	function handleUpdatePermits(value: number): void {
-		data.value.planet.permits = clamp(value, 1, 3);
-	}
-
-	function handleUpdateWorkforceLux(
-		workforce: WORKFORCE_TYPE,
-		luxType: "lux1" | "lux2",
-		value: boolean
-	): void {
-		const workforceData: IPlanDataWorkforce | undefined =
-			planet.value.workforce.find((e) => e.type == workforce);
-
-		if (workforceData) {
-			if (luxType === "lux1") {
-				workforceData.lux1 = value;
-			} else {
-				workforceData.lux2 = value;
-			}
-		}
-	}
-
-	function handleUpdateExpert(expert: EXPERT_TYPE, value: number): void {
-		const expertData: IPlanDataExpert | undefined = planet.value.experts.find(
-			(e) => e.type === expert
-		);
-
-		if (expertData) {
-			expertData.amount = clamp(value, 0, 5);
-		}
-	}
-
-	function handleUpdateInfrastructure(
-		infrastructure: INFRASTRUCTURE_TYPE,
-		value: number
-	): void {
-		const infData: IPlanDataInfrastructure | undefined =
-			data.value.infrastructure.find((i) => i.building === infrastructure);
-
-		if (infData) {
-			infData.amount = value;
-		}
-	}
-
-	function handleUpdateBuildingAmount(index: number, value: number): void {
-		// validate index
-		if (typeof data.value.buildings[index] === "undefined") {
-			throw new Error(`Building at index '${index}' does not exist.`);
-		}
-
-		data.value.buildings[index].amount = value;
-	}
-
-	function handleDeleteBuilding(index: number): void {
-		// validate index
-		if (typeof data.value.buildings[index] === "undefined") {
-			throw new Error(`Building at index '${index}' does not exist.`);
-		}
-
-		if (index === 0) {
-			data.value.buildings.shift();
-		} else {
-			data.value.buildings.splice(index, 1);
-		}
-	}
-
-	function handleCreateBuilding(ticker: string): void {
-		// validate building
-		const building: IBuilding = getBuilding(ticker);
-
-		data.value.buildings.push({
-			name: building.Ticker,
-			amount: 1,
-			active_recipes: [],
-		});
-	}
-
-	function handleUpdateBuildingRecipeAmount(
-		buildingIndex: number,
-		recipeIndex: number,
-		value: number
-	): void {
-		// validate building index
-		if (typeof data.value.buildings[buildingIndex] === "undefined") {
-			throw new Error(`Building at index '${buildingIndex}' does not exist.`);
-		}
-
-		// validate recipe index
-		if (
-			typeof data.value.buildings[buildingIndex].active_recipes[recipeIndex] ===
-			"undefined"
-		) {
-			throw new Error(
-				`Building at index '${buildingIndex}' has no recipe at index '${recipeIndex}.`
-			);
-		}
-
-		data.value.buildings[buildingIndex].active_recipes[recipeIndex].amount =
-			value;
-	}
-
-	function handleDeleteBuildingRecipe(
-		buildingIndex: number,
-		recipeIndex: number
-	): void {
-		// validate building index
-		if (typeof data.value.buildings[buildingIndex] === "undefined") {
-			throw new Error(`Building at index '${buildingIndex}' does not exist.`);
-		}
-
-		// validate recipe index
-		if (
-			typeof data.value.buildings[buildingIndex].active_recipes[recipeIndex] ===
-			"undefined"
-		) {
-			throw new Error(
-				`Building at index '${buildingIndex}' has no recipe at index '${recipeIndex}.`
-			);
-		}
-
-		if (recipeIndex === 0) {
-			data.value.buildings[buildingIndex].active_recipes.shift();
-		} else {
-			data.value.buildings[buildingIndex].active_recipes.splice(recipeIndex, 1);
-		}
-	}
-
-	function handleAddBuildingRecipe(buildingIndex: number): void {
-		// validate building index
-		if (typeof data.value.buildings[buildingIndex] === "undefined") {
-			throw new Error(`Building at index '${buildingIndex}' does not exist.`);
-		}
-
-		// ensure the building is also in the result + got recipe options
-		if (
-			typeof result.value.production.buildings[buildingIndex] === "undefined" ||
-			result.value.production.buildings[buildingIndex].recipeOptions.length ===
-				0
-		) {
-			throw new Error(
-				`Building at index '${buildingIndex} does not exist or has no recipe options.`
-			);
-		}
-
-		// add first option to the data
-		data.value.buildings[buildingIndex].active_recipes.push({
-			recipeid:
-				result.value.production.buildings[buildingIndex].recipeOptions[0]
-					.RecipeId,
-			amount: 1,
-		});
-	}
-
-	function handleChangeBuildingRecipe(
-		buildingIndex: number,
-		recipeIndex: number,
-		recipeId: string
-	): void {
-		// validate building index
-		if (typeof data.value.buildings[buildingIndex] === "undefined") {
-			throw new Error(`Building at index '${buildingIndex}' does not exist.`);
-		}
-
-		// validate recipe index
-		if (
-			typeof data.value.buildings[buildingIndex].active_recipes[recipeIndex] ===
-			"undefined"
-		) {
-			throw new Error(
-				`Building at index '${buildingIndex}' has no recipe at index '${recipeIndex}.`
-			);
-		}
-
-		// change recipeId at this point
-		data.value.buildings[buildingIndex].active_recipes[recipeIndex].recipeid =
-			recipeId;
-	}
-
-	// calculations
-
+	/**
+	 * Combines all result calculations into a single result definition
+	 * while also applying enhancements to data (e.g. prices on Material IO)
+	 * and structures for further use.
+	 *
+	 * @author jplacht
+	 *
+	 * @type {ComputedRef<IPlanResult>} Plan Calculation Result
+	 */
 	const result: ComputedRef<IPlanResult> = computed(() => {
 		// pre-calculate individual results
-		const bonusResult = {
-			corphq: planet.value.corphq,
-			cogc: planet.value.cogc,
-		};
+		const corpHQResult = planet.value.corphq;
+		const cogcResult = planet.value.cogc;
+
 		const workforceResult: IWorkforceRecord = calculateWorkforceResult();
 		const areaResult: IAreaResult = calculateAreaResult();
 		const infrastructureResult: IInfrastructureRecord =
 			calculateInfrastructureResult();
 		const expertResult: IExpertRecord = calculateExpertResult();
 		const productionResult: IProductionResult = calculateProduction(
-			bonusResult.corphq,
-			bonusResult.cogc,
+			corpHQResult,
+			cogcResult,
 			workforceResult,
 			expertResult
 		);
@@ -588,43 +500,41 @@ export function usePlanCalculation(
 		const productionMaterialIO: IMaterialIOMinimal[] =
 			productionResult.materialio;
 
-		// combina and enhance
+		// combine and enhance
 		const combinedMaterialIOMinimal: IMaterialIOMinimal[] =
 			combineMaterialIOMinimal([workforceMaterialIO, productionMaterialIO]);
-		const materialIOResult: IMaterialIO[] = enhanceMaterialIOMinimal(
+		const materialIOMaterial: IMaterialIOMaterial[] = enhanceMaterialIOMinimal(
 			combinedMaterialIOMinimal
 		);
+		const materialIO: IMaterialIO[] =
+			enhanceMaterialIOMaterial(materialIOMaterial);
 
 		// patch-in to full result
 		const resultData: IPlanResult = {
-			bonus: bonusResult,
+			corphq: corpHQResult,
+			cogc: cogcResult,
 			workforce: workforceResult,
 			area: areaResult,
 			infrastructure: infrastructureResult,
 			experts: expertResult,
 			production: productionResult,
-			materialio: materialIOResult,
+			materialio: materialIO,
 		};
 
 		return resultData;
 	});
 
+	// submodules
+	const handlers = usePlanCalculationHandlers(planet, data, planName, result);
+
 	return {
 		result,
-		activeEmpire,
-		// handler
-		handleUpdateCorpHQ,
-		handleUpdateCOGC,
-		handleUpdatePermits,
-		handleUpdateWorkforceLux,
-		handleUpdateInfrastructure,
-		handleUpdateExpert,
-		handleUpdateBuildingAmount,
-		handleDeleteBuilding,
-		handleCreateBuilding,
-		handleUpdateBuildingRecipeAmount,
-		handleDeleteBuildingRecipe,
-		handleAddBuildingRecipe,
-		handleChangeBuildingRecipe,
+		empires,
+		computedActiveEmpire,
+		planEmpires,
+		planName,
+		// precomputes
+		// submodules
+		...handlers,
 	};
 }

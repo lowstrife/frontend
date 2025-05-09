@@ -2,7 +2,10 @@
 	import { computed, PropType, ref, Ref, watch } from "vue";
 
 	// Types & Interfaces
-	import { PlanResult } from "@/features/planning/usePlanCalculation.types";
+	import {
+		EXPERT_TYPE,
+		IExpertRecord,
+	} from "@/features/planning/usePlanCalculation.types";
 
 	// Util
 	import { formatNumber } from "@/util/numbers";
@@ -17,22 +20,22 @@
 			required: true,
 		},
 		expertData: {
-			type: Object as PropType<PlanResult.ExpertRecord>,
+			type: Object as PropType<IExpertRecord>,
 			required: true,
 		},
 	});
 
 	const emit = defineEmits<{
-		(e: "update:expert", expert: PlanResult.EXPERT_TYPE, value: number): void;
+		(e: "update:expert", expert: EXPERT_TYPE, value: number): void;
 	}>();
 
 	// Local State
-	const localExpertData: Ref<PlanResult.ExpertRecord> = ref(props.expertData);
+	const localExpertData: Ref<IExpertRecord> = ref(props.expertData);
 
 	// Prop Watcher
 	watch(
 		() => props.expertData,
-		(newData: PlanResult.ExpertRecord) => {
+		(newData: IExpertRecord) => {
 			localExpertData.value = newData;
 		},
 		{ deep: true }
@@ -42,8 +45,7 @@
 		let total: number = 0;
 
 		Object.keys(localExpertData.value).forEach((expertKey) => {
-			total +=
-				localExpertData.value[expertKey as PlanResult.EXPERT_TYPE].amount;
+			total += localExpertData.value[expertKey as EXPERT_TYPE].amount;
 		});
 
 		return total;

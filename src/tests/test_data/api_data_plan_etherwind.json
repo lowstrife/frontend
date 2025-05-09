@@ -1,0 +1,226 @@
+{
+	"name": "EW COF RAT DW C",
+	"uuid": "41094cb6-c4bc-429f-b8c8-b81d02b3811c",
+	"planet_id": "KW-688c",
+	"faction": "MORIA",
+	"permits_used": 24,
+	"permits_total": 24,
+	"override_empire": false,
+	"baseplanner_data": {
+		"planet": {
+			"planetid": "KW-688c",
+			"permits": 3,
+			"corphq": false,
+			"cogc": "RESOURCE_EXTRACTION",
+			"experts": [
+				{
+					"type": "Agriculture",
+					"amount": 3
+				},
+				{
+					"type": "Chemistry",
+					"amount": 0
+				},
+				{
+					"type": "Construction",
+					"amount": 0
+				},
+				{
+					"type": "Electronics",
+					"amount": 0
+				},
+				{
+					"type": "Food_Industries",
+					"amount": 2
+				},
+				{
+					"type": "Fuel_Refining",
+					"amount": 0
+				},
+				{
+					"type": "Manufacturing",
+					"amount": 0
+				},
+				{
+					"type": "Metallurgy",
+					"amount": 0
+				},
+				{
+					"type": "Resource_Extraction",
+					"amount": 1
+				}
+			],
+			"workforce": [
+				{
+					"type": "pioneer",
+					"lux1": true,
+					"lux2": true
+				},
+				{
+					"type": "settler",
+					"lux1": true,
+					"lux2": true
+				},
+				{
+					"type": "technician",
+					"lux1": false,
+					"lux2": false
+				},
+				{
+					"type": "engineer",
+					"lux1": false,
+					"lux2": false
+				},
+				{
+					"type": "scientist",
+					"lux1": false,
+					"lux2": false
+				}
+			]
+		},
+		"infrastructure": [
+			{
+				"building": "HB1",
+				"amount": 22
+			},
+			{
+				"building": "HB2",
+				"amount": 3
+			},
+			{
+				"building": "HB3",
+				"amount": 0
+			},
+			{
+				"building": "HB4",
+				"amount": 0
+			},
+			{
+				"building": "HB5",
+				"amount": 0
+			},
+			{
+				"building": "HBB",
+				"amount": 0
+			},
+			{
+				"building": "HBC",
+				"amount": 0
+			},
+			{
+				"building": "HBM",
+				"amount": 0
+			},
+			{
+				"building": "HBL",
+				"amount": 0
+			},
+			{
+				"building": "STO",
+				"amount": 1
+			}
+		],
+		"buildings": [
+			{
+				"name": "EXT",
+				"amount": 1,
+				"active_recipes": [
+					{
+						"recipeid": "EXT#SIO",
+						"amount": 1
+					}
+				]
+			},
+			{
+				"name": "FP",
+				"amount": 19,
+				"active_recipes": [
+					{
+						"recipeid": "FP#10xH2O=>7xDW",
+						"amount": 2
+					},
+					{
+						"recipeid": "FP#1xCAF 3xDW=>3xCOF",
+						"amount": 1
+					},
+					{
+						"recipeid": "FP#1xMUS 1xVEG 1xMAI=>10xRAT",
+						"amount": 1
+					}
+				]
+			},
+			{
+				"name": "HYF",
+				"amount": 11,
+				"active_recipes": [
+					{
+						"recipeid": "HYF#22xH2O 3xNS=>2xCAF",
+						"amount": 6
+					},
+					{
+						"recipeid": "HYF#14xH2O 1xNS=>8xHCP",
+						"amount": 3
+					},
+					{
+						"recipeid": "HYF#4xNS=>12xMUS",
+						"amount": 1
+					},
+					{
+						"recipeid": "HYF#16xH2O 1xNS=>6xVEG",
+						"amount": 2
+					},
+					{
+						"recipeid": "HYF#20xH2O 2xNS=>12xMAI",
+						"amount": 2
+					}
+				]
+			},
+			{
+				"name": "INC",
+				"amount": 7,
+				"active_recipes": [
+					{
+						"recipeid": "INC#4xHCP 2xMAI=>4xC",
+						"amount": 1
+					}
+				]
+			},
+			{
+				"name": "RIG",
+				"amount": 21,
+				"active_recipes": [
+					{
+						"recipeid": "RIG#H2O",
+						"amount": 1
+					}
+				]
+			}
+		]
+	},
+	"empires": [
+		{
+			"faction": "MORIA",
+			"permits_used": 25,
+			"permits_total": 28,
+			"uuid": "cfddf9ec-6f9b-4c74-affb-bd55fd1f8aa6",
+			"name": "PRUN REAL",
+			"use_fio_storage": true
+		},
+		{
+			"faction": "MORIA",
+			"permits_used": 26,
+			"permits_total": 26,
+			"uuid": "c92db9b8-ef3b-44c4-9fb5-a61964f6fc5a",
+			"name": "PRUN Expand #2",
+			"use_fio_storage": false
+		},
+		{
+			"faction": "MORIA",
+			"permits_used": 27,
+			"permits_total": 28,
+			"uuid": "32aed118-c4ed-4a4e-9eb4-3cf6aa0068da",
+			"name": "Sky Productions",
+			"use_fio_storage": true
+		}
+	]
+}

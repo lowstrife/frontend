@@ -2,7 +2,10 @@
 	import { PropType, ref, Ref, watch } from "vue";
 
 	// Types & Interfaces
-	import { PlanResult } from "@/features/planning/usePlanCalculation.types";
+	import {
+		IProductionBuildingRecipe,
+		IRecipeBuildingOption,
+	} from "@/features/planning/usePlanCalculation.types";
 
 	// Util
 	import { humanizeTimeMs } from "@/util/date";
@@ -21,7 +24,7 @@
 			required: true,
 		},
 		recipeData: {
-			type: Object as PropType<PlanResult.ProductionBuildingRecipe>,
+			type: Object as PropType<IProductionBuildingRecipe>,
 			required: true,
 		},
 		recipeIndex: {
@@ -29,7 +32,7 @@
 			required: true,
 		},
 		recipeOptions: {
-			type: Array as PropType<PlanResult.IRecipeBuildingOption[]>,
+			type: Array as PropType<IRecipeBuildingOption[]>,
 			required: true,
 		},
 	});
@@ -41,10 +44,8 @@
 	}>();
 
 	// Local State
-	const localRecipeData: Ref<PlanResult.ProductionBuildingRecipe> = ref(
-		props.recipeData
-	);
-	const localRecipeOptions: Ref<PlanResult.IRecipeBuildingOption[]> = ref(
+	const localRecipeData: Ref<IProductionBuildingRecipe> = ref(props.recipeData);
+	const localRecipeOptions: Ref<IRecipeBuildingOption[]> = ref(
 		props.recipeOptions
 	);
 
@@ -56,7 +57,7 @@
 	// Prop Watcher
 	watch(
 		() => props.recipeData,
-		(newData: PlanResult.ProductionBuildingRecipe) => {
+		(newData: IProductionBuildingRecipe) => {
 			localRecipeData.value = newData;
 			localRecipeAmount.value = newData.amount;
 		},
@@ -64,7 +65,7 @@
 	);
 	watch(
 		() => props.recipeOptions,
-		(newData: PlanResult.IRecipeBuildingOption[]) => {
+		(newData: IRecipeBuildingOption[]) => {
 			localRecipeOptions.value = newData;
 		},
 		{ deep: true }
@@ -121,7 +122,10 @@
 			class="relative z-10"
 			:class="refShowRecipeOptions ? 'visible' : 'hidden'"
 		>
-			<n-table class="absolute border border-pp-border !bg-black" striped>
+			<n-table
+				class="absolute lg:!min-w-[500px] border border-pp-border !bg-black"
+				striped
+			>
 				<thead>
 					<tr>
 						<th>Input</th>
@@ -169,8 +173,32 @@
 								/>
 							</div>
 						</td>
-						<td>{{ formatNumber(recipe.dailyRevenue) }} $</td>
-						<td>{{ formatNumber(recipe.roi) }} d</td>
+						<td
+							:class="
+								recipe.dailyRevenue >= 0 ? '!text-positive' : '!text-negative'
+							"
+						>
+							{{ formatNumber(recipe.dailyRevenue) }} $
+						</td>
+						<td :class="recipe.roi >= 0 ? '!text-positive' : '!text-negative'">
+							{{ formatNumber(recipe.roi) }} d
+						</td>
+					</tr>
+				</tbody>
+				<tbody>
+					<tr>
+						<td colspan="5" class="text-xs !p-2 !text-white/60 !border-t-1">
+							<strong>Revenue / Day</strong> is calculated by taking the daily
+							income generated from a recipe and subtracting both the daily
+							workforce cost (all luxuries provided) and the daily building
+							degradation cost (1/180th of the construction cost). The income
+							from the recipe is based on the difference between the input
+							material costs and the output material values.
+							<strong>ROI (Payback)</strong> is the time required for a
+							continuously operating recipe to generate enough revenue to offset
+							the building's construction cost. This considers daily degradation
+							and workforce costs as well.
+						</td>
 					</tr>
 				</tbody>
 			</n-table>

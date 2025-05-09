@@ -1,3 +1,4 @@
+import { ref } from "vue";
 import { setActivePinia, createPinia } from "pinia";
 import { beforeAll, describe, expect, it } from "vitest";
 
@@ -6,12 +7,13 @@ import { useGameDataStore } from "@/stores/gameDataStore";
 
 // Composables
 import { useMaterialIOUtil } from "@/features/planning/util/materialIO.util";
+import { usePrice } from "@/features/cx/usePrice";
 
 // Types & Interfaces
 import { IMaterialIOMinimal } from "@/features/planning/usePlanCalculation.types";
 
 // test data
-import materials from "@/tests/features/game_data/test_data/api_data_materials.json";
+import materials from "@/tests/test_data/api_data_materials.json";
 
 describe("Util: materialIO ", async () => {
 	let gameDataStore: any;
@@ -127,5 +129,28 @@ describe("Util: materialIO ", async () => {
 		// sorted alphabetically
 		expect(result[0].ticker).toBe("C");
 		expect(result[1].ticker).toBe("H2O");
+	});
+
+	it("enhanceMaterialIOMaterial", async () => {
+		const { enhanceMaterialIOMaterial } = usePrice(
+			ref(undefined),
+			ref(undefined)
+		);
+
+		gameDataStore.exchanges["OVE.PP30D_UNIVERSE"] = { PriceAverage: 10 };
+
+		// SELL
+		const resultSell = enhanceMaterialIOMaterial(
+			// @ts-expect-error mock data
+			[{ ticker: "OVE", delta: 1 }]
+		);
+		// BUY
+		const resultBuy = enhanceMaterialIOMaterial(
+			// @ts-expect-error mock data
+			[{ ticker: "OVE", delta: -1 }]
+		);
+
+		expect(resultSell).toStrictEqual([{ ticker: "OVE", delta: 1, price: 10 }]);
+		expect(resultBuy).toStrictEqual([{ ticker: "OVE", delta: -1, price: -10 }]);
 	});
 });

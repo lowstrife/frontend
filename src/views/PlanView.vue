@@ -2,12 +2,14 @@
 	import { PropType, ref, type Ref } from "vue";
 
 	// Types & Interfaces
-	import { IPlan } from "@/features/planning/usePlan.types";
+	import { IPlan, IPlanEmpireElement } from "@/stores/planningStore.types";
 	import { IPlanet } from "@/features/game_data/gameData.types";
 
 	// Composables
 	import { usePlanetData } from "@/features/game_data/usePlanetData";
 	const { getPlanet } = usePlanetData();
+	import { useCXData } from "@/features/cx/useCXData";
+	const { findEmpireCXUuid } = useCXData();
 
 	// Util
 	import { formatNumber } from "@/util/numbers";
@@ -20,22 +22,17 @@
 	import PlanInfrastructure from "@/features/planning/components/PlanInfrastructure.vue";
 	import PlanExperts from "@/features/planning/components/PlanExperts.vue";
 	import PlanProduction from "@/features/planning/components/PlanProduction.vue";
+	import PlanMaterialIO from "@/features/planning/components/PlanMaterialIO.vue";
+	import PlanConfiguration from "@/features/planning/components/PlanConfiguration.vue";
 
 	// UI
-	import {
-		NForm,
-		NFormItem,
-		NInput,
-		NSelect,
-		NTable,
-		NButton,
-		NIcon,
-		NTooltip,
-	} from "naive-ui";
+	import { NButton, NIcon, NTooltip } from "naive-ui";
 
 	import {
 		AutoAwesomeMosaicOutlined,
 		AutoAwesomeMosaicFilled,
+		ShoppingBasketSharp,
+		AttachMoneySharp,
 	} from "@vicons/material";
 
 	const props = defineProps({
@@ -48,15 +45,26 @@
 			type: Object as PropType<IPlan>,
 			required: true,
 		},
+		empireList: {
+			type: Array as PropType<IPlanEmpireElement[]>,
+			required: false,
+		},
 	});
 
 	const refPlanData: Ref<IPlan> = ref(props.planData);
+	const refEmpireList: Ref<IPlanEmpireElement[] | undefined> = ref(
+		props.empireList
+	);
+	const refEmpireUuid: Ref<string | undefined> = ref(undefined);
+	const refCXUuid: Ref<string | undefined> = ref(undefined);
 
 	import { usePlanCalculation } from "@/features/planning/usePlanCalculation";
-	import { resourceLimits } from "worker_threads";
+
 	const {
 		result,
-		activeEmpire,
+		planName,
+		computedActiveEmpire,
+		planEmpires,
 		handleUpdateCorpHQ,
 		handleUpdateCOGC,
 		handleUpdatePermits,
@@ -70,12 +78,32 @@
 		handleDeleteBuildingRecipe,
 		handleAddBuildingRecipe,
 		handleChangeBuildingRecipe,
-	} = usePlanCalculation(refPlanData);
+		handleChangePlanName,
+	} = usePlanCalculation(refPlanData, refEmpireUuid, refEmpireList, refCXUuid);
 
 	const planetData: IPlanet = getPlanet(props.planData.planet_id);
-	const refPlanName: Ref<string> = ref("My awesome plan");
 
 	const refVisualShowConfiguration: Ref<boolean> = ref(true);
+	const refMaterialIOShowBasked: Ref<boolean> = ref(false);
+
+	/**
+	 * Handle initial empire uuid assignment
+	 *
+	 * Option A: no empire list => undefined
+	 * Option B: planData has empires in list, use first uuid
+	 * Option C: empire list => use first element
+	 * Fallback: undefined
+	 */
+	if (!props.empireList) {
+		refEmpireUuid.value = undefined;
+	} else if (planEmpires.value.length > 0) {
+		refEmpireUuid.value = planEmpires.value[0].uuid;
+		// update cx uuid
+		refCXUuid.value = findEmpireCXUuid(refEmpireUuid.value);
+	} else if (props.empireList && props.empireList.length > 0) {
+		refEmpireUuid.value = props.empireList[0].uuid;
+		refCXUuid.value = findEmpireCXUuid(refEmpireUuid.value);
+	}
 </script>
 
 <template>
@@ -89,21 +117,20 @@
 		>
 			<div class="p-6">
 				<h2 class="text-white/80 font-bold text-lg pb-3">Configuration</h2>
-				<n-form
-					label-placement="left"
-					label-width="auto"
-					label-align="left"
-					size="small"
-				>
-					<n-form-item label="Name">
-						<n-input v-model:value="refPlanName" placeholder="Plan Name" />
-					</n-form-item>
-					<n-form-item label="Empire">
-						<n-select
-							:options="[{ label: 'My Empire' }, { label: 'My 2nd Empire' }]"
-						/>
-					</n-form-item>
-				</n-form>
+				<PlanConfiguration
+					:disabled="disabled"
+					:plan-name="planName"
+					:empire-options="refEmpireList"
+					:active-empire="computedActiveEmpire"
+					:plan-empires="planEmpires"
+					v-on:update:active-empire="
+						(empireUuid: string) => {
+							refEmpireUuid = empireUuid;
+							refCXUuid = findEmpireCXUuid(empireUuid);
+						}
+					"
+					v-on:update:plan-name="handleChangePlanName"
+				/>
 			</div>
 
 			<div class="p-6 pt-0">
@@ -127,8 +154,8 @@
 
 				<PlanBonuses
 					:disabled="disabled"
-					:corphq="result.bonus.corphq"
-					:cogc="result.bonus.cogc"
+					:corphq="result.corphq"
+					:cogc="result.cogc"
 					v-on:update:corphq="handleUpdateCorpHQ"
 					v-on:update:cogc="handleUpdateCOGC"
 				/>
@@ -224,7 +251,7 @@
 						<PlanProduction
 							:disabled="disabled"
 							:production-data="result.production"
-							:cogc="result.bonus.cogc"
+							:cogc="result.cogc"
 							v-on:update:building:amount="handleUpdateBuildingAmount"
 							v-on:delete:building="handleDeleteBuilding"
 							v-on:create:building="handleCreateBuilding"
@@ -239,45 +266,25 @@
 				</div>
 				<div>
 					<div class="sticky top-3">
-						<h2 class="text-white/80 font-bold text-lg pb-3">Material I/O</h2>
-						<n-table striped>
-							<thead>
-								<tr>
-									<th></th>
-									<th>Input</th>
-									<th>Output</th>
-									<th>Δ</th>
-									<th>$ / day</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr
-									v-for="material in result.materialio"
-									:key="material.ticker"
-								>
-									<td>
-										<MaterialTile
-											:ticker="material.ticker"
-											:disable-drawer="false"
-										/>
-									</td>
-									<td :class="material.input === 0 ? '!text-white/20' : ''">
-										{{ formatNumber(material.input) }}
-									</td>
-									<td :class="material.output === 0 ? '!text-white/20' : ''">
-										{{ formatNumber(material.output) }}
-									</td>
-									<td
-										:class="
-											material.delta > 0 ? '!text-positive' : '!text-negative'
-										"
-									>
-										{{ formatNumber(material.delta) }}
-									</td>
-									<td class="!text-negative">N/A</td>
-								</tr>
-							</tbody>
-						</n-table>
+						<h2
+							class="text-white/80 font-bold text-lg pb-3 flex justify-between child:my-auto"
+						>
+							<div>Material I/O</div>
+							<n-button
+								size="tiny"
+								secondary
+								@click="refMaterialIOShowBasked = !refMaterialIOShowBasked"
+							>
+								<template #icon>
+									<ShoppingBasketSharp v-if="!refMaterialIOShowBasked" />
+									<AttachMoneySharp v-else />
+								</template>
+							</n-button>
+						</h2>
+						<PlanMaterialIO
+							:material-i-o-data="result.materialio"
+							:show-basked="refMaterialIOShowBasked"
+						/>
 					</div>
 				</div>
 			</div>

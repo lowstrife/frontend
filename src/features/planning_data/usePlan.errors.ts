@@ -1,4 +1,3 @@
-
 /**
  * Custom Plan Loading Error
  * @author jplacht
@@ -14,7 +13,9 @@ export class PlanLoadError extends Error {
 			| "UNIMPLEMENTED"
 			| "MISSING_PLANET_ID"
 			| "PLANET_FAILURE"
-			| "API_FAILURE",
+			| "EMPIRE_FAILURE"
+			| "API_FAILURE"
+			| "UNKNOWN",
 		message: string
 	) {
 		super(message);

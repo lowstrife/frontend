@@ -1,15 +1,15 @@
 <script setup lang="ts">
 	import { PropType, ref, Ref, watch } from "vue";
 
-	// Types & Interfaces
-	import { PlanResult } from "@/features/planning/usePlanCalculation.types";
-	import { PLAN_COGCPROGRAM_TYPE } from "@/features/planning/usePlan.types";
-
 	// Composables
 	import { useBuildingData } from "@/features/game_data/useBuildingData";
 
 	// Components
 	import PlanProductionBuilding from "@/features/planning/components/PlanProductionBuilding.vue";
+
+	// Types & Interfaces
+	import { IProductionResult } from "@/features/planning/usePlanCalculation.types";
+	import { PLAN_COGCPROGRAM_TYPE } from "@/stores/planningStore.types";
 
 	// UI
 	import { NSelect, NCheckbox } from "naive-ui";
@@ -20,7 +20,7 @@
 			required: true,
 		},
 		productionData: {
-			type: Object as PropType<PlanResult.ProductionResult>,
+			type: Object as PropType<IProductionResult>,
 			required: true,
 		},
 		cogc: {
@@ -55,9 +55,7 @@
 	}>();
 
 	// Local State
-	const localProductionData: Ref<PlanResult.ProductionResult> = ref(
-		props.productionData
-	);
+	const localProductionData: Ref<IProductionResult> = ref(props.productionData);
 	const localSelectedBuilding: Ref<string | undefined> = ref(undefined);
 	const localCOGC: Ref<PLAN_COGCPROGRAM_TYPE> = ref("---");
 	const localMatchCOGC: Ref<boolean> = ref(false);
@@ -65,7 +63,7 @@
 	// Prop Watcher
 	watch(
 		() => props.productionData,
-		(newData: PlanResult.ProductionResult) => {
+		(newData: IProductionResult) => {
 			localProductionData.value = newData;
 		},
 		{ deep: true }

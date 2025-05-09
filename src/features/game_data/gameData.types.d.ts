@@ -18,6 +18,8 @@ export interface IExchange {
 	Supply: number | null;
 	Demand: number | null;
 	Traded: number | null;
+
+	[key: string]: string | number | null;
 }
 
 export interface IRecipeMaterial {
