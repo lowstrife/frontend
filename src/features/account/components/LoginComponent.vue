@@ -12,6 +12,7 @@
 		FormRules,
 		FormValidationError,
 	} from "naive-ui";
+import router from "@/router";
 
 	interface ILoginForm {
 		username: string | null;
@@ -57,6 +58,7 @@
 							)
 							.then(() => {
 								isLoggingIn.value = false;
+								router.push("/empire")
 							});
 					}
 				} else {

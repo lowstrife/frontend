@@ -108,7 +108,7 @@
 
 <template>
 	<div
-		class="h-screen grid grid-cols-1 gap-y-6"
+		class="h-view grid grid-cols-1 gap-y-6"
 		:class="refVisualShowConfiguration ? 'lg:grid-cols-[300px_auto]' : ''"
 	>
 		<div

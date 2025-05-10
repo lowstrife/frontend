@@ -113,6 +113,9 @@
 import { IMenuSection } from "@/features/navigation/navigation.types";
 import { useUserStore } from "@/stores/userStore";
 
+import router from "@/router";
+
+// UI
 import { NIcon } from "naive-ui";
 
 // Icons
@@ -269,6 +272,7 @@ const menuItems: IMenuSection[] = [
 				icon: LogOutRound,
 				functionCall: () => {
 					userStore.logout();
+					router.push("/");
 				},
 			},
 		],

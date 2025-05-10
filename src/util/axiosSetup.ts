@@ -1,6 +1,6 @@
 import axios, { AxiosRequestConfig, InternalAxiosRequestConfig } from "axios";
 
-import { router } from "@/router/router";
+import router from "@/router";
 import { useUserStore } from "@/stores/userStore";
 
 export const setAxiosHeader = (
