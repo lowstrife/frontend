@@ -3,7 +3,7 @@ import axios from "axios";
 
 import axiosSetup, { setAxiosHeader } from "@/util/axiosSetup";
 import { useUserStore } from "@/stores/userStore";
-import { router } from "@/router/router";
+import { router } from "@/router";
 import { createPinia, setActivePinia } from "pinia";
 
 vi.mock("@/stores/userStore", () => ({

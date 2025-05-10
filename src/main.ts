@@ -1,6 +1,6 @@
 import { createApp } from "vue";
 import "@/assets/css/style.css";
-import App from "./App.vue";
+import App from "@/App.vue";
 
 // stores
 import { createPinia } from "pinia";
@@ -10,7 +10,7 @@ const pinia = createPinia();
 pinia.use(piniaPluginPersistedstate);
 
 // routing
-import { router } from "./router/router";
+import router from "@/router";
 
 // app + uses
 const app = createApp(App);

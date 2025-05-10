@@ -26,7 +26,6 @@ export default defineConfig({
 				"src/App.vue",
 				"src/main.ts",
 				"src/views/*",
-				"src/router/*",
 				"**/components/**",
 				"**/dist/**",
 				"src/tests/**",

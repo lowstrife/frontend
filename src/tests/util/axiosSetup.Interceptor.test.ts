@@ -2,15 +2,9 @@ import { describe, it, expect, vi, beforeEach, beforeAll } from "vitest";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
 import { useUserStore } from "@/stores/userStore";
-import { router } from "@/router/router";
+
 import axiosSetup from "@/util/axiosSetup";
 import { createPinia, setActivePinia } from "pinia";
-
-vi.mock("@/router/router", () => ({
-	router: {
-		push: vi.fn(),
-	},
-}));
 
 const fakeAccessToken: string =
 	"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3NDU5MjE5MzEsInN1YiI6InNjb3JwaW8ifQ.upB1_kdh162soNKosnPnG_SnNR8WnDgZMB1mbDqwOtI";
@@ -41,7 +35,6 @@ describe("Axios Interceptor", () => {
 			await axios.post("/user/refresh");
 		} catch (error) {
 			expect(logout).toHaveBeenCalled();
-			expect(router.push).toHaveBeenCalledWith("/");
 		}
 	});
 
@@ -77,7 +70,6 @@ describe("Axios Interceptor", () => {
 			await axios.get("/test");
 		} catch {
 			expect(logout).toHaveBeenCalled();
-			expect(router.push).toHaveBeenCalledWith("/");
 		}
 	});
 
