@@ -519,6 +519,12 @@ export function usePlanCalculation(
 			experts: expertResult,
 			production: productionResult,
 			materialio: materialIO,
+			workforceMaterialIO: enhanceMaterialIOMaterial(
+				enhanceMaterialIOMinimal(workforceMaterialIO)
+			),
+			productionMaterialIO: enhanceMaterialIOMaterial(
+				enhanceMaterialIOMinimal(productionMaterialIO)
+			),
 		};
 
 		return resultData;

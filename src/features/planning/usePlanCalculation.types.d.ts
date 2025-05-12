@@ -122,6 +122,8 @@ export interface IPlanResult {
 	experts: IExpertRecord;
 	production: IProductionResult;
 	materialio: IMaterialIO[];
+	workforceMaterialIO: IMaterialIO[];
+	productionMaterialIO: IMaterialIO[];
 }
 
 // Procomputational values

@@ -40,6 +40,8 @@
 		AutoAwesomeMosaicFilled,
 		ShoppingBasketSharp,
 		AttachMoneySharp,
+		DataSaverOffSharp,
+		DataObjectRound,
 	} from "@vicons/material";
 
 	const props = defineProps({
@@ -92,6 +94,7 @@
 
 	const refVisualShowConfiguration: Ref<boolean> = ref(true);
 	const refMaterialIOShowBasked: Ref<boolean> = ref(false);
+	const refMaterialIOSplitted: Ref<boolean> = ref(false);
 
 	/**
 	 * Handle initial empire uuid assignment
@@ -343,21 +346,47 @@
 							class="text-white/80 font-bold text-lg pb-3 flex justify-between child:my-auto"
 						>
 							<div>Material I/O</div>
-							<n-button
-								size="tiny"
-								secondary
-								@click="refMaterialIOShowBasked = !refMaterialIOShowBasked"
-							>
-								<template #icon>
-									<ShoppingBasketSharp v-if="!refMaterialIOShowBasked" />
-									<AttachMoneySharp v-else />
-								</template>
-							</n-button>
+							<div class="flex gap-x-3">
+								<n-button
+									size="tiny"
+									secondary
+									@click="refMaterialIOShowBasked = !refMaterialIOShowBasked"
+								>
+									<template #icon>
+										<ShoppingBasketSharp v-if="!refMaterialIOShowBasked" />
+										<AttachMoneySharp v-else />
+									</template>
+								</n-button>
+								<n-button
+									size="tiny"
+									secondary
+									@click="refMaterialIOSplitted = !refMaterialIOSplitted"
+								>
+									<template #icon>
+										<DataObjectRound v-if="!refMaterialIOSplitted" />
+										<DataSaverOffSharp v-else />
+									</template>
+								</n-button>
+							</div>
 						</h2>
-						<PlanMaterialIO
-							:material-i-o-data="result.materialio"
-							:show-basked="refMaterialIOShowBasked"
-						/>
+						<template v-if="!refMaterialIOSplitted">
+							<PlanMaterialIO
+								:material-i-o-data="result.materialio"
+								:show-basked="refMaterialIOShowBasked"
+							/>
+						</template>
+						<template v-else>
+							<h3 class="font-bold pb-3">Production</h3>
+							<PlanMaterialIO
+								:material-i-o-data="result.productionMaterialIO"
+								:show-basked="refMaterialIOShowBasked"
+							/>
+							<h3 class="font-bold py-3">Workforce</h3>
+							<PlanMaterialIO
+								:material-i-o-data="result.workforceMaterialIO"
+								:show-basked="refMaterialIOShowBasked"
+							/>
+						</template>
 					</div>
 				</div>
 			</div>
