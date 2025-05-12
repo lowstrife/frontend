@@ -1,5 +1,12 @@
 <script setup lang="ts">
-	import { computed, defineAsyncComponent, nextTick, PropType, ref, type Ref } from "vue";
+	import {
+		computed,
+		defineAsyncComponent,
+		nextTick,
+		PropType,
+		ref,
+		type Ref,
+	} from "vue";
 
 	// Types & Interfaces
 	import { IPlan, IPlanEmpireElement } from "@/stores/planningStore.types";
@@ -109,30 +116,36 @@
 	 * Tool Setup
 	 */
 
-	type toolOptions = 'visitation-frequency' | null;
-
+	type toolOptions = "visitation-frequency" | null;
 	const refShowTool: Ref<toolOptions> = ref(null);
 
 	function openTool(key: toolOptions): void {
 		refShowTool.value = null;
 		nextTick(() => {
 			refShowTool.value = key;
-		})
+		});
 	}
 
 	const compViewToolMeta = computed(() => {
 		switch (refShowTool.value) {
-			case "visitation-frequency": 
+			case "visitation-frequency":
 				return {
-					component: defineAsyncComponent(() => import("@/features/planning/components/tools/PlanVisitationFrequency.vue")),
-					props: {amountBuildings: result.value.production.buildings.length},
+					component: defineAsyncComponent(
+						() =>
+							import(
+								"@/features/planning/components/tools/PlanVisitationFrequency.vue"
+							)
+					),
+					props: {
+						stoAmount: result.value.infrastructure["STO"],
+						materialIO: result.value.materialio,
+					},
 					listeners: {},
-				}
+				};
 			default:
-				return null
+				return null;
 		}
 	});
-
 </script>
 
 <template>
@@ -251,27 +264,37 @@
 				</div>
 				<div class="flex-grow text-end my-auto pr-6 font-bold">Tools</div>
 				<div class="flex justify-end gap-x-3">
-					<n-button size="small" secondary @click="openTool('visitation-frequency')">Empire Override</n-button>
+					<n-button size="small" secondary>Empire Override</n-button>
 					<n-button size="small" secondary>POPR</n-button>
-					<n-button size="small" secondary>Visitation Frequency</n-button>
+					<n-button
+						size="small"
+						secondary
+						@click="openTool('visitation-frequency')"
+					>
+						Visitation Frequency
+					</n-button>
 					<n-button size="small" secondary>Construction Cart</n-button>
 					<n-button size="small" secondary>Supply Cart</n-button>
 					<n-button size="small" secondary>Repair Analysis</n-button>
 					<n-button size="small" secondary>Habitation Optimization</n-button>
 				</div>
 			</div>
-			<div 
-				:class="!refShowTool ? 'opacity-0 overflow-hidden !h-0' : 'px-6 py-3 opacity-100 border-b border-white/5'" 
-				class="transition-discrete transition-opacity duration-500 bg-gray-dark"
+			<div
+				:class="
+					!refShowTool
+						? 'opacity-0 overflow-hidden !h-0'
+						: 'px-6 py-3 opacity-100 border-b border-white/10'
+				"
+				class="transition-discrete transition-opacity duration-500"
 			>
 				<Suspense v-if="refShowTool && compViewToolMeta">
 					<template #default>
 						<component
-						:is="compViewToolMeta.component"
-						:key="refShowTool"
-						v-bind="compViewToolMeta.props"
-						v-on="compViewToolMeta.listeners"
-						v-on:close="() => refShowTool = null"
+							:is="compViewToolMeta.component"
+							:key="refShowTool"
+							v-bind="compViewToolMeta.props"
+							v-on="compViewToolMeta.listeners"
+							v-on:close="() => (refShowTool = null)"
 						/>
 					</template>
 					<template #fallback>
