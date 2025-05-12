@@ -1,6 +1,9 @@
 // Stores
 import { useGameDataStore } from "@/stores/gameDataStore";
 
+// Util
+import { inertClone } from "@/util/data";
+
 // Interfaces & Types
 import {
 	EXCHANGES_TYPE,
@@ -24,7 +27,7 @@ export function useExchangeData() {
 		const findExchange: IExchange | undefined =
 			gameDataStore.exchanges[tickerId];
 
-		if (findExchange) return findExchange;
+		if (findExchange) return inertClone(findExchange);
 
 		throw new Error(
 			`Exchange data for ticker '${tickerId}' not found. Ensure game data is loaded and ticker is valid.`

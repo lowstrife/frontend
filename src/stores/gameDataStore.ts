@@ -4,9 +4,10 @@ import { computed, ComputedRef, ref, Ref } from "vue";
 // stores
 import { useUserStore } from "@/stores/userStore";
 
-// util
+// Util
 import config from "@/lib/config";
 import { getDifferenceMinutes } from "@/util/date";
+import { inertClone } from "@/util/data";
 
 import {
 	callDataBuildings,
@@ -123,13 +124,13 @@ export const useGameDataStore = defineStore(
 			if (!force) {
 				const findPlanet: IPlanet | undefined = planets.value[planetNaturalId];
 
-				if (findPlanet) return findPlanet;
+				if (findPlanet) return inertClone(findPlanet);
 
 				// nothing found, fetch first, then return
 				const fetchedPlanet: boolean = await performLoadPlanet(planetNaturalId);
 
 				if (fetchedPlanet) {
-					return planets.value[planetNaturalId];
+					return inertClone(planets.value[planetNaturalId]);
 				} else {
 					throw new Error(
 						`Unable to fetch Planet with Natural Id '${planetNaturalId}'`
@@ -140,7 +141,7 @@ export const useGameDataStore = defineStore(
 				const fetchedPlanet: boolean = await performLoadPlanet(planetNaturalId);
 
 				if (fetchedPlanet) {
-					return planets.value[planetNaturalId];
+					return inertClone(planets.value[planetNaturalId]);
 				} else {
 					throw new Error(
 						`Unable to fetch Planet with Natural Id '${planetNaturalId}'`

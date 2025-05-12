@@ -9,7 +9,8 @@ import { useMaterialIOUtil } from "@/features/planning/util/materialIO.util";
 import { useWorkforceCalculation } from "@/features/planning/calculations/workforceCalculations";
 
 // Util
-import { calculateExtraction } from "../planning/calculations/extractionCalculations";
+import { calculateExtraction } from "@/features/planning/calculations/extractionCalculations";
+import { inertClone } from "@/util/data";
 
 // Interfaces & Types
 import {
@@ -58,7 +59,7 @@ export function useBuildingData() {
 		const findBuilding: IBuilding | undefined =
 			gameDataStore.buildings[buildingTicker];
 
-		if (findBuilding) return findBuilding;
+		if (findBuilding) return inertClone(findBuilding);
 
 		throw new Error(
 			`No data: Building '${buildingTicker}'. Ensure ticker is valid and game data has been loaded.`
@@ -172,7 +173,7 @@ export function useBuildingData() {
 			 * plan calculations. E.g. by setting the correct times based
 			 * on building efficiency
 			 */
-			return toRaw(gameDataStore.recipes[buildingTicker]);
+			return inertClone(gameDataStore.recipes[buildingTicker]);
 		}
 	}
 

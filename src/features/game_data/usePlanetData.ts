@@ -3,6 +3,7 @@ import { useGameDataStore } from "@/stores/gameDataStore";
 
 // Util
 import { boundaryDescriptor } from "@/util/numbers";
+import { inertClone } from "@/util/data";
 
 // Interfaces & Types
 import { IPlanet } from "@/features/game_data/gameData.types";
@@ -39,7 +40,7 @@ export function usePlanetData() {
 		const findPlanet: IPlanet | undefined =
 			gameDataStore.planets[planetNaturalId];
 
-		if (findPlanet) return findPlanet;
+		if (findPlanet) return inertClone(findPlanet);
 
 		throw new Error(
 			`No data: Planet '${planetNaturalId}'. Ensure planet natural id is valid and data loaded`
