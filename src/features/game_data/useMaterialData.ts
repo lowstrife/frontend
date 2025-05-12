@@ -3,6 +3,9 @@ import { toRaw } from "vue";
 // Stores
 import { useGameDataStore } from "@/stores/gameDataStore";
 
+// Util
+import { inertClone } from "@/util/data";
+
 // Interfaces & Types
 import { IMaterial } from "@/features/game_data/gameData.types";
 
@@ -21,7 +24,7 @@ export function useMaterialData() {
 			gameDataStore.materials[ticker]
 		);
 
-		if (findMaterial) return findMaterial;
+		if (findMaterial) return inertClone(findMaterial);
 
 		throw new Error(
 			`No data: Material '${ticker}'. Ensure ticker is valid and game data has been loaded.`

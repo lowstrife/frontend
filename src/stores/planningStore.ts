@@ -7,6 +7,9 @@ import {
 	callGetPlan,
 } from "@/features/planning_data/planData.api";
 
+// Util
+import { inertClone } from "@/util/data";
+
 // Types & Interfaces
 import {
 	ICX,
@@ -63,14 +66,14 @@ export const usePlanningStore = defineStore(
 			// try getting from already fetched data first
 			const findPlan: IPlan | undefined = plans.value[planUuid];
 
-			if (findPlan) return toRaw(plans.value[planUuid]);
+			if (findPlan) return inertClone(plans.value[planUuid]);
 
 			// load from backend
 			try {
 				const fetchedPlan: IPlan = await callGetPlan(planUuid);
 
 				plans.value[planUuid] = fetchedPlan;
-				return toRaw(plans.value[planUuid]);
+				return inertClone(plans.value[planUuid]);
 			} catch (error) {
 				// print and also throw error
 				console.error(error);
@@ -106,7 +109,7 @@ export const usePlanningStore = defineStore(
 					empires.value[e.uuid] = e;
 				});
 
-				return toRaw(Object.values(empires.value));
+				return inertClone(Object.values(empires.value));
 			} catch (error) {
 				console.error(error);
 				throw error;
@@ -140,7 +143,7 @@ export const usePlanningStore = defineStore(
 					cxs.value[c.uuid] = c;
 				});
 
-				return toRaw(Object.values(cxs.value));
+				return inertClone(Object.values(cxs.value));
 			} catch (error) {
 				throw error;
 			}
