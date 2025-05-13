@@ -4,11 +4,11 @@ Welcome to the next major version of PRUNplanner, now open-sourced and community
 
 ## Preview
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/1a2b21d7-e057-4d2c-8533-425bdb5f2429/deploy-status)](https://prunplanner-preview.netlify.app/)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/1a2b21d7-e057-4d2c-8533-425bdb5f2429/deploy-status)](http://preview.prunplanner.org/)
 
-Development previews are powered by Netlify: [https://prunplanner-preview.netlify.app/](https://prunplanner-preview.netlify.app/)
+Development previews are powered by Netlify: [http://preview.prunplanner.org/](http://preview.prunplanner.org/)
 
-Please Note, v2 uses the production backend. Changes made in the preview will be persisted to the database as if you would work with prunplanner.org.
+Please Note, v2 uses the production backend. Changes made in the preview will be persisted to the database as if you would work with prunplanner.org. It is currently not served with HTTPS.
 
 ## Stack
 
