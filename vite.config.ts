@@ -6,7 +6,7 @@ import tsconfigPaths from "vite-tsconfig-paths";
 
 // https://vite.dev/config/
 export default defineConfig({
-	base: "",
+	base: "/",
 	plugins: [vue(), tailwindcss(), tsconfigPaths()],
 	resolve: {
 		alias: {
