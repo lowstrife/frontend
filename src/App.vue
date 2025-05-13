@@ -6,9 +6,15 @@
 	import { prunplannerTheme } from "@/layout/prunplannerNaiveUI";
 
 	// Components
-	const HomepageHeader = defineAsyncComponent(() => import("@/features/homepage/components/HomepageHeader.vue"));;
-	const NavigationBar = defineAsyncComponent( () => import("@/features/navigation/components/NavigationBar.vue"));
-	const MobileToggle = defineAsyncComponent( () => import("@/features/navigation/components/MobileToggle.vue"));
+	const HomepageHeader = defineAsyncComponent(
+		() => import("@/features/homepage/components/HomepageHeader.vue")
+	);
+	const NavigationBar = defineAsyncComponent(
+		() => import("@/features/navigation/components/NavigationBar.vue")
+	);
+	const MobileToggle = defineAsyncComponent(
+		() => import("@/features/navigation/components/MobileToggle.vue")
+	);
 
 	// Stores
 	import { useUserStore } from "@/stores/userStore";
