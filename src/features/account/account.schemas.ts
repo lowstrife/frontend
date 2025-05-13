@@ -6,13 +6,13 @@ export const LoginPayloadSchema: z.ZodType<Account.ILoginPayload> = z.object({
 });
 
 export const TokenResponseSchema: z.ZodType<Account.ITokenResponse> = z.object({
-	access_token: z.string().min(127),
-	refresh_token: z.string().min(127),
+	access_token: z.string().min(120),
+	refresh_token: z.string().min(120),
 });
 
 export const RefreshPayloadSchema: z.ZodType<Account.IRefreshPayload> =
 	z.object({
-		refresh_token: z.string().min(127),
+		refresh_token: z.string().min(120),
 	});
 
 export type LoginPayloadType = z.infer<typeof LoginPayloadSchema>;
