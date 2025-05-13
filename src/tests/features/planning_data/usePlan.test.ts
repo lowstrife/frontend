@@ -16,6 +16,8 @@ vi.mock("@/features/planning_data/planData.api", async () => {
 	return {
 		...(await vi.importActual("@/features/planning_data/planData.api")),
 		callGetShared: vi.fn(),
+		callCreatePlan: vi.fn(),
+		callSavePlan: vi.fn(),
 	};
 });
 
@@ -31,7 +33,11 @@ vi.mock("@/features/game_data/gameData.api", async () => {
 	};
 });
 
-import { callGetShared } from "@/features/planning_data/planData.api";
+import {
+	callCreatePlan,
+	callGetShared,
+	callSavePlan,
+} from "@/features/planning_data/planData.api";
 import { usePlanningStore } from "@/stores/planningStore";
 
 describe("usePlan", async () => {
@@ -73,6 +79,60 @@ describe("usePlan", async () => {
 		expect(result.baseplanner_data.infrastructure.length).toBe(0);
 		expect(result.baseplanner_data.buildings.length).toBe(0);
 		expect(result.empires.length).toBe(0);
+	});
+
+	describe("createNewPlan", async () => {
+		const fakeUuid: string = "41094cb6-c4bc-429f-b8c8-b81d02b3811c";
+
+		it("success, uuid return", async () => {
+			const { createNewPlan } = usePlan();
+			vi.mocked(callCreatePlan).mockResolvedValueOnce({ uuid: fakeUuid });
+
+			// @ts-expect-error mock data
+			const result = await createNewPlan({});
+
+			expect(result).toBe(fakeUuid);
+		});
+
+		it("failure, undefined return", async () => {
+			const { createNewPlan } = usePlan();
+			vi.mocked(callCreatePlan).mockRejectedValueOnce(new Error());
+
+			// @ts-expect-error mock data
+			await expect(createNewPlan({})).resolves.toBe(undefined);
+		});
+	});
+
+	describe("saveExistingPlan", async () => {
+		const fakeUuid: string = "41094cb6-c4bc-429f-b8c8-b81d02b3811c";
+
+		it("success, uuid return", async () => {
+			const { saveExistingPlan } = usePlan();
+			vi.mocked(callSavePlan).mockResolvedValueOnce({ uuid: fakeUuid });
+
+			// @ts-expect-error mock data
+			const result = await saveExistingPlan({});
+
+			expect(result).toBe(fakeUuid);
+		});
+
+		it("failure, undefined return", async () => {
+			const { saveExistingPlan } = usePlan();
+			vi.mocked(callSavePlan).mockRejectedValueOnce(new Error());
+
+			// @ts-expect-error mock data
+			await expect(saveExistingPlan({})).resolves.toBe(undefined);
+		});
+	});
+
+	it("reloadExistingPlan", async () => {
+		const fakeUuid: string = "41094cb6-c4bc-429f-b8c8-b81d02b3811c";
+		const { reloadExistingPlan } = usePlan();
+		planningStore.getPlan = vi.fn().mockResolvedValue({});
+
+		const result = await reloadExistingPlan(fakeUuid);
+
+		expect(result).toStrictEqual({});
 	});
 
 	describe("loadDefinitionFromRouteParams", async () => {

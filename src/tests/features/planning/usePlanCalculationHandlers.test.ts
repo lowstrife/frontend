@@ -16,6 +16,25 @@ describe("Planning: Workforce Calculations", async () => {
 		gameDataStore = useGameDataStore();
 	});
 
+	it("handleResetModified", async () => {
+		const fakeName = ref(undefined);
+
+		const { handleChangePlanName, modified, handleResetModified } =
+			usePlanCalculationHandlers(
+				// @ts-expect-error mock data
+				ref({}),
+				ref({}),
+				fakeName,
+				ref({})
+			);
+
+		expect(modified.value).toBeFalsy();
+		handleChangePlanName("moo");
+		expect(modified.value).toBeTruthy();
+		handleResetModified();
+		expect(modified.value).toBeFalsy();
+	});
+
 	it("handleChangePlanName", async () => {
 		const fakeName = ref(undefined);
 
@@ -222,11 +241,24 @@ describe("Planning: Workforce Calculations", async () => {
 			],
 		};
 
-		it("Update, invalid value upper clamp", async () => {
+		it("Update, existing infrastructure", async () => {
 			const { handleUpdateInfrastructure } = usePlanCalculationHandlers(
 				// @ts-expect-error mock data
 				ref({}),
 				ref(fakePlan),
+				ref(),
+				ref({})
+			);
+
+			handleUpdateInfrastructure("HB1", 6);
+			expect(fakePlan.infrastructure[0].amount).toBe(6);
+		});
+
+		it("Update, infrastructure not yet existing", async () => {
+			const { handleUpdateInfrastructure } = usePlanCalculationHandlers(
+				// @ts-expect-error mock data
+				ref({}),
+				ref({ infrastructure: [] }),
 				ref(),
 				ref({})
 			);

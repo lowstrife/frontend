@@ -74,5 +74,17 @@ describe("inertClone", () => {
 			expect(copy).not.toBe(original);
 			expect(copy.element).toStrictEqual({});
 		});
+
+		it("falls back if given a array of functions", () => {
+			const original = [() => "f", () => "m"];
+			const copy = inertClone(original);
+			expect(copy).not.toBe(original);
+		});
+
+		it("falls back if given a date", () => {
+			const original = new Date();
+			const copy = inertClone(original);
+			expect(copy).not.toBe(original);
+		});
 	});
 });
