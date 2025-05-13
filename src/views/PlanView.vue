@@ -8,6 +8,9 @@
 		type Ref,
 	} from "vue";
 
+	// Router
+	import router from "@/router";
+
 	// Types & Interfaces
 	import { IPlan, IPlanEmpireElement } from "@/stores/planningStore.types";
 	import { IPlanet } from "@/features/game_data/gameData.types";
@@ -17,6 +20,9 @@
 	const { getPlanet } = usePlanetData();
 	import { useCXData } from "@/features/cx/useCXData";
 	const { findEmpireCXUuid } = useCXData();
+	import { usePlanCalculation } from "@/features/planning/usePlanCalculation";
+	import { usePlan } from "@/features/planning_data/usePlan";
+	const { createNewPlan, saveExistingPlan, reloadExistingPlan } = usePlan();
 
 	// Util
 	import { formatNumber } from "@/util/numbers";
@@ -34,7 +40,6 @@
 
 	// UI
 	import { NButton, NIcon, NTooltip, NSpin } from "naive-ui";
-
 	import {
 		AutoAwesomeMosaicOutlined,
 		AutoAwesomeMosaicFilled,
@@ -42,7 +47,10 @@
 		AttachMoneySharp,
 		DataSaverOffSharp,
 		DataObjectRound,
+		SaveSharp,
+		ChangeCircleOutlined,
 	} from "@vicons/material";
+	import { onBeforeRouteLeave } from "vue-router";
 
 	const props = defineProps({
 		disabled: {
@@ -67,13 +75,16 @@
 	const refEmpireUuid: Ref<string | undefined> = ref(undefined);
 	const refCXUuid: Ref<string | undefined> = ref(undefined);
 
-	import { usePlanCalculation } from "@/features/planning/usePlanCalculation";
-
 	const {
+		existing,
+		saveable,
+		modified,
 		result,
 		planName,
+		backendData,
 		computedActiveEmpire,
 		planEmpires,
+		handleResetModified,
 		handleUpdateCorpHQ,
 		handleUpdateCOGC,
 		handleUpdatePermits,
@@ -147,6 +158,67 @@
 				};
 			default:
 				return null;
+		}
+	});
+
+	/*
+	 * Plan Saving & Reloading
+	 */
+
+	const refIsSaving: Ref<boolean> = ref(false);
+
+	async function save(): Promise<void> {
+		refIsSaving.value = true;
+
+		// plan exists, trigger a save
+		if (existing.value) {
+			await saveExistingPlan(refPlanData.value.uuid!, backendData.value);
+
+			// reset modified state
+			handleResetModified();
+
+			refIsSaving.value = false;
+		} else {
+			await createNewPlan(backendData.value).then(
+				(newUuid: string | undefined) => {
+					if (newUuid) {
+						refIsSaving.value = false;
+						refPlanData.value.uuid = newUuid;
+
+						// reset modified state
+						handleResetModified();
+
+						router.push(`/plan/${planetData.PlanetNaturalId}/${newUuid}`);
+					}
+				}
+			);
+			refIsSaving.value = false;
+		}
+	}
+
+	const refIsReloading: Ref<boolean> = ref(false);
+
+	async function reloadPlan(): Promise<void> {
+		if (!existing.value || !refPlanData.value.uuid) {
+			throw new Error(`Unable to reload plan without uuid.`);
+		}
+
+		refIsReloading.value = true;
+
+		await reloadExistingPlan(refPlanData.value.uuid).then(
+			(result: IPlan) => (refPlanData.value = result)
+		);
+		refIsReloading.value = false;
+	}
+
+	// Route Guard
+	onBeforeRouteLeave(() => {
+		if (modified.value) {
+			const answer = confirm(
+				"Do you really want to leave? Unsaved changes will be lost."
+			);
+
+			if (!answer) return false;
 		}
 	});
 </script>
@@ -239,9 +311,27 @@
 					</div>
 					<div class="flex-grow my-auto">
 						<div class="flex justify-end gap-x-3">
-							<n-button type="success" size="small">Saved</n-button>
-							<n-button size="small">Share</n-button>
-							<n-button size="small">Reload</n-button>
+							<n-button
+								:loading="refIsSaving"
+								:type="modified ? 'error' : 'success'"
+								size="small"
+								:disabled="disabled"
+								v-if="saveable"
+								@click="save"
+							>
+								<template #icon><SaveSharp /></template>
+								{{ existing ? "Save" : "Create" }}
+							</n-button>
+							<n-button
+								size="small"
+								:disabled="disabled"
+								v-if="existing"
+								:loading="refIsReloading"
+								@click="reloadPlan"
+							>
+								<template #icon><ChangeCircleOutlined /></template>
+								Reload
+							</n-button>
 						</div>
 					</div>
 				</div>

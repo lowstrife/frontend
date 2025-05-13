@@ -11,6 +11,8 @@ import {
 	callGetCXList,
 	callGetShared,
 	callGetEmpireList,
+	callCreatePlan,
+	callSavePlan,
 } from "@/features/planning_data/planData.api";
 
 // test data
@@ -25,6 +27,27 @@ const mock = new AxiosMockAdapter(apiService.client);
 describe("PlanData API Calls", async () => {
 	const etherwindUuid: string = "41094cb6-c4bc-429f-b8c8-b81d02b3811c";
 	const sharedUuid: string = "0f7161c8-7bc9-4ab6-af4a-10105be4180a";
+	const fakeUuid: string = "41094cb6-c4bc-429f-b8c8-b81d02b3811c";
+
+	const fakeSaveCreateData = {
+		name: "meow",
+		planet_id: "foo",
+		faction: "NONE",
+		override_empire: false,
+		permits_used: 1,
+		permits_total: 3,
+		planet: {
+			planetid: "foo",
+			permits: 3,
+			corphq: true,
+			cogc: "RESOURCE_EXTRACTION",
+			experts: [],
+			workforce: [],
+		},
+		infrastructure: [],
+		buildings: [],
+		empire_uuid: fakeUuid,
+	};
 
 	beforeAll(() => {
 		setActivePinia(createPinia());
@@ -65,5 +88,34 @@ describe("PlanData API Calls", async () => {
 
 		expect(await callGetEmpireList()).toStrictEqual(empire_list);
 		expect(spyApiServiceGet).toHaveBeenCalled();
+	});
+
+	it("callCreatePlan", async () => {
+		const spyApiServicePut = vi.spyOn(apiService, "put");
+
+		mock.onPut("/baseplanner/").reply(200, { uuid: fakeUuid });
+
+		// @ts-expect-error mock data
+		expect(await callCreatePlan(fakeSaveCreateData)).toStrictEqual({
+			uuid: fakeUuid,
+		});
+		expect(spyApiServicePut).toHaveBeenCalled();
+	});
+
+	it("callSavePlan", async () => {
+		const spyApiServicePatch = vi.spyOn(apiService, "patch");
+
+		mock.onPatch(`/baseplanner/${fakeUuid}`).reply(200, { uuid: fakeUuid });
+
+		expect(
+			// @ts-expect-error mock data
+			await callSavePlan(fakeUuid, {
+				uuid: fakeUuid,
+				...fakeSaveCreateData,
+			})
+		).toStrictEqual({
+			uuid: fakeUuid,
+		});
+		expect(spyApiServicePatch).toHaveBeenCalled();
 	});
 });

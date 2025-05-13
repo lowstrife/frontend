@@ -1,5 +1,3 @@
-import { toRaw } from "vue";
-
 // Stores
 import { useGameDataStore } from "@/stores/gameDataStore";
 
@@ -85,7 +83,11 @@ export function useBuildingData() {
 
 		Object.values(gameDataStore.buildings).forEach((building) => {
 			// only production buildings that are not in existing list
-			if (building.Habitation === null && !existing.includes(building.Ticker)) {
+			if (
+				building.Habitation === null &&
+				!existing.includes(building.Ticker) &&
+				building.Type !== "PLANETARY"
+			) {
 				// check for matching COGC
 				if (cogc && building.Expertise != cogc) {
 					return [];

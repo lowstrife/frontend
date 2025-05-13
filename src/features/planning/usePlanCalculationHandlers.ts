@@ -1,4 +1,4 @@
-import { Ref } from "vue";
+import { ref, Ref, watch } from "vue";
 
 // Composables
 import { useBuildingData } from "@/features/game_data/useBuildingData";
@@ -41,8 +41,15 @@ export function usePlanCalculationHandlers(
 	planName: Ref<string | undefined>,
 	planResult: Ref<IPlanResult>
 ) {
+	// internal state
+	const modified: Ref<boolean> = ref(false);
+
 	// Composables
 	const { getBuilding } = useBuildingData();
+
+	function handleResetModified(): void {
+		modified.value = false;
+	}
 
 	/**
 	 * Updates the CORP HQ Setting
@@ -52,6 +59,7 @@ export function usePlanCalculationHandlers(
 	 */
 	function handleUpdateCorpHQ(value: boolean): void {
 		planet.value.corphq = value;
+		modified.value = true;
 	}
 
 	/**
@@ -62,6 +70,7 @@ export function usePlanCalculationHandlers(
 	 */
 	function handleUpdateCOGC(value: PLAN_COGCPROGRAM_TYPE): void {
 		planet.value.cogc = value;
+		modified.value = true;
 	}
 
 	/**
@@ -72,6 +81,7 @@ export function usePlanCalculationHandlers(
 	 */
 	function handleUpdatePermits(value: number): void {
 		planet.value.permits = clamp(value, 1, 3);
+		modified.value = true;
 	}
 
 	/**
@@ -97,6 +107,7 @@ export function usePlanCalculationHandlers(
 				workforceData.lux2 = value;
 			}
 		}
+		modified.value = true;
 	}
 
 	/**
@@ -114,6 +125,7 @@ export function usePlanCalculationHandlers(
 		if (expertData) {
 			expertData.amount = clamp(value, 0, 5);
 		}
+		modified.value = true;
 	}
 
 	/**
@@ -132,7 +144,13 @@ export function usePlanCalculationHandlers(
 
 		if (infData) {
 			infData.amount = value;
+		} else {
+			planData.value.infrastructure.push({
+				building: infrastructure,
+				amount: value,
+			});
 		}
+		modified.value = true;
 	}
 
 	/**
@@ -149,6 +167,7 @@ export function usePlanCalculationHandlers(
 		}
 
 		planData.value.buildings[index].amount = value;
+		modified.value = true;
 	}
 
 	/**
@@ -168,6 +187,8 @@ export function usePlanCalculationHandlers(
 		} else {
 			planData.value.buildings.splice(index, 1);
 		}
+
+		modified.value = true;
 	}
 
 	/**
@@ -187,6 +208,8 @@ export function usePlanCalculationHandlers(
 			amount: 1,
 			active_recipes: [],
 		});
+
+		modified.value = true;
 	}
 
 	/**
@@ -221,6 +244,8 @@ export function usePlanCalculationHandlers(
 
 		planData.value.buildings[buildingIndex].active_recipes[recipeIndex].amount =
 			value;
+
+		modified.value = true;
 	}
 
 	/**
@@ -259,6 +284,8 @@ export function usePlanCalculationHandlers(
 				1
 			);
 		}
+
+		modified.value = true;
 	}
 
 	/**
@@ -297,6 +324,8 @@ export function usePlanCalculationHandlers(
 					.RecipeId,
 			amount: 1,
 		});
+
+		modified.value = true;
 	}
 
 	/**
@@ -333,6 +362,8 @@ export function usePlanCalculationHandlers(
 		planData.value.buildings[buildingIndex].active_recipes[
 			recipeIndex
 		].recipeid = recipeId;
+
+		modified.value = true;
 	}
 
 	/**
@@ -349,9 +380,13 @@ export function usePlanCalculationHandlers(
 		const transfValue: string = value.trimStart().trimEnd();
 
 		if (transfValue !== "") planName.value = transfValue;
+		modified.value = true;
 	}
 
 	return {
+		modified,
+		// handlers
+		handleResetModified,
 		handleUpdateCorpHQ,
 		handleUpdateCOGC,
 		handleUpdatePermits,

@@ -6,18 +6,13 @@ export function inertClone<T>(value: T): T {
 	try {
 		return structuredClone(raw) as T;
 	} catch (err) {
-		console.warn(
-			"[cloneFromStore] structuredClone failed, returning shallow clone:",
-			err
-		);
-
 		if (Array.isArray(raw)) {
 			return raw.slice() as T;
 		}
 		if (typeof raw === "object" && raw !== null) {
 			return { ...raw } as T;
-		} else {
-			return raw as T;
 		}
+
+		return raw as T;
 	}
 }

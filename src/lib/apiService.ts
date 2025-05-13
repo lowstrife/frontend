@@ -80,6 +80,68 @@ export class ApiService {
 	}
 
 	/**
+	 * Performs a PUT request towards the backend
+	 * @author jplacht
+	 *
+	 * @public
+	 * @async
+	 * @template Request Request Type
+	 * @template Response Response Type
+	 * @param {string} path URL
+	 * @param {unknown} payload Payload data
+	 * @param {ZodType<Request>} requestSchema Request Schema
+	 * @param {ZodType<Response>} responseSchema Response Schema
+	 * @returns {Promise<Response>}
+	 */
+	public async put<Request, Response>(
+		path: string,
+		payload: unknown,
+		requestSchema: ZodType<Request>,
+		responseSchema: ZodType<Response>
+	): Promise<Response> {
+		try {
+			const body = requestSchema.parse(payload);
+
+			const { data } = await this.client.put(path, body);
+
+			return responseSchema.parse(data);
+		} catch (e) {
+			throw this.normalizeError(e);
+		}
+	}
+
+	/**
+	 * Performs a PATCH request towards the backend
+	 * @author jplacht
+	 *
+	 * @public
+	 * @async
+	 * @template Request Request Type
+	 * @template Response Response Type
+	 * @param {string} path URL
+	 * @param {unknown} payload Payload data
+	 * @param {ZodType<Request>} requestSchema Request Schema
+	 * @param {ZodType<Response>} responseSchema Response Schema
+	 * @returns {Promise<Response>}
+	 */
+	public async patch<Request, Response>(
+		path: string,
+		payload: unknown,
+		requestSchema: ZodType<Request>,
+		responseSchema: ZodType<Response>
+	): Promise<Response> {
+		try {
+			const body = requestSchema.parse(payload);
+
+			const { data } = await this.client.patch(path, body);
+
+			return responseSchema.parse(data);
+		} catch (e) {
+			throw this.normalizeError(e);
+		}
+	}
+
+	/**
 	 * Normalizes error formats for Zod and Axios
 	 * @author jplacht
 	 *

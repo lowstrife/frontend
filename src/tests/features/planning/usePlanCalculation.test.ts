@@ -72,4 +72,17 @@ describe("usePlanCalculation", async () => {
 			permits: 3,
 		});
 	});
+
+	it("validate existing and saveable", async () => {
+		const { existing, saveable } = usePlanCalculation(
+			// @ts-expect-error mock data
+			ref(plan_etherwind),
+			ref(undefined),
+			ref(undefined),
+			ref(undefined)
+		);
+
+		expect(existing).toBeTruthy();
+		expect(saveable).toBeTruthy();
+	});
 });

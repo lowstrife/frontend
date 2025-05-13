@@ -1,12 +1,20 @@
 // API
-import { callGetShared } from "@/features/planning_data/planData.api";
+import {
+	callGetShared,
+	callCreatePlan,
+	callSavePlan,
+} from "@/features/planning_data/planData.api";
 
 // Stores
 import { useGameDataStore } from "@/stores/gameDataStore";
 import { usePlanningStore } from "@/stores/planningStore";
 
 // Typees & Interfaces
-import { IPlanRouteParams } from "@/features/planning_data/usePlan.types";
+import {
+	IPlanCreateData,
+	IPlanRouteParams,
+	IPlanSaveCreateResponse,
+} from "@/features/planning_data/usePlan.types";
 
 import { PlanLoadError } from "@/features/planning_data/usePlan.errors";
 import {
@@ -246,10 +254,83 @@ export function usePlan() {
 		};
 	}
 
+	/**
+	 * Creates a new plan and returns the new plans Uuid on a
+	 * successful save operation in the backend
+	 * @author jplacht
+	 *
+	 * @async
+	 * @param {IPlanCreateData} data Plan Data
+	 * @returns {Promise<string | undefined>} Plan Uuid
+	 */
+	async function createNewPlan(
+		data: IPlanCreateData
+	): Promise<string | undefined> {
+		try {
+			const createdData: IPlanSaveCreateResponse = await callCreatePlan(data);
+
+			// trigger backend data load
+			planningStore.getPlan(createdData.uuid);
+			return createdData.uuid;
+		} catch (err) {
+			console.error(`Error creating plan: ${err}`);
+			return undefined;
+		}
+	}
+
+	/**
+	 * Updates an existing plan in the backend api and returns
+	 * its uuid again on successful operation in the backend
+	 * @author jplacht
+	 *
+	 * @async
+	 * @param {string} planUuid Plan Uuid
+	 * @param {IPlanCreateData} data Plan Data
+	 * @returns {Promise<string | undefined>} Plan Uuid
+	 */
+	async function saveExistingPlan(
+		planUuid: string,
+		data: IPlanCreateData
+	): Promise<string | undefined> {
+		try {
+			const savedData: IPlanSaveCreateResponse = await callSavePlan(planUuid, {
+				uuid: planUuid,
+				...data,
+			});
+
+			if (savedData) {
+				// delete from currently stored version and fetch new
+				delete planningStore.plans[savedData.uuid];
+				planningStore.getPlan(savedData.uuid);
+				return savedData.uuid;
+			}
+		} catch (err) {
+			console.error(`Error updating plan: ${err}`);
+			return undefined;
+		}
+	}
+
+	/**
+	 * Reloading an existing plan is fetching the plan data from
+	 * planning store again. The planning view won't persist changes
+	 * to the stores data itself.
+	 * @author jplacht
+	 *
+	 * @async
+	 * @param {string} planUuid Plan Uuid
+	 * @returns {Promise<IPlan>} Plan Data
+	 */
+	async function reloadExistingPlan(planUuid: string): Promise<IPlan> {
+		return await planningStore.getPlan(planUuid);
+	}
+
 	return {
 		loadDefinitionFromRouteParams,
 		isEditDisabled,
 		mapPlanetToPlanType,
 		createBlankDefinition,
+		createNewPlan,
+		saveExistingPlan,
+		reloadExistingPlan,
 	};
 }

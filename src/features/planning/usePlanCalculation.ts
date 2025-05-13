@@ -60,6 +60,7 @@ import {
 	IPlanEmpireElement,
 	PLAN_COGCPROGRAM_TYPE,
 } from "@/stores/planningStore.types";
+import { IPlanCreateData } from "@/features/planning_data/usePlan.types";
 
 export function usePlanCalculation(
 	plan: Ref<IPlan>,
@@ -73,14 +74,26 @@ export function usePlanCalculation(
 
 	// data references
 
-	const planName: Ref<string | undefined> = toRef(plan.value.name);
-	const data: Ref<IPlanData> = toRef(plan.value.baseplanner_data);
-	const planet: Ref<IPlanDataPlanet> = toRef(data.value.planet);
-	const planetNaturalId: Ref<string> = toRef(data.value.planet.planetid);
+	const planName: ComputedRef<string | undefined> = computed(
+		() => plan.value.name
+	);
+	const data: ComputedRef<IPlanData> = computed(
+		() => plan.value.baseplanner_data
+	);
+	const planet: ComputedRef<IPlanDataPlanet> = computed(
+		() => data.value.planet
+	);
+	const planetNaturalId: ComputedRef<string> = computed(
+		() => data.value.planet.planetid
+	);
 	const empires: Ref<IPlanEmpire[]> = toRef([]);
-	const planEmpires: Ref<IPlanEmpire[]> = toRef(plan.value.empires);
+	const planEmpires: ComputedRef<IPlanEmpire[]> = computed(
+		() => plan.value.empires
+	);
 	const planetData: IPlanet = gameDataStore.planets[planet.value.planetid];
-	const buildings: Ref<IPlanDataBuilding[]> = toRef(data.value.buildings);
+	const buildings: ComputedRef<IPlanDataBuilding[]> = computed(
+		() => data.value.buildings
+	);
 
 	// composables
 
@@ -96,6 +109,16 @@ export function usePlanCalculation(
 		planetNaturalId
 	);
 	const { calculateMaterialIO } = useBuildingCalculation();
+
+	// computations
+
+	const existing: ComputedRef<boolean> = computed(() => {
+		return plan.value.uuid !== undefined;
+	});
+
+	const saveable: ComputedRef<boolean> = computed(() => {
+		return planName.value != undefined;
+	});
 
 	// pre-computations
 
@@ -530,16 +553,35 @@ export function usePlanCalculation(
 		return resultData;
 	});
 
+	// backend data
+	const backendData: ComputedRef<IPlanCreateData> = computed(() => {
+		return {
+			name: planName.value ?? "missing name",
+			planet_id: planet.value.planetid,
+			faction: "NONE",
+			override_empire: false,
+			permits_used: 1,
+			permits_total: 3,
+			planet: planet.value,
+			infrastructure: data.value.infrastructure,
+			buildings: data.value.buildings,
+			empire_uuid: empireUuid.value,
+		};
+	});
+
 	// submodules
 	const handlers = usePlanCalculationHandlers(planet, data, planName, result);
 
 	return {
+		existing,
+		saveable,
 		result,
 		empires,
-		computedActiveEmpire,
+		backendData,
 		planEmpires,
 		planName,
 		// precomputes
+		computedActiveEmpire,
 		// submodules
 		...handlers,
 	};

@@ -20,6 +20,7 @@ import {
 
 // Util
 import { PositiveOrZeroNumber } from "@/util/zodValidators";
+import { IPlanCreateData, IPlanSaveCreateResponse } from "./usePlan.types";
 
 /**
  * PLAN
@@ -256,6 +257,43 @@ export const CXSchema: z.ZodType<ICX> = z.object({
 });
 
 export const CXListPayloadSchema = z.array(CXSchema);
+
+const PLAN_FACTION_TYPE_ENUM = z.enum([
+	"NONE",
+	"ANTARES",
+	"BENTEN",
+	"HORTUS",
+	"MORIA",
+	"OUTSIDEREGION",
+]);
+
+export const PlanCreateDataSchema = z.object({
+	name: z.string(),
+	planet_id: z.string(),
+	faction: PLAN_FACTION_TYPE_ENUM,
+	override_empire: z.boolean(),
+	permits_used: z.number(),
+	permits_total: z.number(),
+	planet: PlanDataPlanetSchema,
+	infrastructure: z.array(PlanDataInfrastructureSchema),
+	buildings: z.array(PlanDataBuildingSchema),
+	empire_uuid: z.string().uuid().optional(),
+});
+
+export const PlanSaveDataSchema = PlanCreateDataSchema.extend({
+	uuid: z.string().uuid(),
+});
+
+export const PlanSaveCreateResponseSchema: z.ZodType<IPlanSaveCreateResponse> =
+	z.object({
+		uuid: z.string().uuid(),
+	});
+
+export type PlanCreateDataType = z.infer<typeof PlanCreateDataSchema>;
+export type PlanSaveDataType = z.infer<typeof PlanSaveDataSchema>;
+export type PlanSaveCreateResponseType = z.infer<
+	typeof PlanSaveCreateResponseSchema
+>;
 
 export type CXSchemaType = z.infer<typeof CXSchema>;
 export type CXListPayloadSchemaType = z.infer<typeof CXListPayloadSchema>;
