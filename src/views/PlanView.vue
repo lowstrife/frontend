@@ -233,7 +233,20 @@
 			:class="!refVisualShowConfiguration ? 'hidden' : 'visible'"
 		>
 			<div class="p-6">
+				<div class="pb-6">
+					<h1 class="text-2xl font-bold text-white">
+						{{ planetData.PlanetName }}
+					</h1>
+					<span
+						class="text-white/60"
+						v-if="planetData.PlanetName != planetData.PlanetNaturalId"
+					>
+						{{ planetData.PlanetNaturalId }}
+					</span>
+				</div>
+
 				<h2 class="text-white/80 font-bold text-lg pb-3">Configuration</h2>
+
 				<PlanConfiguration
 					:disabled="disabled"
 					:plan-name="planName"
@@ -289,7 +302,7 @@
 		<div class="">
 			<div class="border-b border-white/10 p-6">
 				<div class="flex flex-row">
-					<div class="my-auto pr-6">
+					<div class="child:mt-1 pr-6 child:cursor-pointer">
 						<n-icon
 							size="24"
 							@click="refVisualShowConfiguration = !refVisualShowConfiguration"
@@ -298,19 +311,30 @@
 							<AutoAwesomeMosaicOutlined v-else />
 						</n-icon>
 					</div>
-					<div>
-						<h1 class="text-2xl font-bold text-white">
-							{{ planetData.PlanetName }}
-						</h1>
-						<span
-							class="text-white/60"
-							v-if="planetData.PlanetName != planetData.PlanetNaturalId"
-						>
-							{{ planetData.PlanetNaturalId }}
-						</span>
-					</div>
-					<div class="flex-grow my-auto">
-						<div class="flex justify-end gap-x-3">
+					<div class="flex flex-grow justify-between">
+						<div class="flex">
+							<div class="my-auto pr-3 font-bold">Resources</div>
+							<div class="my-auto pr-3 flex gap-x-1">
+								<n-tooltip
+									trigger="hover"
+									v-for="resource in planetData.Resources"
+									:key="`PLANET#RESOURCE#${resource.MaterialTicker}`"
+								>
+									<template #trigger>
+										<div class="hover:cursor-help">
+											<MaterialTile
+												:ticker="resource.MaterialTicker"
+												:amount="
+													parseFloat(formatNumber(resource.DailyExtraction))
+												"
+											/>
+										</div>
+									</template>
+									{{ resource.ResourceType }}
+								</n-tooltip>
+							</div>
+						</div>
+						<div class="flex gap-x-3">
 							<n-button
 								:loading="refIsSaving"
 								:type="modified ? 'error' : 'success'"
@@ -336,27 +360,8 @@
 					</div>
 				</div>
 			</div>
-			<div class="border-b border-white/10 px-6 py-3 flex">
-				<div class="my-auto pr-3 font-bold">Resources</div>
-				<div class="my-auto pr-3 flex gap-x-1">
-					<n-tooltip
-						trigger="hover"
-						v-for="resource in planetData.Resources"
-						:key="`PLANET#RESOURCE#${resource.MaterialTicker}`"
-					>
-						<template #trigger>
-							<div class="hover:cursor-help">
-								<MaterialTile
-									:ticker="resource.MaterialTicker"
-									:amount="parseFloat(formatNumber(resource.DailyExtraction))"
-								/>
-							</div>
-						</template>
-						{{ resource.ResourceType }}
-					</n-tooltip>
-				</div>
-				<div class="flex-grow text-end my-auto pr-6 font-bold">Tools</div>
-				<div class="flex justify-end gap-x-3">
+			<div class="border-b border-white/10 p-3">
+				<div class="flex grow justify-end gap-x-3 my-auto">
 					<n-button size="small" secondary>Empire Override</n-button>
 					<n-button size="small" secondary>POPR</n-button>
 					<n-button
@@ -437,26 +442,39 @@
 						>
 							<div>Material I/O</div>
 							<div class="flex gap-x-3">
-								<n-button
-									size="tiny"
-									secondary
-									@click="refMaterialIOShowBasked = !refMaterialIOShowBasked"
-								>
-									<template #icon>
-										<ShoppingBasketSharp v-if="!refMaterialIOShowBasked" />
-										<AttachMoneySharp v-else />
+								<n-tooltip trigger="hover">
+									<template #trigger>
+										<n-button
+											size="tiny"
+											secondary
+											@click="
+												refMaterialIOShowBasked = !refMaterialIOShowBasked
+											"
+										>
+											<template #icon>
+												<ShoppingBasketSharp v-if="!refMaterialIOShowBasked" />
+												<AttachMoneySharp v-else />
+											</template>
+										</n-button>
 									</template>
-								</n-button>
-								<n-button
-									size="tiny"
-									secondary
-									@click="refMaterialIOSplitted = !refMaterialIOSplitted"
-								>
-									<template #icon>
-										<DataObjectRound v-if="!refMaterialIOSplitted" />
-										<DataSaverOffSharp v-else />
+									Toggle Weight & Volume
+								</n-tooltip>
+
+								<n-tooltip trigger="hover">
+									<template #trigger>
+										<n-button
+											size="tiny"
+											secondary
+											@click="refMaterialIOSplitted = !refMaterialIOSplitted"
+										>
+											<template #icon>
+												<DataObjectRound v-if="!refMaterialIOSplitted" />
+												<DataSaverOffSharp v-else />
+											</template>
+										</n-button>
 									</template>
-								</n-button>
+									Toggle Production & Workforce Split
+								</n-tooltip>
 							</div>
 						</h2>
 						<template v-if="!refMaterialIOSplitted">

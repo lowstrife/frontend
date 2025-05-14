@@ -81,34 +81,37 @@ export function useBuildingData() {
 	): SelectMixedOption[] {
 		const options: SelectMixedOption[] = [];
 
-		Object.values(gameDataStore.buildings).forEach((building) => {
-			// only production buildings that are not in existing list
-			if (
-				building.Habitation === null &&
-				!existing.includes(building.Ticker) &&
-				building.Type !== "PLANETARY"
-			) {
-				// check for matching COGC
-				if (cogc && building.Expertise != cogc) {
-					return [];
-				}
+		Object.values(gameDataStore.buildings)
+			.filter(
+				(b) =>
+					b.Habitation === null &&
+					b.Type !== "PLANETARY" &&
+					b.Type !== "INFRASTRUCTURE"
+			)
+			.forEach((building) => {
+				// only production buildings that are not in existing list
+				if (!existing.includes(building.Ticker)) {
+					// check for matching COGC
+					if (cogc && building.Expertise != cogc) {
+						return [];
+					}
 
-				options.push({
-					value: building.Ticker,
-					label:
-						building.Ticker +
-						" (" +
-						building.Name.replace(/([A-Z])/g, " $1")
-							.trim()
-							.charAt(0)
-							.toUpperCase() +
-						building.Name.replace(/([A-Z])/g, " $1")
-							.trim()
-							.slice(1) +
-						")",
-				});
-			}
-		});
+					options.push({
+						value: building.Ticker,
+						label:
+							building.Ticker +
+							" (" +
+							building.Name.replace(/([A-Z])/g, " $1")
+								.trim()
+								.charAt(0)
+								.toUpperCase() +
+							building.Name.replace(/([A-Z])/g, " $1")
+								.trim()
+								.slice(1) +
+							")",
+					});
+				}
+			});
 
 		return options;
 	}

@@ -380,6 +380,7 @@ export function usePlanCalculationHandlers(
 		const transfValue: string = value.trimStart().trimEnd();
 
 		if (transfValue !== "") planName.value = transfValue;
+
 		modified.value = true;
 	}
 

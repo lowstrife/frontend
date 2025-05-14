@@ -74,9 +74,7 @@ export function usePlanCalculation(
 
 	// data references
 
-	const planName: ComputedRef<string | undefined> = computed(
-		() => plan.value.name
-	);
+	const planName: Ref<string | undefined> = toRef(plan.value.name);
 	const data: ComputedRef<IPlanData> = computed(
 		() => plan.value.baseplanner_data
 	);
