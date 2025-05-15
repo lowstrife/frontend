@@ -405,6 +405,11 @@ export const useGameDataStore = defineStore(
 		async function performLoadMultiplePlanets(
 			planetNaturalIds: string[]
 		): Promise<boolean> {
+			// will also skip, if there is just an empty array of ids
+			if (planetNaturalIds.length === 0) {
+				return true;
+			}
+
 			/*
 				NOTE: The API endpoint to fetch multiple planets at once is currently
 				restricted to logged-in users. 
@@ -416,15 +421,25 @@ export const useGameDataStore = defineStore(
 			}
 
 			try {
+				// only fetch those, were data is not already present
+				const fetchPlanetIds = planetNaturalIds.filter(
+					(x) => !Object.keys(planets.value).includes(x)
+				);
+
+				// all planets already available
+				if (fetchPlanetIds.length === 0) {
+					return true;
+				}
+
 				const planetsData: IPlanet[] =
-					await callDataMultiplePlanets(planetNaturalIds);
+					await callDataMultiplePlanets(fetchPlanetIds);
 
 				// validate all was received
 				const fetchedIds: string[] = planetsData.map((p) => p.PlanetNaturalId);
-				const checkIds = planetNaturalIds.every((v) => fetchedIds.includes(v));
+				const checkIds = fetchPlanetIds.every((v) => fetchedIds.includes(v));
 
 				if (!checkIds) {
-					const missing: string[] = planetNaturalIds.filter(
+					const missing: string[] = fetchPlanetIds.filter(
 						(item) => fetchedIds.indexOf(item) < 0
 					);
 					throw new Error(

@@ -20,7 +20,7 @@ import {
 
 // Util
 import { PositiveOrZeroNumber } from "@/util/zodValidators";
-import { IPlanCreateData, IPlanSaveCreateResponse } from "./usePlan.types";
+import { IPlanSaveCreateResponse } from "./usePlan.types";
 
 /**
  * PLAN
@@ -70,7 +70,8 @@ const PlanDataPlanetSchema: z.ZodType<IPlanDataPlanet> = z.object({
 	permits: z.number().min(1),
 	corphq: z.boolean(),
 	cogc: z.preprocess(
-		(val) => (typeof val === "string" ? val.toUpperCase() : val),
+		(val) =>
+			typeof val === "string" ? val.toUpperCase().replace(" ", "_") : val,
 		PLAN_COGCPROGRAM_TYPE_ENUM
 	) as z.ZodType<z.infer<typeof PLAN_COGCPROGRAM_TYPE_ENUM>>,
 	experts: z.array(PlanDataExpertSchema),
@@ -112,7 +113,7 @@ const PlanDataSchema: z.ZodType<IPlanData> = z.object({
 	buildings: z.array(PlanDataBuildingSchema),
 });
 
-const PLAN_FACTION_TYPE_ZOD_ENUM = z.enum([
+export const PLAN_FACTION_TYPE_ZOD_ENUM = z.enum([
 	"NONE",
 	"ANTARES",
 	"BENTEN",
@@ -121,7 +122,7 @@ const PLAN_FACTION_TYPE_ZOD_ENUM = z.enum([
 	"OUTSIDEREGION",
 ]);
 
-const PlanEmpireSchema = z.object({
+export const PlanEmpireSchema = z.object({
 	faction: z.preprocess(
 		(val) => (typeof val === "string" ? val.toUpperCase() : val),
 		PLAN_FACTION_TYPE_ZOD_ENUM
@@ -169,7 +170,10 @@ export const PlanEmpireElementSchema: z.ZodType<IPlanEmpireElement> =
 	});
 
 export const PlanEmpireElementPayload = z.array(PlanEmpireElementSchema);
+export const PlanEmpirePlanListPayload = z.array(PlanSchema);
 
+export type PlanEmpireSchemaType = z.infer<typeof PlanEmpireSchema>;
+export type PlanEmpirePlanListType = z.infer<typeof PlanEmpirePlanListPayload>;
 export type PlanSchemaType = z.infer<typeof PlanSchema>;
 export type PlanShareSchemaType = z.infer<typeof PlanShareSchema>;
 export type PlanEmpireElementSchemaType = z.infer<

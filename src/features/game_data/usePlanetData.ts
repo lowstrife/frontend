@@ -113,8 +113,27 @@ export function usePlanetData() {
 		return additions;
 	}
 
+	/**
+	 * Builds a readable string for a planets natural id either being
+	 * only the naturalid or a combination of name and naturalid if the
+	 * planet has received a proper name
+	 *
+	 * @author jplacht
+	 *
+	 * @param {string} planetNaturalId Planet Natural Id
+	 * @returns {string} Readable planet name
+	 */
+	function getPlanetName(planetNaturalId: string): string {
+		const planet = getPlanet(planetNaturalId);
+
+		if (planet.PlanetName != planet.PlanetNaturalId) {
+			return `${planet.PlanetName} (${planet.PlanetNaturalId})`;
+		} else return planet.PlanetName;
+	}
+
 	return {
 		getPlanet,
 		getPlanetSpecialMaterials,
+		getPlanetName,
 	};
 }

@@ -12,7 +12,7 @@ import {
 	WorkforceConsumptionMap,
 } from "@/features/planning/calculations/workforceCalculations.types";
 
-const WORKFORCE_CONSUMPTION_MAP: WorkforceConsumptionMap = {
+export const WORKFORCE_CONSUMPTION_MAP: WorkforceConsumptionMap = {
 	pioneer: [
 		{ ticker: "DW", need: 4 / 100, lux1: false, lux2: false },
 		{ ticker: "RAT", need: 4 / 100, lux1: false, lux2: false },

@@ -305,6 +305,12 @@ describe("GameData Store", async () => {
 			).rejects.toThrowError();
 		});
 
+		it("performLoadMultiplePlanets: empty input", async () => {
+			await expect(
+				gameDataStore.performLoadMultiplePlanets([])
+			).resolves.toBeTruthy();
+		});
+
 		it("performLoadMultiplePlanets: not all loaded", async () => {
 			// @ts-expect-error mock data
 			vi.mocked(callDataMultiplePlanets).mockResolvedValueOnce(planets);
@@ -330,6 +336,24 @@ describe("GameData Store", async () => {
 			userStore.refreshToken = "moo";
 
 			const testDataPlanets: string[] = ["KW-020c"];
+
+			const result =
+				await gameDataStore.performLoadMultiplePlanets(testDataPlanets);
+
+			expect(result).toBeTruthy();
+		});
+
+		it("performLoadMultiplePlanets: all existing", async () => {
+			// @ts-expect-error mock data
+			vi.mocked(callDataMultiplePlanets).mockResolvedValueOnce(planets);
+
+			const userStore = useUserStore();
+			userStore.accessToken = "foo";
+			userStore.refreshToken = "moo";
+
+			gameDataStore.planets["foo"] = {};
+
+			const testDataPlanets: string[] = ["foo"];
 
 			const result =
 				await gameDataStore.performLoadMultiplePlanets(testDataPlanets);

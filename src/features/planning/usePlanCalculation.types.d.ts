@@ -124,6 +124,9 @@ export interface IPlanResult {
 	materialio: IMaterialIO[];
 	workforceMaterialIO: IMaterialIO[];
 	productionMaterialIO: IMaterialIO[];
+	profit: number;
+	cost: number;
+	revenue: number;
 }
 
 // Procomputational values

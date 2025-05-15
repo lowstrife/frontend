@@ -3,12 +3,8 @@ import { apiService } from "@/lib/apiService";
 
 // Schemas & Schema Types
 import {
-	CXListPayloadSchema,
-	CXListPayloadSchemaType,
 	PlanCreateDataSchema,
 	PlanCreateDataType,
-	PlanEmpireElementPayload,
-	PlanEmpireElementPayloadType,
 	PlanSaveCreateResponseSchema,
 	PlanSaveCreateResponseType,
 	PlanSaveDataSchema,
@@ -20,12 +16,7 @@ import {
 } from "@/features/planning_data/planningData.schemas";
 
 // Types & Interfaces
-import {
-	ICX,
-	IPlan,
-	IPlanEmpireElement,
-	IPlanShare,
-} from "@/stores/planningStore.types";
+import { IPlan, IPlanShare } from "@/stores/planningStore.types";
 import {
 	IPlanCreateData,
 	IPlanSaveData,
@@ -50,21 +41,6 @@ export async function callGetShared(
 }
 
 /**
- * Gets all empires a user has defined
- * @author jplacht
- *
- * @export
- * @async
- * @returns {Promise<IPlanEmpireElement[]>} User Empire Array
- */
-export async function callGetEmpireList(): Promise<IPlanEmpireElement[]> {
-	return apiService.get<PlanEmpireElementPayloadType>(
-		`/empire/`,
-		PlanEmpireElementPayload
-	);
-}
-
-/**
  * Gets a plan specified by plan Uuid
  * @author jplacht
  *
@@ -75,18 +51,6 @@ export async function callGetEmpireList(): Promise<IPlanEmpireElement[]> {
  */
 export async function callGetPlan(planUuid: string): Promise<IPlan> {
 	return apiService.get<PlanSchemaType>(`/baseplanner/${planUuid}`, PlanSchema);
-}
-
-/**
- * Gets all cx preferences a user has defined
- * @author jplacht
- *
- * @export
- * @async
- * @returns {Promise<ICX[]>} CX Preference Array
- */
-export async function callGetCXList(): Promise<ICX[]> {
-	return apiService.get<CXListPayloadSchemaType>(`/cx/`, CXListPayloadSchema);
 }
 
 /**

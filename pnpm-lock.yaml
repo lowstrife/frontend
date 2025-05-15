@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@skit/x.naive-ui':
+        specifier: ^0.19.0
+        version: 0.19.0(naive-ui@2.41.0(vue@3.5.13(typescript@5.8.3)))(vue@3.5.13(typescript@5.8.3))
       '@tailwindcss/vite':
         specifier: ^4.1.5
         version: 4.1.5(vite@6.3.4(@types/node@22.15.3)(jiti@2.4.2)(lightningcss@1.29.2))
@@ -593,6 +596,13 @@ packages:
 
   '@sinclair/typebox@0.27.8':
     resolution: {integrity: sha512-+Fj43pSMwJs4KRrH/938Uf+uAELIgVBmQzg/q1YG10djyfA3TnrU8N8XzqCh/okZdszqBQTZf96idMfE5lnwTA==}
+
+  '@skit/x.naive-ui@0.19.0':
+    resolution: {integrity: sha512-jFgrPsssYZkJCvll93DVz4fuFGCii9HfadkGLmSLf2zh+cveVODj5yS2/R8K3Ru9tAIGvApM4AT64KCbyygliA==}
+    engines: {node: '>=18.18', npm: '>=8', pnpm: '>=8'}
+    peerDependencies:
+      naive-ui: ^2.37.0
+      vue: ^3.2.0
 
   '@tailwindcss/node@4.1.5':
     resolution: {integrity: sha512-CBhSWo0vLnWhXIvpD0qsPephiaUYfHUX3U9anwDaHZAeuGpTiB3XmsxPAN6qX7bFhipyGBqOa1QYQVVhkOUGxg==}
@@ -2909,6 +2919,11 @@ snapshots:
     optional: true
 
   '@sinclair/typebox@0.27.8': {}
+
+  '@skit/x.naive-ui@0.19.0(naive-ui@2.41.0(vue@3.5.13(typescript@5.8.3)))(vue@3.5.13(typescript@5.8.3))':
+    dependencies:
+      naive-ui: 2.41.0(vue@3.5.13(typescript@5.8.3))
+      vue: 3.5.13(typescript@5.8.3)
 
   '@tailwindcss/node@4.1.5':
     dependencies:

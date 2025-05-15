@@ -1,11 +1,13 @@
 import { defineStore } from "pinia";
 import { ref, Ref, toRaw } from "vue";
 
+// API
+import { callGetPlan } from "@/features/planning_data/planData.api";
 import {
-	callGetCXList,
 	callGetEmpireList,
-	callGetPlan,
-} from "@/features/planning_data/planData.api";
+	callGetEmpirePlans,
+} from "@/features/empire/empireData.api";
+import { callGetCXList } from "@/features/cx/cxData.api";
 
 // Util
 import { inertClone } from "@/util/data";
@@ -84,15 +86,17 @@ export const usePlanningStore = defineStore(
 		/**
 		 * Gets all empires the user has either from previous fetch
 		 * or will load it again from the backend API
-		 *
 		 * @author jplacht
 		 *
 		 * @async
-		 * @returns {Promise<IPlanEmpireElement[]>} Array of user empires
+		 * @param {boolean} [force=false] Force Load from backend
+		 * @returns {Promise<IPlanEmpireElement[]>} Empire List
 		 */
-		async function getAllEmpires(): Promise<IPlanEmpireElement[]> {
+		async function getAllEmpires(
+			force: boolean = false
+		): Promise<IPlanEmpireElement[]> {
 			// try getting from already fetched first
-			if (Object.keys(empires.value).length > 0) {
+			if (!force && Object.keys(empires.value).length > 0) {
 				return toRaw(Object.values(empires.value));
 			}
 
@@ -114,6 +118,57 @@ export const usePlanningStore = defineStore(
 				console.error(error);
 				throw error;
 			}
+		}
+
+		/**
+		 * Gets all plans for given empire either from already stored data
+		 * or fetching missing ones from the backend api
+		 * @author jplacht
+		 *
+		 * @async
+		 * @param {string} empireUuid Empire Uuid
+		 * @param {string[]} [planUuids=[]] Array of Plan Uuids to fetch
+		 * @returns {Promise<IPlan[]>} Array of Plan Data
+		 */
+		async function getOrLoadEmpirePlans(
+			empireUuid: string,
+			planUuids: string[] = []
+		): Promise<IPlan[]> {
+			// if there is a an array of planUuids, check for existance of all plans
+			if (planUuids.length > 0) {
+				const plansInStore: string[] = Object.keys(plans.value);
+
+				let checker: boolean = planUuids.every((p) => plansInStore.includes(p));
+				if (checker) {
+					// all plans existing, return them
+					const planList: IPlan[] = [];
+					planUuids.map(async (uuid) => {
+						planList.push(await getPlan(uuid));
+					});
+
+					return planList;
+				}
+			}
+
+			// call endpoint to retrieve all plans for this empire
+			const loadedPlans: IPlan[] = await callGetEmpirePlans(empireUuid);
+
+			// store
+			loadedPlans.forEach((empirePlan) => {
+				plans.value[empirePlan.uuid!] = empirePlan;
+			});
+
+			// return all from store
+			const loadedPlanList: IPlan[] = [];
+			loadedPlans
+				.map((e) => e.uuid)
+				.forEach(async (planUuid) => {
+					if (planUuid) {
+						loadedPlanList.push(await getPlan(planUuid));
+					}
+				});
+
+			return loadedPlanList;
 		}
 
 		/**
@@ -161,6 +216,7 @@ export const usePlanningStore = defineStore(
 			getPlan,
 			getAllEmpires,
 			getAllCX,
+			getOrLoadEmpirePlans,
 		};
 	},
 	{

@@ -140,25 +140,17 @@ export const prunplannerTheme: GlobalThemeOverrides = {
 		borderFocus: WHITE,
 	},
 	DataTable: {
-		tdColor: BACKGROUND,
-		tdColorHover: BACKGROUND,
-		tdColorStriped: "#222222",
-		thColor: "#222222",
-		borderColor: "#404040",
-		borderRadius: "0",
-		tdColorSorting: BACKGROUND,
-		thColorSorting: "#222222",
-
-		// data table in modal
-		tdColorModal: BACKGROUND,
-		tdColorStripedModal: "#222222",
-		tdColorHoverModal: BACKGROUND,
-		thColorModal: "#222222",
-		borderRadiusModal: "0",
-		borderColorModal: "#404040",
-		tdColorSortingModal: BACKGROUND,
-		tdColorSortingPopoverModal: "#222222",
-		thColorSortingModal: "#222222",
+		thTextColor: "rgba(255,255,255,0.9)",
+		tdTextColor: "rgba(255,255,255,0.8)",
+		fontSizeMedium: "12px",
+		thFontWeight: "bold",
+		// colors
+		thColor: GRAY_DARK,
+		tdColorStriped: GRAY_DARK,
+		tdColor: "rgba(255,255,255,0.02)",
+		// padding
+		thPaddingMedium: "5px 10px",
+		tdPaddingMedium: "5px 10px",
 	},
 	Table: {
 		thTextColor: "rgba(255,255,255,0.9)",

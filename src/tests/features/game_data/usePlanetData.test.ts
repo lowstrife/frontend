@@ -33,6 +33,26 @@ describe("usePlanetData", async () => {
 		});
 	});
 
+	describe("getPlanetName", async () => {
+		const fakeId: string = "KW-020c";
+
+		it("With Name different to Natural Id", async () => {
+			gameDataStore.planets[fakeId] = planet_single;
+			const { getPlanetName } = usePlanetData();
+
+			expect(getPlanetName(fakeId)).toBe("Milliways (KW-020c)");
+		});
+
+		it("With Name different to Natural Id", async () => {
+			gameDataStore.planets[fakeId] = planet_single;
+			gameDataStore.planets[fakeId].PlanetName =
+				gameDataStore.planets[fakeId].PlanetNaturalId;
+			const { getPlanetName } = usePlanetData();
+
+			expect(getPlanetName(fakeId)).toBe(fakeId);
+		});
+	});
+
 	describe("getPlanetSpecialMaterials", async () => {
 		const specialMaterialCases = [
 			{

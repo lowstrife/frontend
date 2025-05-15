@@ -1,4 +1,9 @@
 // Composables
+import {
+	IEmpireMaterialIO,
+	IEmpireMaterialIOPlanet,
+	IEmpirePlanMaterialIO,
+} from "@/features/empire/empire.types";
 import { useMaterialData } from "@/features/game_data/useMaterialData";
 
 // Types & Interfaces
@@ -6,6 +11,7 @@ import {
 	IMaterialIOMaterial,
 	IMaterialIOMinimal,
 } from "@/features/planning/usePlanCalculation.types";
+import { prependListener } from "process";
 
 export function useMaterialIOUtil() {
 	const { getMaterial } = useMaterialData();
@@ -71,8 +77,88 @@ export function useMaterialIOUtil() {
 		return enhancedArray.sort((a, b) => (a.ticker > b.ticker ? 1 : -1));
 	}
 
+	function combineEmpireMaterialIO(
+		data: IEmpirePlanMaterialIO[]
+	): IEmpireMaterialIO[] {
+		const combined: IEmpireMaterialIO[] = [];
+		// key = Material Ticker
+		const combinedMap: Record<string, IEmpireMaterialIO> = {};
+
+		// create a combined map of all data
+		data.forEach((planInfo) => {
+			planInfo.materialIO.forEach((element) => {
+				// create empty combined element if ticker not yet present
+				if (!combinedMap[element.ticker]) {
+					combinedMap[element.ticker] = {
+						ticker: element.ticker,
+						input: 0,
+						output: 0,
+						delta: 0,
+						deltaPrice: 0,
+						inputPlanets: [],
+						outputPlanets: [],
+					};
+				}
+
+				// overwrite values
+				combinedMap[element.ticker].input += element.input;
+				combinedMap[element.ticker].output += element.output;
+				combinedMap[element.ticker].delta += element.delta;
+
+				const planetPart: IEmpireMaterialIOPlanet = {
+					planetId: planInfo.planetId,
+					planUuid: planInfo.planUuid,
+					planName: planInfo.planName,
+					value: element.delta,
+					price: element.price,
+				};
+
+				element.delta < 0
+					? combinedMap[element.ticker].inputPlanets.push(planetPart)
+					: combinedMap[element.ticker].outputPlanets.push(planetPart);
+			});
+		});
+
+		/*
+		 * Calculate the price to use for the individual material, this is not just
+		 * an empire-based price, but depends on the prices given in the material i/o.
+		 *
+		 * Reasoning: As prices for materials can vary between plans according to the
+		 * users exchange preferences, we'll do a weighted average of the price according
+		 * to all input and output planets, their price from material i/o and the value
+		 * (i.e. the amount) they're contributing
+		 */
+
+		Object.entries(combinedMap).map(([ticker, pre]) => {
+			const flatPlanets = [pre.inputPlanets, pre.outputPlanets]
+				.flat()
+				.filter((v) => v);
+
+			const flatValues: number[] = flatPlanets.map((pv) => Math.abs(pv.value));
+			const flatPrices: number[] = flatPlanets.map((pv) =>
+				Math.abs(pv.price / pv.value)
+			);
+			const sumValue: number = flatValues.reduce((sum, c) => sum + c, 0);
+			const sumProduct: number = flatPrices.reduce(
+				(sum, c, i) => sum + c * flatValues[i],
+				0
+			);
+
+			const weightedPrice: number = sumProduct / sumValue;
+
+			// update price
+			combinedMap[ticker].deltaPrice =
+				combinedMap[ticker].delta * weightedPrice;
+		});
+
+		return Object.values(combinedMap).sort((a, b) =>
+			a.ticker > b.ticker ? 1 : -1
+		);
+	}
+
 	return {
 		combineMaterialIOMinimal,
 		enhanceMaterialIOMinimal,
+		combineEmpireMaterialIO,
 	};
 }
