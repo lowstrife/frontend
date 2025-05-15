@@ -110,172 +110,172 @@
 </template>
 
 <script setup lang="ts">
-import { IMenuSection } from "@/features/navigation/navigation.types";
-import { useUserStore } from "@/stores/userStore";
+	import { IMenuSection } from "@/features/navigation/navigation.types";
+	import { useUserStore } from "@/stores/userStore";
 
-import router from "@/router";
+	import router from "@/router";
 
-// UI
-import { NIcon } from "naive-ui";
+	// UI
+	import { NIcon } from "naive-ui";
 
-// Icons
-import {
-	HomeSharp,
-	SearchRound,
-	SettingsRound,
-	ApiSharp,
-	LogOutRound,
-	GroupWorkRound,
-	ShoppingBasketSharp,
-	PermDataSettingSharp,
-	CandlestickChartSharp,
-	UpgradeSharp,
-	CompareSharp,
-	ProductionQuantityLimitsSharp,
-	StarsSharp,
-	PersonSharp,
-	HelpOutlineSharp,
-	ExtensionSharp,
-} from "@vicons/material";
+	// Icons
+	import {
+		HomeSharp,
+		SearchRound,
+		SettingsRound,
+		ApiSharp,
+		LogOutRound,
+		GroupWorkRound,
+		ShoppingBasketSharp,
+		PermDataSettingSharp,
+		CandlestickChartSharp,
+		UpgradeSharp,
+		CompareSharp,
+		ProductionQuantityLimitsSharp,
+		StarsSharp,
+		PersonSharp,
+		HelpOutlineSharp,
+		ExtensionSharp,
+	} from "@vicons/material";
 
-const userStore = useUserStore();
+	const userStore = useUserStore();
 
-const menuItems: IMenuSection[] = [
-	{
-		label: "Home",
-		children: [
-			{
-				label: "Empire",
-				routerLink: "/",
-				icon: HomeSharp,
-			},
-			{
-				label: "Planet Search",
-				routerLink: "/none",
-				icon: SearchRound,
-			},
-			{
-				label: "Projects",
-				routerLink: "/none",
-				icon: GroupWorkRound,
-			},
-		],
-	},
-	{
-		label: "Configuration",
-		children: [
-			{
-				label: "Empire Management",
-				routerLink: "/none",
-				icon: SettingsRound,
-			},
-			{
-				label: "Exchanges",
-				routerLink: "/none",
-				icon: ShoppingBasketSharp,
-			},
-			{
-				label: "Project Settings",
-				routerLink: "/none",
-				icon: PermDataSettingSharp,
-			},
-		],
-	},
-
-	{
-		label: "Tools",
-		children: [
-			{
-				label: "Market Data",
-				routerLink: "/none",
-				icon: CandlestickChartSharp,
-				children: [
-					{
-						label: "Market Exploration",
-						routerLink: "/none",
-					},
-					{
-						label: "ROI Overview",
-						routerLink: "/none",
-					},
-					{
-						label: "Resource ROI Overview",
-						routerLink: "/none",
-					},
-				],
-			},
-			{
-				label: "HQ Upgrade Calculator",
-				routerLink: "/none",
-				icon: ProductionQuantityLimitsSharp,
-			},
-			{
-				label: "Production Chains",
-				routerLink: "/none",
-				icon: CompareSharp,
-			},
-			{
-				label: "Base Compare",
-				routerLink: "/none",
-				icon: UpgradeSharp,
-			},
-			{
-				label: "Government",
-				routerLink: "/none",
-				icon: StarsSharp,
-			},
-			{
-				label: "FIO",
-				routerLink: "/none",
-				icon: ApiSharp,
-				children: [
-					{
-						label: "Burn",
-						routerLink: "/none",
-					},
-					{
-						label: "Storage",
-						routerLink: "/none",
-					},
-					{
-						label: "Repair",
-						routerLink: "/none",
-					},
-					{
-						label: "Plan Import",
-						routerLink: "/none",
-					},
-				],
-			},
-		],
-	},
-	{
-		label: "Account",
-		children: [
-			{
-				label: "API",
-				routerLink: "/none",
-				icon: ExtensionSharp,
-			},
-			{
-				label: "Profile",
-				routerLink: "/none",
-				icon: PersonSharp,
-			},
-			{
-				label: "Help",
-				routerLink: "/none",
-				icon: HelpOutlineSharp,
-			},
-			{
-				label: "Logout",
-				icon: LogOutRound,
-				functionCall: () => {
-					userStore.logout();
-					router.push("/");
+	const menuItems: IMenuSection[] = [
+		{
+			label: "Home",
+			children: [
+				{
+					label: "Empire",
+					routerLink: "/",
+					icon: HomeSharp,
 				},
-			},
-		],
-	},
-];
+				{
+					label: "Planet Search",
+					routerLink: "/none",
+					icon: SearchRound,
+				},
+				{
+					label: "Projects",
+					routerLink: "/none",
+					icon: GroupWorkRound,
+				},
+			],
+		},
+		{
+			label: "Configuration",
+			children: [
+				{
+					label: "Empire Management",
+					routerLink: "/none",
+					icon: SettingsRound,
+				},
+				{
+					label: "Exchanges",
+					routerLink: "/none",
+					icon: ShoppingBasketSharp,
+				},
+				{
+					label: "Project Settings",
+					routerLink: "/none",
+					icon: PermDataSettingSharp,
+				},
+			],
+		},
+
+		{
+			label: "Tools",
+			children: [
+				{
+					label: "Market Data",
+					routerLink: "/none",
+					icon: CandlestickChartSharp,
+					children: [
+						{
+							label: "Market Exploration",
+							routerLink: "/none",
+						},
+						{
+							label: "ROI Overview",
+							routerLink: "/none",
+						},
+						{
+							label: "Resource ROI Overview",
+							routerLink: "/none",
+						},
+					],
+				},
+				{
+					label: "HQ Upgrade Calculator",
+					routerLink: "/none",
+					icon: ProductionQuantityLimitsSharp,
+				},
+				{
+					label: "Production Chains",
+					routerLink: "/none",
+					icon: CompareSharp,
+				},
+				{
+					label: "Base Compare",
+					routerLink: "/none",
+					icon: UpgradeSharp,
+				},
+				{
+					label: "Government",
+					routerLink: "/none",
+					icon: StarsSharp,
+				},
+				{
+					label: "FIO",
+					routerLink: "/none",
+					icon: ApiSharp,
+					children: [
+						{
+							label: "Burn",
+							routerLink: "/none",
+						},
+						{
+							label: "Storage",
+							routerLink: "/none",
+						},
+						{
+							label: "Repair",
+							routerLink: "/none",
+						},
+						{
+							label: "Plan Import",
+							routerLink: "/none",
+						},
+					],
+				},
+			],
+		},
+		{
+			label: "Account",
+			children: [
+				{
+					label: "API",
+					routerLink: "/none",
+					icon: ExtensionSharp,
+				},
+				{
+					label: "Profile",
+					routerLink: "/none",
+					icon: PersonSharp,
+				},
+				{
+					label: "Help",
+					routerLink: "/none",
+					icon: HelpOutlineSharp,
+				},
+				{
+					label: "Logout",
+					icon: LogOutRound,
+					functionCall: () => {
+						userStore.logout();
+						router.push("/");
+					},
+				},
+			],
+		},
+	];
 </script>

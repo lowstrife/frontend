@@ -19,6 +19,12 @@
 	// Stores
 	import { useUserStore } from "@/stores/userStore";
 	const userStore = useUserStore();
+
+	// Unhead
+	import { useHead } from "@unhead/vue";
+	useHead({
+		title: "PRUNplanner",
+	});
 </script>
 
 <template>
