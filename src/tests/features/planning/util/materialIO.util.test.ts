@@ -14,6 +14,10 @@ import { IMaterialIOMinimal } from "@/features/planning/usePlanCalculation.types
 
 // test data
 import materials from "@/tests/test_data/api_data_materials.json";
+import {
+	IEmpireMaterialIO,
+	IEmpirePlanMaterialIO,
+} from "@/features/empire/empire.types";
 
 describe("Util: materialIO ", async () => {
 	let gameDataStore: any;
@@ -152,5 +156,73 @@ describe("Util: materialIO ", async () => {
 
 		expect(resultSell).toStrictEqual([{ ticker: "OVE", delta: 1, price: 10 }]);
 		expect(resultBuy).toStrictEqual([{ ticker: "OVE", delta: -1, price: -10 }]);
+	});
+
+	it("combineEmpireMaterialIO", async () => {
+		const fakeInput: IEmpirePlanMaterialIO[] = [
+			{
+				planetId: "foo",
+				planUuid: "foo#1",
+				planName: "foo",
+				materialIO: [
+					{
+						ticker: "RAT",
+						input: 10,
+						output: 2,
+						delta: 8,
+						individualVolume: 0,
+						individualWeight: 0,
+						totalWeight: 0,
+						totalVolume: 0,
+						price: 5,
+					},
+					{
+						ticker: "DW",
+						input: 0,
+						output: 3,
+						delta: -3,
+						individualVolume: 0,
+						individualWeight: 0,
+						totalWeight: 0,
+						totalVolume: 0,
+						price: 5,
+					},
+				],
+			},
+			{
+				planetId: "moo",
+				planUuid: "moo#1",
+				planName: "moo",
+				materialIO: [
+					{
+						ticker: "DW",
+						input: 3,
+						output: 0,
+						delta: -3,
+						individualVolume: 0,
+						individualWeight: 0,
+						totalWeight: 0,
+						totalVolume: 0,
+						price: 5,
+					},
+				],
+			},
+		];
+
+		const { combineEmpireMaterialIO } = useMaterialIOUtil();
+
+		const result = combineEmpireMaterialIO(fakeInput);
+
+		expect(result.length).toBe(2);
+		// sorting
+		expect(result[0].ticker).toBe("DW");
+		expect(result[1].ticker).toBe("RAT");
+
+		expect(result[0].delta).toBe(-6);
+		expect(result[0].deltaPrice).toBe(-10);
+		expect(result[0].input).toBe(3);
+		expect(result[0].output).toBe(3);
+		expect(result[0].inputPlanets.length).toBe(2);
+		expect(result[0].outputPlanets.length).toBe(0);
 	});
 });

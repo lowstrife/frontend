@@ -530,6 +530,34 @@ export function usePlanCalculation(
 		const materialIO: IMaterialIO[] =
 			enhanceMaterialIOMaterial(materialIOMaterial);
 
+		/**
+		 * Revenue, profit and cost calculation
+		 *
+		 * Revenue: Material IO with positive Delta
+		 * Cost: Material IO with negative delta + 1/180 of all buildings daily degradation
+		 * Profit: Revenue - cost
+		 */
+
+		const materialCost: number = materialIO.reduce(
+			(sum, element) => sum + (element.delta < 0 ? element.price * -1 : 0),
+			0
+		);
+		const materialRevenue: number = materialIO.reduce(
+			(sum, element) => sum + (element.delta > 0 ? element.price : 0),
+			0
+		);
+		const dailyDegradationCost: number =
+			productionResult.buildings.reduce(
+				(sum, element) => sum + element.constructionCost * -1 * element.amount,
+				0
+			) *
+			(1 / 180);
+
+		const profit: number =
+			materialRevenue - materialCost - dailyDegradationCost;
+
+		const cost: number = materialCost + dailyDegradationCost;
+
 		// patch-in to full result
 		const resultData: IPlanResult = {
 			corphq: corpHQResult,
@@ -546,12 +574,20 @@ export function usePlanCalculation(
 			productionMaterialIO: enhanceMaterialIOMaterial(
 				enhanceMaterialIOMinimal(productionMaterialIO)
 			),
+			profit: profit,
+			cost: cost,
+			revenue: materialRevenue,
 		};
 
 		return resultData;
 	});
 
-	// backend data
+	/**
+	 * Prepares plans data to conform to the Patch or Put payload
+	 * @author jplacht
+	 *
+	 * @type {ComputedRef<IPlanCreateData>}
+	 */
 	const backendData: ComputedRef<IPlanCreateData> = computed(() => {
 		return {
 			name: planName.value ?? "missing name",

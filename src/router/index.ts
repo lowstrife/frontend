@@ -19,9 +19,10 @@ const router = createRouter({
 		},
 		{
 			name: "empire",
-			path: "/empire",
+			path: "/empire/:empireUuid?",
 			meta: { requiresAuth: true },
 			component: () => import("@/views/EmpireView.vue"),
+			props: true,
 		},
 		{
 			name: "none",

@@ -5,17 +5,32 @@ import { createPinia, setActivePinia } from "pinia";
 vi.mock("@/features/planning_data/planData.api", async () => {
 	return {
 		...(await vi.importActual("@/features/planning_data/planData.api")),
-		callGetCXList: vi.fn(),
-		callGetEmpireList: vi.fn(),
 		callGetPlan: vi.fn(),
 	};
 });
 
+vi.mock("@/features/cx/cxData.api", async () => {
+	return {
+		...(await vi.importActual("@/features/cx/cxData.api")),
+		callGetCXList: vi.fn(),
+	};
+});
+
+vi.mock("@/features/empire/empireData.api", async () => {
+	return {
+		...(await vi.importActual("@/features/empire/empireData.api")),
+		callGetEmpireList: vi.fn(),
+		callGetEmpirePlans: vi.fn(),
+	};
+});
+
+import { callGetPlan } from "@/features/planning_data/planData.api";
+
 import {
-	callGetCXList,
 	callGetEmpireList,
-	callGetPlan,
-} from "@/features/planning_data/planData.api";
+	callGetEmpirePlans,
+} from "@/features/empire/empireData.api";
+import { callGetCXList } from "@/features/cx/cxData.api";
 
 // stores
 import { usePlanningStore } from "@/stores/planningStore";
@@ -133,6 +148,35 @@ describe("Planning Store", async () => {
 			const result = await planningStore.getAllCX();
 
 			expect(result.length).toBe(cx_list.length);
+		});
+	});
+
+	describe("getOrLoadEmpirePlans", async () => {
+		it("given planuuids, all already present", async () => {
+			planningStore.plans["foo"] = {};
+			planningStore.plans["moo"] = {};
+
+			const result = await planningStore.getOrLoadEmpirePlans("123", [
+				"foo",
+				"moo",
+			]);
+
+			expect(result).toStrictEqual([{}, {}]);
+		});
+
+		it("given plan uuids, load fresh", async () => {
+			planningStore.plans = {};
+
+			const mockResponse = [{ uuid: "foo" }, { uuid: "moo" }];
+
+			// @ts-expect-error mock data
+			vi.mocked(callGetEmpirePlans).mockResolvedValueOnce(mockResponse);
+
+			const result = await planningStore.getOrLoadEmpirePlans("123", [
+				"foo",
+				"moo",
+			]);
+			expect(result).toStrictEqual(mockResponse);
 		});
 	});
 });

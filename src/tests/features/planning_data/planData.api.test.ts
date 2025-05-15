@@ -8,18 +8,14 @@ import { apiService } from "@/lib/apiService";
 
 import {
 	callGetPlan,
-	callGetCXList,
 	callGetShared,
-	callGetEmpireList,
 	callCreatePlan,
 	callSavePlan,
 } from "@/features/planning_data/planData.api";
 
 // test data
 import plan_etherwind from "@/tests/test_data/api_data_plan_etherwind.json";
-import cx_list from "@/tests/test_data/api_data_cx_list.json";
 import shared from "@/tests/test_data/api_data_shared.json";
-import empire_list from "@/tests/test_data/api_data_empire_list.json";
 
 // mock apiService client
 const mock = new AxiosMockAdapter(apiService.client);
@@ -63,30 +59,12 @@ describe("PlanData API Calls", async () => {
 		expect(spyApiServiceGet).toHaveBeenCalled();
 	});
 
-	it("callGetCXList", async () => {
-		const spyApiServiceGet = vi.spyOn(apiService, "get");
-
-		mock.onGet("/cx/").reply(200, cx_list);
-
-		expect(await callGetCXList()).toStrictEqual(cx_list);
-		expect(spyApiServiceGet).toHaveBeenCalled();
-	});
-
 	it("callGetShared", async () => {
 		const spyApiServiceGet = vi.spyOn(apiService, "get");
 
 		mock.onGet(`/shared/${sharedUuid}`).reply(200, shared);
 
 		expect(await callGetShared(sharedUuid)).toStrictEqual(shared);
-		expect(spyApiServiceGet).toHaveBeenCalled();
-	});
-
-	it("callGetEmpireList", async () => {
-		const spyApiServiceGet = vi.spyOn(apiService, "get");
-
-		mock.onGet("/empire/").reply(200, empire_list);
-
-		expect(await callGetEmpireList()).toStrictEqual(empire_list);
 		expect(spyApiServiceGet).toHaveBeenCalled();
 	});
 
