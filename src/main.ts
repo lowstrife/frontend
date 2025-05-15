@@ -33,6 +33,13 @@ Highcharts.setOptions(highchartsOptions);
 
 app.use(HighChartsVue);
 
+// unhead
+import { createHead } from "@unhead/vue/client";
+
+const head = createHead();
+
+app.use(head);
+
 // directives
 import clickOutsideDirective from "@/layout/directives/clickOutsideDirective";
 

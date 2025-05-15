@@ -211,6 +211,16 @@
 		refIsReloading.value = false;
 	}
 
+	// Unhead
+	import { useHead } from "@unhead/vue";
+	useHead({
+		title: computed(() =>
+			planName.value
+				? `${planName.value} | PRUNplanner`
+				: `${props.planData.planet_id} | PRUNplanner`
+		),
+	});
+
 	// Route Guard
 	onBeforeRouteLeave(() => {
 		if (modified.value) {

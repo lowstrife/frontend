@@ -8,6 +8,12 @@
 		toRef,
 	} from "vue";
 
+	// Unhead
+	import { useHead } from "@unhead/vue";
+	useHead({
+		title: "Empire | PRUNplanner",
+	});
+
 	// Stores
 	import { usePlanningStore } from "@/stores/planningStore";
 	const planningStore = usePlanningStore();
