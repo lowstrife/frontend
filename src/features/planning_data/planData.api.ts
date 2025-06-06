@@ -3,8 +3,13 @@ import { apiService } from "@/lib/apiService";
 
 // Schemas & Schema Types
 import {
+	PlanClonePayloadSchema,
+	PlanClonePayloadType,
+	PlanCloneResponseSchema,
+	PlanCloneResponseType,
 	PlanCreateDataSchema,
 	PlanCreateDataType,
+	PlanListPayload,
 	PlanSaveCreateResponseSchema,
 	PlanSaveCreateResponseType,
 	PlanSaveDataSchema,
@@ -21,6 +26,7 @@ import {
 	IPlanCreateData,
 	IPlanSaveData,
 } from "@/features/planning_data/usePlan.types";
+import { IPlanCloneResponse } from "@/features/manage/manage.types";
 
 /**
  * Fetches data of a shared plans uuid from the API
@@ -51,6 +57,18 @@ export async function callGetShared(
  */
 export async function callGetPlan(planUuid: string): Promise<IPlan> {
 	return apiService.get<PlanSchemaType>(`/baseplanner/${planUuid}`, PlanSchema);
+}
+
+/**
+ * Gets all user plans
+ * @author jplacht
+ *
+ * @export
+ * @async
+ * @returns {Promise<IPlan[]>} List of Plan Data
+ */
+export async function callGetPlanlist(): Promise<IPlan[]> {
+	return apiService.get<PlanSchemaType[]>("/baseplanner/", PlanListPayload);
 }
 
 /**
@@ -95,4 +113,39 @@ export async function callSavePlan(
 		PlanSaveDataSchema,
 		PlanSaveCreateResponseSchema
 	);
+}
+
+/**
+ * Executes a PUT request cloning an existing plan
+ * @author jplacht
+ *
+ * @export
+ * @async
+ * @param {string} planUuid Plan Uuid
+ * @param {string} cloneName Name of cloned Plan
+ * @returns {Promise<IPlanCloneResponse>} Clone Message
+ */
+export async function callClonePlan(
+	planUuid: string,
+	cloneName: string
+): Promise<IPlanCloneResponse> {
+	return apiService.put<PlanClonePayloadType, PlanCloneResponseType>(
+		`/baseplanner/${planUuid}/clone`,
+		{ plan_name: cloneName },
+		PlanClonePayloadSchema,
+		PlanCloneResponseSchema
+	);
+}
+
+/**
+ * Executres a DELETE request for an existing plan
+ * @author jplacht
+ *
+ * @export
+ * @async
+ * @param {string} planUuid Plan Uuid
+ * @returns {Promise<boolean>} Deletion Status
+ */
+export async function callDeletePlan(planUuid: string): Promise<boolean> {
+	return apiService.delete(`/baseplanner/${planUuid}`);
 }

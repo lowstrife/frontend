@@ -51,6 +51,12 @@ describe("usePlanetData", async () => {
 
 			expect(getPlanetName(fakeId)).toBe(fakeId);
 		});
+
+		it("No planet data available", async () => {
+			const { getPlanetName } = usePlanetData();
+
+			expect(getPlanetName("moo")).toBe("moo");
+		});
 	});
 
 	describe("getPlanetSpecialMaterials", async () => {

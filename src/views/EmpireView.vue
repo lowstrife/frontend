@@ -242,11 +242,11 @@
 					>
 						<h1 class="text-2xl font-bold my-auto">{{ empireName }}</h1>
 					</div>
-					<div class="grid grid-cols-1 lg:grid-cols-[40%_auto]">
+					<div
+						class="grid grid-cols-1 lg:grid-cols-[40%_auto] divide-x divide-white/10"
+					>
 						<div>
-							<div
-								class="px-6 pb-3 pt-4 lg:border-r border-b border-white/10 my-auto"
-							>
+							<div class="px-6 pb-3 pt-4 border-b border-white/10 my-auto">
 								<n-form
 									label-placement="left"
 									label-width="auto"
@@ -265,7 +265,7 @@
 									</n-form-item>
 								</n-form>
 							</div>
-							<div class="p-6 lg:border-r border-b border-white/10">
+							<div class="p-6 border-b border-white/10">
 								<div
 									class="grid grid-cols-1 lg:grid-cols-3 gap-6 child:child:text-center"
 								>
@@ -308,7 +308,7 @@
 									</div>
 								</div>
 							</div>
-							<div class="p-6 lg:border-r border-b border-white/10">
+							<div class="p-6 border-b border-white/10">
 								<Suspense>
 									<AsyncEmpirePlanList :plan-list-data="planListData" />
 									<template #fallback>
@@ -316,7 +316,7 @@
 									</template>
 								</Suspense>
 							</div>
-							<div class="p-6 lg:border-r border-b border-white/10">
+							<div class="p-6 border-b border-white/10">
 								<Suspense v-if="selectedEmpire">
 									<AsyncEmpireConfiguration
 										:data="selectedEmpire"

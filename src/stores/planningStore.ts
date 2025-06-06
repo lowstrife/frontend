@@ -1,8 +1,12 @@
 import { defineStore } from "pinia";
-import { ref, Ref, toRaw } from "vue";
+import { ref, Ref } from "vue";
 
 // API
-import { callGetPlan } from "@/features/planning_data/planData.api";
+import {
+	callGetPlan,
+	callGetPlanlist,
+} from "@/features/planning_data/planData.api";
+import { callGetSharedList } from "@/features/sharing/sharingData.api";
 import {
 	callGetEmpireList,
 	callGetEmpirePlans,
@@ -20,7 +24,10 @@ import {
 	IPlan,
 	IPlanEmpireElement,
 	IPlanRecord,
+	ISharedPlan,
+	ISharedRecord,
 } from "@/stores/planningStore.types";
+import { IShared } from "@/features/sharing/sharingData.types";
 
 export const usePlanningStore = defineStore(
 	"prunplanner_planning",
@@ -32,6 +39,8 @@ export const usePlanningStore = defineStore(
 		const empires: Ref<IEmpireRecord> = ref({});
 		/** Key: CX.uuid */
 		const cxs: Ref<ICXRecord> = ref({});
+		/** Key: Plan.uuid */
+		const shared: Ref<ISharedRecord> = ref({});
 
 		// computed getters
 
@@ -84,6 +93,30 @@ export const usePlanningStore = defineStore(
 		}
 
 		/**
+		 * Fetches all plans from the backend, stores them in this store
+		 * and then returns them as list
+		 * @author jplacht
+		 *
+		 * @async
+		 * @returns {Promise<IPlan[]>} Plan Data List
+		 */
+		async function getAllPlans(): Promise<IPlan[]> {
+			try {
+				plans.value = {};
+				const fetchedPlans: IPlan[] = await callGetPlanlist();
+
+				fetchedPlans.forEach((plan) => {
+					plans.value[plan.uuid!] = plan;
+				});
+
+				return inertClone(Object.values(plans.value));
+			} catch (error) {
+				console.error(error);
+				throw error;
+			}
+		}
+
+		/**
 		 * Gets all empires the user has either from previous fetch
 		 * or will load it again from the backend API
 		 * @author jplacht
@@ -95,9 +128,9 @@ export const usePlanningStore = defineStore(
 		async function getAllEmpires(
 			force: boolean = false
 		): Promise<IPlanEmpireElement[]> {
-			// try getting from already fetched first
+			// try getting from already fetched first, if not forced
 			if (!force && Object.keys(empires.value).length > 0) {
-				return toRaw(Object.values(empires.value));
+				return inertClone(Object.values(empires.value));
 			}
 
 			// load from backend
@@ -180,10 +213,10 @@ export const usePlanningStore = defineStore(
 		 * @async
 		 * @returns {Promise<ICX[]>} CX Preference Data Array
 		 */
-		async function getAllCX(): Promise<ICX[]> {
-			// try getting from already fetched cx data first
-			if (Object.keys(cxs.value).length > 0) {
-				return toRaw(Object.values(cxs.value));
+		async function getAllCX(force: boolean = false): Promise<ICX[]> {
+			// try getting from already fetched cx data first, if not forced
+			if (!force && Object.keys(cxs.value).length > 0) {
+				return inertClone(Object.values(cxs.value));
 			}
 
 			// load from backend
@@ -204,11 +237,37 @@ export const usePlanningStore = defineStore(
 			}
 		}
 
+		/**
+		 * Gets all sharing information from backend
+		 * @author jplacht
+		 *
+		 * @async
+		 * @returns {Promise<ISharedPlan[]>} Sharing Information List
+		 */
+		async function getSharedList(): Promise<ISharedPlan[]> {
+			try {
+				const fetchedShared: IShared[] = await callGetSharedList();
+
+				// reset existing shared data
+				shared.value = {};
+
+				// store by Plan.uuid
+				fetchedShared.forEach((s) => {
+					shared.value[s.plan_uuid] = s;
+				});
+
+				return inertClone(Object.values(shared.value));
+			} catch (error) {
+				throw error;
+			}
+		}
+
 		return {
 			// state
 			plans,
 			empires,
 			cxs,
+			shared,
 			// computed getters
 			// getters
 			getCX,
@@ -217,11 +276,13 @@ export const usePlanningStore = defineStore(
 			getAllEmpires,
 			getAllCX,
 			getOrLoadEmpirePlans,
+			getAllPlans,
+			getSharedList,
 		};
 	},
 	{
 		persist: {
-			pick: ["plans", "empires", "cxs"],
+			pick: ["plans", "empires", "cxs", "shared"],
 		},
 	}
 );

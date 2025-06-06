@@ -25,6 +25,12 @@ const router = createRouter({
 			props: true,
 		},
 		{
+			name: "manage",
+			path: "/manage",
+			meta: { requiresAuth: true },
+			component: () => import("@/views/ManageView.vue"),
+		},
+		{
 			name: "none",
 			path: "/none",
 			meta: { requiresAuth: true },

@@ -1,6 +1,7 @@
 class Config {
 	public readonly APP_VERSION: string;
 	public readonly API_BASE_URL: string;
+	public readonly SHARE_BASE_URL: string;
 
 	public readonly GAME_DATA_STALE_MINUTES_BUILDINGS: number;
 	public readonly GAME_DATA_STALE_MINUTES_RECIPES: number;
@@ -11,6 +12,8 @@ class Config {
 	constructor() {
 		this.API_BASE_URL =
 			import.meta.env.VITE_API_BASE_URL || "https://api.prunplanner.org";
+		this.SHARE_BASE_URL =
+			import.meta.env.VITE_SHARE_BASE_URL || "https://prunplanner.org/shared";
 		this.APP_VERSION = import.meta.env.VITE_APP_VERSION || "undefined";
 
 		this.GAME_DATA_STALE_MINUTES_BUILDINGS =

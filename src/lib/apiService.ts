@@ -142,6 +142,23 @@ export class ApiService {
 	}
 
 	/**
+	 * Performs a DELETE request towards the backend
+	 * @author jplacht
+	 *
+	 * @public
+	 * @async
+	 * @param {string} path URL
+	 * @returns {Promise<boolean>} Response Status
+	 */
+	public async delete(path: string): Promise<boolean> {
+		try {
+			return await this.client.delete(path);
+		} catch (e) {
+			throw this.normalizeError(e);
+		}
+	}
+
+	/**
 	 * Normalizes error formats for Zod and Axios
 	 * @author jplacht
 	 *
