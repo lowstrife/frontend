@@ -27,6 +27,8 @@ export const prunplannerTheme: GlobalThemeOverrides = {
 	Card: {
 		color: GRAY_DARK,
 		colorModal: GRAY_DARK,
+		actionColor: GRAY_DARK,
+
 		borderRadius: "6px",
 		borderColor: "rgba(255,255,255,0.05)",
 		boxShadow: "0 10px 15px -3px rgba(0,0,0,.1),0 4px 6px -4px rgba(0,0,0,.1)",

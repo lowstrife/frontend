@@ -2,7 +2,12 @@
 	import { defineAsyncComponent } from "vue";
 
 	// Theme
-	import { NConfigProvider, NModalProvider, darkTheme } from "naive-ui";
+	import {
+		NConfigProvider,
+		NModalProvider,
+		NDialogProvider,
+		darkTheme,
+	} from "naive-ui";
 	import { prunplannerTheme } from "@/layout/prunplannerNaiveUI";
 
 	// Components
@@ -30,25 +35,27 @@
 <template>
 	<n-config-provider :theme="darkTheme" :theme-overrides="prunplannerTheme">
 		<n-modal-provider>
-			<main class="flex h-view w-full !bg-black text-white/80">
-				<template v-if="userStore.isLoggedIn">
-					<NavigationBar />
-					<div class="flex flex-col flex-1 overflow-y-auto">
-						<div class="h-screen text-white/80">
-							<MobileToggle />
-							<RouterView />
+			<n-dialog-provider>
+				<main class="flex h-view w-full !bg-black text-white/80">
+					<template v-if="userStore.isLoggedIn">
+						<NavigationBar />
+						<div class="flex flex-col flex-1 overflow-y-auto">
+							<div class="h-screen text-white/80">
+								<MobileToggle />
+								<RouterView />
+							</div>
 						</div>
-					</div>
-				</template>
-				<template v-else>
-					<div class="flex flex-col flex-1">
-						<div class="h-screen text-white/80">
-							<HomepageHeader />
-							<RouterView />
+					</template>
+					<template v-else>
+						<div class="flex flex-col flex-1">
+							<div class="h-screen text-white/80">
+								<HomepageHeader />
+								<RouterView />
+							</div>
 						</div>
-					</div>
-				</template>
-			</main>
+					</template>
+				</main>
+			</n-dialog-provider>
 		</n-modal-provider>
 	</n-config-provider>
 </template>

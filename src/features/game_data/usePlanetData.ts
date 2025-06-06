@@ -116,7 +116,8 @@ export function usePlanetData() {
 	/**
 	 * Builds a readable string for a planets natural id either being
 	 * only the naturalid or a combination of name and naturalid if the
-	 * planet has received a proper name
+	 * planet has received a proper name. Falls back to given ID if the
+	 * planet was not yet fetched.
 	 *
 	 * @author jplacht
 	 *
@@ -124,11 +125,17 @@ export function usePlanetData() {
 	 * @returns {string} Readable planet name
 	 */
 	function getPlanetName(planetNaturalId: string): string {
-		const planet = getPlanet(planetNaturalId);
+		// if the planet has not been fetched, don't fetch it but
+		// only return the planetNaturalId
+		try {
+			const planet = getPlanet(planetNaturalId);
 
-		if (planet.PlanetName != planet.PlanetNaturalId) {
-			return `${planet.PlanetName} (${planet.PlanetNaturalId})`;
-		} else return planet.PlanetName;
+			if (planet.PlanetName != planet.PlanetNaturalId) {
+				return `${planet.PlanetName} (${planet.PlanetNaturalId})`;
+			} else return planet.PlanetName;
+		} catch {
+			return planetNaturalId;
+		}
 	}
 
 	return {

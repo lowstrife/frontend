@@ -10,6 +10,14 @@ import {
 	PlanEmpireSchema,
 	PlanEmpireSchemaType,
 } from "@/features/planning_data/planningData.schemas";
+import {
+	EmpireCreatePayload,
+	EmpireCreatePayloadType,
+	EmpireJunctionPayloadSchema,
+	EmpireJunctionPayloadType,
+	EmpirePatchPayload,
+	EmpirePatchPayloadType,
+} from "@/features/empire/empireData.schemas";
 
 // Types & Interfaces
 import {
@@ -18,10 +26,10 @@ import {
 	IPlanEmpireElement,
 } from "@/stores/planningStore.types";
 import {
-	EmpirePatchPayload,
-	EmpirePatchPayloadType,
-} from "./empireData.schemas";
-import { IEmpirePatchPayload } from "./empire.types";
+	IEmpireCreatePayload,
+	IEmpirePatchPayload,
+} from "@/features/empire/empire.types";
+import { IPlanEmpireJunction } from "@/features/manage/manage.types";
 
 /**
  * Gets all empires a user has defined
@@ -73,5 +81,52 @@ export async function callPatchEmpire(
 		data,
 		EmpirePatchPayload,
 		PlanEmpireSchema
+	);
+}
+
+/**
+ * Creates a new empire
+ * @author jplacht
+ *
+ * @export
+ * @async
+ * @param {IEmpireCreatePayload} data Empire Configuration
+ * @returns {Promise<IPlanEmpire>} Empire
+ */
+export async function callCreateEmpire(
+	data: IEmpireCreatePayload
+): Promise<IPlanEmpire> {
+	return apiService.put<EmpireCreatePayloadType, PlanEmpireSchemaType>(
+		"/empire/",
+		data,
+		EmpireCreatePayload,
+		PlanEmpireSchema
+	);
+}
+
+/**
+ * Deletes an existing empire
+ * @author jplacht
+ *
+ * @export
+ * @async
+ * @param {string} empireUuid Empire Uuid
+ * @returns {Promise<boolean>} Deletion Status
+ */
+export async function callDeleteEmpire(empireUuid: string): Promise<boolean> {
+	return apiService.delete(`/empire/${empireUuid}`);
+}
+
+export async function callPatchEmpirePlanJunctions(
+	junctions: IPlanEmpireJunction[]
+): Promise<IPlanEmpireElement[]> {
+	return apiService.patch<
+		EmpireJunctionPayloadType,
+		PlanEmpireElementPayloadType
+	>(
+		"/empire/junctions",
+		junctions,
+		EmpireJunctionPayloadSchema,
+		PlanEmpireElementPayload
 	);
 }

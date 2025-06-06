@@ -6,6 +6,14 @@ vi.mock("@/features/planning_data/planData.api", async () => {
 	return {
 		...(await vi.importActual("@/features/planning_data/planData.api")),
 		callGetPlan: vi.fn(),
+		callGetPlanlist: vi.fn(),
+	};
+});
+
+vi.mock("@/features/sharing/sharingData.api", async () => {
+	return {
+		...(await vi.importActual("@/features/sharing/sharingData.api")),
+		callGetSharedList: vi.fn(),
 	};
 });
 
@@ -24,13 +32,17 @@ vi.mock("@/features/empire/empireData.api", async () => {
 	};
 });
 
-import { callGetPlan } from "@/features/planning_data/planData.api";
+import {
+	callGetPlan,
+	callGetPlanlist,
+} from "@/features/planning_data/planData.api";
 
 import {
 	callGetEmpireList,
 	callGetEmpirePlans,
 } from "@/features/empire/empireData.api";
 import { callGetCXList } from "@/features/cx/cxData.api";
+import { callGetSharedList } from "@/features/sharing/sharingData.api";
 
 // stores
 import { usePlanningStore } from "@/stores/planningStore";
@@ -39,6 +51,7 @@ import { usePlanningStore } from "@/stores/planningStore";
 import plan_etherwind from "@/tests/test_data/api_data_plan_etherwind.json";
 import empire_list from "@/tests/test_data/api_data_empire_list.json";
 import cx_list from "@/tests/test_data/api_data_cx_list.json";
+import shared_list from "@/tests/test_data/api_data_shared_list.json";
 
 const etherwindUuid: string = "41094cb6-c4bc-429f-b8c8-b81d02b3811c";
 
@@ -72,6 +85,24 @@ describe("Planning Store", async () => {
 			vi.mocked(callGetPlan).mockRejectedValueOnce(new Error());
 
 			await expect(planningStore.getPlan(etherwindUuid)).rejects.toThrowError();
+		});
+	});
+
+	describe("getAllPlans", async () => {
+		it("fetch new plans, ok", async () => {
+			vi.mocked(callGetPlanlist).mockResolvedValue([
+				// @ts-expect-error mock data
+				plan_etherwind,
+			]);
+			const result = await planningStore.getAllPlans();
+			expect(result.length).toBe(1);
+			expect(callGetPlanlist).toBeCalledTimes(1);
+		});
+
+		it("fetch new plan, error", async () => {
+			vi.mocked(callGetPlanlist).mockRejectedValueOnce(new Error());
+
+			await expect(planningStore.getAllPlans).rejects.toThrowError();
 		});
 	});
 
@@ -177,6 +208,24 @@ describe("Planning Store", async () => {
 				"moo",
 			]);
 			expect(result).toStrictEqual(mockResponse);
+		});
+	});
+
+	describe("getSharedList", async () => {
+		it("get valid shared", async () => {
+			const mockResponse = shared_list;
+
+			vi.mocked(callGetSharedList).mockResolvedValueOnce(mockResponse);
+
+			const result = await planningStore.getSharedList();
+			expect(result).toStrictEqual(shared_list);
+			expect(Object.keys(planningStore.shared).length).toBe(shared_list.length);
+		});
+
+		it("api error", async () => {
+			vi.mocked(callGetSharedList).mockRejectedValueOnce(new Error());
+
+			await expect(planningStore.getSharedList()).rejects.toThrowError();
 		});
 	});
 });

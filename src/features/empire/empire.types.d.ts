@@ -46,6 +46,8 @@ interface IEmpirePatchPayload {
 	use_fio_storage: boolean;
 }
 
+interface IEmpireCreatePayload extends IEmpirePatchPayload {}
+
 interface IEmpireCostOverview {
 	totalProfit: number;
 	totalRevenue: number;

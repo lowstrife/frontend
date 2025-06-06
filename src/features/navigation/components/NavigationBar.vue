@@ -165,8 +165,8 @@
 			label: "Configuration",
 			children: [
 				{
-					label: "Empire Management",
-					routerLink: "/none",
+					label: "Management",
+					routerLink: "/manage",
 					icon: SettingsRound,
 				},
 				{

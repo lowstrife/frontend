@@ -11,6 +11,9 @@ import {
 	callGetShared,
 	callCreatePlan,
 	callSavePlan,
+	callGetPlanlist,
+	callDeletePlan,
+	callClonePlan,
 } from "@/features/planning_data/planData.api";
 
 // test data
@@ -59,6 +62,15 @@ describe("PlanData API Calls", async () => {
 		expect(spyApiServiceGet).toHaveBeenCalled();
 	});
 
+	it("callGetPlanlist", async () => {
+		const spyApiServiceGet = vi.spyOn(apiService, "get");
+
+		mock.onGet(`/baseplanner/`).reply(200, [plan_etherwind]);
+
+		expect(await callGetPlanlist()).toStrictEqual([plan_etherwind]);
+		expect(spyApiServiceGet).toHaveBeenCalled();
+	});
+
 	it("callGetShared", async () => {
 		const spyApiServiceGet = vi.spyOn(apiService, "get");
 
@@ -95,5 +107,25 @@ describe("PlanData API Calls", async () => {
 			uuid: fakeUuid,
 		});
 		expect(spyApiServicePatch).toHaveBeenCalled();
+	});
+
+	it("callClonePlan", async () => {
+		const spyApiServicePut = vi.spyOn(apiService, "put");
+
+		mock.onPut("/baseplanner/foo/clone").reply(200, { message: "yay" });
+
+		expect(await callClonePlan("foo", "meow")).toStrictEqual({
+			message: "yay",
+		});
+		expect(spyApiServicePut).toHaveBeenCalled();
+	});
+
+	it("callDeletePlan", async () => {
+		const spyApiServiceDelete = vi.spyOn(apiService, "delete");
+
+		mock.onDelete("/baseplanner/foo").reply(200, true);
+
+		expect(await callDeletePlan("foo")).toBeTruthy();
+		expect(spyApiServiceDelete).toHaveBeenCalled();
 	});
 });

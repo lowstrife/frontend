@@ -7,9 +7,12 @@ import axiosSetup from "@/util/axiosSetup";
 import { apiService } from "@/lib/apiService";
 
 import {
+	callCreateEmpire,
+	callDeleteEmpire,
 	callGetEmpireList,
 	callGetEmpirePlans,
 	callPatchEmpire,
+	callPatchEmpirePlanJunctions,
 } from "@/features/empire/empireData.api";
 
 // test data
@@ -77,6 +80,54 @@ describe("Empire Data API Calls", async () => {
 			await callPatchEmpire(fakeEmpireUuid, fakePatchPayload)
 		).toStrictEqual(fakePatchResponse);
 
+		expect(spyApiServicePatch).toHaveBeenCalled();
+	});
+
+	it("callCreateEmpire", async () => {
+		const spyApiServicePut = vi.spyOn(apiService, "put");
+
+		const fakeEmpireUuid: string = "f39c84a5-e7ba-4aeb-a04d-0618df58fd74";
+		const fakePutPayload = {
+			faction: "NONE",
+			permits_used: 1,
+			permits_total: 2,
+			name: "CAAP",
+			use_fio_storage: false,
+		};
+		const fakePutResponse = {
+			faction: "NONE",
+			permits_used: 1,
+			permits_total: 2,
+			uuid: "f39c84a5-e7ba-4aeb-a04d-0618df58fd74",
+			name: "CAAP",
+			use_fio_storage: false,
+		};
+
+		mock.onPut(`/empire/`).reply(200, fakePutResponse);
+
+		// @ts-expect-error mock data
+		expect(await callCreateEmpire(fakePutPayload)).toStrictEqual(
+			fakePutResponse
+		);
+
+		expect(spyApiServicePut).toHaveBeenCalled();
+	});
+
+	it("callDeleteEmpire", async () => {
+		const spyApiServiceDelete = vi.spyOn(apiService, "delete");
+
+		mock.onDelete("/empire/foo").reply(200, true);
+
+		expect(await callDeleteEmpire("foo")).toBeTruthy();
+		expect(spyApiServiceDelete).toHaveBeenCalled();
+	});
+
+	it("callPatchEmpirePlanJunctions", async () => {
+		const spyApiServicePatch = vi.spyOn(apiService, "patch");
+
+		mock.onPatch("/empire/junctions").reply(200, empire_list);
+
+		expect(await callPatchEmpirePlanJunctions([])).toStrictEqual(empire_list);
 		expect(spyApiServicePatch).toHaveBeenCalled();
 	});
 });

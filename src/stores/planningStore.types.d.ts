@@ -1,6 +1,7 @@
 interface IPlanRecord extends Record<string, IPlan> {}
 interface IEmpireRecord extends Record<string, IPlanEmpireElement> {}
 interface ICXRecord extends Record<string, ICX> {}
+interface ISharedRecord extends Record<string, ISharedPlan> {}
 
 export type PLAN_COGCPROGRAM_TYPE =
 	| "---"
@@ -196,4 +197,10 @@ export interface ICX {
 	name: string;
 	empires: IPlanEmpireElement[];
 	cx_data: ICXData;
+}
+
+export interface ISharedPlan {
+	shared_uuid: string;
+	plan_uuid: string;
+	view_count: number;
 }

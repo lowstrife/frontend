@@ -193,4 +193,22 @@ describe("ApiService", () => {
 			).rejects.toThrowError(/^HTTP undefined: timeout of 0ms exceeded$/);
 		});
 	});
+
+	describe("delete", async () => {
+		it("successfull call and reponse parsing", async () => {
+			mock.onDelete("/test").reply(200, true);
+
+			const result = await apiService.delete("/test");
+
+			expect(result).toBeTruthy();
+		});
+
+		it("triggering delete error", async () => {
+			mock.onDelete("/test").timeout();
+
+			await expect(apiService.delete("/test")).rejects.toThrowError(
+				/^HTTP undefined: timeout of 0ms exceeded$/
+			);
+		});
+	});
 });

@@ -37,6 +37,9 @@
 	import PlanProduction from "@/features/planning/components/PlanProduction.vue";
 	import PlanMaterialIO from "@/features/planning/components/PlanMaterialIO.vue";
 	import PlanConfiguration from "@/features/planning/components/PlanConfiguration.vue";
+	const ShareButton = defineAsyncComponent(
+		() => import("@/features/sharing/components/SharingButton.vue")
+	);
 
 	// UI
 	import { NButton, NIcon, NTooltip, NSpin } from "naive-ui";
@@ -366,6 +369,12 @@
 								<template #icon><ChangeCircleOutlined /></template>
 								Reload
 							</n-button>
+
+							<ShareButton
+								buttonSize="small"
+								v-if="!disabled && refPlanData.uuid"
+								:plan-uuid="refPlanData.uuid"
+							/>
 						</div>
 					</div>
 				</div>

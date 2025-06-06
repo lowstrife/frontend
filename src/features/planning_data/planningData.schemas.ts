@@ -17,10 +17,14 @@ import {
 	IPlanEmpireElement,
 	IPlanShare,
 } from "@/stores/planningStore.types";
+import { IPlanSaveCreateResponse } from "@/features/planning_data/usePlan.types";
+import {
+	IPlanClonePayload,
+	IPlanCloneResponse,
+} from "@/features/manage/manage.types";
 
 // Util
 import { PositiveOrZeroNumber } from "@/util/zodValidators";
-import { IPlanSaveCreateResponse } from "./usePlan.types";
 
 /**
  * PLAN
@@ -171,6 +175,7 @@ export const PlanEmpireElementSchema: z.ZodType<IPlanEmpireElement> =
 
 export const PlanEmpireElementPayload = z.array(PlanEmpireElementSchema);
 export const PlanEmpirePlanListPayload = z.array(PlanSchema);
+export const PlanListPayload = z.array(PlanSchema);
 
 export type PlanEmpireSchemaType = z.infer<typeof PlanEmpireSchema>;
 export type PlanEmpirePlanListType = z.infer<typeof PlanEmpirePlanListPayload>;
@@ -301,3 +306,15 @@ export type PlanSaveCreateResponseType = z.infer<
 
 export type CXSchemaType = z.infer<typeof CXSchema>;
 export type CXListPayloadSchemaType = z.infer<typeof CXListPayloadSchema>;
+export type CXDataSchemaType = z.infer<typeof CXDataSchema>;
+
+export const PlanClonePayloadSchema: z.ZodType<IPlanClonePayload> = z.object({
+	plan_name: z.string(),
+});
+
+export const PlanCloneResponseSchema: z.ZodType<IPlanCloneResponse> = z.object({
+	message: z.string(),
+});
+
+export type PlanClonePayloadType = z.infer<typeof PlanClonePayloadSchema>;
+export type PlanCloneResponseType = z.infer<typeof PlanCloneResponseSchema>;
