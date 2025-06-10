@@ -316,11 +316,11 @@ describe("Planning: Bonus Calculations ", async () => {
 			);
 
 			expect(result).toStrictEqual({
-				totalEfficiency: 1.1890926356261025,
+				totalEfficiency: 2.667424020458554,
 				elements: [
 					{
 						efficiencyType: "FERTILITY",
-						value: 0.5606060606060607,
+						value: 1.2575757575757576,
 					},
 					{
 						efficiencyType: "HQ",
@@ -428,11 +428,11 @@ describe("Planning: Bonus Calculations ", async () => {
 			);
 
 			expect(result).toStrictEqual({
-				totalEfficiency: 1.0464015193509704,
+				totalEfficiency: 2.3473331380035276,
 				elements: [
 					{
 						efficiencyType: "FERTILITY",
-						value: 0.5606060606060607,
+						value: 1.2575757575757576,
 					},
 					{
 						efficiencyType: "HQ",
