@@ -6,7 +6,7 @@
 	const planningStore = usePlanningStore();
 
 	// API
-	import { callCreateCX, callDeleteCX } from "@/features/cx/cxData.api";
+	import { callCreateCX, callDeleteCX } from "@/features/api/cxData.api";
 
 	// Types & Interfaces
 	import { ICX } from "@/stores/planningStore.types";

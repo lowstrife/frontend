@@ -13,7 +13,7 @@
 
 	// Types & Interfaces
 	import { IPlan, IPlanEmpireElement } from "@/stores/planningStore.types";
-	import { IPlanet } from "@/features/game_data/gameData.types";
+	import { IPlanet } from "@/features/api/gameData.types";
 
 	// Composables
 	import { usePlanetData } from "@/features/game_data/usePlanetData";

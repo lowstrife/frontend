@@ -11,7 +11,7 @@ import {
 	callDeleteCX,
 	callGetCXList,
 	callUpdateCXJunctions,
-} from "@/features/cx/cxData.api";
+} from "@/features/api/cxData.api";
 
 // test data
 import cx_list from "@/tests/test_data/api_data_cx_list.json";

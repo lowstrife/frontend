@@ -12,18 +12,18 @@ import shared from "@/tests/test_data/api_data_shared.json";
 import planet_single from "@/tests/test_data/api_data_planet_single.json";
 import empire_list from "@/tests/test_data/api_data_empire_list.json";
 
-vi.mock("@/features/planning_data/planData.api", async () => {
+vi.mock("@/features/api/planData.api", async () => {
 	return {
-		...(await vi.importActual("@/features/planning_data/planData.api")),
+		...(await vi.importActual("@/features/api/planData.api")),
 		callGetShared: vi.fn(),
 		callCreatePlan: vi.fn(),
 		callSavePlan: vi.fn(),
 	};
 });
 
-vi.mock("@/features/game_data/gameData.api", async () => {
+vi.mock("@/features/api/gameData.api", async () => {
 	return {
-		...(await vi.importActual("@/features/game_data/gameData.api")),
+		...(await vi.importActual("@/features/api/gameData.api")),
 		callDataMaterials: vi.fn(),
 		callDataExchanges: vi.fn(),
 		callDataRecipes: vi.fn(),
@@ -37,7 +37,7 @@ import {
 	callCreatePlan,
 	callGetShared,
 	callSavePlan,
-} from "@/features/planning_data/planData.api";
+} from "@/features/api/planData.api";
 import { usePlanningStore } from "@/stores/planningStore";
 
 describe("usePlan", async () => {

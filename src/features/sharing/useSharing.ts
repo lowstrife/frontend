@@ -10,7 +10,7 @@ import config from "@/lib/config";
 import {
 	callCreateSharing,
 	callDeleteSharing,
-} from "@/features/sharing/sharingData.api";
+} from "@/features/api/sharingData.api";
 
 export function useSharing(planUuid: string) {
 	const planningStore = usePlanningStore();

@@ -11,7 +11,7 @@ import {
 	callDataMultiplePlanets,
 	callDataPlanet,
 	callDataRecipes,
-} from "@/features/game_data/gameData.api";
+} from "@/features/api/gameData.api";
 
 // test data
 import recipes from "@/tests/test_data/api_data_recipes.json";

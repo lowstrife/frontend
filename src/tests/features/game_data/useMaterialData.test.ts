@@ -2,7 +2,7 @@ import { setActivePinia, createPinia } from "pinia";
 import { beforeAll, describe, expect, it } from "vitest";
 
 import { useGameDataStore } from "@/stores/gameDataStore";
-import { IMaterial } from "@/features/game_data/gameData.types";
+import { IMaterial } from "@/features/api/gameData.types";
 import { useMaterialData } from "@/features/game_data/useMaterialData";
 
 // test data

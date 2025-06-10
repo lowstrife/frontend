@@ -18,7 +18,7 @@ import {
 	PlanSchemaType,
 	PlanShareSchema,
 	PlanShareSchemaType,
-} from "@/features/planning_data/planningData.schemas";
+} from "@/features/api/schemas/planningData.schemas";
 
 // Types & Interfaces
 import { IPlan, IPlanShare } from "@/stores/planningStore.types";

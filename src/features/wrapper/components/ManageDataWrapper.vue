@@ -10,7 +10,7 @@
 
 	// Types & Interfaces
 	import { ICX, IPlan, IPlanEmpireElement } from "@/stores/planningStore.types";
-	import { IShared } from "@/features/sharing/sharingData.types";
+	import { IShared } from "@/features/api/sharingData.types";
 
 	// UI
 	import { NSpin, NIcon } from "naive-ui";

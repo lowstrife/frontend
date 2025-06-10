@@ -16,7 +16,7 @@ import {
 	callDataMultiplePlanets,
 	callDataPlanet,
 	callDataRecipes,
-} from "@/features/game_data/gameData.api";
+} from "@/features/api/gameData.api";
 import {
 	IBuildingsRecord,
 	IExchangesRecord,
@@ -33,7 +33,7 @@ import {
 	IRecipe,
 	IBuilding,
 	IPlanet,
-} from "@/features/game_data/gameData.types";
+} from "@/features/api/gameData.types";
 
 export const useGameDataStore = defineStore(
 	"prunplanner_game_data",

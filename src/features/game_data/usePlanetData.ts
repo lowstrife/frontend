@@ -6,7 +6,7 @@ import { boundaryDescriptor } from "@/util/numbers";
 import { inertClone } from "@/util/data";
 
 // Interfaces & Types
-import { IPlanet } from "@/features/game_data/gameData.types";
+import { IPlanet } from "@/features/api/gameData.types";
 import { IMaterialIOMinimal } from "../planning/usePlanCalculation.types";
 
 /**

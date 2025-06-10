@@ -15,11 +15,11 @@
 	const planningStore = usePlanningStore();
 
 	// API
-	import { callUpdateCXJunctions } from "@/features/cx/cxData.api";
+	import { callUpdateCXJunctions } from "@/features/api/cxData.api";
 	import {
 		callCreateEmpire,
 		callDeleteEmpire,
-	} from "@/features/empire/empireData.api";
+	} from "@/features/api/empireData.api";
 
 	// Types & Interfaces
 	import {

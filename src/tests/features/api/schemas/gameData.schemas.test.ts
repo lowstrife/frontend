@@ -5,7 +5,7 @@ import {
 	MaterialSchema,
 	PlanetSchema,
 	RecipeSchema,
-} from "@/features/game_data/gameData.schemas";
+} from "@/features/api/schemas/gameData.schemas";
 
 // test data
 import recipes from "@/tests/test_data/api_data_recipes.json";

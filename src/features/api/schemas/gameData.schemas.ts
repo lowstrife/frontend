@@ -13,7 +13,7 @@ import {
 	IPlanetCOGCProgram,
 	IPlanet,
 	IPlanetCheckDistance,
-} from "@/features/game_data/gameData.types";
+} from "@/features/api/gameData.types";
 
 // Schemas
 export const MaterialSchema: z.ZodType<IMaterial> = z.object({

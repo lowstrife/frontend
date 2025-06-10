@@ -9,7 +9,7 @@ import {
 	EXCHANGES_TYPE,
 	IMaterialExchangeOverview,
 } from "@/features/game_data/useMaterialData.types";
-import { IExchange } from "@/features/game_data/gameData.types";
+import { IExchange } from "@/features/api/gameData.types";
 
 export function useExchangeData() {
 	const gameDataStore = useGameDataStore();

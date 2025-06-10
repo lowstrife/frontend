@@ -9,7 +9,7 @@ import {
 	PlanEmpirePlanListType,
 	PlanEmpireSchema,
 	PlanEmpireSchemaType,
-} from "@/features/planning_data/planningData.schemas";
+} from "@/features/api/schemas/planningData.schemas";
 import {
 	EmpireCreatePayload,
 	EmpireCreatePayloadType,
@@ -17,7 +17,7 @@ import {
 	EmpireJunctionPayloadType,
 	EmpirePatchPayload,
 	EmpirePatchPayloadType,
-} from "@/features/empire/empireData.schemas";
+} from "@/features/api/schemas/empireData.schemas";
 
 // Types & Interfaces
 import {

@@ -9,11 +9,11 @@ import {
 	CXListPayloadSchemaType,
 	CXSchema,
 	CXSchemaType,
-} from "@/features/planning_data/planningData.schemas";
+} from "@/features/api/schemas/planningData.schemas";
 import {
 	CXEmpireJunctionSchemaPayload,
 	CXEmpireJunctionSchemaPayloadType,
-} from "@/features/cx/cxData.schemas";
+} from "@/features/api/schemas/cxData.schemas";
 
 // Types & Interfaces
 import { ICX } from "@/stores/planningStore.types";

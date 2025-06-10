@@ -1,4 +1,4 @@
-import { IBuilding, IRecipe } from "@/features/game_data/gameData.types";
+import { IBuilding, IRecipe } from "@/features/api/gameData.types";
 import { IBuildingEfficiency } from "@/features/planning/calculations/bonusCalculations.types";
 import { PLAN_COGCPROGRAM_TYPE } from "@/stores/planningStore.types";
 

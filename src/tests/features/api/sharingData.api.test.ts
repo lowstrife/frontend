@@ -9,7 +9,7 @@ import {
 	callCreateSharing,
 	callDeleteSharing,
 	callGetSharedList,
-} from "@/features/sharing/sharingData.api";
+} from "@/features/api/sharingData.api";
 
 // test data
 import shared_list from "@/tests/test_data/api_data_shared_list.json";

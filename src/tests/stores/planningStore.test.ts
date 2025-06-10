@@ -2,47 +2,44 @@ import { describe, it, expect, beforeEach, vi } from "vitest";
 import { createPinia, setActivePinia } from "pinia";
 
 // mocks
-vi.mock("@/features/planning_data/planData.api", async () => {
+vi.mock("@/features/api/planData.api", async () => {
 	return {
-		...(await vi.importActual("@/features/planning_data/planData.api")),
+		...(await vi.importActual("@/features/api/planData.api")),
 		callGetPlan: vi.fn(),
 		callGetPlanlist: vi.fn(),
 	};
 });
 
-vi.mock("@/features/sharing/sharingData.api", async () => {
+vi.mock("@/features/api/sharingData.api", async () => {
 	return {
-		...(await vi.importActual("@/features/sharing/sharingData.api")),
+		...(await vi.importActual("@/features/api/sharingData.api")),
 		callGetSharedList: vi.fn(),
 	};
 });
 
-vi.mock("@/features/cx/cxData.api", async () => {
+vi.mock("@/features/api/cxData.api", async () => {
 	return {
-		...(await vi.importActual("@/features/cx/cxData.api")),
+		...(await vi.importActual("@/features/api/cxData.api")),
 		callGetCXList: vi.fn(),
 	};
 });
 
-vi.mock("@/features/empire/empireData.api", async () => {
+vi.mock("@/features/api/empireData.api", async () => {
 	return {
-		...(await vi.importActual("@/features/empire/empireData.api")),
+		...(await vi.importActual("@/features/api/empireData.api")),
 		callGetEmpireList: vi.fn(),
 		callGetEmpirePlans: vi.fn(),
 	};
 });
 
-import {
-	callGetPlan,
-	callGetPlanlist,
-} from "@/features/planning_data/planData.api";
+import { callGetPlan, callGetPlanlist } from "@/features/api/planData.api";
 
 import {
 	callGetEmpireList,
 	callGetEmpirePlans,
-} from "@/features/empire/empireData.api";
-import { callGetCXList } from "@/features/cx/cxData.api";
-import { callGetSharedList } from "@/features/sharing/sharingData.api";
+} from "@/features/api/empireData.api";
+import { callGetCXList } from "@/features/api/cxData.api";
+import { callGetSharedList } from "@/features/api/sharingData.api";
 
 // stores
 import { usePlanningStore } from "@/stores/planningStore";

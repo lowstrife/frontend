@@ -18,7 +18,7 @@ import {
 	IPlanResult,
 	WORKFORCE_TYPE,
 } from "@/features/planning/usePlanCalculation.types";
-import { IBuilding } from "@/features/game_data/gameData.types";
+import { IBuilding } from "@/features/api/gameData.types";
 
 // Util
 import { clamp } from "@/util/numbers";
