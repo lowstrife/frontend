@@ -17,7 +17,7 @@
 	import { CheckSharp } from "@vicons/material";
 
 	import { IPlan, IPlanEmpireElement } from "@/stores/planningStore.types";
-	import { EmpireLoadError } from "../useEmpire.errors";
+	import { EmpireLoadError } from "@/features/empire/useEmpire.errors";
 
 	const props = defineProps({
 		empireUuid: {

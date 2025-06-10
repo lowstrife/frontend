@@ -57,7 +57,7 @@
 		WrapperLoader,
 		WrapperLoaderElement,
 		WrapperTask,
-	} from "@/features/game_data/components/GameDataWrapper.types";
+	} from "@/features/wrapper/GameDataWrapper.types";
 
 	const gameDataStore = useGameDataStore();
 

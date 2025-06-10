@@ -2,9 +2,9 @@
 	import { defineAsyncComponent } from "vue";
 
 	// Components
-	import PlanningDataWrapper from "@/features/planning_data/components/PlanningDataWrapper.vue";
+	import PlanningDataWrapper from "@/features/wrapper/components/PlanningDataWrapper.vue";
 	const AsyncGameDataWrapper = defineAsyncComponent(
-		() => import("@/features/game_data/components/GameDataWrapper.vue")
+		() => import("@/features/wrapper/components/GameDataWrapper.vue")
 	);
 
 	// Views

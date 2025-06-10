@@ -163,7 +163,7 @@
 	import { useExchangeData } from "@/features/game_data/useExchangeData";
 
 	// Components
-	import GameDataWrapper from "@/features/game_data/components/GameDataWrapper.vue";
+	import GameDataWrapper from "@/features/wrapper/components/GameDataWrapper.vue";
 	import MaterialDataChart from "@/features/market_exploration/components/MaterialDataChart.vue";
 
 	// UI
