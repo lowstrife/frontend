@@ -2,7 +2,7 @@
 	import { PropType, ref, Ref, watch } from "vue";
 
 	// API
-	import { callPatchEmpire } from "@/features/empire/empireData.api";
+	import { callPatchEmpire } from "@/features/api/empireData.api";
 
 	// Util
 	import { inertClone } from "@/util/data";

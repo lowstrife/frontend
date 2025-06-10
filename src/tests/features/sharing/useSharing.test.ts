@@ -13,9 +13,9 @@ import planet_single from "@/tests/test_data/api_data_planet_single.json";
 import empire_list from "@/tests/test_data/api_data_empire_list.json";
 import shared_list from "@/tests/test_data/api_data_shared_list.json";
 
-vi.mock("@/features/sharing/sharingData.api", async () => {
+vi.mock("@/features/api/sharingData.api", async () => {
 	return {
-		...(await vi.importActual("@/features/sharing/sharingData.api")),
+		...(await vi.importActual("@/features/api/sharingData.api")),
 		callCreateSharing: vi.fn(),
 		callDeleteSharing: vi.fn(),
 		callGetSharedList: vi.fn(),
@@ -26,7 +26,7 @@ import {
 	callCreateSharing,
 	callDeleteSharing,
 	callGetSharedList,
-} from "@/features/sharing/sharingData.api";
+} from "@/features/api/sharingData.api";
 
 describe("useSharing", async () => {
 	let planningStore: any;

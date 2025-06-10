@@ -25,11 +25,7 @@ import { usePlanCalculationHandlers } from "@/features/planning/usePlanCalculati
 import { usePlanCalculationPreComputes } from "@/features/planning/usePlanCalculationPreComputes";
 
 // Types & Interfaces
-import {
-	IBuilding,
-	IPlanet,
-	IRecipe,
-} from "@/features/game_data/gameData.types";
+import { IBuilding, IPlanet, IRecipe } from "@/features/api/gameData.types";
 import {
 	EXPERT_TYPE,
 	IAreaResult,

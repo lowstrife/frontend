@@ -17,7 +17,7 @@ import {
 	PlanetSchema,
 	RecipePayloadSchema,
 	RecipePayloadType,
-} from "@/features/game_data/gameData.schemas";
+} from "@/features/api/schemas/gameData.schemas";
 
 // types
 import {
@@ -26,7 +26,7 @@ import {
 	IRecipe,
 	IBuilding,
 	IPlanet,
-} from "@/features/game_data/gameData.types";
+} from "@/features/api/gameData.types";
 
 /**
  * Calls the /data/materials API endpoint

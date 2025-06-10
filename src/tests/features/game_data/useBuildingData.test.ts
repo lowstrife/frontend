@@ -3,10 +3,7 @@ import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { useGameDataStore } from "@/stores/gameDataStore";
 import { useBuildingData } from "@/features/game_data/useBuildingData";
-import {
-	IBuilding,
-	IPlanetResource,
-} from "@/features/game_data/gameData.types";
+import { IBuilding, IPlanetResource } from "@/features/api/gameData.types";
 
 // test data
 import building_single_tnp from "@/tests/test_data/api_data_building_single_tnp.json";

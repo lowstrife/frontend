@@ -4,7 +4,7 @@ import { string, z } from "zod";
 import {
 	IShared,
 	ISharedCreateResponse,
-} from "@/features/sharing/sharingData.types";
+} from "@/features/api/sharingData.types";
 
 // Util
 import { PositiveOrZeroNumber } from "@/util/zodValidators";

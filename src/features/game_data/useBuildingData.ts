@@ -17,7 +17,7 @@ import {
 	IPlanetResource,
 	IRecipe,
 	PLANET_RESOURCETYPE_TYPE,
-} from "@/features/game_data/gameData.types";
+} from "@/features/api/gameData.types";
 import { SelectMixedOption } from "naive-ui/es/select/src/interface";
 import {
 	IMaterialIOMinimal,

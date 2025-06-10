@@ -13,7 +13,7 @@ import {
 	callGetEmpirePlans,
 	callPatchEmpire,
 	callPatchEmpirePlanJunctions,
-} from "@/features/empire/empireData.api";
+} from "@/features/api/empireData.api";
 
 // test data
 import empire_list from "@/tests/test_data/api_data_empire_list.json";

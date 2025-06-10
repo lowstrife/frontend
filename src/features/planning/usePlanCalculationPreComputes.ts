@@ -14,7 +14,7 @@ import {
 	IMaterialIOMinimal,
 	IPreBuildingRecord,
 } from "@/features/planning/usePlanCalculation.types";
-import { IBuilding, IPlanet } from "@/features/game_data/gameData.types";
+import { IBuilding, IPlanet } from "@/features/api/gameData.types";
 
 /**
  * # Precomputed References

@@ -2,16 +2,13 @@ import { defineStore } from "pinia";
 import { ref, Ref } from "vue";
 
 // API
-import {
-	callGetPlan,
-	callGetPlanlist,
-} from "@/features/planning_data/planData.api";
-import { callGetSharedList } from "@/features/sharing/sharingData.api";
+import { callGetPlan, callGetPlanlist } from "@/features/api/planData.api";
+import { callGetSharedList } from "@/features/api/sharingData.api";
 import {
 	callGetEmpireList,
 	callGetEmpirePlans,
-} from "@/features/empire/empireData.api";
-import { callGetCXList } from "@/features/cx/cxData.api";
+} from "@/features/api/empireData.api";
+import { callGetCXList } from "@/features/api/cxData.api";
 
 // Util
 import { inertClone } from "@/util/data";
@@ -27,7 +24,7 @@ import {
 	ISharedPlan,
 	ISharedRecord,
 } from "@/stores/planningStore.types";
-import { IShared } from "@/features/sharing/sharingData.types";
+import { IShared } from "@/features/api/sharingData.types";
 
 export const usePlanningStore = defineStore(
 	"prunplanner_planning",

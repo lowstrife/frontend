@@ -25,10 +25,10 @@
 
 	// Components
 	import RenderingProgress from "@/layout/components/RenderingProgress.vue";
-	import EmpireDataWrapper from "@/features/empire/components/EmpireDataWrapper.vue";
+	import EmpireDataWrapper from "@/features/wrapper/components/EmpireDataWrapper.vue";
 
 	const AsyncGameDataWrapper = defineAsyncComponent(
-		() => import("@/features/game_data/components/GameDataWrapper.vue")
+		() => import("@/features/wrapper/components/GameDataWrapper.vue")
 	);
 	const AsyncEmpirePlanList = defineAsyncComponent(
 		() => import("@/features/empire/components/EmpirePlanList.vue")

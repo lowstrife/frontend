@@ -3,7 +3,7 @@ import {
 	callGetShared,
 	callCreatePlan,
 	callSavePlan,
-} from "@/features/planning_data/planData.api";
+} from "@/features/api/planData.api";
 
 // Stores
 import { useGameDataStore } from "@/stores/gameDataStore";
@@ -20,7 +20,7 @@ import { PlanLoadError } from "@/features/planning_data/usePlan.errors";
 import {
 	IPlanet,
 	PLANET_COGCPROGRAM_TYPE,
-} from "@/features/game_data/gameData.types";
+} from "@/features/api/gameData.types";
 import {
 	IPlan,
 	IPlanEmpireElement,

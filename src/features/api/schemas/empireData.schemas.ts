@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 // Types & Interfaces
-import { PLAN_FACTION_TYPE_ZOD_ENUM } from "@/features/planning_data/planningData.schemas";
+import { PLAN_FACTION_TYPE_ZOD_ENUM } from "@/features/api/schemas/planningData.schemas";
 import { IEmpirePatchPayload } from "@/features/empire/empire.types";
 import { IPlanEmpireJunction } from "@/features/manage/manage.types";
 

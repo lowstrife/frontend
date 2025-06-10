@@ -14,7 +14,7 @@ import {
 	callGetPlanlist,
 	callDeletePlan,
 	callClonePlan,
-} from "@/features/planning_data/planData.api";
+} from "@/features/api/planData.api";
 
 // test data
 import plan_etherwind from "@/tests/test_data/api_data_plan_etherwind.json";

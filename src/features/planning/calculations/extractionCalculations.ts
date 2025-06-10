@@ -1,5 +1,5 @@
 // Types & Interfaces
-import { PLANET_RESOURCETYPE_TYPE } from "@/features/game_data/gameData.types";
+import { PLANET_RESOURCETYPE_TYPE } from "@/features/api/gameData.types";
 
 const TOTALMSDAY: number = 24 * 60 * 60 * 1000;
 const TIME_COL: number = 6 * 60 * 60 * 1000;

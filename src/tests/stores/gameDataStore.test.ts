@@ -10,9 +10,9 @@ import planets from "@/tests/test_data/api_data_planets.json";
 import planet_single from "@/tests/test_data/api_data_planet_single.json";
 
 // mocks
-vi.mock("@/features/game_data/gameData.api", async () => {
+vi.mock("@/features/api/gameData.api", async () => {
 	return {
-		...(await vi.importActual("@/features/game_data/gameData.api")),
+		...(await vi.importActual("@/features/api/gameData.api")),
 		callDataMaterials: vi.fn(),
 		callDataExchanges: vi.fn(),
 		callDataRecipes: vi.fn(),
@@ -29,7 +29,7 @@ import {
 	callDataBuildings,
 	callDataPlanet,
 	callDataMultiplePlanets,
-} from "@/features/game_data/gameData.api";
+} from "@/features/api/gameData.api";
 
 vi.mock("@/lib/config", async () => {
 	const original: any = await vi.importActual("@/lib/config");

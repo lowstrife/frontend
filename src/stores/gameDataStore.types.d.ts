@@ -4,7 +4,7 @@ import {
 	IRecipe,
 	IBuilding,
 	IPlanet,
-} from "@/features/game_data/gameData.types";
+} from "@/features/api/gameData.types";
 
 interface IMaterialsRecord extends Record<string, IMaterial> {}
 interface IExchangesRecord extends Record<string, IExchange> {}

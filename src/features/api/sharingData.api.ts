@@ -8,13 +8,13 @@ import {
 	SharedCreateResponseSchema,
 	SharedCreateResponseType,
 	SharedListResponseSchema,
-} from "@/features/sharing/sharingData.schemas";
+} from "@/features/api/schemas/sharingData.schemas";
 
 // Types & Interfaces
 import {
 	IShared,
 	ISharedCreateResponse,
-} from "@/features/sharing/sharingData.types";
+} from "@/features/api/sharingData.types";
 
 /**
  * Fetches all shared plan information for user from API

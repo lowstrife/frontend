@@ -7,7 +7,7 @@ import { useGameDataStore } from "@/stores/gameDataStore";
 import { inertClone } from "@/util/data";
 
 // Interfaces & Types
-import { IMaterial } from "@/features/game_data/gameData.types";
+import { IMaterial } from "@/features/api/gameData.types";
 
 export function useMaterialData() {
 	const gameDataStore = useGameDataStore();

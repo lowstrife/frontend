@@ -6,7 +6,7 @@ import {
 	BUILDING_EXPERTISE_TYPE,
 	IBuilding,
 	IPlanet,
-} from "@/features/game_data/gameData.types";
+} from "@/features/api/gameData.types";
 import {
 	EfficiencyMap,
 	IBuildingEfficiency,

@@ -6,11 +6,8 @@
 	const planningStore = usePlanningStore();
 
 	// API
-	import {
-		callClonePlan,
-		callDeletePlan,
-	} from "@/features/planning_data/planData.api";
-	import { callPatchEmpirePlanJunctions } from "@/features/empire/empireData.api";
+	import { callClonePlan, callDeletePlan } from "@/features/api/planData.api";
+	import { callPatchEmpirePlanJunctions } from "@/features/api/empireData.api";
 
 	// Composables
 	import { usePlanetData } from "@/features/game_data/usePlanetData";
