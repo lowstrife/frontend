@@ -3,6 +3,9 @@ export const highchartsOptions: Highcharts.Options = {
 		styledMode: false,
 		backgroundColor: "transparent",
 	},
+	lang: {
+		thousandsSep: ",",
+	},
 	accessibility: {
 		enabled: false,
 	},
