@@ -169,6 +169,10 @@
 				</n-tooltip>
 			</div>
 			<div class="flex gap-x-3">
+				<span>Revenue</span>
+				<span class="font-bold">
+					{{ formatNumber(localBuildingData.dailyRevenue) }} $
+				</span>
 				<span>Construction Cost</span>
 				<span class="font-bold">
 					{{ formatNumber(localBuildingData.constructionCost * -1) }} $

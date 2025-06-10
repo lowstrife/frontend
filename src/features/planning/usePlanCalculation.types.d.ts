@@ -89,6 +89,7 @@ export interface IProductionBuilding {
 	constructionCost: number;
 	workforceMaterials: IMaterialIOMinimal[];
 	workforceDailyCost: number;
+	dailyRevenue: number;
 }
 
 export interface IProductionResult {

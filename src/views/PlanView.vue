@@ -133,13 +133,15 @@
 	 * Tool Setup
 	 */
 
-	type toolOptions = "visitation-frequency" | null;
+	type toolOptions = "visitation-frequency" | "repair-analysis" | null;
 	const refShowTool: Ref<toolOptions> = ref(null);
 
 	function openTool(key: toolOptions): void {
 		refShowTool.value = null;
 		nextTick(() => {
-			refShowTool.value = key;
+			key != refShowTool.value
+				? (refShowTool.value = key)
+				: (refShowTool.value = null);
 		});
 	}
 
@@ -156,6 +158,28 @@
 					props: {
 						stoAmount: result.value.infrastructure["STO"],
 						materialIO: result.value.materialio,
+					},
+					listeners: {},
+				};
+			case "repair-analysis":
+				return {
+					component: defineAsyncComponent(
+						() =>
+							import(
+								"@/features/planning/components/tools/PlanRepairAnalysis.vue"
+							)
+					),
+					props: {
+						data: result.value.production.buildings.map((b) => {
+							return {
+								name: b.name,
+								amount: b.amount,
+								dailyRevenue: b.dailyRevenue,
+								constructionMaterials: b.constructionMaterials,
+							};
+						}),
+						cxUuid: refCXUuid.value,
+						planetNaturalId: planetData.PlanetNaturalId,
 					},
 					listeners: {},
 				};
@@ -381,8 +405,8 @@
 			</div>
 			<div class="border-b border-white/10 p-3">
 				<div class="flex grow justify-end gap-x-3 my-auto">
-					<n-button size="small" secondary>Empire Override</n-button>
-					<n-button size="small" secondary>POPR</n-button>
+					<n-button size="small" secondary disabled>Empire Override</n-button>
+					<n-button size="small" secondary disabled>POPR</n-button>
 					<n-button
 						size="small"
 						secondary
@@ -390,10 +414,14 @@
 					>
 						Visitation Frequency
 					</n-button>
-					<n-button size="small" secondary>Construction Cart</n-button>
-					<n-button size="small" secondary>Supply Cart</n-button>
-					<n-button size="small" secondary>Repair Analysis</n-button>
-					<n-button size="small" secondary>Habitation Optimization</n-button>
+					<n-button size="small" secondary disabled>Construction Cart</n-button>
+					<n-button size="small" secondary disabled>Supply Cart</n-button>
+					<n-button size="small" secondary @click="openTool('repair-analysis')"
+						>Repair Analysis</n-button
+					>
+					<n-button size="small" secondary disabled
+						>Habitation Optimization</n-button
+					>
 				</div>
 			</div>
 			<div

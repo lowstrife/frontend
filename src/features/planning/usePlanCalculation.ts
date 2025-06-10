@@ -472,7 +472,26 @@ export function usePlanCalculation(
 				constructionCost: constructionCost,
 				workforceMaterials: workforceMaterials,
 				workforceDailyCost: workforceDailyCost,
+				dailyRevenue: 0,
 			};
+
+			// Calculating individual buildings daily contribution
+			const productionMaterialIOEnhanced: IMaterialIO[] =
+				enhanceMaterialIOMaterial(
+					enhanceMaterialIOMinimal(calculateMaterialIO([building]))
+				);
+
+			const productionRevenue: number = productionMaterialIOEnhanced.reduce(
+				(sum, element) =>
+					sum + (element.delta < 0 ? element.price * -1 : element.price),
+				0
+			);
+
+			// WorkforceDailyCost is just per Building, so need to multiply
+			building.dailyRevenue =
+				productionRevenue +
+				workforceDailyCost * building.amount +
+				(1 / 180) * constructionCost;
 
 			buildings.push(building);
 		});
