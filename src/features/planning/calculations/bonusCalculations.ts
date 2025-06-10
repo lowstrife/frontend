@@ -221,7 +221,7 @@ export function useBonusCalculation() {
 		if (["FRM", "ORC"].includes(building.Ticker)) {
 			elements.push({
 				efficiencyType: "FERTILITY",
-				value: planet.Fertility != -1 ? (1 + planet.Fertility) * (10 / 33) : 0,
+				value: planet.Fertility != -1.0 ? 1 + planet.Fertility * (10 / 33) : 0,
 			});
 		}
 
