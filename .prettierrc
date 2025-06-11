@@ -1,0 +1,11 @@
+{
+	"trailingComma": "es5",
+	"semi": true,
+	"singleQuote": false,
+	"arrowParens": "always",
+	"printWidth": 80,
+	"bracketSameLine": true,
+	"htmlWhitespaceSensitivity": "css",
+	"useTabs": true,
+	"vueIndentScriptAndStyle": true
+}
