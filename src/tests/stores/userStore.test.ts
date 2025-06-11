@@ -1,16 +1,21 @@
 import { setActivePinia, createPinia } from "pinia";
 import { beforeEach, describe, it, expect, vi } from "vitest";
 
-import { callUserLogin, callRefreshToken } from "@/features/account/account";
+import {
+	callUserLogin,
+	callRefreshToken,
+	callGetProfile,
+} from "@/features/api/userData.api";
 import { useUserStore } from "@/stores/userStore";
 
 describe("User Store", () => {
 	beforeEach(() => {
 		setActivePinia(createPinia());
 
-		vi.mock("@/features/account/account", () => ({
+		vi.mock("@/features/api/userData.api", () => ({
 			callUserLogin: vi.fn(),
 			callRefreshToken: vi.fn(),
+			callGetProfile: vi.fn(),
 		}));
 	});
 
@@ -49,9 +54,12 @@ describe("User Store", () => {
 			access_token: "mockAccessToken",
 			refresh_token: "mockRefreshToken",
 		};
-		(callUserLogin as unknown as ReturnType<typeof vi.fn>).mockResolvedValue(
-			mockTokenData
-		);
+		(
+			callUserLogin as unknown as ReturnType<typeof vi.fn>
+		).mockResolvedValue(mockTokenData);
+		(
+			callGetProfile as unknown as ReturnType<typeof vi.fn>
+		).mockResolvedValue({});
 
 		const result = await userStore.performLogin(mockUsername, mockPassword);
 
@@ -66,9 +74,12 @@ describe("User Store", () => {
 		const mockUsername = "testuser";
 		const mockPassword = "testpassword";
 
-		(callUserLogin as unknown as ReturnType<typeof vi.fn>).mockRejectedValue(
-			new Error("Mock login error")
-		);
+		(
+			callUserLogin as unknown as ReturnType<typeof vi.fn>
+		).mockRejectedValue(new Error("Mock login error"));
+		(
+			callGetProfile as unknown as ReturnType<typeof vi.fn>
+		).mockResolvedValue({});
 
 		const result = await userStore.performLogin(mockUsername, mockPassword);
 		expect(callUserLogin).toHaveBeenCalledWith(mockUsername, mockPassword);
@@ -90,6 +101,9 @@ describe("User Store", () => {
 		(
 			callRefreshToken as unknown as ReturnType<typeof vi.fn>
 		).mockReturnValueOnce(mockTokenData);
+		(
+			callGetProfile as unknown as ReturnType<typeof vi.fn>
+		).mockResolvedValue({});
 
 		expect(userStore.refreshToken).toBe(mockToken);
 		const result = await userStore.performTokenRefresh();
@@ -105,6 +119,10 @@ describe("User Store", () => {
 
 		userStore.refreshToken = undefined;
 
+		(
+			callGetProfile as unknown as ReturnType<typeof vi.fn>
+		).mockResolvedValue({});
+
 		const result = await userStore.performTokenRefresh();
 		expect(result).toBe(false);
 	});
@@ -116,9 +134,12 @@ describe("User Store", () => {
 
 		userStore.refreshToken = mockToken;
 
-		(callRefreshToken as unknown as ReturnType<typeof vi.fn>).mockRejectedValue(
-			new Error("Mock login error")
-		);
+		(
+			callRefreshToken as unknown as ReturnType<typeof vi.fn>
+		).mockRejectedValue(new Error("Mock login error"));
+		(
+			callGetProfile as unknown as ReturnType<typeof vi.fn>
+		).mockResolvedValue({});
 
 		const result = await userStore.performTokenRefresh();
 		expect(callRefreshToken).toHaveBeenCalledWith(mockToken);

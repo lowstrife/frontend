@@ -1,7 +1,18 @@
 import { defineStore } from "pinia";
 import { computed, ComputedRef, ref, Ref } from "vue";
 
-import { callRefreshToken, callUserLogin } from "@/features/account/account";
+// API
+import {
+	callGetProfile,
+	callRefreshToken,
+	callUserLogin,
+} from "@/features/api/userData.api";
+
+// Types & Interfaces
+import {
+	IUserProfile,
+	IUserTokenResponse,
+} from "@/features/api/userData.types";
 
 export const useUserStore = defineStore(
 	"prunplanner_user",
@@ -9,29 +20,57 @@ export const useUserStore = defineStore(
 		// state
 		const accessToken: Ref<string | undefined> = ref(undefined);
 		const refreshToken: Ref<string | undefined> = ref(undefined);
+		const profile: Ref<IUserProfile | undefined> = ref(undefined);
 
 		// getters
 		const isLoggedIn: ComputedRef<boolean> = computed(
-			() => accessToken.value !== undefined && refreshToken.value !== undefined
+			() =>
+				accessToken.value !== undefined &&
+				refreshToken.value !== undefined
 		);
 
 		// functions
+
+		/**
+		 * Sets access and refresh token
+		 * @author jplacht
+		 *
+		 * @param {string} access Access Token
+		 * @param {string} refresh Refresh Token
+		 */
 		function setToken(access: string, refresh: string): void {
 			accessToken.value = access;
 			refreshToken.value = refresh;
+
+			// trigger profile refresh non-blocking
+			performGetProfile();
 		}
 
+		/**
+		 * Logs user out by clearing data
+		 * @author jplacht
+		 */
 		function logout(): void {
 			accessToken.value = undefined;
 			refreshToken.value = undefined;
+			profile.value = undefined;
 		}
 
+		/**
+		 * Performs a login
+		 * @author jplacht
+		 *
+		 * @async
+		 * @param {string} username
+		 * @param {string} password
+		 * @returns {Promise<boolean>}
+		 */
 		async function performLogin(
 			username: string,
 			password: string
 		): Promise<boolean> {
 			try {
-				const tokenData: Account.ITokenResponse = await callUserLogin(
+				const tokenData: IUserTokenResponse = await callUserLogin(
 					username,
 					password
 				);
@@ -44,12 +83,18 @@ export const useUserStore = defineStore(
 			}
 		}
 
+		/**
+		 * Performs a token refresh
+		 * @author jplacht
+		 *
+		 * @async
+		 * @returns {Promise<boolean>}
+		 */
 		async function performTokenRefresh(): Promise<boolean> {
 			if (refreshToken.value) {
 				try {
-					const tokenData: Account.ITokenResponse = await callRefreshToken(
-						refreshToken.value
-					);
+					const tokenData: IUserTokenResponse =
+						await callRefreshToken(refreshToken.value);
 
 					setToken(tokenData.access_token, tokenData.refresh_token);
 					return true;
@@ -62,9 +107,28 @@ export const useUserStore = defineStore(
 			}
 		}
 
+		/**
+		 * Loads the users profile
+		 * @author jplacht
+		 *
+		 * @async
+		 * @returns {Promise<void>} None
+		 */
+		async function performGetProfile(): Promise<void> {
+			// only perform if the user is logged in
+			if (isLoggedIn.value) {
+				try {
+					await callGetProfile().then((result: IUserProfile) => {
+						profile.value = result;
+					});
+				} catch {}
+			}
+		}
+
 		return {
 			accessToken,
 			refreshToken,
+			profile,
 			// getters
 			isLoggedIn,
 			// functions
@@ -72,11 +136,12 @@ export const useUserStore = defineStore(
 			logout,
 			performLogin,
 			performTokenRefresh,
+			performGetProfile,
 		};
 	},
 	{
 		persist: {
-			pick: ["accessToken", "refreshToken"],
+			pick: ["accessToken", "refreshToken", "profile"],
 		},
 	}
 );

@@ -39,10 +39,27 @@ export function timestampFromString(value: string): number {
 	return dayjs(value).valueOf();
 }
 
+/**
+ * Formats a date to string
+ * @author jplacht
+ *
+ * @export
+ * @param {Date} value Date
+ * @param {string} [format="YYYY-MM-DD"] Date output format
+ * @returns {string} Date as String
+ */
 export function formatDate(value: Date, format: string = "YYYY-MM-DD"): string {
 	return dayjs(value).format(format);
 }
 
+/**
+ * Humanizes a time
+ * @author jplacht
+ *
+ * @export
+ * @param {number} value Time in Ms
+ * @returns {string} Humanized time
+ */
 export function humanizeTimeMs(value: number): string {
 	if (value === Infinity || isNaN(value)) return "∞";
 
@@ -63,4 +80,18 @@ export function humanizeTimeMs(value: number): string {
 	} else {
 		return `${hours}h ${minutes}m`;
 	}
+}
+
+/**
+ * Gets the relative time from date till now
+ * @author jplacht
+ *
+ * @export
+ * @param {(Date | undefined)} value Date
+ * @returns {string} Relative, humanized time
+ */
+export function relativeFromDate(value: Date | undefined): string {
+	if (value === undefined) return "—";
+
+	return dayjs(value).fromNow();
 }

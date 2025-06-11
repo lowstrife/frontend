@@ -82,8 +82,8 @@ describe("usePlanCalculation", async () => {
 			ref(undefined)
 		);
 
-		expect(existing).toBeTruthy();
-		expect(saveable).toBeTruthy();
+		expect(existing.value).toBeTruthy();
+		expect(saveable.value).toBeTruthy();
 	});
 
 	it("backendData", async () => {

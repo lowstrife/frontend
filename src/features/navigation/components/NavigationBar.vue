@@ -3,8 +3,7 @@
 	<input type="checkbox" id="menu-toggle" class="hidden peer" />
 	<!-- Sidebar -->
 	<div
-		class="hidden peer-checked:flex md:flex border-r border-white/5 flex-col w-60 bg-gray-dark transition-all duration-300 ease-in-out"
-	>
+		class="hidden peer-checked:flex md:flex border-r border-white/5 flex-col w-60 bg-gray-dark transition-all duration-300 ease-in-out">
 		<div class="items-center justify-between h-16 px-4 sm:hidden md:flex">
 			<div class="flex w-full">
 				<div class="flex-grow text-prunplanner text-xl font-light">
@@ -17,35 +16,39 @@
 			<nav class="flex-1 px-2 pt-0 pb-4 text-white/80">
 				<template
 					v-for="section in menuItems"
-					:key="'SECTION#' + section.label"
-				>
+					:key="'SECTION#' + section.label">
 					<div class="pb-4">
 						<div class="px-4 py-2 text-sm text-gray-400">
 							{{ section.label }}
 						</div>
 						<template
 							v-for="item in section.children"
-							:key="'SECTION#' + section.label + '#' + item.label"
-						>
+							:key="
+								'SECTION#' + section.label + '#' + item.label
+							">
 							<!-- without children-->
 							<RouterLink
 								v-if="!item.children && item.routerLink"
 								:to="item.routerLink"
 								class="flex items-center px-4 py-2 hover:bg-white/20 hover:rounded-sm group"
 								active-class="bg-white/10 rounded-sm"
-								:key="'ROUTER#' + section.label + '#' + item.label"
-							>
+								:key="
+									'ROUTER#' + section.label + '#' + item.label
+								">
 								<n-icon class="mr-2" size="20" v-if="item.icon">
 									<component :is="item.icon" />
 								</n-icon>
 								{{ item.label }}
 							</RouterLink>
-							<template v-else-if="!item.children && item.functionCall">
+							<template
+								v-else-if="!item.children && item.functionCall">
 								<div
 									class="flex items-center px-4 py-2 hover:bg-white/20 hover:rounded-sm group hover:cursor-pointer"
-									v-on:click="item.functionCall()"
-								>
-									<n-icon class="mr-2" size="20" v-if="item.icon">
+									v-on:click="item.functionCall()">
+									<n-icon
+										class="mr-2"
+										size="20"
+										v-if="item.icon">
 										<component :is="item.icon" />
 									</n-icon>
 									<span>{{ item.label }}</span>
@@ -56,13 +59,14 @@
 									<input
 										type="checkbox"
 										:id="item.label + '-toggle'"
-										class="hidden peer"
-									/>
+										class="hidden peer" />
 									<label
 										:for="item.label + '-toggle'"
-										class="flex items-center px-4 py-2 hover:bg-white/20 hover:rounded-sm cursor-pointer w-full"
-									>
-										<n-icon class="mr-2" size="20" v-if="item.icon">
+										class="flex items-center px-4 py-2 hover:bg-white/20 hover:rounded-sm cursor-pointer w-full">
+										<n-icon
+											class="mr-2"
+											size="20"
+											v-if="item.icon">
 											<component :is="item.icon" />
 										</n-icon>
 										{{ item.label }}
@@ -72,29 +76,40 @@
 											class="h-4 w-4 ml-auto transition-transform peer-checked:rotate-180 absolute right-4 top-3 transform #dis--translate-y-1/2 text-white"
 											fill="none"
 											viewBox="0 0 24 24"
-											stroke="currentColor"
-										>
+											stroke="currentColor">
 											<path
 												stroke-linecap="round"
 												stroke-linejoin="round"
 												stroke-width="2"
-												d="M19 9l-7 7-7-7"
-											/>
+												d="M19 9l-7 7-7-7" />
 										</svg>
 									</label>
 									<div
-										class="hidden peer-checked:flex transition-all flex-col duration-300"
-									>
+										class="hidden peer-checked:flex transition-all flex-col duration-300">
 										<RouterLink
 											v-for="children in item.children"
-											:to="children.routerLink ? children.routerLink : ''"
+											:to="
+												children.routerLink
+													? children.routerLink
+													: ''
+											"
 											class="flex items-center px-4 py-2 hover:bg-white/20 hover:rounded-sm group"
-											:class="children.icon ? 'pl-6' : 'pl-12'"
+											:class="
+												children.icon ? 'pl-6' : 'pl-12'
+											"
 											active-class="bg-white/10 rounded-sm"
-											:key="'ROUTER#' + children.label + '#' + children.label"
-										>
-											<n-icon class="mr-2" size="20" v-if="children.icon">
-												<component :is="children.icon" />
+											:key="
+												'ROUTER#' +
+												children.label +
+												'#' +
+												children.label
+											">
+											<n-icon
+												class="mr-2"
+												size="20"
+												v-if="children.icon">
+												<component
+													:is="children.icon" />
 											</n-icon>
 											{{ children.label }}
 										</RouterLink>
@@ -259,7 +274,7 @@
 				},
 				{
 					label: "Profile",
-					routerLink: "/none",
+					routerLink: "/profile",
 					icon: PersonSharp,
 				},
 				{

@@ -1,16 +1,22 @@
 import { describe, it, expect, vi } from "vitest";
 
 import { apiService } from "@/lib/apiService";
-import { callRefreshToken, callUserLogin } from "@/features/account/account";
+import {
+	callGetProfile,
+	callRefreshToken,
+	callUserLogin,
+} from "@/features/api/userData.api";
 import {
 	LoginPayloadSchema,
 	RefreshPayloadSchema,
 	TokenResponseSchema,
-} from "@/features/account/account.schemas";
+	UserProfilePayloadSchema,
+} from "@/features/api/schemas/user.schemas";
 
 vi.mock("@/lib/apiService", () => ({
 	apiService: {
 		post: vi.fn(),
+		get: vi.fn(),
 	},
 }));
 
@@ -57,6 +63,31 @@ describe("Feature: Account", () => {
 			RefreshPayloadSchema,
 			TokenResponseSchema,
 			true
+		);
+
+		expect(result).toEqual(mockResponse);
+	});
+
+	it("callGetProfile: Calls API Service and gets correct response", async () => {
+		const mockResponse = {
+			user_id: 1,
+			username: "foo",
+			email: "",
+			email_verified: true,
+			fio_apikey: "foo@moo.de",
+			prun_username: "foo",
+			last_login: new Date(),
+			last_action: new Date(),
+		};
+
+		// @ts-expect-error - mock post typing
+		apiService.get.mockResolvedValue(mockResponse);
+
+		const result = await callGetProfile();
+
+		expect(apiService.get).toHaveBeenCalledWith(
+			"/user/profile",
+			UserProfilePayloadSchema
 		);
 
 		expect(result).toEqual(mockResponse);

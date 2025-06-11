@@ -18,6 +18,12 @@ const router = createRouter({
 			props: true,
 		},
 		{
+			name: "profile",
+			path: "/profile",
+			meta: { requiresAuth: true },
+			component: () => import("@/views/ProfileView.vue"),
+		},
+		{
 			name: "empire",
 			path: "/empire/:empireUuid?",
 			meta: { requiresAuth: true },

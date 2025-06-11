@@ -1,4 +1,6 @@
 import { apiService } from "@/lib/apiService";
+
+// Schemas
 import {
 	LoginPayloadSchema,
 	LoginPayloadType,
@@ -6,7 +8,15 @@ import {
 	TokenResponseType,
 	RefreshPayloadType,
 	RefreshPayloadSchema,
-} from "@/features/account/account.schemas";
+	UserProfilePayloadType,
+	UserProfilePayloadSchema,
+} from "@/features/api/schemas/user.schemas";
+
+// Types & Interfaces
+import {
+	IUserProfile,
+	IUserTokenResponse,
+} from "@/features/api/userData.types";
 
 /**
  * Calls the backends Login endpoint to return Token
@@ -21,7 +31,7 @@ import {
 export async function callUserLogin(
 	username: string,
 	password: string
-): Promise<Account.ITokenResponse> {
+): Promise<IUserTokenResponse> {
 	return apiService.post<LoginPayloadType, TokenResponseType>(
 		"/user/login",
 		{
@@ -34,9 +44,19 @@ export async function callUserLogin(
 	);
 }
 
+/**
+ * Calls the backends Token refresh endpoint to fetch new
+ * access and refresh tokens
+ * @author jplacht
+ *
+ * @export
+ * @async
+ * @param {string} refresh_token Current Refresh Token
+ * @returns {Promise<IUserTokenResponse>} Token Response
+ */
 export async function callRefreshToken(
 	refresh_token: string
-): Promise<Account.ITokenResponse> {
+): Promise<IUserTokenResponse> {
 	return apiService.post<RefreshPayloadType, TokenResponseType>(
 		"/user/refresh",
 		{
@@ -45,5 +65,20 @@ export async function callRefreshToken(
 		RefreshPayloadSchema,
 		TokenResponseSchema,
 		true
+	);
+}
+
+/**
+ * Calls the backends Profile endpoint to fetch users profile
+ * @author jplacht
+ *
+ * @export
+ * @async
+ * @returns {Promise<IUserProfile>} User Profile
+ */
+export async function callGetProfile(): Promise<IUserProfile> {
+	return apiService.get<UserProfilePayloadType>(
+		"/user/profile",
+		UserProfilePayloadSchema
 	);
 }
