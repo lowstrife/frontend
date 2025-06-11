@@ -122,7 +122,8 @@ describe("GameData Store", async () => {
 			).toBeFalsy();
 
 			// add single
-			gameDataStore.planets[planet_single.PlanetNaturalId] = planet_single;
+			gameDataStore.planets[planet_single.PlanetNaturalId] =
+				planet_single;
 
 			expect(
 				gameDataStore.hasPlanet(planet_single.PlanetNaturalId)
@@ -138,7 +139,8 @@ describe("GameData Store", async () => {
 
 			// add all
 			planets.forEach(
-				(planet) => (gameDataStore.planets[planet.PlanetNaturalId] = planet)
+				(planet) =>
+					(gameDataStore.planets[planet.PlanetNaturalId] = planet)
 			);
 
 			expect(gameDataStore.hasMultiplePlanets(ids)).toBeTruthy();
@@ -168,7 +170,9 @@ describe("GameData Store", async () => {
 					"KW-020c": Promise.resolve(false),
 				};
 
-				await expect(gameDataStore.getPlanet("KW-020c")).rejects.toThrowError();
+				await expect(
+					gameDataStore.getPlanet("KW-020c")
+				).rejects.toThrowError();
 			});
 
 			it("Force, needs to fetch planet data ", async () => {
@@ -382,5 +386,79 @@ describe("performStaleDataRefresh", async () => {
 		await gameDataStore.performStaleDataRefresh();
 
 		expect(spyPerform).toBeCalledTimes(1);
+	});
+});
+
+describe("resetter", async () => {
+	let gameDataStore: any;
+
+	beforeEach(() => {
+		setActivePinia(createPinia());
+		gameDataStore = useGameDataStore();
+	});
+
+	it("reset materials", async () => {
+		gameDataStore.materials["foo"] = "moo";
+		gameDataStore.lastRefreshedMaterials = new Date();
+
+		expect(Object.keys(gameDataStore.materials).length).toBe(1);
+		expect(gameDataStore.lastRefreshedMaterials).toBeDefined();
+
+		gameDataStore.resetMaterials();
+
+		expect(Object.keys(gameDataStore.materials).length).toBe(0);
+		expect(gameDataStore.lastRefreshedMaterials).toBeUndefined();
+	});
+
+	it("reset buildings", async () => {
+		gameDataStore.buildings["foo"] = "moo";
+		gameDataStore.lastRefreshedBuildings = new Date();
+
+		expect(Object.keys(gameDataStore.buildings).length).toBe(1);
+		expect(gameDataStore.lastRefreshedBuildings).toBeDefined();
+
+		gameDataStore.resetBuildings();
+
+		expect(Object.keys(gameDataStore.buildings).length).toBe(0);
+		expect(gameDataStore.lastRefreshedBuildings).toBeUndefined();
+	});
+
+	it("reset recipes", async () => {
+		gameDataStore.recipes["foo"] = "moo";
+		gameDataStore.lastRefreshedRecipes = new Date();
+
+		expect(Object.keys(gameDataStore.recipes).length).toBe(1);
+		expect(gameDataStore.lastRefreshedRecipes).toBeDefined();
+
+		gameDataStore.resetRecipes();
+
+		expect(Object.keys(gameDataStore.recipes).length).toBe(0);
+		expect(gameDataStore.lastRefreshedRecipes).toBeUndefined();
+	});
+
+	it("reset planets", async () => {
+		gameDataStore.planets["foo"] = "moo";
+		gameDataStore.lastRefreshedPlanets["foo"] = new Date();
+
+		expect(Object.keys(gameDataStore.planets).length).toBe(1);
+		expect(gameDataStore.lastRefreshedPlanets["foo"]).toBeDefined();
+
+		gameDataStore.resetPlanets();
+
+		expect(Object.keys(gameDataStore.planets).length).toBe(0);
+		expect(gameDataStore.lastRefreshedPlanets["foo"]).toBeUndefined();
+	});
+
+	it("reset exchanges", async () => {
+		gameDataStore.exchanges["foo"] = "moo";
+		gameDataStore.lastRefreshedExchanges = new Date();
+
+		expect(Object.keys(gameDataStore.exchanges).length).toBe(1);
+		expect(gameDataStore.lastRefreshedExchanges).toBeDefined();
+
+		gameDataStore.resetExchanges();
+
+		expect(Object.keys(gameDataStore.exchanges).length).toBe(0);
+		expect(gameDataStore.lastRefreshedExchanges).toBeUndefined();
 	});
 });

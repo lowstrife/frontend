@@ -4,10 +4,11 @@ import {
 	getDifferenceMinutes,
 	timestampFromString,
 	humanizeTimeMs,
+	relativeFromDate,
 } from "@/util/date";
 
-describe("Util: date", () => {
-	describe("getDifferenceMinutes", () => {
+describe("Util: date", async () => {
+	describe("getDifferenceMinutes", async () => {
 		it("defined", () => {
 			const startDate: Date = new Date(1745834400000);
 			const endDate: Date = new Date(1745834100000);
@@ -17,7 +18,7 @@ describe("Util: date", () => {
 			expect(minutes).toBe(5);
 		});
 
-		it("start undefined", () => {
+		it("start undefined", async () => {
 			const startDate: Date = new Date(1745834400000);
 
 			const minutes: number = getDifferenceMinutes(startDate, undefined);
@@ -25,7 +26,7 @@ describe("Util: date", () => {
 			expect(minutes).toBe(0);
 		});
 
-		it("end undefined", () => {
+		it("end undefined", async () => {
 			const endDate: Date = new Date(1745834100000);
 
 			const minutes: number = getDifferenceMinutes(undefined, endDate);
@@ -34,15 +35,17 @@ describe("Util: date", () => {
 		});
 	});
 
-	describe("timestampFromString", () => {
+	describe("timestampFromString", async () => {
 		it("Return Unix timestamp from Date as String", () => {
-			const result: number = timestampFromString("2025-05-02T05:00:00+00:00");
+			const result: number = timestampFromString(
+				"2025-05-02T05:00:00+00:00"
+			);
 
 			expect(result).toStrictEqual(1746162000000);
 		});
 	});
 
-	describe("formatDate", () => {
+	describe("formatDate", async () => {
 		it("Standard YYYY-MM-DD format", () => {
 			const testDate: Date = new Date(2025, 0, 1);
 
@@ -51,7 +54,7 @@ describe("Util: date", () => {
 			expect(result).toStrictEqual("2025-01-01");
 		});
 
-		it("Custom YYYY-MM format", () => {
+		it("Custom YYYY-MM format", async () => {
 			const testDate: Date = new Date(2025, 0, 1);
 
 			const result: string = formatDate(testDate, "YYYY-MM");
@@ -60,7 +63,7 @@ describe("Util: date", () => {
 		});
 	});
 
-	it("humanizeTimeMs", () => {
+	it("humanizeTimeMs", async () => {
 		const recipe = humanizeTimeMs(190080000);
 		expect(recipe).toStrictEqual("2d 4h 48m");
 
@@ -75,5 +78,13 @@ describe("Util: date", () => {
 
 		const nan = humanizeTimeMs(NaN);
 		expect(nan).toStrictEqual("∞");
+	});
+
+	it("relativeFromDate", async () => {
+		const rel = relativeFromDate(new Date());
+		const und = relativeFromDate(undefined);
+
+		expect(rel).toBe("a few seconds ago");
+		expect(und).toBe("—");
 	});
 });

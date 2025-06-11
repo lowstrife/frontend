@@ -81,7 +81,9 @@ describe("Planning Store", async () => {
 		it("fetch new plan, error", async () => {
 			vi.mocked(callGetPlan).mockRejectedValueOnce(new Error());
 
-			await expect(planningStore.getPlan(etherwindUuid)).rejects.toThrowError();
+			await expect(
+				planningStore.getPlan(etherwindUuid)
+			).rejects.toThrowError();
 		});
 	});
 
@@ -216,13 +218,45 @@ describe("Planning Store", async () => {
 
 			const result = await planningStore.getSharedList();
 			expect(result).toStrictEqual(shared_list);
-			expect(Object.keys(planningStore.shared).length).toBe(shared_list.length);
+			expect(Object.keys(planningStore.shared).length).toBe(
+				shared_list.length
+			);
 		});
 
 		it("api error", async () => {
 			vi.mocked(callGetSharedList).mockRejectedValueOnce(new Error());
 
 			await expect(planningStore.getSharedList()).rejects.toThrowError();
+		});
+	});
+
+	describe("resetter", async () => {
+		it("reset plans", async () => {
+			planningStore.plans["foo"] = "moo";
+
+			planningStore.resetPlans();
+			expect(Object.keys(planningStore.plans).length).toBe(0);
+		});
+
+		it("reset empires", async () => {
+			planningStore.empires["foo"] = "moo";
+
+			planningStore.resetEmpires();
+			expect(Object.keys(planningStore.empires).length).toBe(0);
+		});
+
+		it("reset cxs", async () => {
+			planningStore.cxs["foo"] = "moo";
+
+			planningStore.resetCXS();
+			expect(Object.keys(planningStore.cxs).length).toBe(0);
+		});
+
+		it("reset shared", async () => {
+			planningStore.shared["foo"] = "moo";
+
+			planningStore.resetShared();
+			expect(Object.keys(planningStore.shared).length).toBe(0);
 		});
 	});
 });

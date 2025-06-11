@@ -168,7 +168,9 @@ export const usePlanningStore = defineStore(
 			if (planUuids.length > 0) {
 				const plansInStore: string[] = Object.keys(plans.value);
 
-				let checker: boolean = planUuids.every((p) => plansInStore.includes(p));
+				let checker: boolean = planUuids.every((p) =>
+					plansInStore.includes(p)
+				);
 				if (checker) {
 					// all plans existing, return them
 					const planList: IPlan[] = [];
@@ -259,6 +261,38 @@ export const usePlanningStore = defineStore(
 			}
 		}
 
+		/**
+		 * Resets plans
+		 * @author jplacht
+		 */
+		function resetPlans(): void {
+			plans.value = {};
+		}
+
+		/**
+		 * Resets empires
+		 * @author jplacht
+		 */
+		function resetEmpires(): void {
+			empires.value = {};
+		}
+
+		/**
+		 * Resets exchange preferences
+		 * @author jplacht
+		 */
+		function resetCXS(): void {
+			cxs.value = {};
+		}
+
+		/**
+		 * Resets shared plans
+		 * @author jplacht
+		 */
+		function resetShared(): void {
+			shared.value = {};
+		}
+
 		return {
 			// state
 			plans,
@@ -275,6 +309,11 @@ export const usePlanningStore = defineStore(
 			getOrLoadEmpirePlans,
 			getAllPlans,
 			getSharedList,
+			// resetter
+			resetPlans,
+			resetEmpires,
+			resetCXS,
+			resetShared,
 		};
 	},
 	{

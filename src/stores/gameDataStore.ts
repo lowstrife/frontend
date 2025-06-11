@@ -9,6 +9,7 @@ import config from "@/lib/config";
 import { getDifferenceMinutes } from "@/util/date";
 import { inertClone } from "@/util/data";
 
+// API
 import {
 	callDataBuildings,
 	callDataExchanges,
@@ -17,6 +18,8 @@ import {
 	callDataPlanet,
 	callDataRecipes,
 } from "@/features/api/gameData.api";
+
+// Types & Interfaces
 import {
 	IBuildingsRecord,
 	IExchangesRecord,
@@ -65,8 +68,9 @@ export const useGameDataStore = defineStore(
 		let promiseRefreshingExchanges: Promise<boolean> | null = null;
 		let promiseRefreshingRecipes: Promise<boolean> | null = null;
 		let promiseRefreshingBuildings: Promise<boolean> | null = null;
-		let promiseRefreshingPlanets: Ref<Record<string, Promise<boolean> | null>> =
-			ref({});
+		let promiseRefreshingPlanets: Ref<
+			Record<string, Promise<boolean> | null>
+		> = ref({});
 
 		let isRefreshingMaterials: Ref<boolean> = ref(false);
 		let isRefreshingExchanges: Ref<boolean> = ref(false);
@@ -122,12 +126,14 @@ export const useGameDataStore = defineStore(
 		): Promise<IPlanet> {
 			// if force = false, only fetch new if data is not already available
 			if (!force) {
-				const findPlanet: IPlanet | undefined = planets.value[planetNaturalId];
+				const findPlanet: IPlanet | undefined =
+					planets.value[planetNaturalId];
 
 				if (findPlanet) return inertClone(findPlanet);
 
 				// nothing found, fetch first, then return
-				const fetchedPlanet: boolean = await performLoadPlanet(planetNaturalId);
+				const fetchedPlanet: boolean =
+					await performLoadPlanet(planetNaturalId);
 
 				if (fetchedPlanet) {
 					return inertClone(planets.value[planetNaturalId]);
@@ -138,7 +144,8 @@ export const useGameDataStore = defineStore(
 				}
 			} else {
 				// we're forced to fetch first, then return
-				const fetchedPlanet: boolean = await performLoadPlanet(planetNaturalId);
+				const fetchedPlanet: boolean =
+					await performLoadPlanet(planetNaturalId);
 
 				if (fetchedPlanet) {
 					return inertClone(planets.value[planetNaturalId]);
@@ -191,30 +198,33 @@ export const useGameDataStore = defineStore(
 			}
 
 			isRefreshingMaterials.value = true;
-			promiseRefreshingMaterials = new Promise<boolean>(async (resolve) => {
-				try {
-					const materialData: IMaterial[] = await callDataMaterials();
+			promiseRefreshingMaterials = new Promise<boolean>(
+				async (resolve) => {
+					try {
+						const materialData: IMaterial[] =
+							await callDataMaterials();
 
-					// initially reset
-					materials.value = {};
+						// initially reset
+						materials.value = {};
 
-					// store material data as record
-					materialData.forEach((m) => {
-						materials.value[m.Ticker] = m;
-					});
+						// store material data as record
+						materialData.forEach((m) => {
+							materials.value[m.Ticker] = m;
+						});
 
-					// set last refreshed
-					lastRefreshedMaterials.value = new Date();
+						// set last refreshed
+						lastRefreshedMaterials.value = new Date();
 
-					resolve(true);
-				} catch (error) {
-					console.error(error);
-					resolve(false);
-				} finally {
-					isRefreshingMaterials.value = false;
-					promiseRefreshingMaterials = null;
+						resolve(true);
+					} catch (error) {
+						console.error(error);
+						resolve(false);
+					} finally {
+						isRefreshingMaterials.value = false;
+						promiseRefreshingMaterials = null;
+					}
 				}
-			});
+			);
 
 			return promiseRefreshingMaterials;
 		}
@@ -232,29 +242,32 @@ export const useGameDataStore = defineStore(
 			}
 
 			isRefreshingExchanges.value = true;
-			promiseRefreshingExchanges = new Promise<boolean>(async (resolve) => {
-				try {
-					const exchangeData: IExchange[] = await callDataExchanges();
+			promiseRefreshingExchanges = new Promise<boolean>(
+				async (resolve) => {
+					try {
+						const exchangeData: IExchange[] =
+							await callDataExchanges();
 
-					// initially reset
-					exchanges.value = {};
+						// initially reset
+						exchanges.value = {};
 
-					// store data as record
-					exchangeData.forEach((e) => {
-						exchanges.value[e.TickerId] = e;
-					});
+						// store data as record
+						exchangeData.forEach((e) => {
+							exchanges.value[e.TickerId] = e;
+						});
 
-					// set last refreshed
-					lastRefreshedExchanges.value = new Date();
-					resolve(true);
-				} catch (error) {
-					console.error(error);
-					resolve(false);
-				} finally {
-					isRefreshingExchanges.value = false;
-					promiseRefreshingExchanges = null;
+						// set last refreshed
+						lastRefreshedExchanges.value = new Date();
+						resolve(true);
+					} catch (error) {
+						console.error(error);
+						resolve(false);
+					} finally {
+						isRefreshingExchanges.value = false;
+						promiseRefreshingExchanges = null;
+					}
 				}
-			});
+			);
 
 			return promiseRefreshingExchanges;
 		}
@@ -282,7 +295,11 @@ export const useGameDataStore = defineStore(
 
 					// store data as record
 					recipeData.forEach((r) => {
-						if (Object.keys(recipes.value).includes(r.BuildingTicker)) {
+						if (
+							Object.keys(recipes.value).includes(
+								r.BuildingTicker
+							)
+						) {
 							recipes.value[r.BuildingTicker].push(r);
 						} else {
 							recipes.value[r.BuildingTicker] = [r];
@@ -317,29 +334,32 @@ export const useGameDataStore = defineStore(
 			}
 
 			isRefreshingBuildings.value = true;
-			promiseRefreshingBuildings = new Promise<boolean>(async (resolve) => {
-				try {
-					const buildingData: IBuilding[] = await callDataBuildings();
+			promiseRefreshingBuildings = new Promise<boolean>(
+				async (resolve) => {
+					try {
+						const buildingData: IBuilding[] =
+							await callDataBuildings();
 
-					// initially rest
-					buildings.value = {};
+						// initially rest
+						buildings.value = {};
 
-					// store data as record
-					buildingData.forEach((b) => {
-						buildings.value[b.Ticker] = b;
-					});
+						// store data as record
+						buildingData.forEach((b) => {
+							buildings.value[b.Ticker] = b;
+						});
 
-					// set last refreshed
-					lastRefreshedBuildings.value = new Date();
-					resolve(true);
-				} catch (error) {
-					console.error(error);
-					resolve(false);
-				} finally {
-					isRefreshingBuildings.value = false;
-					promiseRefreshingBuildings = null;
+						// set last refreshed
+						lastRefreshedBuildings.value = new Date();
+						resolve(true);
+					} catch (error) {
+						console.error(error);
+						resolve(false);
+					} finally {
+						isRefreshingBuildings.value = false;
+						promiseRefreshingBuildings = null;
+					}
 				}
-			});
+			);
 
 			return promiseRefreshingBuildings;
 		}
@@ -366,16 +386,18 @@ export const useGameDataStore = defineStore(
 			// trigger a new refresh as there is none running at the moment
 			isRefreshingPlanets.value[planetNaturalId] = true;
 
-			promiseRefreshingPlanets.value[planetNaturalId] = new Promise<boolean>(
-				async (resolve) => {
+			promiseRefreshingPlanets.value[planetNaturalId] =
+				new Promise<boolean>(async (resolve) => {
 					try {
-						const planetData: IPlanet = await callDataPlanet(planetNaturalId);
+						const planetData: IPlanet =
+							await callDataPlanet(planetNaturalId);
 
 						// overwrite data
 						planets.value[planetNaturalId] = planetData;
 
 						// set last refreshed
-						lastRefreshedPlanets.value[planetNaturalId] = new Date();
+						lastRefreshedPlanets.value[planetNaturalId] =
+							new Date();
 
 						resolve(true);
 					} catch (error) {
@@ -385,8 +407,7 @@ export const useGameDataStore = defineStore(
 						isRefreshingPlanets.value[planetNaturalId] = false;
 						promiseRefreshingPlanets.value[planetNaturalId] = null;
 					}
-				}
-			);
+				});
 
 			return promiseRefreshingPlanets.value[planetNaturalId];
 		}
@@ -412,7 +433,7 @@ export const useGameDataStore = defineStore(
 
 			/*
 				NOTE: The API endpoint to fetch multiple planets at once is currently
-				restricted to logged-in users. 
+				restricted to logged-in users.
 			*/
 			if (!userStore.isLoggedIn) {
 				throw new Error(
@@ -435,8 +456,12 @@ export const useGameDataStore = defineStore(
 					await callDataMultiplePlanets(fetchPlanetIds);
 
 				// validate all was received
-				const fetchedIds: string[] = planetsData.map((p) => p.PlanetNaturalId);
-				const checkIds = fetchPlanetIds.every((v) => fetchedIds.includes(v));
+				const fetchedIds: string[] = planetsData.map(
+					(p) => p.PlanetNaturalId
+				);
+				const checkIds = fetchPlanetIds.every((v) =>
+					fetchedIds.includes(v)
+				);
 
 				if (!checkIds) {
 					const missing: string[] = fetchPlanetIds.filter(
@@ -450,7 +475,8 @@ export const useGameDataStore = defineStore(
 				// store data and set last refreshed of planet
 				planetsData.forEach((planet) => {
 					planets.value[planet.PlanetNaturalId] = planet;
-					lastRefreshedPlanets.value[planet.PlanetNaturalId] = new Date();
+					lastRefreshedPlanets.value[planet.PlanetNaturalId] =
+						new Date();
 				});
 
 				return true;
@@ -518,6 +544,51 @@ export const useGameDataStore = defineStore(
 			);
 		}
 
+		/**
+		 * Resets materials and last refreshed timestamp
+		 * @author jplacht
+		 */
+		function resetMaterials(): void {
+			materials.value = {};
+			lastRefreshedMaterials.value = undefined;
+		}
+
+		/**
+		 * Resets buildings and last refreshed timestamp
+		 * @author jplacht
+		 */
+		function resetBuildings(): void {
+			buildings.value = {};
+			lastRefreshedBuildings.value = undefined;
+		}
+
+		/**
+		 * Resets recipes and last refreshed timestamp
+		 * @author jplacht
+		 */
+		function resetRecipes(): void {
+			recipes.value = {};
+			lastRefreshedRecipes.value = undefined;
+		}
+
+		/**
+		 * Resets planets and last refreshed timestamp
+		 * @author jplacht
+		 */
+		function resetPlanets(): void {
+			planets.value = {};
+			lastRefreshedPlanets.value = {};
+		}
+
+		/**
+		 * Resets exchanges and last refreshed timestamp
+		 * @author jplacht
+		 */
+		function resetExchanges(): void {
+			exchanges.value = {};
+			lastRefreshedExchanges.value = undefined;
+		}
+
 		return {
 			// state
 			materials,
@@ -552,6 +623,12 @@ export const useGameDataStore = defineStore(
 			performLoadPlanet,
 			performLoadMultiplePlanets,
 			performStaleDataRefresh,
+			// resetter
+			resetMaterials,
+			resetBuildings,
+			resetRecipes,
+			resetPlanets,
+			resetExchanges,
 		};
 	},
 	{
@@ -589,7 +666,9 @@ export const useGameDataStore = defineStore(
 						))
 					: undefined;
 				store.lastRefreshedRecipes
-					? (store.lastRefreshedRecipes = new Date(store.lastRefreshedRecipes))
+					? (store.lastRefreshedRecipes = new Date(
+							store.lastRefreshedRecipes
+						))
 					: undefined;
 				store.lastRefreshedBuildings
 					? (store.lastRefreshedBuildings = new Date(
@@ -600,9 +679,10 @@ export const useGameDataStore = defineStore(
 				if (store.lastRefreshedPlanets) {
 					Object.keys(store.lastRefreshedPlanets).forEach(
 						(planetNaturalId: string) => {
-							store.lastRefreshedPlanets[planetNaturalId] = new Date(
-								store.lastRefreshedPlanets[planetNaturalId]
-							);
+							store.lastRefreshedPlanets[planetNaturalId] =
+								new Date(
+									store.lastRefreshedPlanets[planetNaturalId]
+								);
 						}
 					);
 				}
