@@ -1,4 +1,6 @@
 import { apiService } from "@/lib/apiService";
+
+// Schemas
 import {
 	LoginPayloadSchema,
 	LoginPayloadType,
@@ -6,7 +8,10 @@ import {
 	TokenResponseType,
 	RefreshPayloadType,
 	RefreshPayloadSchema,
-} from "@/features/account/account.schemas";
+} from "@/features/api/schemas/user.schemas";
+
+// Types & Interfaces
+import { IUserTokenResponse } from "@/features/user/user.types";
 
 /**
  * Calls the backends Login endpoint to return Token
@@ -21,7 +26,7 @@ import {
 export async function callUserLogin(
 	username: string,
 	password: string
-): Promise<Account.ITokenResponse> {
+): Promise<IUserTokenResponse> {
 	return apiService.post<LoginPayloadType, TokenResponseType>(
 		"/user/login",
 		{
@@ -36,7 +41,7 @@ export async function callUserLogin(
 
 export async function callRefreshToken(
 	refresh_token: string
-): Promise<Account.ITokenResponse> {
+): Promise<IUserTokenResponse> {
 	return apiService.post<RefreshPayloadType, TokenResponseType>(
 		"/user/refresh",
 		{

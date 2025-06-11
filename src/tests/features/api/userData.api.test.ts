@@ -1,12 +1,12 @@
 import { describe, it, expect, vi } from "vitest";
 
 import { apiService } from "@/lib/apiService";
-import { callRefreshToken, callUserLogin } from "@/features/account/account";
+import { callRefreshToken, callUserLogin } from "@/features/api/userData.api";
 import {
 	LoginPayloadSchema,
 	RefreshPayloadSchema,
 	TokenResponseSchema,
-} from "@/features/account/account.schemas";
+} from "@/features/api/schemas/user.schemas";
 
 vi.mock("@/lib/apiService", () => ({
 	apiService: {

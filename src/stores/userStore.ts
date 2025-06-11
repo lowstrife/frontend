@@ -1,7 +1,11 @@
 import { defineStore } from "pinia";
 import { computed, ComputedRef, ref, Ref } from "vue";
 
-import { callRefreshToken, callUserLogin } from "@/features/account/account";
+// API
+import { callRefreshToken, callUserLogin } from "@/features/api/userData.api";
+
+// Types & Interfaces
+import { IUserTokenResponse } from "@/features/user/user.types";
 
 export const useUserStore = defineStore(
 	"prunplanner_user",
@@ -12,7 +16,9 @@ export const useUserStore = defineStore(
 
 		// getters
 		const isLoggedIn: ComputedRef<boolean> = computed(
-			() => accessToken.value !== undefined && refreshToken.value !== undefined
+			() =>
+				accessToken.value !== undefined &&
+				refreshToken.value !== undefined
 		);
 
 		// functions
@@ -31,7 +37,7 @@ export const useUserStore = defineStore(
 			password: string
 		): Promise<boolean> {
 			try {
-				const tokenData: Account.ITokenResponse = await callUserLogin(
+				const tokenData: IUserTokenResponse = await callUserLogin(
 					username,
 					password
 				);
@@ -47,9 +53,8 @@ export const useUserStore = defineStore(
 		async function performTokenRefresh(): Promise<boolean> {
 			if (refreshToken.value) {
 				try {
-					const tokenData: Account.ITokenResponse = await callRefreshToken(
-						refreshToken.value
-					);
+					const tokenData: IUserTokenResponse =
+						await callRefreshToken(refreshToken.value);
 
 					setToken(tokenData.access_token, tokenData.refresh_token);
 					return true;
