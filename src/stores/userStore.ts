@@ -8,6 +8,10 @@ import {
 	callUserLogin,
 } from "@/features/api/userData.api";
 
+// Stores
+import { useGameDataStore } from "@/stores/gameDataStore";
+import { usePlanningStore } from "@/stores/planningStore";
+
 // Types & Interfaces
 import {
 	IUserProfile,
@@ -21,6 +25,13 @@ export const useUserStore = defineStore(
 		const accessToken: Ref<string | undefined> = ref(undefined);
 		const refreshToken: Ref<string | undefined> = ref(undefined);
 		const profile: Ref<IUserProfile | undefined> = ref(undefined);
+
+		// state reset
+		function $reset(): void {
+			accessToken.value = undefined;
+			refreshToken.value = undefined;
+			profile.value = undefined;
+		}
 
 		// getters
 		const isLoggedIn: ComputedRef<boolean> = computed(
@@ -60,9 +71,15 @@ export const useUserStore = defineStore(
 		 * @author jplacht
 		 */
 		function logout(): void {
-			accessToken.value = undefined;
-			refreshToken.value = undefined;
-			profile.value = undefined;
+			// reset user store
+			$reset();
+
+			// reset related stores
+			const gameDataStore = useGameDataStore();
+			gameDataStore.$reset();
+
+			const planningStore = usePlanningStore();
+			planningStore.$reset();
 		}
 
 		/**
@@ -138,6 +155,8 @@ export const useUserStore = defineStore(
 			accessToken,
 			refreshToken,
 			profile,
+			// reset
+			$reset,
 			// getters
 			isLoggedIn,
 			hasFIO,

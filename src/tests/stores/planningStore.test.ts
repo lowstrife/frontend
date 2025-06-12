@@ -103,6 +103,16 @@ describe("Planning Store", async () => {
 
 			await expect(planningStore.getAllPlans).rejects.toThrowError();
 		});
+
+		it("fetch new plan, no plans found, 404", async () => {
+			vi.mocked(callGetPlanlist).mockRejectedValueOnce(
+				new Error("HTTP 404")
+			);
+
+			const result = await planningStore.getAllPlans();
+			expect(result.length).toBe(0);
+			expect(callGetPlanlist).toBeCalledTimes(1);
+		});
 	});
 
 	describe("getAllEmpires", async () => {

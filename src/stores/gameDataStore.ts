@@ -100,6 +100,33 @@ export const useGameDataStore = defineStore(
 		let isRefreshingPlanets: Ref<Record<string, boolean>> = ref({});
 		let isRefreshingFIO: Ref<boolean> = ref(false);
 
+		// state reset
+
+		function $reset(): void {
+			materials.value = {};
+			exchanges.value = {};
+			buildings.value = {};
+			planets.value = {};
+			fio_storage_planets.value = {};
+			fio_storage_ships.value = {};
+			fio_storage_warehouses.value = {};
+			fio_sites_planets.value = {};
+			fio_sites_ships.value = {};
+			lastRefreshedMaterials.value = undefined;
+			lastRefreshedExchanges.value = undefined;
+			lastRefreshedRecipes.value = undefined;
+			lastRefreshedBuildings.value = undefined;
+			lastRefreshedPlanets.value = {};
+			lastRefreshedFIOStorage.value = undefined;
+			lastRefreshedFIOSites.value = undefined;
+			isRefreshingMaterials.value = false;
+			isRefreshingExchanges.value = false;
+			isRefreshingRecipes.value = false;
+			isRefreshingBuildings.value = false;
+			isRefreshingPlanets.value = {};
+			isRefreshingFIO.value = false;
+		}
+
 		// computed getters
 
 		/**
@@ -681,6 +708,8 @@ export const useGameDataStore = defineStore(
 			isRefreshingBuildings,
 			isRefreshingPlanets,
 			isRefreshingFIO,
+			// reset
+			$reset,
 			// getters
 			hasMaterials,
 			hasExchanges,

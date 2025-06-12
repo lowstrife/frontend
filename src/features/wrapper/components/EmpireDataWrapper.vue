@@ -63,7 +63,10 @@
 
 			// user has no empires, push an error
 			if (empireLoadList.length === 0) {
-				error.value = new EmpireLoadError("NO_EMPIRES", "No empires setup.");
+				error.value = new EmpireLoadError(
+					"NO_EMPIRES",
+					"No empires setup. Please create an empire in Management."
+				);
 				return;
 			}
 
@@ -154,17 +157,17 @@
 				loading
 					? 'bg-[url(/images/bg_striped_prunplanner.png)]'
 					: 'bg-[url(/images/bg_striped_error.png)]'
-			"
-		>
+			">
 			<div class="absolute inset-0 flex items-center justify-center">
 				<div class="bg-black p-8 rounded shadow-lg text-center">
 					<template v-if="loading">
-						<h1 class="text-2xl font-bold font-mono mb-3">Loading Data..</h1>
+						<h1 class="text-2xl font-bold font-mono mb-3">
+							Loading Data..
+						</h1>
 						<div
 							class="flex flex-row mb-2 align-middle"
 							v-for="(elem, index) in Object.values(loadingSteps)"
-							:key="index"
-						>
+							:key="index">
 							<div class="pr-5">
 								<n-spin v-if="!elem.status" :size="20" />
 								<n-icon :size="20" v-else>
@@ -176,11 +179,12 @@
 					</template>
 					<template v-else-if="error">
 						<div class="font-bold">Error!</div>
-						<div>{{ error }}</div>
+						<div>{{ error.message }}</div>
 					</template>
 					<template v-else>
 						<div class="font-bold">
-							Something unexpected happened. Check the Browser Console.
+							Something unexpected happened. Check the Browser
+							Console.
 						</div>
 					</template>
 				</div>
@@ -195,8 +199,7 @@
 				:empire-list="empireList"
 				:plan-list="planList"
 				:empire-uuid="empireLoadUuid"
-				:planet-list="planetList"
-			/>
+				:planet-list="planetList" />
 
 			<template #fallback>
 				<RenderingProgress />

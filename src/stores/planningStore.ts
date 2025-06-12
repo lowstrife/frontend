@@ -39,6 +39,14 @@ export const usePlanningStore = defineStore(
 		/** Key: Plan.uuid */
 		const shared: Ref<ISharedRecord> = ref({});
 
+		// state reset
+		function $reset(): void {
+			plans.value = {};
+			empires.value = {};
+			cxs.value = {};
+			shared.value = {};
+		}
+
 		// computed getters
 
 		/**
@@ -107,7 +115,12 @@ export const usePlanningStore = defineStore(
 				});
 
 				return inertClone(Object.values(plans.value));
-			} catch (error) {
+			} catch (error: any) {
+				// there could be a 404 error, the user doesn't have plans yet
+				if (error.message.includes("HTTP 404")) {
+					return [];
+				}
+
 				console.error(error);
 				throw error;
 			}
@@ -299,6 +312,8 @@ export const usePlanningStore = defineStore(
 			empires,
 			cxs,
 			shared,
+			// reset
+			$reset,
 			// computed getters
 			// getters
 			getCX,
