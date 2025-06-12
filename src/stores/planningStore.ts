@@ -115,7 +115,12 @@ export const usePlanningStore = defineStore(
 				});
 
 				return inertClone(Object.values(plans.value));
-			} catch (error) {
+			} catch (error: any) {
+				// there could be a 404 error, the user doesn't have plans yet
+				if (error.message.includes("HTTP 404")) {
+					return [];
+				}
+
 				console.error(error);
 				throw error;
 			}
