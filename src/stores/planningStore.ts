@@ -39,6 +39,14 @@ export const usePlanningStore = defineStore(
 		/** Key: Plan.uuid */
 		const shared: Ref<ISharedRecord> = ref({});
 
+		// state reset
+		function $reset(): void {
+			plans.value = {};
+			empires.value = {};
+			cxs.value = {};
+			shared.value = {};
+		}
+
 		// computed getters
 
 		/**
@@ -299,6 +307,8 @@ export const usePlanningStore = defineStore(
 			empires,
 			cxs,
 			shared,
+			// reset
+			$reset,
 			// computed getters
 			// getters
 			getCX,
