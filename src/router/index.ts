@@ -57,6 +57,12 @@ const router = createRouter({
 			component: () => import("@/views/PlanLoadView.vue"),
 			props: true,
 		},
+		{
+			name: "fio-repair",
+			path: "/fio/repair",
+			meta: { requiresAuth: true },
+			component: () => import("@/views/fio/FIORepairView.vue"),
+		},
 	],
 });
 

@@ -73,24 +73,29 @@
 	const menuItems: IMenuSection[] = [
 		{
 			label: "Planning",
+			display: true,
 			children: [
 				{
 					label: "Empire",
+					display: true,
 					routerLink: "/",
 					icon: HomeSharp,
 				},
 				{
 					label: "Planet Search",
+					display: true,
 					routerLink: "/none",
 					icon: SearchRound,
 				},
 				{
 					label: "Management",
+					display: true,
 					routerLink: "/manage",
 					icon: SettingsRound,
 				},
 				{
 					label: "Exchanges",
+					display: true,
 					routerLink: "/none",
 					icon: ShoppingBasketSharp,
 				},
@@ -113,65 +118,79 @@
 		// },
 		{
 			label: "Tools",
+			display: true,
 			children: [
 				{
 					label: "Market Data",
+					display: true,
 					routerLink: "/none",
 					icon: CandlestickChartSharp,
 					children: [
 						{
 							label: "Market Exploration",
+							display: true,
 							routerLink: "/none",
 						},
 						{
 							label: "ROI Overview",
+							display: true,
 							routerLink: "/none",
 						},
 						{
 							label: "Resource ROI Overview",
+							display: true,
 							routerLink: "/none",
 						},
 					],
 				},
 				{
 					label: "HQ Upgrade Calculator",
+					display: true,
 					routerLink: "/none",
 					icon: ProductionQuantityLimitsSharp,
 				},
 				{
 					label: "Production Chains",
+					display: true,
 					routerLink: "/none",
 					icon: CompareSharp,
 				},
 				{
 					label: "Base Compare",
+					display: true,
 					routerLink: "/none",
 					icon: UpgradeSharp,
 				},
 				{
 					label: "Government",
+					display: true,
 					routerLink: "/none",
 					icon: StarsSharp,
 				},
 				{
 					label: "FIO",
+					display: userStore.hasFIO,
 					routerLink: "/none",
 					icon: ApiSharp,
 					children: [
 						{
 							label: "Burn",
+							display: userStore.hasFIO,
 							routerLink: "/none",
 						},
 						{
 							label: "Storage",
+							display: userStore.hasFIO,
 							routerLink: "/none",
 						},
 						{
 							label: "Repair",
-							routerLink: "/none",
+							display: userStore.hasFIO,
+							routerLink: "/fio/repair",
 						},
 						{
 							label: "Plan Import",
+							display: userStore.hasFIO,
 							routerLink: "/none",
 						},
 					],
@@ -180,24 +199,29 @@
 		},
 		{
 			label: "Account",
+			display: true,
 			children: [
 				{
 					label: "API",
+					display: true,
 					routerLink: "/none",
 					icon: ExtensionSharp,
 				},
 				{
 					label: "Profile",
+					display: true,
 					routerLink: "/profile",
 					icon: PersonSharp,
 				},
 				{
 					label: "Help",
+					display: true,
 					routerLink: "/none",
 					icon: HelpOutlineSharp,
 				},
 				{
 					label: "Logout",
+					display: true,
 					icon: LogOutRound,
 					functionCall: () => {
 						userStore.logout();
@@ -228,7 +252,7 @@
 				<template
 					v-for="section in menuItems"
 					:key="'SECTION#' + section.label">
-					<div class="pb-4">
+					<div class="pb-4" v-if="section.display">
 						<div class="px-4 py-2 text-sm text-gray-400">
 							{{ section.label }}
 						</div>
@@ -266,7 +290,7 @@
 								</div>
 							</template>
 							<template v-else>
-								<div class="relative group">
+								<div class="relative group" v-if="item.display">
 									<input
 										type="checkbox"
 										:id="item.label + '-toggle'"
@@ -297,33 +321,38 @@
 									</label>
 									<div
 										class="hidden peer-checked:flex transition-all flex-col duration-300">
-										<RouterLink
-											v-for="children in item.children"
-											:to="
-												children.routerLink
-													? children.routerLink
-													: ''
-											"
-											class="flex items-center px-4 py-2 hover:bg-white/20 hover:rounded-sm group"
-											:class="
-												children.icon ? 'pl-6' : 'pl-12'
-											"
-											active-class="bg-white/10 rounded-sm"
-											:key="
-												'ROUTER#' +
-												children.label +
-												'#' +
-												children.label
-											">
-											<n-icon
-												class="mr-2"
-												size="20"
-												v-if="children.icon">
-												<component
-													:is="children.icon" />
-											</n-icon>
-											{{ children.label }}
-										</RouterLink>
+										<template
+											v-for="children in item.children">
+											<RouterLink
+												v-if="children.display"
+												:to="
+													children.routerLink
+														? children.routerLink
+														: ''
+												"
+												class="flex items-center px-4 py-2 hover:bg-white/20 hover:rounded-sm group"
+												:class="
+													children.icon
+														? 'pl-6'
+														: 'pl-12'
+												"
+												active-class="bg-white/10 rounded-sm"
+												:key="
+													'ROUTER#' +
+													children.label +
+													'#' +
+													children.label
+												">
+												<n-icon
+													class="mr-2"
+													size="20"
+													v-if="children.icon">
+													<component
+														:is="children.icon" />
+												</n-icon>
+												{{ children.label }}
+											</RouterLink>
+										</template>
 									</div>
 								</div>
 							</template>

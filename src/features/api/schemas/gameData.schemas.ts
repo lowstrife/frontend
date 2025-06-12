@@ -292,6 +292,7 @@ export const FIOSitePlanetBuildingSchema: z.ZodType<IFIOSitePlanetBuilding> =
 		Condition: z.number(),
 		ReclaimableMaterials: z.array(FIOSitePlanetBuildingMaterialSchema),
 		RepairMaterials: z.array(FIOSitePlanetBuildingMaterialSchema),
+		AgeDays: z.number().nullable(),
 	});
 
 export const FIOSitePlanetSchema: z.ZodType<IFIOSitePlanet> = z.object({
