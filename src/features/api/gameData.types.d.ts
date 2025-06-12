@@ -1,3 +1,5 @@
+import { z } from "zod";
+
 export interface IMaterial {
 	MaterialId: string;
 	CategoryName: string;
@@ -166,4 +168,136 @@ export interface IPlanet {
 	COGCPrograms: IPlanetCOGCProgram[];
 	COGCProgramActive: PLANET_COGCPROGRAM_TYPE | null;
 	CheckDistances: IPlanetCheckDistance | null;
+}
+
+export interface IFIOStorageItem {
+	MaterialId: string;
+	MaterialName: string;
+	MaterialTicker: string;
+	MaterialCategory: string;
+	MaterialWeight: number;
+	MaterialVolume: number;
+	MaterialAmount: number;
+	MaterialValue: number;
+	MaterialValueCurrency?: string;
+	Type: string;
+	TotalWeight: number;
+	TotalVolume: number;
+}
+
+export interface IFIOStorageBase {
+	StorageId: string;
+	AddressableId: string;
+	Name: string | null;
+	Type: string;
+	UserNameSubmitted: string;
+	Timestamp: Date;
+	WeightCapacity: number;
+	VolumeCapacity: number;
+
+	StorageItems: IFIOStorageItem[];
+}
+
+export interface IFIOStoragePlanet extends IFIOStorageBase {
+	PlanetId: string;
+	PlanetIdentifier: string;
+	PlanetName?: string;
+	WeightLoad: number;
+	VolumeLoad: number;
+}
+
+export interface IFIOStorageWarehouse extends IFIOStorageBase {
+	LocationNaturalId: string;
+	LocationName?: string | null;
+	WarehouseId?: string | null;
+	Units?: number | null;
+
+	NextPaymentTimestampEpochMs?: number | null;
+	FeeAmount?: number | null;
+	FeeCurrency?: string | null;
+	FeeCollectorId?: string | null;
+	FeeCollectorName?: string | null;
+	FeeCollectorCode?: string | null;
+}
+
+export interface IFIOStorageShip extends IFIOStorageBase {
+	WeightLoad: number;
+	VolumeLoad: number;
+	Registration: string;
+}
+
+export interface IFIOStorage {
+	planets: Record<string, IFIOStoragePlanet>;
+	warehouses: Record<string, IFIOStorageWarehouse>;
+	ships: Record<string, IFIOStorageShip>;
+}
+
+export interface IFIOSitePlanetBuildingMaterial {
+	MaterialId: string;
+	MaterialName: string;
+	MaterialTicker: string;
+	MaterialAmount: number;
+}
+
+export interface IFIOSitePlanetBuilding {
+	SiteBuildingId: string;
+	BuildingId: string;
+	BuildingCreated: Date;
+	BuildingName: string;
+	BuildingTicker: string;
+	BuildingLastRepair?: Date;
+	Condition: number;
+
+	ReclaimableMaterials: IFIOSitePlanetBuildingMaterial[];
+	RepairMaterials: IFIOSitePlanetBuildingMaterial[];
+}
+
+export interface IFIOSitePlanet {
+	SiteId: string;
+	PlanetId: string;
+	PlanetIdentifier: string;
+	PlanetName: string;
+	PlanetFoundedEpochMs: number;
+	InvestedPermits: number;
+	MaximumPermits: number;
+	UserNameSubmitted: string;
+	Timestamp: Date;
+
+	Buildings: IFIOSitePlanetBuilding[];
+}
+
+export interface IFIOSiteShipRepairMaterial {
+	ShipRepairMaterialId: string;
+	MaterialName: string;
+	MaterialId: string;
+	MaterialTicker: string;
+	Amount: number;
+}
+
+export interface IFIOSiteShipAddressLine {
+	LineId: string;
+	LineType: string;
+	NaturalId: string;
+	Name: string;
+}
+
+export interface IFIOSiteShip {
+	ShipId: string;
+	StoreId: string;
+	StlFuelStoreId: string;
+	FtlFuelStoreId: string;
+	Registration: string;
+	Name?: string;
+	CommissioningTimeEpochMs: number;
+	Condition: number;
+	LastRepairEpochMs?: number | null;
+	Location: string;
+
+	RepairMaterials: IFIOSiteShipRepairMaterial[];
+	AddressLines: IFIOSiteShipAddressLine[];
+}
+
+export interface IFIOSites {
+	planets: Record<string, IFIOSitePlanet>;
+	ships: Record<string, IFIOSiteShip>;
 }

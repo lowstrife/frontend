@@ -7,6 +7,10 @@ import {
 	BuildingPayloadType,
 	ExchangePayloadSchema,
 	ExchangePayloadType,
+	FIOSitesSchema,
+	FIOSitesSchemaPayloadType,
+	FIOStoragePayloadType,
+	FIOStorageSchema,
 	MaterialPayloadSchema,
 	MaterialPayloadType,
 	PlanetMultiplePayload,
@@ -26,6 +30,8 @@ import {
 	IRecipe,
 	IBuilding,
 	IPlanet,
+	IFIOStorage,
+	IFIOSites,
 } from "@/features/api/gameData.types";
 
 /**
@@ -120,10 +126,44 @@ export async function callDataPlanet(
 export async function callDataMultiplePlanets(
 	planetNaturalIds: string[]
 ): Promise<IPlanet[]> {
-	return apiService.post<PlanetMultipleRequestType, PlanetMultiplePayloadType>(
+	return apiService.post<
+		PlanetMultipleRequestType,
+		PlanetMultiplePayloadType
+	>(
 		"/data/planet/multiple",
 		planetNaturalIds,
 		PlanetMultipleRequestPayload,
 		PlanetMultiplePayload
+	);
+}
+
+/**
+ * Calls the /data/fio_storage endpoint to fetch users
+ * FIO Storage data
+ * @author jplacht
+ *
+ * @export
+ * @async
+ * @returns {Promise<IFIOStorage>}
+ */
+export async function callDataFIOStorage(): Promise<IFIOStorage> {
+	return apiService.get<FIOStoragePayloadType>(
+		"/data/fio_storage",
+		FIOStorageSchema
+	);
+}
+
+/**
+ * Calls /data/fio_sites endpoint to fetch users FIO Sites data
+ * @author jplacht
+ *
+ * @export
+ * @async
+ * @returns {Promise<IFIOSites>}
+ */
+export async function callDataFIOSites(): Promise<IFIOSites> {
+	return apiService.get<FIOSitesSchemaPayloadType>(
+		"/data/fio_sites",
+		FIOSitesSchema
 	);
 }

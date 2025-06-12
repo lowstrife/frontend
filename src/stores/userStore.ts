@@ -29,6 +29,15 @@ export const useUserStore = defineStore(
 				refreshToken.value !== undefined
 		);
 
+		const hasFIO: ComputedRef<boolean> = computed(
+			() =>
+				profile.value !== undefined &&
+				profile.value.fio_apikey !== "" &&
+				profile.value.fio_apikey !== null &&
+				profile.value.prun_username !== "" &&
+				profile.value.prun_username !== null
+		);
+
 		// functions
 
 		/**
@@ -131,6 +140,7 @@ export const useUserStore = defineStore(
 			profile,
 			// getters
 			isLoggedIn,
+			hasFIO,
 			// functions
 			setToken,
 			logout,

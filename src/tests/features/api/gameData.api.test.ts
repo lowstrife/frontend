@@ -11,6 +11,8 @@ import {
 	callDataMultiplePlanets,
 	callDataPlanet,
 	callDataRecipes,
+	callDataFIOStorage,
+	callDataFIOSites,
 } from "@/features/api/gameData.api";
 
 // test data
@@ -20,6 +22,8 @@ import materials from "@/tests/test_data/api_data_materials.json";
 import exchanges from "@/tests/test_data/api_data_exchanges.json";
 import planets from "@/tests/test_data/api_data_planets.json";
 import planet_single from "@/tests/test_data/api_data_planet_single.json";
+import fio_sites from "@/tests/test_data/api_data_fio_sites.json";
+import fio_storage from "@/tests/test_data/api_data_fio_storage.json";
 
 // mock apiService client
 const mock = new AxiosMockAdapter(apiService.client);
@@ -82,5 +86,42 @@ describe("GameData API Calls", async () => {
 
 		expect(await callDataMultiplePlanets([])).toStrictEqual(planets);
 		expect(spyApiServicePost).toHaveBeenCalled();
+	});
+
+	it("callDataFIOStorage", async () => {
+		const spyApiServiceGet = vi.spyOn(apiService, "get");
+
+		mock.onGet("/data/fio_storage").reply(200, fio_storage);
+
+		const result = await callDataFIOStorage();
+
+		expect(Object.keys(result.planets)).toStrictEqual(
+			Object.keys(fio_storage.planets)
+		);
+		expect(Object.keys(result.warehouses)).toStrictEqual(
+			Object.keys(fio_storage.warehouses)
+		);
+		expect(Object.keys(result.ships)).toStrictEqual(
+			Object.keys(fio_storage.ships)
+		);
+		expect(spyApiServiceGet).toHaveBeenCalled();
+	});
+
+	it("callDataFIOSites", async () => {
+		const spyApiServiceGet = vi.spyOn(apiService, "get");
+
+		mock.onGet("/data/fio_sites").reply(200, fio_sites);
+
+		const result = await callDataFIOSites();
+
+		expect(Object.keys(result.planets)).toStrictEqual(
+			Object.keys(fio_sites.planets)
+		);
+
+		expect(Object.keys(result.ships)).toStrictEqual(
+			Object.keys(fio_sites.ships)
+		);
+
+		expect(spyApiServiceGet).toHaveBeenCalled();
 	});
 });

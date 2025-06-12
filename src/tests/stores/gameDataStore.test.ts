@@ -8,6 +8,8 @@ import materials from "@/tests/test_data/api_data_materials.json";
 import exchanges from "@/tests/test_data/api_data_exchanges.json";
 import planets from "@/tests/test_data/api_data_planets.json";
 import planet_single from "@/tests/test_data/api_data_planet_single.json";
+import fio_sites from "@/tests/test_data/api_data_fio_sites.json";
+import fio_storage from "@/tests/test_data/api_data_fio_storage.json";
 
 // mocks
 vi.mock("@/features/api/gameData.api", async () => {
@@ -19,6 +21,8 @@ vi.mock("@/features/api/gameData.api", async () => {
 		callDataBuildings: vi.fn(),
 		callDataPlanet: vi.fn(),
 		callDataMultiplePlanets: vi.fn(),
+		callDataFIOSites: vi.fn(),
+		callDataFIOStorage: vi.fn(),
 	};
 });
 
@@ -29,6 +33,8 @@ import {
 	callDataBuildings,
 	callDataPlanet,
 	callDataMultiplePlanets,
+	callDataFIOSites,
+	callDataFIOStorage,
 } from "@/features/api/gameData.api";
 
 vi.mock("@/lib/config", async () => {
@@ -363,6 +369,45 @@ describe("GameData Store", async () => {
 				await gameDataStore.performLoadMultiplePlanets(testDataPlanets);
 
 			expect(result).toBeTruthy();
+		});
+
+		describe("performFIORefresh", async () => {
+			it("success", async () => {
+				// @ts-expect-error mock data
+				vi.mocked(callDataFIOSites).mockResolvedValueOnce(fio_sites);
+				vi.mocked(callDataFIOStorage).mockResolvedValueOnce(
+					// @ts-expect-error mock data
+					fio_storage
+				);
+
+				const result = await gameDataStore.performFIORefresh();
+
+				expect(result).toBeTruthy();
+			});
+
+			it("storage failure", async () => {
+				// @ts-expect-error mock data
+				vi.mocked(callDataFIOSites).mockResolvedValueOnce(fio_sites);
+				vi.mocked(callDataFIOStorage).mockRejectedValueOnce(
+					new Error()
+				);
+
+				const result = await gameDataStore.performFIORefresh();
+
+				expect(result).toBeFalsy();
+			});
+
+			it("sites failure", async () => {
+				vi.mocked(callDataFIOSites).mockRejectedValueOnce(new Error());
+				vi.mocked(callDataFIOStorage).mockResolvedValueOnce(
+					// @ts-expect-error mock data
+					fio_storage
+				);
+
+				const result = await gameDataStore.performFIORefresh();
+
+				expect(result).toBeFalsy();
+			});
 		});
 	});
 });

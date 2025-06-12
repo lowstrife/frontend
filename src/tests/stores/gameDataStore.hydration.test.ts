@@ -31,6 +31,8 @@ describe("Hydration from localStorage", async () => {
 			lastRefreshedPlanets: {
 				foo: mockDate,
 			},
+			lastRefreshedFIOSites: mockDate,
+			lastRefreshedFIOStorage: mockDate,
 		});
 
 		//* act
@@ -55,6 +57,10 @@ describe("Hydration from localStorage", async () => {
 		expect(store.lastRefreshedPlanets[mockPlanet]).toStrictEqual(
 			new Date(mockDate)
 		);
+		expect(store.lastRefreshedFIOSites).toBeTypeOf("object");
+		expect(store.lastRefreshedFIOSites).toStrictEqual(new Date(mockDate));
+		expect(store.lastRefreshedFIOStorage).toBeTypeOf("object");
+		expect(store.lastRefreshedFIOStorage).toStrictEqual(new Date(mockDate));
 	});
 
 	it("Datetime hydration: dates not available", async () => {
@@ -72,5 +78,7 @@ describe("Hydration from localStorage", async () => {
 		expect(store.lastRefreshedExchanges).toBeUndefined();
 		expect(store.lastRefreshedRecipes).toBeUndefined();
 		expect(store.lastRefreshedBuildings).toBeUndefined();
+		expect(store.lastRefreshedFIOSites).toBeUndefined();
+		expect(store.lastRefreshedFIOStorage).toBeUndefined();
 	});
 });

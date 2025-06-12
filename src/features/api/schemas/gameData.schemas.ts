@@ -13,6 +13,16 @@ import {
 	IPlanetCOGCProgram,
 	IPlanet,
 	IPlanetCheckDistance,
+	IFIOStorageItem,
+	IFIOStorageBase,
+	IFIOStorage,
+	IFIOSitePlanetBuildingMaterial,
+	IFIOSitePlanetBuilding,
+	IFIOSitePlanet,
+	IFIOSites,
+	IFIOSiteShip,
+	IFIOSiteShipRepairMaterial,
+	IFIOSiteShipAddressLine,
 } from "@/features/api/gameData.types";
 
 // Schemas
@@ -202,6 +212,138 @@ export const PlanetMultipleRequestPayload: z.ZodType<string[]> = z.array(
 	z.string()
 );
 
+export const FIOStorageItemSchema: z.ZodType<IFIOStorageItem> = z.object({
+	MaterialId: z.string(),
+	MaterialName: z.string(),
+	MaterialTicker: z.string(),
+	MaterialCategory: z.string(),
+	MaterialWeight: z.number(),
+	MaterialVolume: z.number(),
+	MaterialAmount: z.number(),
+	MaterialValue: z.number(),
+	MaterialValueCurrency: z.string().optional(),
+	Type: z.string(),
+	TotalWeight: z.number(),
+	TotalVolume: z.number(),
+});
+
+export const FIOStorageBaseSchema = z.object({
+	StorageId: z.string(),
+	AddressableId: z.string(),
+	Name: z.string().nullable(),
+	Type: z.string(),
+	UserNameSubmitted: z.string(),
+	Timestamp: z.coerce.date(),
+	WeightCapacity: z.number(),
+	VolumeCapacity: z.number(),
+
+	StorageItems: z.array(FIOStorageItemSchema),
+});
+
+export const FIOStoragePlanetSchema = FIOStorageBaseSchema.extend({
+	PlanetId: z.string(),
+	PlanetIdentifier: z.string(),
+	PlanetName: z.string().optional(),
+	WeightLoad: z.number(),
+	VolumeLoad: z.number(),
+});
+
+export const FIOStorageWarehouseSchema = FIOStorageBaseSchema.extend({
+	LocationNaturalId: z.string(),
+	LocationName: z.string().nullable(),
+	WarehouseId: z.string().nullable(),
+	Units: z.number().nullable(),
+	NextPaymentTimestampEpochMs: z.number().nullable(),
+	FeeAmount: z.number().nullable(),
+	FeeCurrency: z.string().nullable(),
+	FeeCollectorId: z.string().nullable(),
+	FeeCollectorName: z.string().nullable(),
+	FeeCollectorCode: z.string().nullable(),
+});
+
+export const FIOStorageShipSchema = FIOStorageBaseSchema.extend({
+	WeightLoad: z.number(),
+	VolumeLoad: z.number(),
+	Registration: z.string(),
+});
+
+export const FIOStorageSchema = z.object({
+	planets: z.record(z.string(), FIOStoragePlanetSchema),
+	warehouses: z.record(z.string(), FIOStorageWarehouseSchema),
+	ships: z.record(z.string(), FIOStorageShipSchema),
+});
+
+export const FIOSitePlanetBuildingMaterialSchema: z.ZodType<IFIOSitePlanetBuildingMaterial> =
+	z.object({
+		MaterialId: z.string(),
+		MaterialName: z.string(),
+		MaterialTicker: z.string(),
+		MaterialAmount: PositiveOrZeroNumber,
+	});
+
+export const FIOSitePlanetBuildingSchema: z.ZodType<IFIOSitePlanetBuilding> =
+	z.object({
+		SiteBuildingId: z.string(),
+		BuildingId: z.string(),
+		BuildingCreated: z.coerce.date(),
+		BuildingName: z.string(),
+		BuildingTicker: z.string(),
+		BuildingLastRepair: z.coerce.date().optional(),
+		Condition: z.number(),
+		ReclaimableMaterials: z.array(FIOSitePlanetBuildingMaterialSchema),
+		RepairMaterials: z.array(FIOSitePlanetBuildingMaterialSchema),
+	});
+
+export const FIOSitePlanetSchema: z.ZodType<IFIOSitePlanet> = z.object({
+	SiteId: z.string(),
+	PlanetId: z.string(),
+	PlanetIdentifier: z.string(),
+	PlanetName: z.string(),
+	PlanetFoundedEpochMs: z.number(),
+	InvestedPermits: z.number(),
+	MaximumPermits: z.number(),
+	UserNameSubmitted: z.string(),
+	Timestamp: z.coerce.date(),
+	Buildings: z.array(FIOSitePlanetBuildingSchema),
+});
+
+export const FIOSiteShipRepairMaterialSchema: z.ZodType<IFIOSiteShipRepairMaterial> =
+	z.object({
+		ShipRepairMaterialId: z.string(),
+		MaterialName: z.string(),
+		MaterialId: z.string(),
+		MaterialTicker: z.string(),
+		Amount: PositiveOrZeroNumber,
+	});
+
+export const FIOSiteShipAddressLineSchema: z.ZodType<IFIOSiteShipAddressLine> =
+	z.object({
+		LineId: z.string(),
+		LineType: z.string(),
+		NaturalId: z.string(),
+		Name: z.string(),
+	});
+
+export const FIOSiteShipSchema: z.ZodType<IFIOSiteShip> = z.object({
+	ShipId: z.string(),
+	StoreId: z.string(),
+	StlFuelStoreId: z.string(),
+	FtlFuelStoreId: z.string(),
+	Registration: z.string(),
+	Name: z.string().optional(),
+	CommissioningTimeEpochMs: z.number(),
+	Condition: z.number(),
+	LastRepairEpochMs: z.number().nullable(),
+	Location: z.string(),
+	RepairMaterials: z.array(FIOSiteShipRepairMaterialSchema),
+	AddressLines: z.array(FIOSiteShipAddressLineSchema),
+});
+
+export const FIOSitesSchema: z.ZodType<IFIOSites> = z.object({
+	planets: z.record(z.string(), FIOSitePlanetSchema),
+	ships: z.record(z.string(), FIOSiteShipSchema),
+});
+
 // Schema Types
 export type MaterialType = z.infer<typeof MaterialSchema>;
 export type MaterialPayloadType = z.infer<typeof MaterialPayloadSchema>;
@@ -217,3 +359,5 @@ export type PlanetMultiplePayloadType = z.infer<typeof PlanetMultiplePayload>;
 export type PlanetMultipleRequestType = z.infer<
 	typeof PlanetMultipleRequestPayload
 >;
+export type FIOStoragePayloadType = z.infer<typeof FIOStorageSchema>;
+export type FIOSitesSchemaPayloadType = z.infer<typeof FIOSitesSchema>;

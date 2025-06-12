@@ -13,6 +13,8 @@ import { inertClone } from "@/util/data";
 import {
 	callDataBuildings,
 	callDataExchanges,
+	callDataFIOSites,
+	callDataFIOStorage,
 	callDataMaterials,
 	callDataMultiplePlanets,
 	callDataPlanet,
@@ -36,6 +38,13 @@ import {
 	IRecipe,
 	IBuilding,
 	IPlanet,
+	IFIOStorage,
+	IFIOStorageShip,
+	IFIOStorageWarehouse,
+	IFIOStoragePlanet,
+	IFIOSites,
+	IFIOSitePlanet,
+	IFIOSiteShip,
 } from "@/features/api/gameData.types";
 
 export const useGameDataStore = defineStore(
@@ -57,12 +66,24 @@ export const useGameDataStore = defineStore(
 		/** Key: Planet.PlanetNaturalId */
 		const planets: Ref<IPlanetsRecord> = ref({});
 
+		const fio_storage_planets: Ref<Record<string, IFIOStoragePlanet>> = ref(
+			{}
+		);
+		const fio_storage_warehouses: Ref<
+			Record<string, IFIOStorageWarehouse>
+		> = ref({});
+		const fio_storage_ships: Ref<Record<string, IFIOStorageShip>> = ref({});
+		const fio_sites_planets: Ref<Record<string, IFIOSitePlanet>> = ref({});
+		const fio_sites_ships: Ref<Record<string, IFIOSiteShip>> = ref({});
+
 		const lastRefreshedMaterials: Ref<TOptionalDate> = ref(undefined);
 		const lastRefreshedExchanges: Ref<TOptionalDate> = ref(undefined);
 		const lastRefreshedRecipes: Ref<TOptionalDate> = ref(undefined);
 		const lastRefreshedBuildings: Ref<TOptionalDate> = ref(undefined);
 		/** Key: Planet.PlanetNaturalId */
 		const lastRefreshedPlanets: Ref<IPlanetsLastRefreshedRecord> = ref({});
+		const lastRefreshedFIOStorage: Ref<TOptionalDate> = ref(undefined);
+		const lastRefreshedFIOSites: Ref<TOptionalDate> = ref(undefined);
 
 		let promiseRefreshingMaterials: Promise<boolean> | null = null;
 		let promiseRefreshingExchanges: Promise<boolean> | null = null;
@@ -77,6 +98,7 @@ export const useGameDataStore = defineStore(
 		let isRefreshingRecipes: Ref<boolean> = ref(false);
 		let isRefreshingBuildings: Ref<boolean> = ref(false);
 		let isRefreshingPlanets: Ref<Record<string, boolean>> = ref({});
+		let isRefreshingFIO: Ref<boolean> = ref(false);
 
 		// computed getters
 
@@ -486,6 +508,51 @@ export const useGameDataStore = defineStore(
 			}
 		}
 
+		async function performFIORefresh(): Promise<boolean> {
+			isRefreshingFIO.value = true;
+
+			let result: boolean = true;
+			try {
+				try {
+					const data: IFIOStorage = await callDataFIOStorage();
+
+					fio_storage_planets.value = data.planets;
+					fio_storage_warehouses.value = data.warehouses;
+					fio_storage_ships.value = data.ships;
+
+					lastRefreshedFIOStorage.value = new Date();
+				} catch (error) {
+					console.error(error);
+					result = false;
+				}
+
+				try {
+					const data: IFIOSites = await callDataFIOSites();
+
+					// remap data
+					fio_sites_planets.value = {};
+
+					Object.values(data.planets).forEach((sp) => {
+						fio_sites_planets.value[sp.PlanetIdentifier] = sp;
+					});
+
+					fio_sites_ships.value = {};
+
+					Object.values(data.ships).forEach((ss) => {
+						fio_sites_ships.value[ss.Registration] = ss;
+					});
+
+					lastRefreshedFIOSites.value = new Date();
+				} catch (error) {
+					console.error(error);
+					result = false;
+				}
+			} finally {
+				isRefreshingFIO.value = false;
+				return result;
+			}
+		}
+
 		/**
 		 * Analyses all game data for staleness against configured values and their
 		 * last refreshed data, will trigger async data refresh if required
@@ -596,16 +663,24 @@ export const useGameDataStore = defineStore(
 			recipes,
 			buildings,
 			planets,
+			fio_storage_planets,
+			fio_storage_warehouses,
+			fio_storage_ships,
+			fio_sites_planets,
+			fio_sites_ships,
 			lastRefreshedMaterials,
 			lastRefreshedExchanges,
 			lastRefreshedRecipes,
 			lastRefreshedBuildings,
 			lastRefreshedPlanets,
+			lastRefreshedFIOStorage,
+			lastRefreshedFIOSites,
 			isRefreshingMaterials,
 			isRefreshingExchanges,
 			isRefreshingRecipes,
 			isRefreshingBuildings,
 			isRefreshingPlanets,
+			isRefreshingFIO,
 			// getters
 			hasMaterials,
 			hasExchanges,
@@ -623,6 +698,7 @@ export const useGameDataStore = defineStore(
 			performLoadPlanet,
 			performLoadMultiplePlanets,
 			performStaleDataRefresh,
+			performFIORefresh,
 			// resetter
 			resetMaterials,
 			resetBuildings,
@@ -639,11 +715,18 @@ export const useGameDataStore = defineStore(
 				"recipes",
 				"buildings",
 				"planets",
+				"fio_storage_planets",
+				"fio_storage_warehouses",
+				"fio_storage_ships",
+				"fio_sites_planets",
+				"fio_sites_ships",
 				"lastRefreshedMaterials",
 				"lastRefreshedExchanges",
 				"lastRefreshedRecipes",
 				"lastRefreshedBuildings",
 				"lastRefreshedPlanets",
+				"lastRefreshedFIOStorage",
+				"lastRefreshedFIOSites",
 			],
 
 			/**
@@ -673,6 +756,16 @@ export const useGameDataStore = defineStore(
 				store.lastRefreshedBuildings
 					? (store.lastRefreshedBuildings = new Date(
 							store.lastRefreshedBuildings
+						))
+					: undefined;
+				store.lastRefreshedFIOStorage
+					? (store.lastRefreshedFIOStorage = new Date(
+							store.lastRefreshedFIOStorage
+						))
+					: undefined;
+				store.lastRefreshedFIOSites
+					? (store.lastRefreshedFIOSites = new Date(
+							store.lastRefreshedFIOSites
 						))
 					: undefined;
 
