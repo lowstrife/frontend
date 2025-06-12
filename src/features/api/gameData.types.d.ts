@@ -247,7 +247,7 @@ export interface IFIOSitePlanetBuilding {
 	BuildingTicker: string;
 	BuildingLastRepair?: Date;
 	Condition: number;
-
+	AgeDays?: number | null;
 	ReclaimableMaterials: IFIOSitePlanetBuildingMaterial[];
 	RepairMaterials: IFIOSitePlanetBuildingMaterial[];
 }

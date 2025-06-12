@@ -168,7 +168,7 @@
 						},
 						{
 							label: "Repair",
-							routerLink: "/none",
+							routerLink: "/fio/repair",
 						},
 						{
 							label: "Plan Import",
