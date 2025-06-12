@@ -146,4 +146,84 @@ describe("User Store", () => {
 
 		expect(result).toBe(false);
 	});
+
+	describe("hasFIO", async () => {
+		const hasFIOCases = [
+			{
+				profile: {
+					user_id: 1,
+					username: "test",
+					email: null,
+					email_verified: false,
+					fio_apikey: "foo",
+					prun_username: "moo",
+				},
+				expected: true,
+				description: "Proper values, true",
+			},
+			{
+				profile: undefined,
+				expected: false,
+				description: "Undefined profile, false",
+			},
+			{
+				profile: {
+					user_id: 1,
+					username: "test",
+					email: null,
+					email_verified: false,
+					fio_apikey: "",
+					prun_username: "",
+				},
+				expected: false,
+				description: "Empty strings, false",
+			},
+			{
+				profile: {
+					user_id: 1,
+					username: "test",
+					email: null,
+					email_verified: false,
+					fio_apikey: "test",
+					prun_username: "",
+				},
+				expected: false,
+				description: "Username missing, false",
+			},
+			{
+				profile: {
+					user_id: 1,
+					username: "test",
+					email: null,
+					email_verified: false,
+					fio_apikey: "",
+					prun_username: "moo",
+				},
+				expected: false,
+				description: "Apikey missing, false",
+			},
+			{
+				profile: {
+					user_id: 1,
+					username: "test",
+					email: null,
+					email_verified: false,
+					fio_apikey: null,
+					prun_username: null,
+				},
+				expected: false,
+				description: "Nulls, false",
+			},
+		];
+
+		it.each(hasFIOCases)(
+			"Test $description",
+			async ({ profile, expected, description }) => {
+				const userStore = useUserStore();
+				userStore.profile = profile;
+
+				expect(userStore.hasFIO).toBe(expected);
+			}
+		);
+	});
 });

@@ -118,11 +118,12 @@
 	 *
 	 * @type {ComputedRef<IPlanEmpireElement | undefined>} Empire Data
 	 */
-	const selectedEmpire: ComputedRef<IPlanEmpireElement | undefined> = computed(
-		() => {
-			return empireList.value.find((e) => e.uuid == selectedEmpireUuid.value);
-		}
-	);
+	const selectedEmpire: ComputedRef<IPlanEmpireElement | undefined> =
+		computed(() => {
+			return empireList.value.find(
+				(e) => e.uuid == selectedEmpireUuid.value
+			);
+		});
 
 	/**
 	 * Holds computed cost overview based on plan results.
@@ -135,10 +136,9 @@
 			(sum, element) => sum + element.profit,
 			0
 		);
-		const totalRevenue: number = Object.values(calculatedPlans.value).reduce(
-			(sum, element) => sum + element.revenue,
-			0
-		);
+		const totalRevenue: number = Object.values(
+			calculatedPlans.value
+		).reduce((sum, element) => sum + element.revenue, 0);
 		const totalCost: number = Object.values(calculatedPlans.value).reduce(
 			(sum, element) => sum + element.cost,
 			0
@@ -173,7 +173,9 @@
 	const planListData: ComputedRef<IEmpirePlanListData[]> = computed(() => {
 		return Object.entries(calculatedPlans.value).map(
 			([planUuid, planResult]) => {
-				const plan: IPlan = planData.value.find((p) => p.uuid == planUuid)!;
+				const plan: IPlan = planData.value.find(
+					(p) => p.uuid == planUuid
+				)!;
 
 				return {
 					uuid: planUuid,
@@ -197,7 +199,9 @@
 		() => {
 			return Object.entries(calculatedPlans.value).map(
 				([planUuid, planResult]) => {
-					const plan: IPlan = planData.value.find((p) => p.uuid == planUuid)!;
+					const plan: IPlan = planData.value.find(
+						(p) => p.uuid == planUuid
+					)!;
 					return {
 						planetId: plan.baseplanner_data.planet.planetid,
 						planUuid: planUuid,
@@ -214,15 +218,16 @@
 	<EmpireDataWrapper
 		:empire-uuid="selectedEmpireUuid"
 		:key="`EMPIREWRAPPER#${selectedEmpireUuid}`"
-		v-on:update:empire-uuid="(value: string) => (selectedEmpireUuid = value)"
+		v-on:update:empire-uuid="
+			(value: string) => (selectedEmpireUuid = value)
+		"
 		v-on:update:plan-list="(value: IPlan[]) => (planData = value)"
 		v-on:update:cx-uuid="
 			(value: string | undefined) => (selectedCXUuid = value)
 		"
 		v-on:update:empire-list="
 			(value: IPlanEmpireElement[]) => (empireList = value)
-		"
-	>
+		">
 		<template #default="{ empireList, planetList }">
 			<AsyncGameDataWrapper
 				load-materials
@@ -231,114 +236,141 @@
 				load-buildings
 				:load-multiple-planets="planetList"
 				:key="`GAMEDATAWRAPPER#${selectedEmpireUuid}`"
-				v-on:success="calculateEmpire"
-			>
+				v-on:success="calculateEmpire">
 				<template v-if="isCalculating">
 					<div>Calculating</div>
 				</template>
 				<template v-else>
-					<div
-						class="px-6 py-3 border-b border-white/10 flex flex-row justify-between gap-x-3"
-					>
-						<h1 class="text-2xl font-bold my-auto">{{ empireName }}</h1>
-					</div>
-					<div
-						class="grid grid-cols-1 lg:grid-cols-[40%_auto] divide-x divide-white/10"
-					>
-						<div>
-							<div class="px-6 pb-3 pt-4 border-b border-white/10 my-auto">
-								<n-form
-									label-placement="left"
-									label-width="auto"
-									label-align="left"
-									size="small"
-								>
-									<n-form-item label="Switch Empire">
-										<n-select
-											v-model:value="selectedEmpireUuid"
-											:options="
-												empireList.map((e) => {
-													return { label: e.name, value: e.uuid };
-												})
-											"
-										/>
-									</n-form-item>
-								</n-form>
-							</div>
-							<div class="p-6 border-b border-white/10">
+					<div class="min-h-screen flex flex-col">
+						<div
+							class="px-6 py-3 border-b border-white/10 flex flex-row justify-between gap-x-3">
+							<h1 class="text-2xl font-bold my-auto">
+								{{ empireName }}
+							</h1>
+						</div>
+
+						<div
+							class="flex-grow grid grid-cols-1 lg:grid-cols-[40%_auto] divide-x divide-white/10">
+							<div>
 								<div
-									class="grid grid-cols-1 lg:grid-cols-3 gap-6 child:child:text-center"
-								>
-									<div>
-										<div class="text-white/40 text-xs">Profit</div>
-										<div class="text-white text-xl">
-											{{ formatNumber(costOverview.totalProfit) }}
+									class="px-6 pb-3 pt-4 border-b border-white/10 my-auto">
+									<n-form
+										label-placement="left"
+										label-width="auto"
+										label-align="left"
+										size="small">
+										<n-form-item label="Switch Empire">
+											<n-select
+												v-model:value="
+													selectedEmpireUuid
+												"
+												:options="
+													empireList.map((e) => {
+														return {
+															label: e.name,
+															value: e.uuid,
+														};
+													})
+												" />
+										</n-form-item>
+									</n-form>
+								</div>
+								<div class="p-6 border-b border-white/10">
+									<div
+										class="grid grid-cols-1 lg:grid-cols-3 gap-6 child:child:text-center">
+										<div>
+											<div class="text-white/40 text-xs">
+												Profit
+											</div>
+											<div class="text-white text-xl">
+												{{
+													formatNumber(
+														costOverview.totalProfit
+													)
+												}}
+											</div>
+											<div class="text-white/40 text-xs">
+												{{
+													formatNumber(
+														(costOverview.totalProfit /
+															costOverview.totalRevenue) *
+															100
+													)
+												}}
+												%
+											</div>
 										</div>
-										<div class="text-white/40 text-xs">
-											{{
-												formatNumber(
-													(costOverview.totalProfit /
-														costOverview.totalRevenue) *
-														100
-												)
-											}}
-											%
+										<div>
+											<div class="text-white/40 text-xs">
+												Revenue
+											</div>
+											<div class="text-white text-xl">
+												{{
+													formatNumber(
+														costOverview.totalRevenue
+													)
+												}}
+											</div>
 										</div>
-									</div>
-									<div>
-										<div class="text-white/40 text-xs">Revenue</div>
-										<div class="text-white text-xl">
-											{{ formatNumber(costOverview.totalRevenue) }}
-										</div>
-									</div>
-									<div>
-										<div class="text-white/40 text-xs">Cost</div>
-										<div class="text-white text-xl">
-											{{ formatNumber(costOverview.totalCost) }}
-										</div>
-										<div class="text-white/40 text-xs">
-											{{
-												formatNumber(
-													(costOverview.totalCost / costOverview.totalRevenue) *
-														100
-												)
-											}}
-											%
+										<div>
+											<div class="text-white/40 text-xs">
+												Cost
+											</div>
+											<div class="text-white text-xl">
+												{{
+													formatNumber(
+														costOverview.totalCost
+													)
+												}}
+											</div>
+											<div class="text-white/40 text-xs">
+												{{
+													formatNumber(
+														(costOverview.totalCost /
+															costOverview.totalRevenue) *
+															100
+													)
+												}}
+												%
+											</div>
 										</div>
 									</div>
 								</div>
+								<div class="p-6 border-b border-white/10">
+									<Suspense>
+										<AsyncEmpirePlanList
+											:plan-list-data="planListData" />
+										<template #fallback>
+											<RenderingProgress :height="200" />
+										</template>
+									</Suspense>
+								</div>
+								<div class="p-6 border-b border-white/10">
+									<Suspense v-if="selectedEmpire">
+										<AsyncEmpireConfiguration
+											:data="selectedEmpire"
+											v-on:reload:empires="
+												reloadEmpires
+											" />
+										<template #fallback>
+											<RenderingProgress :height="200" />
+										</template>
+									</Suspense>
+								</div>
 							</div>
-							<div class="p-6 border-b border-white/10">
+							<div class="p-6">
 								<Suspense>
-									<AsyncEmpirePlanList :plan-list-data="planListData" />
+									<AsyncEmpireMaterialIO
+										:empire-material-i-o="
+											combineEmpireMaterialIO(
+												empireMaterialIO
+											)
+										" />
 									<template #fallback>
-										<RenderingProgress :height="200" />
+										<RenderingProgress :height="400" />
 									</template>
 								</Suspense>
 							</div>
-							<div class="p-6 border-b border-white/10">
-								<Suspense v-if="selectedEmpire">
-									<AsyncEmpireConfiguration
-										:data="selectedEmpire"
-										v-on:reload:empires="reloadEmpires"
-									/>
-									<template #fallback>
-										<RenderingProgress :height="200" />
-									</template>
-								</Suspense>
-							</div>
-						</div>
-						<div class="p-6">
-							<Suspense>
-								<AsyncEmpireMaterialIO
-									:empire-material-i-o="
-										combineEmpireMaterialIO(empireMaterialIO)
-									"
-								/>
-								<template #fallback>
-									<RenderingProgress :height="400" />
-								</template>
-							</Suspense>
 						</div>
 					</div>
 				</template>

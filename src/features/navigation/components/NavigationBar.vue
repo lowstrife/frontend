@@ -1,3 +1,214 @@
+<script setup lang="ts">
+	import { onMounted, onUnmounted, watch } from "vue";
+
+	// Stores
+	import { useUserStore } from "@/stores/userStore";
+	import { useGameDataStore } from "@/stores/gameDataStore";
+
+	// Router
+	import router from "@/router";
+
+	// Util
+	import { relativeFromDate } from "@/util/date";
+
+	// Types & Interfaces
+	import { IMenuSection } from "@/features/navigation/navigation.types";
+
+	// UI
+	import { NIcon, NTag, NSpin, NTooltip } from "naive-ui";
+	import {
+		HomeSharp,
+		SearchRound,
+		SettingsRound,
+		ApiSharp,
+		LogOutRound,
+		GroupWorkRound,
+		ShoppingBasketSharp,
+		PermDataSettingSharp,
+		CandlestickChartSharp,
+		UpgradeSharp,
+		CompareSharp,
+		ProductionQuantityLimitsSharp,
+		StarsSharp,
+		PersonSharp,
+		HelpOutlineSharp,
+		ExtensionSharp,
+	} from "@vicons/material";
+
+	const userStore = useUserStore();
+	const gameDataStore = useGameDataStore();
+
+	/*
+	 * FIO Data Refresh, if the user either already has FIO or if this is changed,
+	 * a background refresh of FIO data is triggered in the gamedata store
+	 */
+
+	let fioInterval: any;
+
+	function setFIOInterval(): void {
+		if (userStore.hasFIO) {
+			// trigger initially
+			gameDataStore.performFIORefresh();
+			// set interval
+			fioInterval = setInterval(() => {
+				gameDataStore.performFIORefresh();
+			}, 600000);
+		}
+	}
+
+	onMounted(() => {
+		setFIOInterval();
+	});
+
+	onUnmounted(() => clearInterval(fioInterval));
+
+	watch(
+		() => userStore.hasFIO,
+		(newValue: boolean) => {
+			if (newValue) setFIOInterval();
+			else clearInterval(fioInterval);
+		}
+	);
+
+	const menuItems: IMenuSection[] = [
+		{
+			label: "Planning",
+			children: [
+				{
+					label: "Empire",
+					routerLink: "/",
+					icon: HomeSharp,
+				},
+				{
+					label: "Planet Search",
+					routerLink: "/none",
+					icon: SearchRound,
+				},
+				{
+					label: "Management",
+					routerLink: "/manage",
+					icon: SettingsRound,
+				},
+				{
+					label: "Exchanges",
+					routerLink: "/none",
+					icon: ShoppingBasketSharp,
+				},
+				// {
+				// 	label: "Projects",
+				// 	routerLink: "/none",
+				// 	icon: GroupWorkRound,
+				// },
+			],
+		},
+		// {
+		// 	label: "Configuration",
+		// 	children: [
+		// 		{
+		// 			label: "Project Settings",
+		// 			routerLink: "/none",
+		// 			icon: PermDataSettingSharp,
+		// 		},
+		// 	],
+		// },
+		{
+			label: "Tools",
+			children: [
+				{
+					label: "Market Data",
+					routerLink: "/none",
+					icon: CandlestickChartSharp,
+					children: [
+						{
+							label: "Market Exploration",
+							routerLink: "/none",
+						},
+						{
+							label: "ROI Overview",
+							routerLink: "/none",
+						},
+						{
+							label: "Resource ROI Overview",
+							routerLink: "/none",
+						},
+					],
+				},
+				{
+					label: "HQ Upgrade Calculator",
+					routerLink: "/none",
+					icon: ProductionQuantityLimitsSharp,
+				},
+				{
+					label: "Production Chains",
+					routerLink: "/none",
+					icon: CompareSharp,
+				},
+				{
+					label: "Base Compare",
+					routerLink: "/none",
+					icon: UpgradeSharp,
+				},
+				{
+					label: "Government",
+					routerLink: "/none",
+					icon: StarsSharp,
+				},
+				{
+					label: "FIO",
+					routerLink: "/none",
+					icon: ApiSharp,
+					children: [
+						{
+							label: "Burn",
+							routerLink: "/none",
+						},
+						{
+							label: "Storage",
+							routerLink: "/none",
+						},
+						{
+							label: "Repair",
+							routerLink: "/none",
+						},
+						{
+							label: "Plan Import",
+							routerLink: "/none",
+						},
+					],
+				},
+			],
+		},
+		{
+			label: "Account",
+			children: [
+				{
+					label: "API",
+					routerLink: "/none",
+					icon: ExtensionSharp,
+				},
+				{
+					label: "Profile",
+					routerLink: "/profile",
+					icon: PersonSharp,
+				},
+				{
+					label: "Help",
+					routerLink: "/none",
+					icon: HelpOutlineSharp,
+				},
+				{
+					label: "Logout",
+					icon: LogOutRound,
+					functionCall: () => {
+						userStore.logout();
+						router.push("/");
+					},
+				},
+			],
+		},
+	];
+</script>
+
 <template>
 	<!-- Mobile menu toggle button -->
 	<input type="checkbox" id="menu-toggle" class="hidden peer" />
@@ -121,176 +332,35 @@
 				</template>
 			</nav>
 		</div>
+		<div class="p-4 text-center child:my-auto">
+			<n-tooltip v-if="userStore.hasFIO">
+				<template #trigger>
+					<n-tag size="tiny" type="success" :bordered="false">
+						FIO Active
+					</n-tag>
+				</template>
+				<div class="grid grid-cols-2">
+					<div>Storage</div>
+					<div>
+						{{
+							relativeFromDate(
+								gameDataStore.lastRefreshedFIOStorage
+							)
+						}}
+					</div>
+					<div>Sites</div>
+					<div>
+						{{
+							relativeFromDate(
+								gameDataStore.lastRefreshedFIOSites
+							)
+						}}
+					</div>
+				</div>
+			</n-tooltip>
+			<n-tag size="tiny" type="warning" :bordered="false" v-else>
+				FIO Inactive
+			</n-tag>
+		</div>
 	</div>
 </template>
-
-<script setup lang="ts">
-	import { IMenuSection } from "@/features/navigation/navigation.types";
-	import { useUserStore } from "@/stores/userStore";
-
-	import router from "@/router";
-
-	// UI
-	import { NIcon } from "naive-ui";
-
-	// Icons
-	import {
-		HomeSharp,
-		SearchRound,
-		SettingsRound,
-		ApiSharp,
-		LogOutRound,
-		GroupWorkRound,
-		ShoppingBasketSharp,
-		PermDataSettingSharp,
-		CandlestickChartSharp,
-		UpgradeSharp,
-		CompareSharp,
-		ProductionQuantityLimitsSharp,
-		StarsSharp,
-		PersonSharp,
-		HelpOutlineSharp,
-		ExtensionSharp,
-	} from "@vicons/material";
-
-	const userStore = useUserStore();
-
-	const menuItems: IMenuSection[] = [
-		{
-			label: "Home",
-			children: [
-				{
-					label: "Empire",
-					routerLink: "/",
-					icon: HomeSharp,
-				},
-				{
-					label: "Planet Search",
-					routerLink: "/none",
-					icon: SearchRound,
-				},
-				{
-					label: "Projects",
-					routerLink: "/none",
-					icon: GroupWorkRound,
-				},
-			],
-		},
-		{
-			label: "Configuration",
-			children: [
-				{
-					label: "Management",
-					routerLink: "/manage",
-					icon: SettingsRound,
-				},
-				{
-					label: "Exchanges",
-					routerLink: "/none",
-					icon: ShoppingBasketSharp,
-				},
-				{
-					label: "Project Settings",
-					routerLink: "/none",
-					icon: PermDataSettingSharp,
-				},
-			],
-		},
-
-		{
-			label: "Tools",
-			children: [
-				{
-					label: "Market Data",
-					routerLink: "/none",
-					icon: CandlestickChartSharp,
-					children: [
-						{
-							label: "Market Exploration",
-							routerLink: "/none",
-						},
-						{
-							label: "ROI Overview",
-							routerLink: "/none",
-						},
-						{
-							label: "Resource ROI Overview",
-							routerLink: "/none",
-						},
-					],
-				},
-				{
-					label: "HQ Upgrade Calculator",
-					routerLink: "/none",
-					icon: ProductionQuantityLimitsSharp,
-				},
-				{
-					label: "Production Chains",
-					routerLink: "/none",
-					icon: CompareSharp,
-				},
-				{
-					label: "Base Compare",
-					routerLink: "/none",
-					icon: UpgradeSharp,
-				},
-				{
-					label: "Government",
-					routerLink: "/none",
-					icon: StarsSharp,
-				},
-				{
-					label: "FIO",
-					routerLink: "/none",
-					icon: ApiSharp,
-					children: [
-						{
-							label: "Burn",
-							routerLink: "/none",
-						},
-						{
-							label: "Storage",
-							routerLink: "/none",
-						},
-						{
-							label: "Repair",
-							routerLink: "/none",
-						},
-						{
-							label: "Plan Import",
-							routerLink: "/none",
-						},
-					],
-				},
-			],
-		},
-		{
-			label: "Account",
-			children: [
-				{
-					label: "API",
-					routerLink: "/none",
-					icon: ExtensionSharp,
-				},
-				{
-					label: "Profile",
-					routerLink: "/profile",
-					icon: PersonSharp,
-				},
-				{
-					label: "Help",
-					routerLink: "/none",
-					icon: HelpOutlineSharp,
-				},
-				{
-					label: "Logout",
-					icon: LogOutRound,
-					functionCall: () => {
-						userStore.logout();
-						router.push("/");
-					},
-				},
-			],
-		},
-	];
-</script>

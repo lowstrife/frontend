@@ -90,8 +90,13 @@ export function humanizeTimeMs(value: number): string {
  * @param {(Date | undefined)} value Date
  * @returns {string} Relative, humanized time
  */
-export function relativeFromDate(value: Date | undefined): string {
+export function relativeFromDate(
+	value: Date | undefined,
+	isUTC: boolean = false
+): string {
 	if (value === undefined) return "—";
+
+	if (isUTC) return dayjs(value).utc(true).local().fromNow();
 
 	return dayjs(value).fromNow();
 }
