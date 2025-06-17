@@ -245,14 +245,14 @@ export const CXDataSchema: z.ZodType<ICXData> = z.object({
 	cx_empire: z.array(CXDataExchangeOptionSchema),
 	cx_planets: z.array(
 		z.object({
-			planet: z.string().nonempty(),
+			planet: z.string(),
 			preferences: z.array(CXDataExchangeOptionSchema),
 		})
 	),
 	ticker_empire: z.array(CXDataTickerOptionSchema),
 	ticker_planets: z.array(
 		z.object({
-			planet: z.string().nonempty(),
+			planet: z.string(),
 			preferences: z.array(CXDataTickerOptionSchema),
 		})
 	),
