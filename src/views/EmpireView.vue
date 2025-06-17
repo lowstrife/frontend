@@ -21,7 +21,9 @@
 	// Composables
 	import { usePlanCalculation } from "@/features/planning/usePlanCalculation";
 	import { useMaterialIOUtil } from "@/features/planning/util/materialIO.util";
+	import { usePreferences } from "@/features/preferences/usePreferences";
 	const { combineEmpireMaterialIO } = useMaterialIOUtil();
+	const { defaultEmpireUuid } = usePreferences();
 
 	// Components
 	import RenderingProgress from "@/layout/components/RenderingProgress.vue";
@@ -62,7 +64,7 @@
 		},
 	});
 
-	const selectedEmpireUuid: Ref<string | undefined> = ref(props.empireUuid);
+	const selectedEmpireUuid: Ref<string | undefined> = ref(props.empireUuid ? props.empireUuid : defaultEmpireUuid);
 	const selectedCXUuid: Ref<string | undefined> = ref(undefined);
 	const empireList: Ref<IPlanEmpireElement[]> = ref([]);
 
@@ -271,7 +273,12 @@
 															value: e.uuid,
 														};
 													})
-												" />
+												"
+												v-on:update-value="(value: string) => {
+													selectedEmpireUuid = value;
+													defaultEmpireUuid = value;
+												}"
+												/>
 										</n-form-item>
 									</n-form>
 								</div>

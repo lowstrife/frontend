@@ -64,7 +64,9 @@ describe("usePlan", async () => {
 	it("mapPlanetToPlanType", async () => {
 		const { mapPlanetToPlanType } = usePlan();
 
-		expect(mapPlanetToPlanType("ADVERTISING_AGRICULTURE")).toBe("AGRICULTURE");
+		expect(mapPlanetToPlanType("ADVERTISING_AGRICULTURE")).toBe(
+			"AGRICULTURE"
+		);
 		expect(mapPlanetToPlanType(null)).toBe("---");
 	});
 
@@ -218,7 +220,9 @@ describe("usePlan", async () => {
 			const { loadDefinitionFromRouteParams } = usePlan();
 
 			gameDataStore.getPlanet = vi.fn();
-			planningStore.getAllEmpires = vi.fn().mockResolvedValue(empire_list);
+			planningStore.getAllEmpires = vi
+				.fn()
+				.mockResolvedValue(empire_list);
 			planningStore.getPlan = vi.fn();
 
 			// @ts-expect-error mock data
@@ -234,7 +238,9 @@ describe("usePlan", async () => {
 			const { loadDefinitionFromRouteParams } = usePlan();
 
 			gameDataStore.getPlanet = vi.fn();
-			planningStore.getAllEmpires = vi.fn().mockResolvedValue(empire_list);
+			planningStore.getAllEmpires = vi
+				.fn()
+				.mockResolvedValue(empire_list);
 			planningStore.getPlan = vi.fn().mockRejectedValue(new Error());
 
 			await expect(
@@ -250,7 +256,9 @@ describe("usePlan", async () => {
 			const { loadDefinitionFromRouteParams } = usePlan();
 
 			gameDataStore.getPlanet = vi.fn().mockResolvedValue(planet_single);
-			planningStore.getAllEmpires = vi.fn().mockResolvedValue(empire_list);
+			planningStore.getAllEmpires = vi
+				.fn()
+				.mockResolvedValue(empire_list);
 			planningStore.getPlan = vi.fn();
 
 			// @ts-expect-error mock data
@@ -260,6 +268,41 @@ describe("usePlan", async () => {
 			});
 
 			expect(result.planData.planet_id).toBe("KW-020c");
+		});
+	});
+
+	describe("getPlanNamePlanet", async () => {
+		it("unknown plan throws error", async () => {
+			const { getPlanNamePlanet } = usePlan();
+
+			expect(() => getPlanNamePlanet("moo")).toThrowError();
+		});
+
+		it("known plan returns planetId and planName", async () => {
+			planningStore.plans["foo"] = {
+				planet_id: "1",
+				name: "2",
+			};
+
+			const { getPlanNamePlanet } = usePlan();
+
+			const { planetId, planName } = getPlanNamePlanet("foo");
+
+			expect(planetId).toBe("1");
+			expect(planName).toBe("2");
+		});
+
+		it("known plan returns planetId and default planName", async () => {
+			planningStore.plans["foo"] = {
+				planet_id: "1",
+			};
+
+			const { getPlanNamePlanet } = usePlan();
+
+			const { planetId, planName } = getPlanNamePlanet("foo");
+
+			expect(planetId).toBe("1");
+			expect(planName).toBe("Unnamed");
 		});
 	});
 });

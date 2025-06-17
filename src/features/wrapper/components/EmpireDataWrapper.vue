@@ -72,19 +72,9 @@
 
 			emit("update:empireList", empireLoadList);
 
-			// prop empire uuid is not a valid uuid of the user
-			if (
-				props.empireUuid &&
-				!empireLoadList.find((e) => e.uuid === props.empireUuid)
-			) {
-				error.value = new EmpireLoadError(
-					"INVALID_UUID",
-					`Uuid '${props.empireUuid}' is not a valid empire of yours.`
-				);
-				return;
-			}
+			const validEmpireUuid: boolean = empireLoadList.find((e) => e.uuid === props.empireUuid) ? true : false;
 
-			const initialEmpireUuid: string = props.empireUuid
+			const initialEmpireUuid: string = props.empireUuid && validEmpireUuid
 				? props.empireUuid
 				: empireLoadList[0].uuid;
 			const findEmpire = empireLoadList.find(

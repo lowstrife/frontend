@@ -102,7 +102,12 @@
 		handleAddBuildingRecipe,
 		handleChangeBuildingRecipe,
 		handleChangePlanName,
-	} = usePlanCalculation(refPlanData, refEmpireUuid, refEmpireList, refCXUuid);
+	} = usePlanCalculation(
+		refPlanData,
+		refEmpireUuid,
+		refEmpireList,
+		refCXUuid
+	);
 
 	const planetData: IPlanet = getPlanet(props.planData.planet_id);
 
@@ -158,6 +163,8 @@
 					props: {
 						stoAmount: result.value.infrastructure["STO"],
 						materialIO: result.value.materialio,
+						disabled: props.disabled,
+						planUuid: refPlanData.value.uuid,
 					},
 					listeners: {},
 				};
@@ -215,7 +222,9 @@
 						// reset modified state
 						handleResetModified();
 
-						router.push(`/plan/${planetData.PlanetNaturalId}/${newUuid}`);
+						router.push(
+							`/plan/${planetData.PlanetNaturalId}/${newUuid}`
+						);
 					}
 				}
 			);
@@ -263,12 +272,10 @@
 <template>
 	<div
 		class="h-view grid grid-cols-1 gap-y-6"
-		:class="refVisualShowConfiguration ? 'lg:grid-cols-[300px_auto]' : ''"
-	>
+		:class="refVisualShowConfiguration ? 'lg:grid-cols-[300px_auto]' : ''">
 		<div
 			class="border-r border-white/10"
-			:class="!refVisualShowConfiguration ? 'hidden' : 'visible'"
-		>
+			:class="!refVisualShowConfiguration ? 'hidden' : 'visible'">
 			<div class="p-6">
 				<div class="pb-6">
 					<h1 class="text-2xl font-bold text-white">
@@ -276,13 +283,16 @@
 					</h1>
 					<span
 						class="text-white/60"
-						v-if="planetData.PlanetName != planetData.PlanetNaturalId"
-					>
+						v-if="
+							planetData.PlanetName != planetData.PlanetNaturalId
+						">
 						{{ planetData.PlanetNaturalId }}
 					</span>
 				</div>
 
-				<h2 class="text-white/80 font-bold text-lg pb-3">Configuration</h2>
+				<h2 class="text-white/80 font-bold text-lg pb-3">
+					Configuration
+				</h2>
 
 				<PlanConfiguration
 					:disabled="disabled"
@@ -296,8 +306,7 @@
 							refCXUuid = findEmpireCXUuid(empireUuid);
 						}
 					"
-					v-on:update:plan-name="handleChangePlanName"
-				/>
+					v-on:update:plan-name="handleChangePlanName" />
 			</div>
 
 			<div class="p-6 pt-0">
@@ -305,16 +314,16 @@
 				<PlanArea
 					:disabled="disabled"
 					:area-data="result.area"
-					v-on:update:permits="handleUpdatePermits"
-				/>
+					v-on:update:permits="handleUpdatePermits" />
 			</div>
 			<div class="p-6 pt-0">
-				<h2 class="text-white/80 font-bold text-lg pb-3">Infrastructure</h2>
+				<h2 class="text-white/80 font-bold text-lg pb-3">
+					Infrastructure
+				</h2>
 				<PlanInfrastructure
 					:disabled="disabled"
 					:infrastructure-data="result.infrastructure"
-					v-on:update:infrastructure="handleUpdateInfrastructure"
-				/>
+					v-on:update:infrastructure="handleUpdateInfrastructure" />
 			</div>
 			<div class="p-6 pt-0">
 				<h2 class="text-white/80 font-bold text-lg pb-3">Bonuses</h2>
@@ -324,16 +333,14 @@
 					:corphq="result.corphq"
 					:cogc="result.cogc"
 					v-on:update:corphq="handleUpdateCorpHQ"
-					v-on:update:cogc="handleUpdateCOGC"
-				/>
+					v-on:update:cogc="handleUpdateCOGC" />
 			</div>
 			<div class="p-6 pt-0">
 				<h2 class="text-white/80 font-bold text-lg pb-3">Experts</h2>
 				<PlanExperts
 					:disabled="disabled"
 					:expert-data="result.experts"
-					v-on:update:expert="handleUpdateExpert"
-				/>
+					v-on:update:expert="handleUpdateExpert" />
 			</div>
 		</div>
 		<div class="">
@@ -342,9 +349,12 @@
 					<div class="child:mt-1 pr-6 child:cursor-pointer">
 						<n-icon
 							size="24"
-							@click="refVisualShowConfiguration = !refVisualShowConfiguration"
-						>
-							<AutoAwesomeMosaicFilled v-if="!refVisualShowConfiguration" />
+							@click="
+								refVisualShowConfiguration =
+									!refVisualShowConfiguration
+							">
+							<AutoAwesomeMosaicFilled
+								v-if="!refVisualShowConfiguration" />
 							<AutoAwesomeMosaicOutlined v-else />
 						</n-icon>
 					</div>
@@ -355,16 +365,20 @@
 								<n-tooltip
 									trigger="hover"
 									v-for="resource in planetData.Resources"
-									:key="`PLANET#RESOURCE#${resource.MaterialTicker}`"
-								>
+									:key="`PLANET#RESOURCE#${resource.MaterialTicker}`">
 									<template #trigger>
 										<div class="hover:cursor-help">
 											<MaterialTile
-												:ticker="resource.MaterialTicker"
-												:amount="
-													parseFloat(formatNumber(resource.DailyExtraction))
+												:ticker="
+													resource.MaterialTicker
 												"
-											/>
+												:amount="
+													parseFloat(
+														formatNumber(
+															resource.DailyExtraction
+														)
+													)
+												" />
 										</div>
 									</template>
 									{{ resource.ResourceType }}
@@ -378,8 +392,7 @@
 								size="small"
 								:disabled="disabled"
 								v-if="saveable"
-								@click="save"
-							>
+								@click="save">
 								<template #icon><SaveSharp /></template>
 								{{ existing ? "Save" : "Create" }}
 							</n-button>
@@ -388,35 +401,43 @@
 								:disabled="disabled"
 								v-if="existing"
 								:loading="refIsReloading"
-								@click="reloadPlan"
-							>
-								<template #icon><ChangeCircleOutlined /></template>
+								@click="reloadPlan">
+								<template #icon
+									><ChangeCircleOutlined
+								/></template>
 								Reload
 							</n-button>
 
 							<ShareButton
 								buttonSize="small"
 								v-if="!disabled && refPlanData.uuid"
-								:plan-uuid="refPlanData.uuid"
-							/>
+								:plan-uuid="refPlanData.uuid" />
 						</div>
 					</div>
 				</div>
 			</div>
 			<div class="border-b border-white/10 p-3">
 				<div class="flex grow justify-end gap-x-3 my-auto">
-					<n-button size="small" secondary disabled>Empire Override</n-button>
+					<n-button size="small" secondary disabled
+						>Empire Override</n-button
+					>
 					<n-button size="small" secondary disabled>POPR</n-button>
 					<n-button
 						size="small"
 						secondary
-						@click="openTool('visitation-frequency')"
-					>
+						@click="openTool('visitation-frequency')">
 						Visitation Frequency
 					</n-button>
-					<n-button size="small" secondary disabled>Construction Cart</n-button>
-					<n-button size="small" secondary disabled>Supply Cart</n-button>
-					<n-button size="small" secondary @click="openTool('repair-analysis')"
+					<n-button size="small" secondary disabled
+						>Construction Cart</n-button
+					>
+					<n-button size="small" secondary disabled
+						>Supply Cart</n-button
+					>
+					<n-button
+						size="small"
+						secondary
+						@click="openTool('repair-analysis')"
 						>Repair Analysis</n-button
 					>
 					<n-button size="small" secondary disabled
@@ -430,8 +451,7 @@
 						? 'opacity-0 overflow-hidden !h-0'
 						: 'px-6 py-3 opacity-100 border-b border-white/10'
 				"
-				class="transition-discrete transition-opacity duration-500"
-			>
+				class="transition-discrete transition-opacity duration-500">
 				<Suspense v-if="refShowTool && compViewToolMeta">
 					<template #default>
 						<component
@@ -439,8 +459,7 @@
 							:key="refShowTool"
 							v-bind="compViewToolMeta.props"
 							v-on="compViewToolMeta.listeners"
-							v-on:close="() => (refShowTool = null)"
-						/>
+							v-on:close="() => (refShowTool = null)" />
 					</template>
 					<template #fallback>
 						<div class="w-full text-center py-5">
@@ -451,17 +470,21 @@
 			</div>
 			<div class="p-6 grid grid-cols-1 lg:grid-cols-[auto_450px] gap-6">
 				<div>
-					<div class="grid grid-cols-1 2xl:grid-cols-[60%_auto] gap-6">
+					<div
+						class="grid grid-cols-1 2xl:grid-cols-[60%_auto] gap-6">
 						<div>
-							<h2 class="text-white/80 font-bold text-lg pb-3">Workforce</h2>
+							<h2 class="text-white/80 font-bold text-lg pb-3">
+								Workforce
+							</h2>
 							<PlanWorkforce
 								:disabled="disabled"
 								:workforce-data="result.workforce"
-								v-on:update:lux="handleUpdateWorkforceLux"
-							/>
+								v-on:update:lux="handleUpdateWorkforceLux" />
 						</div>
 						<div>
-							<h2 class="text-white/80 font-bold text-lg pb-3">Overview</h2>
+							<h2 class="text-white/80 font-bold text-lg pb-3">
+								Overview
+							</h2>
 							foo
 						</div>
 					</div>
@@ -470,23 +493,27 @@
 							:disabled="disabled"
 							:production-data="result.production"
 							:cogc="result.cogc"
-							v-on:update:building:amount="handleUpdateBuildingAmount"
+							v-on:update:building:amount="
+								handleUpdateBuildingAmount
+							"
 							v-on:delete:building="handleDeleteBuilding"
 							v-on:create:building="handleCreateBuilding"
 							v-on:update:building:recipe:amount="
 								handleUpdateBuildingRecipeAmount
 							"
-							v-on:delete:building:recipe="handleDeleteBuildingRecipe"
+							v-on:delete:building:recipe="
+								handleDeleteBuildingRecipe
+							"
 							v-on:add:building:recipe="handleAddBuildingRecipe"
-							v-on:update:building:recipe="handleChangeBuildingRecipe"
-						/>
+							v-on:update:building:recipe="
+								handleChangeBuildingRecipe
+							" />
 					</div>
 				</div>
 				<div>
 					<div class="sticky top-3">
 						<h2
-							class="text-white/80 font-bold text-lg pb-3 flex justify-between child:my-auto"
-						>
+							class="text-white/80 font-bold text-lg pb-3 flex justify-between child:my-auto">
 							<div>Material I/O</div>
 							<div class="flex gap-x-3">
 								<n-tooltip trigger="hover">
@@ -495,11 +522,14 @@
 											size="tiny"
 											secondary
 											@click="
-												refMaterialIOShowBasked = !refMaterialIOShowBasked
-											"
-										>
+												refMaterialIOShowBasked =
+													!refMaterialIOShowBasked
+											">
 											<template #icon>
-												<ShoppingBasketSharp v-if="!refMaterialIOShowBasked" />
+												<ShoppingBasketSharp
+													v-if="
+														!refMaterialIOShowBasked
+													" />
 												<AttachMoneySharp v-else />
 											</template>
 										</n-button>
@@ -512,10 +542,15 @@
 										<n-button
 											size="tiny"
 											secondary
-											@click="refMaterialIOSplitted = !refMaterialIOSplitted"
-										>
+											@click="
+												refMaterialIOSplitted =
+													!refMaterialIOSplitted
+											">
 											<template #icon>
-												<DataObjectRound v-if="!refMaterialIOSplitted" />
+												<DataObjectRound
+													v-if="
+														!refMaterialIOSplitted
+													" />
 												<DataSaverOffSharp v-else />
 											</template>
 										</n-button>
@@ -527,20 +562,17 @@
 						<template v-if="!refMaterialIOSplitted">
 							<PlanMaterialIO
 								:material-i-o-data="result.materialio"
-								:show-basked="refMaterialIOShowBasked"
-							/>
+								:show-basked="refMaterialIOShowBasked" />
 						</template>
 						<template v-else>
 							<h3 class="font-bold pb-3">Production</h3>
 							<PlanMaterialIO
 								:material-i-o-data="result.productionMaterialIO"
-								:show-basked="refMaterialIOShowBasked"
-							/>
+								:show-basked="refMaterialIOShowBasked" />
 							<h3 class="font-bold py-3">Workforce</h3>
 							<PlanMaterialIO
 								:material-i-o-data="result.workforceMaterialIO"
-								:show-basked="refMaterialIOShowBasked"
-							/>
+								:show-basked="refMaterialIOShowBasked" />
 						</template>
 					</div>
 				</div>

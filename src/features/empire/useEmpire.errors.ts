@@ -9,7 +9,7 @@
  */
 export class EmpireLoadError extends Error {
 	constructor(
-		public code: "NO_EMPIRES" | "INVALID_UUID" | "API_FAILURE" | "UNKNOWN",
+		public code: "NO_EMPIRES" | "API_FAILURE" | "UNKNOWN",
 		message: string
 	) {
 		super(message);

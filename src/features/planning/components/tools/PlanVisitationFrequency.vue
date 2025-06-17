@@ -1,12 +1,16 @@
 <script setup lang="ts">
 	import { computed, ComputedRef, PropType, ref, Ref, watch } from "vue";
 
+	// Composables
+	import { usePlanPreferences } from "@/features/preferences/usePlanPreferences";
+
 	// Util
 	import { formatAmount, formatNumber } from "@/util/numbers";
 
 	// Types & Interfaces
 	import { SelectMixedOption } from "naive-ui/es/select/src/interface";
 	import { IMaterialIO } from "@/features/planning/usePlanCalculation.types";
+
 	interface IShippingCalculation {
 		shipVolume: number;
 		shipWeight: number;
@@ -34,11 +38,28 @@
 			type: Array as PropType<IMaterialIO[]>,
 			required: true,
 		},
+		disabled: {
+			type: Boolean,
+			required: true,
+		},
+		planUuid: {
+			type: String,
+			required: false,
+		},
 	});
 
 	const emit = defineEmits<{
 		(e: "close"): void;
 	}>();
+
+	// plan preference patch-in
+	const planPrefs = computed<ReturnType<typeof usePlanPreferences> | null>(
+		() => {
+			return !props.disabled && props.planUuid !== undefined
+				? usePlanPreferences(props.planUuid)
+				: null;
+		}
+	);
 
 	function getExclusionOptions(data: IMaterialIO[]): SelectMixedOption[] {
 		return data.map((d) => {
@@ -93,7 +114,11 @@
 	const refMaterialExclusionOption: Ref<SelectMixedOption[]> = ref(
 		getExclusionOptions(props.materialIO)
 	);
-	const refMaterialExclusions: Ref<string[]> = ref([]);
+	const refMaterialExclusions: Ref<string[]> = ref(
+		planPrefs.value === null
+			? []
+			: planPrefs.value.visitationMaterialExclusions.value
+	);
 
 	// Prop Watcher
 	watch(
@@ -193,8 +218,9 @@
 			<h3 class="font-bold text-lg pb-3">Storage</h3>
 
 			<p class="pb-3">
-				Your plan involves adding <strong>{{ localStoAmount }}</strong> STO,
-				giving you a total storage capacity of
+				Your plan involves adding
+				<strong>{{ localStoAmount }}</strong> STO, giving you a total
+				storage capacity of
 				<strong>{{ formatAmount(totalStorage) }}</strong
 				>.
 			</p>
@@ -233,18 +259,27 @@
 			</n-table>
 
 			<p class="py-3">
-				Exclude local materials from visitation frequency calculation for items
-				handled exclusively planet-side, like local market sales, purchases or
-				contracts.
+				Exclude local materials from visitation frequency calculation
+				for items handled exclusively planet-side, like local market
+				sales, purchases or contracts.
 			</p>
 
 			<n-select
+				:disabled="disabled"
 				v-model:value="refMaterialExclusions"
 				:options="refMaterialExclusionOption"
 				multiple
 				size="small"
 				filterable
-			/>
+				v-on:update-value="
+					(value: string[]) => {
+						if (planPrefs !== null) {
+							planPrefs.visitationMaterialExclusions.value =
+								value;
+						}
+						refMaterialExclusions = value;
+					}
+				" />
 		</div>
 		<div>
 			<h3 class="font-bold text-lg pb-3">Shipping</h3>
@@ -261,17 +296,27 @@
 					</tr>
 					<tr>
 						<th colspan="2"></th>
-						<th colspan="2" class="!text-center">Export Frequency</th>
-						<th colspan="2" class="!text-center">Import Frequency</th>
+						<th colspan="2" class="!text-center">
+							Export Frequency
+						</th>
+						<th colspan="2" class="!text-center">
+							Import Frequency
+						</th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr v-for="(shipData, index) in visitationData" :key="index">
+					<tr
+						v-for="(shipData, index) in visitationData"
+						:key="index">
 						<td>{{ formatAmount(shipData.shipVolume) }}</td>
 						<td>{{ formatAmount(shipData.shipWeight) }}</td>
-						<td class="text-center">{{ formatNumber(shipData.exportDays) }}</td>
+						<td class="text-center">
+							{{ formatNumber(shipData.exportDays) }}
+						</td>
 						<td class="text-center">{{ shipData.exportLimit }}</td>
-						<td class="text-center">{{ formatNumber(shipData.importDays) }}</td>
+						<td class="text-center">
+							{{ formatNumber(shipData.importDays) }}
+						</td>
 						<td class="text-center">{{ shipData.importLimit }}</td>
 					</tr>
 				</tbody>

@@ -56,10 +56,15 @@ export function usePlan() {
 			// ensure planet is loaded
 
 			const sharePlanetLoadResult: boolean =
-				await gameDataStore.performLoadPlanet(planData.baseplanner.planet_id);
+				await gameDataStore.performLoadPlanet(
+					planData.baseplanner.planet_id
+				);
 
 			if (!sharePlanetLoadResult) {
-				throw new PlanLoadError("PLANET_FAILURE", "Error loading planet data.");
+				throw new PlanLoadError(
+					"PLANET_FAILURE",
+					"Error loading planet data."
+				);
 			}
 
 			return {
@@ -80,9 +85,14 @@ export function usePlan() {
 			let planet: IPlanet | undefined = undefined;
 
 			try {
-				planet = await gameDataStore.getPlanet(routeParams.planetNaturalId);
+				planet = await gameDataStore.getPlanet(
+					routeParams.planetNaturalId
+				);
 			} catch {
-				throw new PlanLoadError("PLANET_FAILURE", "Error loading planet data.");
+				throw new PlanLoadError(
+					"PLANET_FAILURE",
+					"Error loading planet data."
+				);
 			}
 
 			// Load Empire Data
@@ -267,7 +277,8 @@ export function usePlan() {
 		data: IPlanCreateData
 	): Promise<string | undefined> {
 		try {
-			const createdData: IPlanSaveCreateResponse = await callCreatePlan(data);
+			const createdData: IPlanSaveCreateResponse =
+				await callCreatePlan(data);
 
 			// trigger backend data load
 			planningStore.getPlan(createdData.uuid);
@@ -293,10 +304,13 @@ export function usePlan() {
 		data: IPlanCreateData
 	): Promise<string | undefined> {
 		try {
-			const savedData: IPlanSaveCreateResponse = await callSavePlan(planUuid, {
-				uuid: planUuid,
-				...data,
-			});
+			const savedData: IPlanSaveCreateResponse = await callSavePlan(
+				planUuid,
+				{
+					uuid: planUuid,
+					...data,
+				}
+			);
 
 			if (savedData) {
 				// delete from currently stored version and fetch new
@@ -324,6 +338,34 @@ export function usePlan() {
 		return await planningStore.getPlan(planUuid);
 	}
 
+	/**
+	 * Gets a plans name and planet natural id by given Plan UUID
+	 * from already loaded plan information
+	 * @author jplacht
+	 *
+	 * @param {string} planUuid Plan Uuid
+	 * @returns {{
+	 * 			planetId: string;
+	 * 			planName: string;
+	 * 		}} Planet Natural ID and Plan Name
+	 */
+	function getPlanNamePlanet(planUuid: string): {
+		planetId: string;
+		planName: string;
+	} {
+		const findPlan = planningStore.plans[planUuid];
+
+		if (findPlan)
+			return {
+				planetId: findPlan.planet_id,
+				planName: findPlan.name ?? "Unnamed",
+			};
+
+		throw new Error(
+			`No data: Plan '${planUuid}'. Ensure Plan uuid is valid and planning data has been loaded.`
+		);
+	}
+
 	return {
 		loadDefinitionFromRouteParams,
 		isEditDisabled,
@@ -332,5 +374,6 @@ export function usePlan() {
 		createNewPlan,
 		saveExistingPlan,
 		reloadExistingPlan,
+		getPlanNamePlanet,
 	};
 }
