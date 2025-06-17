@@ -4,6 +4,9 @@ import { computed, ComputedRef, WritableComputedRef } from "vue";
 import { useUserStore } from "@/stores/userStore";
 import { usePlanningStore } from "@/stores/planningStore";
 
+// Composables
+import { usePlan } from "@/features/planning_data/usePlan";
+
 // Default values
 import { preferenceDefaults } from "@/features/preferences/userDefaults";
 
@@ -16,6 +19,8 @@ import {
 export function usePreferences() {
 	const userStore = useUserStore();
 	const planningStore = usePlanningStore();
+
+	const { getPlanNamePlanet } = usePlan();
 
 	/**
 	 * Writable computed for the users default Empire UUID
@@ -92,8 +97,7 @@ export function usePreferences() {
 			) as [string, Partial<IPreferencePerPlan>][]) {
 				// fetch generic plan information
 				try {
-					const { planetId, planName } =
-						planningStore.getPlanNamePlanet(planUuid);
+					const { planetId, planName } = getPlanNamePlanet(planUuid);
 
 					const planOverview = {
 						planUuid: planUuid,

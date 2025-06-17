@@ -6,7 +6,9 @@ import {
 	callRefreshToken,
 	callGetProfile,
 } from "@/features/api/userData.api";
+
 import { useUserStore } from "@/stores/userStore";
+import { preferenceDefaults } from "@/features/preferences/userDefaults";
 
 describe("User Store", () => {
 	beforeEach(() => {
@@ -225,5 +227,57 @@ describe("User Store", () => {
 				expect(userStore.hasFIO).toBe(expected);
 			}
 		);
+	});
+
+	describe("Preferences", async () => {
+		it("Store values are set as defaults", async () => {
+			const userStore = useUserStore();
+
+			const activePrefs = userStore.preferences;
+
+			expect(activePrefs.burnDaysRed).toBe(
+				preferenceDefaults.burnDaysRed
+			);
+			expect(activePrefs.burnDaysYellow).toBe(
+				preferenceDefaults.burnDaysYellow
+			);
+			expect(activePrefs.defaultEmpireUuid).toBe(
+				preferenceDefaults.defaultEmpireUuid
+			);
+		});
+
+		it("Preference change is persisted", async () => {
+			const userStore = useUserStore();
+
+			expect(userStore.preferences.burnDaysRed).toBe(
+				preferenceDefaults.burnDaysRed
+			);
+
+			userStore.setPreference("burnDaysRed", 1);
+
+			expect(userStore.preferences.burnDaysRed).toBe(1);
+		});
+
+		it("Preferences on plan uuid are persisted", async () => {
+			const userStore = useUserStore();
+
+			// preference does not exist, so its default
+
+			expect(userStore.getPlanPreference("foo").includeCM).toBe(
+				preferenceDefaults.planDefaults.includeCM
+			);
+
+			// change a preference
+			userStore.setPlanPreference("foo", { includeCM: true });
+
+			expect(userStore.getPlanPreference("foo").includeCM).toBeTruthy();
+
+			// clear a preference
+			userStore.clearPlanPreference("foo");
+
+			expect(userStore.getPlanPreference("foo").includeCM).toBe(
+				preferenceDefaults.planDefaults.includeCM
+			);
+		});
 	});
 });
