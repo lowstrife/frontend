@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
-import { computed, ComputedRef, ref, Ref } from "vue";
+import { computed, ComputedRef, Reactive, reactive, ref, Ref } from "vue";
+import _ from "lodash";
 
 // API
 import {
@@ -17,6 +18,11 @@ import {
 	IUserProfile,
 	IUserTokenResponse,
 } from "@/features/api/userData.types";
+import {
+	IPreference,
+	IPreferencePerPlan,
+} from "@/features/preferences/userPreferences.types";
+import { preferenceDefaults } from "@/features/preferences/userDefaults";
 
 export const useUserStore = defineStore(
 	"prunplanner_user",
@@ -26,11 +32,47 @@ export const useUserStore = defineStore(
 		const refreshToken: Ref<string | undefined> = ref(undefined);
 		const profile: Ref<IUserProfile | undefined> = ref(undefined);
 
+		const preferences: Reactive<IPreference> =
+			reactive<IPreference>(preferenceDefaults);
+
 		// state reset
 		function $reset(): void {
 			accessToken.value = undefined;
 			refreshToken.value = undefined;
 			profile.value = undefined;
+		}
+
+		// user preference handling
+
+		type PreferenceType = typeof preferences;
+
+		// generic setter for top-level preferences
+		function setPreference<K extends keyof IPreference>(
+			key: K,
+			value: PreferenceType[K]
+		): void {
+			preferences[key] = value;
+		}
+
+		// per plan override setter
+		function setPlanPreference(
+			planUuid: string,
+			patch: Partial<IPreferencePerPlan>
+		): void {
+			const current = preferences.planOverrides[planUuid] || {};
+			preferences.planOverrides[planUuid] = { ...current, ...patch };
+		}
+
+		function getPlanPreference(planUuid: string): IPreferencePerPlan {
+			return _.merge(
+				{},
+				preferenceDefaults.planDefaults,
+				preferences.planOverrides[planUuid] || {}
+			);
+		}
+
+		function clearPlanPreference(planUuid: string): void {
+			delete preferences.planOverrides[planUuid];
 		}
 
 		// getters
@@ -160,6 +202,12 @@ export const useUserStore = defineStore(
 			// getters
 			isLoggedIn,
 			hasFIO,
+			// preferences
+			preferences,
+			setPreference,
+			setPlanPreference,
+			clearPlanPreference,
+			getPlanPreference,
 			// functions
 			setToken,
 			logout,
@@ -170,7 +218,7 @@ export const useUserStore = defineStore(
 	},
 	{
 		persist: {
-			pick: ["accessToken", "refreshToken", "profile"],
+			pick: ["accessToken", "refreshToken", "profile", "preferences"],
 		},
 	}
 );

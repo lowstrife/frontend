@@ -3,7 +3,7 @@ import { describe, it, expect } from "vitest";
 import { EmpireLoadError } from "@/features/empire/useEmpire.errors";
 
 describe("EmpireLoadError", () => {
-	const errorCodes = ["NO_EMPIRES", "INVALID_UUID", "API_FAILURE", "UNKNOWN"];
+	const errorCodes = ["NO_EMPIRES", "API_FAILURE", "UNKNOWN"];
 
 	errorCodes.forEach((code) => {
 		it(`should create an error with code ${code}`, () => {
