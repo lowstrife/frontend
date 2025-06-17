@@ -6,15 +6,15 @@ import {
 	IPlanet,
 } from "@/features/api/gameData.types";
 
-interface IMaterialsRecord extends Record<string, IMaterial> {}
-interface IExchangesRecord extends Record<string, IExchange> {}
-interface IRecipesRecord extends Record<string, IRecipe[]> {}
-interface IBuildingsRecord extends Record<string, IBuilding> {}
-interface IPlanetsRecord extends Record<string, IPlanet> {}
+type IMaterialsRecord = Record<string, IMaterial>;
+type IExchangesRecord = Record<string, IExchange>;
+type IRecipesRecord = Record<string, IRecipe[]>;
+type IBuildingsRecord = Record<string, IBuilding>;
+type IPlanetsRecord = Record<string, IPlanet>;
 
 type TOptionalDate = undefined | Date;
 
-interface IPlanetsLastRefreshedRecord extends Record<string, TOptionalDate> {}
+type IPlanetsLastRefreshedRecord = Record<string, TOptionalDate>;
 
 interface IRefreshDataCheck {
 	time: Date | undefined;

@@ -70,7 +70,7 @@ export function useSharing(planUuid: string) {
 	 * @returns {Promise<void>}
 	 */
 	async function deleteSharing(): Promise<void> {
-		if (isShared) {
+		if (isShared.value) {
 			// call share deletion
 			await callDeleteSharing(planningStore.shared[planUuid].shared_uuid);
 			// refresh shared data in store

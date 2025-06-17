@@ -39,6 +39,7 @@
 	const isCreating: Ref<boolean> = ref(false);
 
 	function copyToClipboard(value: string): void {
+		// eslint-disable-next-line no-undef
 		navigator.clipboard.writeText(value);
 	}
 
@@ -67,13 +68,13 @@
 		v-model:show="showModal"
 		class="!w-fit !max-w-[700px]"
 		preset="card"
-		title="Share Plan"
-	>
+		title="Share Plan">
 		<template v-if="!isShared">
 			<div>
-				This will create an unique link that can be shared with others. They
-				will be able to see your plan, but don't modify it. The link becomes
-				unavailable once you choose to stop sharing or delete the plan.
+				This will create an unique link that can be shared with others.
+				They will be able to see your plan, but don't modify it. The
+				link becomes unavailable once you choose to stop sharing or
+				delete the plan.
 			</div>
 		</template>
 		<template v-else>
@@ -85,27 +86,28 @@
 				{{ url }}
 			</div>
 		</template>
-		<template #action v-if="!isShared">
-			<n-button size="small" @click="doCreateSharing" :loading="isCreating">
+		<template v-if="!isShared" #action>
+			<n-button
+				size="small"
+				:loading="isCreating"
+				@click="doCreateSharing">
 				Create Sharing Link
 			</n-button>
 		</template>
-		<template #action v-else>
+		<template v-else #action>
 			<div class="flex justify-between">
 				<n-button
+					v-if="url"
 					size="small"
 					type="success"
-					@click="copyToClipboard(url)"
-					v-if="url"
-				>
+					@click="copyToClipboard(url)">
 					Copy URL
 				</n-button>
 				<n-button
 					size="small"
 					type="error"
-					@click="stopSharing"
 					:loading="isDeleting"
-				>
+					@click="stopSharing">
 					Stop Sharing
 				</n-button>
 			</div>
@@ -115,10 +117,9 @@
 	<n-button
 		:size="buttonSize"
 		:type="isShared ? 'success' : 'default'"
-		@click="() => (showModal = !showModal)"
-	>
-		<template #icon v-if="isShared"><RemoveRedEyeSharp /></template>
-		<template #icon v-else><LinkSharp /></template>
+		@click="() => (showModal = !showModal)">
+		<template v-if="isShared" #icon><RemoveRedEyeSharp /></template>
+		<template v-else #icon><LinkSharp /></template>
 
 		<template v-if="isShared">{{ viewCount }}</template>
 

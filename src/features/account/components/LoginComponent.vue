@@ -12,7 +12,7 @@
 		FormRules,
 		FormValidationError,
 	} from "naive-ui";
-import router from "@/router";
+	import router from "@/router";
 
 	interface ILoginForm {
 		username: string | null;
@@ -50,7 +50,10 @@ import router from "@/router";
 		formRef.value
 			?.validate((errors: Array<FormValidationError> | undefined) => {
 				if (!errors) {
-					if (loginModel.value.username && loginModel.value.password) {
+					if (
+						loginModel.value.username &&
+						loginModel.value.password
+					) {
 						userStore
 							.performLogin(
 								loginModel.value.username,
@@ -58,7 +61,7 @@ import router from "@/router";
 							)
 							.then(() => {
 								isLoggingIn.value = false;
-								router.push("/empire")
+								router.push("/empire");
 							});
 					}
 				} else {
@@ -74,13 +77,16 @@ import router from "@/router";
 <template>
 	<div class="mx-auto max-w-[400px]">
 		<div class="text-xl text-white font-bold font-mono pb-3">Login</div>
-		<n-form size="small" ref="formRef" :model="loginModel" :rules="formRules">
+		<n-form
+			ref="formRef"
+			size="small"
+			:model="loginModel"
+			:rules="formRules">
 			<n-form-item path="username" label="Username">
 				<n-input
 					v-model:value="loginModel.username"
 					placeholder=""
-					@keydown.enter.prevent
-				/>
+					@keydown.enter.prevent />
 			</n-form-item>
 			<n-form-item path="password" label="Password">
 				<n-input
@@ -88,11 +94,12 @@ import router from "@/router";
 					placeholder=""
 					type="password"
 					show-password-on="click"
-					@keydown.enter.prevent
-				/>
+					@keydown.enter.prevent />
 			</n-form-item>
 			<n-form-item>
-				<n-button @click="handleLoginButtonClick" :loading="isLoggingIn">
+				<n-button
+					:loading="isLoggingIn"
+					@click="handleLoginButtonClick">
 					Login
 				</n-button>
 			</n-form-item>

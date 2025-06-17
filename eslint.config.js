@@ -6,6 +6,15 @@ export default [
 	{
 		languageOptions: {
 			ecmaVersion: "latest",
+			globals: {
+				window: "readonly",
+				document: "readonly",
+				console: "readonly",
+				setTimeout: "readonly",
+				clearTimeout: "readonly",
+				setInterval: "readonly",
+				clearInterval: "readonly",
+			},
 		},
 	},
 
@@ -40,6 +49,10 @@ export default [
 			"vue/multi-word-component-names": "off",
 			"vue/no-unused-vars": ["error", { ignorePattern: "^_" }],
 			"vue/max-attributes-per-line": ["error", { singleline: 5 }],
+			"vue/html-indent": "off",
+			"vue/singleline-html-element-content-newline": "off",
+			"vue/html-closing-bracket-newline": "off",
+			"vue/html-self-closing": "off",
 		},
 	},
 ];

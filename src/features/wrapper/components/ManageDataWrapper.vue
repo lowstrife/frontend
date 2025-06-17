@@ -9,7 +9,11 @@
 	import RenderingProgress from "@/layout/components/RenderingProgress.vue";
 
 	// Types & Interfaces
-	import { ICX, IPlan, IPlanEmpireElement } from "@/stores/planningStore.types";
+	import {
+		ICX,
+		IPlan,
+		IPlanEmpireElement,
+	} from "@/stores/planningStore.types";
 	import { IShared } from "@/features/api/sharingData.types";
 
 	// UI
@@ -66,7 +70,10 @@
 			emit("update:empireList", await planningStore.getAllEmpires());
 			loadingSteps.value.EMPIRES.status = true;
 		} catch {
-			error.value = new ManageLoadError("EMPIRES", "Unable to Load Empires");
+			error.value = new ManageLoadError(
+				"EMPIRES",
+				"Unable to Load Empires"
+			);
 		}
 		// load all cx data
 		try {
@@ -111,20 +118,20 @@
 				loading
 					? 'bg-[url(/images/bg_striped_prunplanner.png)]'
 					: 'bg-[url(/images/bg_striped_error.png)]'
-			"
-		>
+			">
 			<div class="absolute inset-0 flex items-center justify-center">
 				<div class="bg-black p-8 rounded shadow-lg text-center">
 					<template v-if="loading">
-						<h1 class="text-2xl font-bold font-mono mb-3">Loading Data..</h1>
+						<h1 class="text-2xl font-bold font-mono mb-3">
+							Loading Data..
+						</h1>
 						<div
-							class="flex flex-row mb-2 align-middle"
 							v-for="(elem, index) in Object.values(loadingSteps)"
 							:key="index"
-						>
+							class="flex flex-row mb-2 align-middle">
 							<div class="pr-5">
 								<n-spin v-if="!elem.status" :size="20" />
-								<n-icon :size="20" v-else>
+								<n-icon v-else :size="20">
 									<CheckSharp />
 								</n-icon>
 							</div>
@@ -137,7 +144,8 @@
 					</template>
 					<template v-else>
 						<div class="font-bold">
-							Something unexpected happened. Check the Browser Console.
+							Something unexpected happened. Check the Browser
+							Console.
 						</div>
 					</template>
 				</div>

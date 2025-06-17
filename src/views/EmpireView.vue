@@ -61,12 +61,15 @@
 		empireUuid: {
 			type: String,
 			required: false,
+			default: undefined,
 		},
 	});
 
-	const selectedEmpireUuid: Ref<string | undefined> = ref(props.empireUuid ? props.empireUuid : defaultEmpireUuid);
+	const selectedEmpireUuid: Ref<string | undefined> = ref(
+		props.empireUuid ? props.empireUuid : defaultEmpireUuid
+	);
 	const selectedCXUuid: Ref<string | undefined> = ref(undefined);
-	const empireList: Ref<IPlanEmpireElement[]> = ref([]);
+	const refEmpireList: Ref<IPlanEmpireElement[]> = ref([]);
 
 	const calculatedPlans: Ref<Record<string, IPlanResult>> = ref({});
 	const isCalculating: Ref<boolean> = ref(false);
@@ -90,7 +93,7 @@
 			calculatedPlans.value[plan.uuid!] = usePlanCalculation(
 				toRef(plan),
 				selectedEmpireUuid,
-				empireList,
+				refEmpireList,
 				selectedCXUuid
 			).result.value;
 		});
@@ -108,7 +111,7 @@
 	async function reloadEmpires(): Promise<void> {
 		try {
 			// make a forced call to also update store
-			empireList.value = await planningStore.getAllEmpires(true);
+			refEmpireList.value = await planningStore.getAllEmpires(true);
 		} catch (err) {
 			console.error("Error reloading empires", err);
 		}
@@ -122,7 +125,7 @@
 	 */
 	const selectedEmpire: ComputedRef<IPlanEmpireElement | undefined> =
 		computed(() => {
-			return empireList.value.find(
+			return refEmpireList.value.find(
 				(e) => e.uuid == selectedEmpireUuid.value
 			);
 		});
@@ -218,27 +221,25 @@
 
 <template>
 	<EmpireDataWrapper
-		:empire-uuid="selectedEmpireUuid"
 		:key="`EMPIREWRAPPER#${selectedEmpireUuid}`"
-		v-on:update:empire-uuid="
-			(value: string) => (selectedEmpireUuid = value)
-		"
-		v-on:update:plan-list="(value: IPlan[]) => (planData = value)"
-		v-on:update:cx-uuid="
+		:empire-uuid="selectedEmpireUuid"
+		@update:empire-uuid="(value: string) => (selectedEmpireUuid = value)"
+		@update:plan-list="(value: IPlan[]) => (planData = value)"
+		@update:cx-uuid="
 			(value: string | undefined) => (selectedCXUuid = value)
 		"
-		v-on:update:empire-list="
-			(value: IPlanEmpireElement[]) => (empireList = value)
+		@update:empire-list="
+			(value: IPlanEmpireElement[]) => (refEmpireList = value)
 		">
 		<template #default="{ empireList, planetList }">
 			<AsyncGameDataWrapper
+				:key="`GAMEDATAWRAPPER#${selectedEmpireUuid}`"
 				load-materials
 				load-exchanges
 				load-recipes
 				load-buildings
 				:load-multiple-planets="planetList"
-				:key="`GAMEDATAWRAPPER#${selectedEmpireUuid}`"
-				v-on:success="calculateEmpire">
+				@success="calculateEmpire">
 				<template v-if="isCalculating">
 					<div>Calculating</div>
 				</template>
@@ -274,11 +275,14 @@
 														};
 													})
 												"
-												v-on:update-value="(value: string) => {
-													selectedEmpireUuid = value;
-													defaultEmpireUuid = value;
-												}"
-												/>
+												@update-value="
+													(value: string) => {
+														selectedEmpireUuid =
+															value;
+														defaultEmpireUuid =
+															value;
+													}
+												" />
 										</n-form-item>
 									</n-form>
 								</div>
@@ -356,9 +360,7 @@
 									<Suspense v-if="selectedEmpire">
 										<AsyncEmpireConfiguration
 											:data="selectedEmpire"
-											v-on:reload:empires="
-												reloadEmpires
-											" />
+											@reload:empires="reloadEmpires" />
 										<template #fallback>
 											<RenderingProgress :height="200" />
 										</template>

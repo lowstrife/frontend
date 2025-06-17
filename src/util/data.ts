@@ -5,7 +5,7 @@ export function inertClone<T>(value: T): T {
 
 	try {
 		return structuredClone(raw) as T;
-	} catch (err) {
+	} catch {
 		if (Array.isArray(raw)) {
 			return raw.slice() as T;
 		}

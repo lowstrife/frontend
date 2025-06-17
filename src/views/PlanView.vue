@@ -68,6 +68,7 @@
 		empireList: {
 			type: Array as PropType<IPlanEmpireElement[]>,
 			required: false,
+			default: undefined,
 		},
 	});
 
@@ -260,6 +261,7 @@
 	// Route Guard
 	onBeforeRouteLeave(() => {
 		if (modified.value) {
+			// eslint-disable-next-line no-undef
 			const answer = confirm(
 				"Do you really want to leave? Unsaved changes will be lost."
 			);
@@ -282,10 +284,10 @@
 						{{ planetData.PlanetName }}
 					</h1>
 					<span
-						class="text-white/60"
 						v-if="
 							planetData.PlanetName != planetData.PlanetNaturalId
-						">
+						"
+						class="text-white/60">
 						{{ planetData.PlanetNaturalId }}
 					</span>
 				</div>
@@ -300,13 +302,13 @@
 					:empire-options="refEmpireList"
 					:active-empire="computedActiveEmpire"
 					:plan-empires="planEmpires"
-					v-on:update:active-empire="
+					@update:active-empire="
 						(empireUuid: string) => {
 							refEmpireUuid = empireUuid;
 							refCXUuid = findEmpireCXUuid(empireUuid);
 						}
 					"
-					v-on:update:plan-name="handleChangePlanName" />
+					@update:plan-name="handleChangePlanName" />
 			</div>
 
 			<div class="p-6 pt-0">
@@ -314,7 +316,7 @@
 				<PlanArea
 					:disabled="disabled"
 					:area-data="result.area"
-					v-on:update:permits="handleUpdatePermits" />
+					@update:permits="handleUpdatePermits" />
 			</div>
 			<div class="p-6 pt-0">
 				<h2 class="text-white/80 font-bold text-lg pb-3">
@@ -323,7 +325,7 @@
 				<PlanInfrastructure
 					:disabled="disabled"
 					:infrastructure-data="result.infrastructure"
-					v-on:update:infrastructure="handleUpdateInfrastructure" />
+					@update:infrastructure="handleUpdateInfrastructure" />
 			</div>
 			<div class="p-6 pt-0">
 				<h2 class="text-white/80 font-bold text-lg pb-3">Bonuses</h2>
@@ -332,15 +334,15 @@
 					:disabled="disabled"
 					:corphq="result.corphq"
 					:cogc="result.cogc"
-					v-on:update:corphq="handleUpdateCorpHQ"
-					v-on:update:cogc="handleUpdateCOGC" />
+					@update:corphq="handleUpdateCorpHQ"
+					@update:cogc="handleUpdateCOGC" />
 			</div>
 			<div class="p-6 pt-0">
 				<h2 class="text-white/80 font-bold text-lg pb-3">Experts</h2>
 				<PlanExperts
 					:disabled="disabled"
 					:expert-data="result.experts"
-					v-on:update:expert="handleUpdateExpert" />
+					@update:expert="handleUpdateExpert" />
 			</div>
 		</div>
 		<div class="">
@@ -363,9 +365,9 @@
 							<div class="my-auto pr-3 font-bold">Resources</div>
 							<div class="my-auto pr-3 flex gap-x-1">
 								<n-tooltip
-									trigger="hover"
 									v-for="resource in planetData.Resources"
-									:key="`PLANET#RESOURCE#${resource.MaterialTicker}`">
+									:key="`PLANET#RESOURCE#${resource.MaterialTicker}`"
+									trigger="hover">
 									<template #trigger>
 										<div class="hover:cursor-help">
 											<MaterialTile
@@ -387,30 +389,30 @@
 						</div>
 						<div class="flex gap-x-3">
 							<n-button
+								v-if="saveable"
 								:loading="refIsSaving"
 								:type="modified ? 'error' : 'success'"
 								size="small"
 								:disabled="disabled"
-								v-if="saveable"
 								@click="save">
 								<template #icon><SaveSharp /></template>
 								{{ existing ? "Save" : "Create" }}
 							</n-button>
 							<n-button
+								v-if="existing"
 								size="small"
 								:disabled="disabled"
-								v-if="existing"
 								:loading="refIsReloading"
 								@click="reloadPlan">
-								<template #icon
-									><ChangeCircleOutlined
-								/></template>
+								<template #icon>
+									<ChangeCircleOutlined />
+								</template>
 								Reload
 							</n-button>
 
 							<ShareButton
-								buttonSize="small"
 								v-if="!disabled && refPlanData.uuid"
+								button-size="small"
 								:plan-uuid="refPlanData.uuid" />
 						</div>
 					</div>
@@ -418,9 +420,9 @@
 			</div>
 			<div class="border-b border-white/10 p-3">
 				<div class="flex grow justify-end gap-x-3 my-auto">
-					<n-button size="small" secondary disabled
-						>Empire Override</n-button
-					>
+					<n-button size="small" secondary disabled>
+						Empire Override
+					</n-button>
 					<n-button size="small" secondary disabled>POPR</n-button>
 					<n-button
 						size="small"
@@ -428,21 +430,21 @@
 						@click="openTool('visitation-frequency')">
 						Visitation Frequency
 					</n-button>
-					<n-button size="small" secondary disabled
-						>Construction Cart</n-button
-					>
-					<n-button size="small" secondary disabled
-						>Supply Cart</n-button
-					>
+					<n-button size="small" secondary disabled>
+						Construction Cart
+					</n-button>
+					<n-button size="small" secondary disabled>
+						Supply Cart
+					</n-button>
 					<n-button
 						size="small"
 						secondary
-						@click="openTool('repair-analysis')"
-						>Repair Analysis</n-button
-					>
-					<n-button size="small" secondary disabled
-						>Habitation Optimization</n-button
-					>
+						@click="openTool('repair-analysis')">
+						Repair Analysis
+					</n-button>
+					<n-button size="small" secondary disabled>
+						Habitation Optimization
+					</n-button>
 				</div>
 			</div>
 			<div
@@ -459,7 +461,7 @@
 							:key="refShowTool"
 							v-bind="compViewToolMeta.props"
 							v-on="compViewToolMeta.listeners"
-							v-on:close="() => (refShowTool = null)" />
+							@close="() => (refShowTool = null)" />
 					</template>
 					<template #fallback>
 						<div class="w-full text-center py-5">
@@ -479,7 +481,7 @@
 							<PlanWorkforce
 								:disabled="disabled"
 								:workforce-data="result.workforce"
-								v-on:update:lux="handleUpdateWorkforceLux" />
+								@update:lux="handleUpdateWorkforceLux" />
 						</div>
 						<div>
 							<h2 class="text-white/80 font-bold text-lg pb-3">
@@ -493,19 +495,15 @@
 							:disabled="disabled"
 							:production-data="result.production"
 							:cogc="result.cogc"
-							v-on:update:building:amount="
-								handleUpdateBuildingAmount
-							"
-							v-on:delete:building="handleDeleteBuilding"
-							v-on:create:building="handleCreateBuilding"
-							v-on:update:building:recipe:amount="
+							@update:building:amount="handleUpdateBuildingAmount"
+							@delete:building="handleDeleteBuilding"
+							@create:building="handleCreateBuilding"
+							@update:building:recipe:amount="
 								handleUpdateBuildingRecipeAmount
 							"
-							v-on:delete:building:recipe="
-								handleDeleteBuildingRecipe
-							"
-							v-on:add:building:recipe="handleAddBuildingRecipe"
-							v-on:update:building:recipe="
+							@delete:building:recipe="handleDeleteBuildingRecipe"
+							@add:building:recipe="handleAddBuildingRecipe"
+							@update:building:recipe="
 								handleChangeBuildingRecipe
 							" />
 					</div>

@@ -1,27 +1,32 @@
 <template>
 	<template v-if="!fullyLoaded">
 		<div
-			class="relative w-full h-full bg-[url('/images/bg_striped_prunplanner.png')] bg-center bg-repeat"
-		>
+			class="relative w-full h-full bg-[url('/images/bg_striped_prunplanner.png')] bg-center bg-repeat">
 			<div v-if="!minimal" class="relative w-full h-full bg-black/60">
 				<div class="absolute inset-0 flex items-center justify-center">
 					<div class="bg-black p-8 rounded shadow-lg">
-						<h1 class="text-2xl font-bold font-mono mb-3">Loading Data..</h1>
+						<h1 class="text-2xl font-bold font-mono mb-3">
+							Loading Data..
+						</h1>
 
 						<div
-							class="flex flex-row mb-2 align-middle"
 							v-for="elem in Object.values(loadingStatus).filter(
 								(e) => e.status != LOADING_STATUS_ENUM.SKIP
 							)"
 							:key="elem.name"
-						>
+							class="flex flex-row mb-2 align-middle">
 							<div class="pr-5">
 								<n-spin
-									v-if="elem.status === LOADING_STATUS_ENUM.LOAD"
-									:size="20"
-								/>
-								<n-icon :size="20" v-else>
-									<CheckSharp v-if="elem.status === LOADING_STATUS_ENUM.DONE" />
+									v-if="
+										elem.status === LOADING_STATUS_ENUM.LOAD
+									"
+									:size="20" />
+								<n-icon v-else :size="20">
+									<CheckSharp
+										v-if="
+											elem.status ===
+											LOADING_STATUS_ENUM.DONE
+										" />
 									<ErrorSharp v-else />
 								</n-icon>
 							</div>
@@ -81,10 +86,12 @@
 		loadPlanet: {
 			type: String,
 			required: false,
+			default: undefined,
 		},
 		loadMultiplePlanets: {
 			type: Array as PropType<string[]>,
 			required: false,
+			default: undefined,
 		},
 		minimal: {
 			type: Boolean,
@@ -128,7 +135,9 @@
 		},
 		MULTIPLE_PLANETS: {
 			name: "Multiple Planets",
-			status: gameDataStore.hasMultiplePlanets(props.loadMultiplePlanets ?? [])
+			status: gameDataStore.hasMultiplePlanets(
+				props.loadMultiplePlanets ?? []
+			)
 				? LOADING_STATUS_ENUM.DONE
 				: LOADING_STATUS_ENUM.LOAD,
 		},
@@ -176,7 +185,8 @@
 			{
 				prop: props.loadPlanet,
 				statusKey: "PLANET",
-				fct: () => gameDataStore.performLoadPlanet(props.loadPlanet ?? ""),
+				fct: () =>
+					gameDataStore.performLoadPlanet(props.loadPlanet ?? ""),
 			},
 			{
 				prop: props.loadMultiplePlanets,
@@ -191,7 +201,8 @@
 		fetchTasks.forEach((task) => {
 			if (
 				task.prop &&
-				loadingStatus.value[task.statusKey].status != LOADING_STATUS_ENUM.DONE
+				loadingStatus.value[task.statusKey].status !=
+					LOADING_STATUS_ENUM.DONE
 			) {
 				promises.push(
 					task.fct().then((result: boolean) => {
@@ -201,7 +212,8 @@
 					})
 				);
 			} else {
-				loadingStatus.value[task.statusKey].status = LOADING_STATUS_ENUM.SKIP;
+				loadingStatus.value[task.statusKey].status =
+					LOADING_STATUS_ENUM.SKIP;
 			}
 		});
 

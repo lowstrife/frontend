@@ -28,31 +28,30 @@
 
 <template>
 	<x-n-data-table :data="planListData" striped>
-		<x-n-data-table-column title="Plan" key="name" sorter="default">
+		<x-n-data-table-column key="name" title="Plan" sorter="default">
 			<template #render-cell="{ rowData }">
 				<router-link
 					:to="`/plan/${rowData.planet}/${rowData.uuid}`"
-					class="text-link-primary font-bold hover:underline"
-				>
+					class="text-link-primary font-bold hover:underline">
 					{{ rowData.name }}
 				</router-link>
 			</template>
 		</x-n-data-table-column>
-		<x-n-data-table-column title="Planet" key="planet" sorter="default">
+		<x-n-data-table-column key="planet" title="Planet" sorter="default">
 			<template #render-cell="{ rowData }">
 				<div class="text-nowrap">
 					{{ getPlanetName(rowData.planet) }}
 				</div>
 			</template>
 		</x-n-data-table-column>
-		<x-n-data-table-column title="COGC" key="cogc" sorter="default">
+		<x-n-data-table-column key="cogc" title="COGC" sorter="default">
 			<template #render-cell="{ rowData }">
 				<div class="text-nowrap">
 					{{ capitalizeString(rowData.cogc) }}
 				</div>
 			</template>
 		</x-n-data-table-column>
-		<x-n-data-table-column title="Permits" key="permits" sorter="default">
+		<x-n-data-table-column key="permits" title="Permits" sorter="default">
 			<template #title>
 				<div class="text-nowrap">Permits</div>
 			</template>
@@ -60,12 +59,15 @@
 				<div class="text-center">{{ rowData.permits }}</div>
 			</template>
 		</x-n-data-table-column>
-		<x-n-data-table-column title="Profit" key="profit" sorter="default">
+		<x-n-data-table-column key="profit" title="Profit" sorter="default">
 			<template #render-cell="{ rowData }">
 				<div class="text-nowrap text-end">
 					<span
-						:class="rowData.profit >= 0 ? 'text-positive' : 'text-negative'"
-					>
+						:class="
+							rowData.profit >= 0
+								? 'text-positive'
+								: 'text-negative'
+						">
 						{{ formatNumber(rowData.profit) }}
 					</span>
 					<span class="pl-1 font-light text-white/50">$</span>
@@ -81,7 +83,12 @@
 					<template #default>
 						<strong class="text-white/80">
 							Total permits planned:
-							{{ planListData.reduce((sum, elem) => sum + elem.permits, 0) }}
+							{{
+								planListData.reduce(
+									(sum, elem) => sum + elem.permits,
+									0
+								)
+							}}
 						</strong>
 					</template>
 				</x-n-data-table-summary-cell>

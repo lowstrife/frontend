@@ -16,14 +16,17 @@
 		planetNaturalId: {
 			type: String,
 			required: false,
+			default: undefined,
 		},
 		planUuid: {
 			type: String,
 			required: false,
+			default: undefined,
 		},
 		sharedPlanUuid: {
 			type: String,
 			required: false,
+			default: undefined,
 		},
 	});
 
@@ -35,21 +38,18 @@
 		:planet-natural-id="planetNaturalId"
 		:plan-uuid="planUuid"
 		:shared-plan-uuid="sharedPlanUuid"
-		:load-c-x-data="loadCX"
-	>
+		:load-c-x-data="loadCX">
 		<template #default="{ planDefintion, empireList, disabled }">
 			<AsyncGameDataWrapper
 				v-if="planDefintion != null && empireList != null"
 				load-materials
 				load-exchanges
 				load-recipes
-				load-buildings
-			>
+				load-buildings>
 				<AsyncPlanView
 					:disabled="disabled"
 					:plan-data="planDefintion"
-					:empire-list="empireList"
-				/>
+					:empire-list="empireList" />
 			</AsyncGameDataWrapper>
 			<template v-else> Rendering </template>
 		</template>

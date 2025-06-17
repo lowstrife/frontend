@@ -121,7 +121,10 @@
 				planetId: plan.planet_id,
 				empires: localEmpires.value.reduce(
 					(acc, item) => (
-						(acc[item.uuid] = empirePlans[item.uuid].includes(plan.uuid!)), acc
+						(acc[item.uuid] = empirePlans[item.uuid].includes(
+							plan.uuid!
+						)),
+						acc
 					),
 					{} as Record<string, boolean>
 				),
@@ -141,28 +144,30 @@
 	}
 
 	// junction patch matrix
-	const patchJunctionData: ComputedRef<IPlanEmpireJunction[]> = computed(() => {
-		const junctions: IPlanEmpireJunction[] = [];
+	const patchJunctionData: ComputedRef<IPlanEmpireJunction[]> = computed(
+		() => {
+			const junctions: IPlanEmpireJunction[] = [];
 
-		matrixEmpires.value.forEach((me) => {
-			const indJunction = {
-				empire_uuid: me.empireUuid,
-				baseplanners: [] as IPlanEmpireJunctionBasePlanners[],
-			};
+			matrixEmpires.value.forEach((me) => {
+				const indJunction = {
+					empire_uuid: me.empireUuid,
+					baseplanners: [] as IPlanEmpireJunctionBasePlanners[],
+				};
 
-			matrix.value.forEach((mp) => {
-				if (mp.empires[me.empireUuid]) {
-					indJunction.baseplanners.push({
-						baseplanner_uuid: mp.planUuid,
-					});
-				}
+				matrix.value.forEach((mp) => {
+					if (mp.empires[me.empireUuid]) {
+						indJunction.baseplanners.push({
+							baseplanner_uuid: mp.planUuid,
+						});
+					}
+				});
+
+				return junctions.push(indJunction);
 			});
 
-			return junctions.push(indJunction);
-		});
-
-		return junctions;
-	});
+			return junctions;
+		}
+	);
 
 	async function patchJunctions(): Promise<void> {
 		refIsPatching.value = true;
@@ -173,7 +178,10 @@
 				await callPatchEmpirePlanJunctions(patchJunctionData.value);
 			} finally {
 				// forced reload of all Empires
-				emit("update:empireList", await planningStore.getAllEmpires(true));
+				emit(
+					"update:empireList",
+					await planningStore.getAllEmpires(true)
+				);
 				// reload of all Plans
 				emit("update:planList", await planningStore.getAllPlans());
 			}
@@ -184,7 +192,10 @@
 		}
 	}
 
-	async function clonePlan(planUuid: string, planName: string): Promise<void> {
+	async function clonePlan(
+		planUuid: string,
+		planName: string
+	): Promise<void> {
 		refIsCloning.value = planUuid;
 
 		try {
@@ -192,7 +203,10 @@
 				await callClonePlan(planUuid, `${planName} (Clone)`);
 			} finally {
 				// forced reload of all Empires
-				emit("update:empireList", await planningStore.getAllEmpires(true));
+				emit(
+					"update:empireList",
+					await planningStore.getAllEmpires(true)
+				);
 				// reload of all Plans
 				emit("update:planList", await planningStore.getAllPlans());
 			}
@@ -221,7 +235,10 @@
 			const deletionStatus: boolean = await callDeletePlan(planUuid);
 			if (deletionStatus) {
 				// forced reload of all Empires
-				emit("update:empireList", await planningStore.getAllEmpires(true));
+				emit(
+					"update:empireList",
+					await planningStore.getAllEmpires(true)
+				);
 				// reload of all Plans
 				emit("update:planList", await planningStore.getAllPlans());
 			}
@@ -237,7 +254,10 @@
 	<div class="flex justify-between">
 		<h2 class="text-xl font-bold my-auto">Plan ↔ Empire Assignments</h2>
 		<div class="flex gap-x-3">
-			<n-button size="small" :loading="refIsPatching" @click="patchJunctions">
+			<n-button
+				size="small"
+				:loading="refIsPatching"
+				@click="patchJunctions">
 				<template #icon><SaveSharp /></template>
 				Update Plan Assignments
 			</n-button>
@@ -248,31 +268,30 @@
 		</div>
 	</div>
 	<div class="py-3 text-white/60">
-		Every planned base can be assigned to multiple empires. This allows you to
-		simultaneously keep track of your existing Prosperous Universe empire,
-		corporation production chains or future expansion plans.
+		Every planned base can be assigned to multiple empires. This allows you
+		to simultaneously keep track of your existing Prosperous Universe
+		empire, corporation production chains or future expansion plans.
 	</div>
 
 	<x-n-data-table :data="matrix" striped>
-		<x-n-data-table-column title="Plan" key="planName" sorter="default">
+		<x-n-data-table-column key="planName" title="Plan" sorter="default">
 			<template #render-cell="{ rowData }">
 				<div class="max-w-[250px]">
 					<router-link
 						:to="`/plan/${rowData.planetId}/${rowData.planUuid}`"
-						class="text-link-primary font-bold hover:underline"
-					>
+						class="text-link-primary font-bold hover:underline">
 						{{ rowData.planName }}
 					</router-link>
 				</div>
 			</template>
 		</x-n-data-table-column>
-		<x-n-data-table-column title="Planet" key="planetId" sorter="default">
+		<x-n-data-table-column key="planetId" title="Planet" sorter="default">
 			<template #render-cell="{ rowData }">
 				{{ getPlanetName(rowData.planetId) }}
 			</template>
 		</x-n-data-table-column>
 
-		<x-n-data-table-column title="Configuration" key="options">
+		<x-n-data-table-column key="options" title="Configuration">
 			<template #render-cell="{ rowData }">
 				<div class="max-w-[150px]">
 					<n-space>
@@ -280,15 +299,15 @@
 							size="tiny"
 							type="error"
 							:loading="refIsDeleting === rowData.planUuid"
-							@click="handleDeleteConfirm(rowData.planUuid)"
-						>
+							@click="handleDeleteConfirm(rowData.planUuid)">
 							<template #icon><ClearSharp /></template>
 						</n-button>
 						<n-button
 							size="tiny"
 							:loading="refIsCloning === rowData.planUuid"
-							@click="clonePlan(rowData.planUuid, rowData.planName)"
-						>
+							@click="
+								clonePlan(rowData.planUuid, rowData.planName)
+							">
 							<template #icon><ContentCopySharp /></template>
 						</n-button>
 						<SharingButton :plan-uuid="rowData.planUuid" />
@@ -307,15 +326,13 @@
 						<n-icon
 							color="rgba(192,226,24,1)"
 							size="16"
-							@click="changeAllToEmpire(e.empireUuid, true)"
-						>
+							@click="changeAllToEmpire(e.empireUuid, true)">
 							<AddCircleOutlineSharp />
 						</n-icon>
 						<n-icon
 							color="rgba(199,0,57,1)"
 							size="16"
-							@click="changeAllToEmpire(e.empireUuid, false)"
-						>
+							@click="changeAllToEmpire(e.empireUuid, false)">
 							<CircleOutlined />
 						</n-icon>
 					</div>
@@ -323,7 +340,8 @@
 			</template>
 			<template #render-cell="{ rowData }">
 				<div class="text-center">
-					<n-checkbox v-model:checked="rowData.empires[e.empireUuid]" />
+					<n-checkbox
+						v-model:checked="rowData.empires[e.empireUuid]" />
 				</div>
 			</template>
 		</x-n-data-table-column>

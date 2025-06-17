@@ -189,7 +189,9 @@ export const useUserStore = defineStore(
 					await callGetProfile().then((result: IUserProfile) => {
 						profile.value = result;
 					});
-				} catch {}
+				} catch (error) {
+					console.error(error);
+				}
 			}
 		}
 

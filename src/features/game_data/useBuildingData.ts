@@ -159,11 +159,14 @@ export function useBuildingData() {
 					RecipeName: buildingTicker,
 					TimeMs: timeMs,
 					Inputs: [],
-					Outputs: [{ Ticker: res.MaterialTicker, Amount: extractionAmount }],
+					Outputs: [
+						{
+							Ticker: res.MaterialTicker,
+							Amount: extractionAmount,
+						},
+					],
 				};
 			});
-
-			relevantResources.forEach((res) => {});
 
 			return resourceRecipes;
 		} else {

@@ -115,9 +115,12 @@ export const usePlanningStore = defineStore(
 				});
 
 				return inertClone(Object.values(plans.value));
-			} catch (error: any) {
+			} catch (error) {
 				// there could be a 404 error, the user doesn't have plans yet
-				if (error.message.includes("HTTP 404")) {
+				if (
+					error instanceof Error &&
+					error.message.includes("HTTP 404")
+				) {
 					return [];
 				}
 
@@ -181,7 +184,7 @@ export const usePlanningStore = defineStore(
 			if (planUuids.length > 0) {
 				const plansInStore: string[] = Object.keys(plans.value);
 
-				let checker: boolean = planUuids.every((p) =>
+				const checker: boolean = planUuids.every((p) =>
 					plansInStore.includes(p)
 				);
 				if (checker) {
@@ -232,21 +235,17 @@ export const usePlanningStore = defineStore(
 			}
 
 			// load from backend
-			try {
-				const fetchedCXList: ICX[] = await callGetCXList();
+			const fetchedCXList: ICX[] = await callGetCXList();
 
-				// reset existing cx data
-				cxs.value = {};
+			// reset existing cx data
+			cxs.value = {};
 
-				// store by CX.uuid
-				fetchedCXList.forEach((c) => {
-					cxs.value[c.uuid] = c;
-				});
+			// store by CX.uuid
+			fetchedCXList.forEach((c) => {
+				cxs.value[c.uuid] = c;
+			});
 
-				return inertClone(Object.values(cxs.value));
-			} catch (error) {
-				throw error;
-			}
+			return inertClone(Object.values(cxs.value));
 		}
 
 		/**
@@ -257,21 +256,17 @@ export const usePlanningStore = defineStore(
 		 * @returns {Promise<ISharedPlan[]>} Sharing Information List
 		 */
 		async function getSharedList(): Promise<ISharedPlan[]> {
-			try {
-				const fetchedShared: IShared[] = await callGetSharedList();
+			const fetchedShared: IShared[] = await callGetSharedList();
 
-				// reset existing shared data
-				shared.value = {};
+			// reset existing shared data
+			shared.value = {};
 
-				// store by Plan.uuid
-				fetchedShared.forEach((s) => {
-					shared.value[s.plan_uuid] = s;
-				});
+			// store by Plan.uuid
+			fetchedShared.forEach((s) => {
+				shared.value[s.plan_uuid] = s;
+			});
 
-				return inertClone(Object.values(shared.value));
-			} catch (error) {
-				throw error;
-			}
+			return inertClone(Object.values(shared.value));
 		}
 
 		/**

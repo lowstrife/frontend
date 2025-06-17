@@ -77,12 +77,14 @@
 	 * @returns {void}
 	 */
 	function createFilter(): void {
-		refMaterialSelectOptions.value = localEmpireMaterialIO.value.map((m) => {
-			return {
-				label: m.ticker,
-				value: m.ticker,
-			};
-		});
+		refMaterialSelectOptions.value = localEmpireMaterialIO.value.map(
+			(m) => {
+				return {
+					label: m.ticker,
+					value: m.ticker,
+				};
+			}
+		);
 
 		let availPlanetIds: string[] = [];
 
@@ -127,11 +129,17 @@
 		if (refFilterPlanets.value.length > 0) {
 			filteredMaterialIO.value = filteredMaterialIO.value.filter((p) => {
 				const inputFlat = p.inputPlanets.flat().map((i) => i.planetId);
-				const outputFlat = p.outputPlanets.flat().map((o) => o.planetId);
+				const outputFlat = p.outputPlanets
+					.flat()
+					.map((o) => o.planetId);
 
 				return (
-					inputFlat.some((r) => refFilterPlanets.value.flat().includes(r)) ||
-					outputFlat.some((r) => refFilterPlanets.value.flat().includes(r))
+					inputFlat.some((r) =>
+						refFilterPlanets.value.flat().includes(r)
+					) ||
+					outputFlat.some((r) =>
+						refFilterPlanets.value.flat().includes(r)
+					)
 				);
 			});
 		}
@@ -158,8 +166,7 @@
 			label-placement="left"
 			label-width="auto"
 			label-align="left"
-			size="small"
-		>
+			size="small">
 			<div class="flex flex-row gap-x-6">
 				<div>
 					<n-form-item label="Display">
@@ -168,22 +175,22 @@
 								:secondary="refFilterLoadbalance"
 								@click="
 									() => {
-										refFilterLoadbalance = !refFilterLoadbalance;
+										refFilterLoadbalance =
+											!refFilterLoadbalance;
 										applyFilter();
 									}
-								"
-							>
+								">
 								All
 							</n-button>
 							<n-button
 								:secondary="!refFilterLoadbalance"
 								@click="
 									() => {
-										refFilterLoadbalance = !refFilterLoadbalance;
+										refFilterLoadbalance =
+											!refFilterLoadbalance;
 										applyFilter();
 									}
-								"
-							>
+								">
 								Loadbalance
 							</n-button>
 						</n-button-group>
@@ -194,22 +201,22 @@
 								:secondary="refFilterHideConsumables"
 								@click="
 									() => {
-										refFilterHideConsumables = !refFilterHideConsumables;
+										refFilterHideConsumables =
+											!refFilterHideConsumables;
 										applyFilter();
 									}
-								"
-							>
+								">
 								Show
 							</n-button>
 							<n-button
 								:secondary="!refFilterHideConsumables"
 								@click="
 									() => {
-										refFilterHideConsumables = !refFilterHideConsumables;
+										refFilterHideConsumables =
+											!refFilterHideConsumables;
 										applyFilter();
 									}
-								"
-							>
+								">
 								Hide
 							</n-button>
 						</n-button-group>
@@ -223,8 +230,7 @@
 							filterable
 							clearable
 							:options="refMaterialSelectOptions"
-							v-on:update:value="applyFilter"
-						/>
+							@update:value="applyFilter" />
 					</n-form-item>
 					<n-form-item label="Planets">
 						<n-select
@@ -233,62 +239,69 @@
 							filterable
 							clearable
 							:options="refPlanetSelectOptions"
-							v-on:update:value="applyFilter"
-						/>
+							@update:value="applyFilter" />
 					</n-form-item>
 				</div>
 			</div>
 		</n-form>
 	</div>
 	<x-n-data-table :data="filteredMaterialIO" striped>
-		<x-n-data-table-column title="Ticker" key="ticker" sorter="default">
+		<x-n-data-table-column key="ticker" title="Ticker" sorter="default">
 			<template #render-cell="{ rowData }">
 				<MaterialTile :ticker="rowData.ticker" />
 			</template>
 		</x-n-data-table-column>
-		<x-n-data-table-column title="Delta" key="delta" sorter="default">
+		<x-n-data-table-column key="delta" title="Delta" sorter="default">
 			<template #render-cell="{ rowData }">
-				<span :class="rowData.delta >= 0 ? 'text-positive' : 'text-negative'">
+				<span
+					:class="
+						rowData.delta >= 0 ? 'text-positive' : 'text-negative'
+					">
 					{{ formatNumber(rowData.delta) }}
 				</span>
 			</template>
 		</x-n-data-table-column>
-		<x-n-data-table-column title="Production" key="output" sorter="default">
+		<x-n-data-table-column key="output" title="Production" sorter="default">
 			<template #render-cell="{ rowData }">
 				<span :class="rowData.output <= 0 ? 'text-white/50' : ''">
 					{{ formatNumber(rowData.output) }}
 				</span>
 			</template>
 		</x-n-data-table-column>
-		<x-n-data-table-column title="Consumption" key="input" sorter="default">
+		<x-n-data-table-column key="input" title="Consumption" sorter="default">
 			<template #render-cell="{ rowData }">
 				<span :class="rowData.input <= 0 ? 'text-white/50' : ''">
 					{{ formatNumber(rowData.input) }}
 				</span>
 			</template>
 		</x-n-data-table-column>
-		<x-n-data-table-column title="$ Delta" key="deltaPrice" sorter="default">
+		<x-n-data-table-column
+			key="deltaPrice"
+			title="$ Delta"
+			sorter="default">
 			<template #render-cell="{ rowData }">
 				<span
-					:class="rowData.deltaPrice >= 0 ? 'text-positive' : 'text-negative'"
-				>
+					:class="
+						rowData.deltaPrice >= 0
+							? 'text-positive'
+							: 'text-negative'
+					">
 					{{ formatNumber(rowData.deltaPrice) }}
 				</span>
 			</template>
 		</x-n-data-table-column>
-		<x-n-data-table-column title="Production Planets" key="outputPlanets">
+		<x-n-data-table-column key="outputPlanets" title="Production Planets">
 			<template #render-cell="{ rowData }">
 				<div
 					v-for="p in rowData.outputPlanets"
-					:key="`${rowData.ticker}#output#${p.planUuid}`"
-				>
+					:key="`${rowData.ticker}#output#${p.planUuid}`">
 					<n-tooltip trigger="hover">
 						<template #trigger>
 							<router-link
 								:to="`/plan/${p.planetId}/${p.planUuid}`"
-								class="hover:underline"
-							>
-								{{ getPlanetName(p.planetId) }}: {{ formatNumber(p.value) }}
+								class="hover:underline">
+								{{ getPlanetName(p.planetId) }}:
+								{{ formatNumber(p.value) }}
 							</router-link>
 						</template>
 						{{ p.planName }}
@@ -296,18 +309,16 @@
 				</div>
 			</template>
 		</x-n-data-table-column>
-		<x-n-data-table-column title="Consumption Planets" key="inputPlanets">
+		<x-n-data-table-column key="inputPlanets" title="Consumption Planets">
 			<template #render-cell="{ rowData }">
 				<div
 					v-for="p in rowData.inputPlanets"
-					:key="`${rowData.ticker}#input#${p.planUuid}`"
-				>
+					:key="`${rowData.ticker}#input#${p.planUuid}`">
 					<n-tooltip trigger="hover">
 						<template #trigger>
 							<router-link
 								:to="`/plan/${p.planetId}/${p.planUuid}`"
-								class="hover:underline"
-							>
+								class="hover:underline">
 								{{ getPlanetName(p.planetId) }}:
 								{{ formatNumber(p.value * -1) }}
 							</router-link>

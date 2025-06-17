@@ -163,11 +163,17 @@
 		refCXOptions.value = options;
 	}
 
-	function selectRenderLabelWithTooltip(option: SelectMixedOption): VNodeChild {
+	function selectRenderLabelWithTooltip(
+		option: SelectMixedOption
+	): VNodeChild {
 		// Native UI tooltips do look nicer, but are annoying when trying to
 		// interact with the select. Instead, we'll wrap the label in a div with
 		// 'title' set on it so we get the browser native tooltips
-		return h("div", { title: option.label }, { default: () => option.label });
+		return h(
+			"div",
+			{ title: option.label },
+			{ default: () => option.label }
+		);
 	}
 
 	const cxEmpireJunctions: ComputedRef<ICXEmpireJunction[]> = computed(() => {
@@ -224,7 +230,10 @@
 				});
 
 				// forced reload of all Empires
-				emit("update:empireList", await planningStore.getAllEmpires(true));
+				emit(
+					"update:empireList",
+					await planningStore.getAllEmpires(true)
+				);
 			}
 		} catch (err) {
 			console.error(err);
@@ -266,16 +275,14 @@
 		<div class="flex gap-x-3">
 			<n-button
 				size="small"
-				@click="refShowCreateEmpire = !refShowCreateEmpire"
-			>
+				@click="refShowCreateEmpire = !refShowCreateEmpire">
 				<template #icon><PlusSharp /></template>
 				New Empire
 			</n-button>
 			<n-button
 				size="small"
 				:loading="refIsUpdatingJunctions"
-				@click="updateCXJunctions"
-			>
+				@click="updateCXJunctions">
 				<template #icon><SaveSharp /></template>
 				Update CX Assignments
 			</n-button>
@@ -283,51 +290,47 @@
 	</div>
 	<div class="py-3 text-white/60">
 		Removing empires will not delete any associated plans — they will simply
-		become unassigned. You can create edit existing empires in the Empire View.
-		To ensure correct plan efficiency calculations, make sure each empire has
-		your Faction and the appropriate Permits.
+		become unassigned. You can create edit existing empires in the Empire
+		View. To ensure correct plan efficiency calculations, make sure each
+		empire has your Faction and the appropriate Permits.
 	</div>
 	<div
 		:class="
-			!refShowCreateEmpire ? 'opacity-0 overflow-hidden !h-0' : 'opacity-100'
+			!refShowCreateEmpire
+				? 'opacity-0 overflow-hidden !h-0'
+				: 'opacity-100'
 		"
-		class="transition-all duration-500 border-t border-b border-white/10"
-	>
+		class="transition-all duration-500 border-t border-b border-white/10">
 		<div class="flex gap-x-3 pt-3 w-1/2 min-w-[400px]">
 			<div class="flex-grow">
 				<n-form
 					label-placement="left"
 					label-width="auto"
 					label-align="left"
-					size="small"
-				>
+					size="small">
 					<n-form-item label="Empire Name">
 						<n-input
 							v-model:value="refCreateName"
-							placeholder="Empire Name (max. 100 characters)"
-						/>
+							placeholder="Empire Name (max. 100 characters)" />
 					</n-form-item>
 					<n-form-item label="Faction">
 						<n-select
-							:options="factionOptions"
 							v-model:value="refCreateFaction"
-						/>
+							:options="factionOptions" />
 					</n-form-item>
 					<n-form-item label="Permits Total">
 						<n-input-number
 							v-model:value="refCreatePermitsTotal"
 							show-button
 							:min="2"
-							class="w-full"
-						/>
+							class="w-full" />
 					</n-form-item>
 					<n-form-item label="Permits Used">
 						<n-input-number
 							v-model:value="refCreatePermitsUsed"
 							show-button
 							:min="1"
-							class="w-full"
-						/>
+							class="w-full" />
 					</n-form-item>
 					<n-form-item label="Use FIO Storage?">
 						<n-checkbox v-model:checked="refCreateUseFioStorage" />
@@ -338,73 +341,70 @@
 				size="small"
 				:disabled="!compCanCreate"
 				:loading="refIsCreating"
-				@click="createEmpire"
-			>
+				@click="createEmpire">
 				Create
 			</n-button>
 		</div>
 	</div>
 	<x-n-data-table :data="localEmpires" striped class="pt-3">
-		<x-n-data-table-column title="Name" key="name">
+		<x-n-data-table-column key="name" title="Name">
 			<template #render-cell="{ rowData }">
 				<router-link
 					:to="`/empire/${rowData.uuid}`"
-					class="text-link-primary font-bold hover:underline"
-				>
+					class="text-link-primary font-bold hover:underline">
 					{{ rowData.name }}
 				</router-link>
 			</template>
 		</x-n-data-table-column>
-		<x-n-data-table-column title="Faction" key="faction">
+		<x-n-data-table-column key="faction" title="Faction">
 			<template #render-cell="{ rowData }">
 				{{ capitalizeString(rowData.faction) }}
 			</template>
 		</x-n-data-table-column>
-		<x-n-data-table-column title="Permits" key="permits">
+		<x-n-data-table-column key="permits" title="Permits">
 			<template #render-cell="{ rowData }">
 				{{ rowData.permits_used }} / {{ rowData.permits_total }}
 			</template>
 		</x-n-data-table-column>
-		<x-n-data-table-column title="Plans" key="plans">
+		<x-n-data-table-column key="plans" title="Plans">
 			<template #render-cell="{ rowData }">
 				{{ rowData.baseplanners.length }}
 			</template>
 		</x-n-data-table-column>
-		<x-n-data-table-column title="FIO" key="fio">
+		<x-n-data-table-column key="fio" title="FIO">
 			<template #render-cell="{ rowData }">
 				<n-tag
+					v-if="rowData.use_fio_storage"
 					size="small"
 					:bordered="false"
-					type="success"
-					v-if="rowData.use_fio_storage"
-				>
+					type="success">
 					Yes
 				</n-tag>
-				<n-tag size="small" :bordered="false" type="error" v-else>No</n-tag>
+				<n-tag v-else size="small" :bordered="false" type="error">
+					No
+				</n-tag>
 			</template>
 		</x-n-data-table-column>
-		<x-n-data-table-column title="CX" key="cx" width="200">
+		<x-n-data-table-column key="cx" title="CX" width="200">
 			<template #render-cell="{ rowData }">
 				<div class="max-w-[200px]">
 					<n-select
+						v-model:value="refEmpireCXMap[rowData.uuid]"
 						size="small"
 						:options="refCXOptions"
 						:render-label="selectRenderLabelWithTooltip"
-						placeholder="None"
-						v-model:value="refEmpireCXMap[rowData.uuid]"
-					/>
+						placeholder="None" />
 				</div>
 			</template>
 		</x-n-data-table-column>
-		<x-n-data-table-column title="" key="configuration">
+		<x-n-data-table-column key="configuration" title="">
 			<template #render-cell="{ rowData }">
 				<div class="justify-end flex gap-x-3">
 					<n-button
 						size="tiny"
 						type="error"
 						:loading="refIsDeleting === rowData.uuid"
-						@click="handleDeleteConfirm(rowData.uuid)"
-					>
+						@click="handleDeleteConfirm(rowData.uuid)">
 						<template #icon><ClearSharp /></template>
 					</n-button>
 				</div>

@@ -27,14 +27,17 @@
 		planetNaturalId: {
 			type: String,
 			required: false,
+			default: undefined,
 		},
 		planUuid: {
 			type: String,
 			required: false,
+			default: undefined,
 		},
 		sharedPlanUuid: {
 			type: String,
 			required: false,
+			default: undefined,
 		},
 		loadCXData: {
 			type: Boolean,
@@ -77,14 +80,12 @@
 			if (props.loadCXData) {
 				await planningStore.getAllCX();
 			}
-		} catch (err: any) {
+		} catch (err) {
 			if (err instanceof PlanLoadError) {
 				error.value = err;
 			} else {
 				error.value = new PlanLoadError("UNKNOWN", `${err}`);
 			}
-
-			console.error(error.value);
 		} finally {
 			loading.value = false;
 		}
@@ -103,8 +104,7 @@
 				loading
 					? 'bg-[url(/images/bg_striped_prunplanner.png)]'
 					: 'bg-[url(/images/bg_striped_error.png)]'
-			"
-		>
+			">
 			<div class="absolute inset-0 flex items-center justify-center">
 				<div class="bg-black p-8 rounded shadow-lg text-center">
 					<template v-if="loading">
@@ -117,7 +117,8 @@
 					</template>
 					<template v-else>
 						<div class="font-bold">
-							Something unexpected happened. Check the Browser Console.
+							Something unexpected happened. Check the Browser
+							Console.
 						</div>
 					</template>
 				</div>
@@ -128,11 +129,10 @@
 		<Suspense>
 			<slot
 				:disabled="disabled"
-				:planDefintion="planDefinition"
-				:empireList="empireList"
+				:plan-defintion="planDefinition"
+				:empire-list="empireList"
 				:loading="loading"
-				:error="error"
-			/>
+				:error="error" />
 
 			<template #fallback>
 				<RenderingProgress />
