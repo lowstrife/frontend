@@ -1,4 +1,4 @@
-import { computed, ComputedRef } from "vue";
+import { computed, ComputedRef, WritableComputedRef } from "vue";
 
 // Stores
 import { useUserStore } from "@/stores/userStore";
@@ -9,10 +9,26 @@ import { IPreferencePerPlan } from "@/features/preferences/userPreferences.types
 export function usePlanPreferences(planUuid: string) {
 	const userStore = useUserStore();
 
+	/**
+	 * Computed individual plans full preferences
+	 *
+	 * @author jplacht
+	 *
+	 * @type {ComputedRef<IPreferencePerPlan>}
+	 */
 	const fullPreferences: ComputedRef<IPreferencePerPlan> = computed(() =>
 		userStore.getPlanPreference(planUuid)
 	);
 
+	/**
+	 * Set a plans preferences key to specified value
+	 *
+	 * @author jplacht
+	 *
+	 * @template {keyof typeof fullPreferences.value} K Preference Key
+	 * @param {K} key Key as String
+	 * @param {(typeof fullPreferences.value)[K]} value Preference Value
+	 */
 	function setPlanPreference<K extends keyof typeof fullPreferences.value>(
 		key: K,
 		value: (typeof fullPreferences.value)[K]
@@ -20,25 +36,42 @@ export function usePlanPreferences(planUuid: string) {
 		userStore.setPlanPreference(planUuid, { [key]: value });
 	}
 
-	function clearPlanPreference(): void {
-		userStore.clearPlanPreference(planUuid);
-	}
+	/**
+	 * Writable computed for plans include core module preferences
+	 *
+	 * @author jplacht
+	 *
+	 * @type {WritableComputedRef<boolean, boolean>}
+	 */
+	const includeCM: WritableComputedRef<boolean, boolean> = computed({
+		get: () => fullPreferences.value.includeCM,
+		set: (v) => setPlanPreference("includeCM", v),
+	});
 
-	const includeCM: ComputedRef<boolean> = computed(
-		() => fullPreferences.value.includeCM
-	);
-
-	function setIncludeCM(value: boolean): void {
-		setPlanPreference("includeCM", value);
-	}
+	/**
+	 * Writable computed for plans visitation frequency tool material
+	 * exclusion list, array of material tickers
+	 *
+	 * @author jplacht
+	 *
+	 * @type {WritableComputedRef<
+	 * 		string[],
+	 * 		string[]
+	 * 	>}
+	 */
+	const visitationMaterialExclusions: WritableComputedRef<
+		string[],
+		string[]
+	> = computed({
+		get: () => fullPreferences.value.visitationMaterialExclusions,
+		set: (v) => setPlanPreference("visitationMaterialExclusions", v),
+	});
 
 	return {
 		fullPreferences,
 		setPlanPreference,
-		clearPlanPreference,
-		// getter
+		// preferences
 		includeCM,
-		// setter
-		setIncludeCM,
+		visitationMaterialExclusions,
 	};
 }

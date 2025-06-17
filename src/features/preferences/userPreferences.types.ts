@@ -1,5 +1,6 @@
 export interface IPreferencePerPlan {
 	includeCM: boolean;
+	visitationMaterialExclusions: string[];
 }
 
 export interface IPreference {
@@ -12,7 +13,12 @@ export interface IPreference {
 }
 
 export interface IPreferenceDefault extends IPreference {
-	planDefaults: {
-		includeCM: boolean;
-	};
+	planDefaults: IPreferencePerPlan;
+}
+
+export interface IPlanPreferenceOverview {
+	planUuid: string;
+	planetId: string;
+	planName: string;
+	preferences: string[];
 }

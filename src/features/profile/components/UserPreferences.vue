@@ -6,22 +6,21 @@
 
 	// Composables
 	import { usePreferences } from "@/features/preferences/usePreferences";
-	import { usePlanPreferences } from "@/features/preferences/usePlanPreferences";
 
-	// UI
-	import {
-		NForm,
-		NFormItem,
-		NInput,
-		NSelect,
-		NInputNumber,
-		NCheckbox,
-		NButton,
-	} from "naive-ui";
+	// Types & Interfaces
 	import { SelectMixedOption } from "naive-ui/es/select/src/interface";
 
+	// UI
+	import { NTable, NForm, NFormItem, NSelect, NInputNumber } from "naive-ui";
+
 	const planningStore = usePlanningStore();
-	const { burnDaysRed, burnDaysYellow, planSettings } = usePreferences();
+
+	const {
+		burnDaysRed,
+		burnDaysYellow,
+		planSettingsOverview,
+		cleanPlanPreferences,
+	} = usePreferences();
 	let { defaultEmpireUuid } = usePreferences();
 
 	const empireOptions: Ref<SelectMixedOption[]> = ref(
@@ -48,7 +47,9 @@
 			// or, reset to undefined
 			else defaultEmpireUuid.value = undefined;
 		}
-		// all plans loaded, include a function that clears up non-existing plans preferences
+
+		// all plans loaded, clear up non-existing plans preferences
+		cleanPlanPreferences();
 	});
 </script>
 
@@ -99,6 +100,26 @@
 		provides an overview of the preferences you've customized so far — to
 		modify them, navigate to the corresponding plan.
 	</div>
-
-	{{ planSettings }}
+	<n-table striped>
+		<thead>
+			<tr>
+				<th>Plan</th>
+				<th>Preferences</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr v-for="plan in planSettingsOverview" :key="plan.planUuid">
+				<td>
+					<router-link
+						:to="`/plan/${plan.planetId}/${plan.planUuid}`"
+						class="text-link-primary font-bold hover:underline">
+						{{ plan.planName }}
+					</router-link>
+				</td>
+				<td class="w-[50%] max-w-[75%]">
+					{{ plan.preferences.join(", ") }}
+				</td>
+			</tr>
+		</tbody>
+	</n-table>
 </template>

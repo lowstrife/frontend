@@ -1,5 +1,13 @@
 import { IPreferenceDefault } from "@/features/preferences/userPreferences.types";
 
+/**
+ * Defines default values for user preferences, contains generic tool
+ * defaults as well as the values for individual plan settings defaults
+ *
+ * @author jplacht
+ *
+ * @type {IPreferenceDefault}
+ */
 export const preferenceDefaults: IPreferenceDefault = {
 	defaultEmpireUuid: undefined,
 	burnDaysRed: 5,
@@ -8,5 +16,6 @@ export const preferenceDefaults: IPreferenceDefault = {
 	planOverrides: {},
 	planDefaults: {
 		includeCM: false,
+		visitationMaterialExclusions: [],
 	},
 };

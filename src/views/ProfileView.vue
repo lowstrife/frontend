@@ -1,12 +1,12 @@
 <script setup lang="ts">
 	// Components
-	import EmpireDataWrapper from "@/features/wrapper/components/EmpireDataWrapper.vue";
+	import ManageDataWrapper from "@/features/wrapper/components/ManageDataWrapper.vue";
 	import UserPreferences from "@/features/profile/components/UserPreferences.vue";
 	import StorageData from "@/features/profile/components/StorageData.vue";
 </script>
 
 <template>
-	<EmpireDataWrapper>
+	<ManageDataWrapper>
 		<template #default>
 			<div class="min-h-screen flex flex-col">
 				<div class="px-6 py-3 border-b border-white/10">
@@ -25,5 +25,5 @@
 				</div>
 			</div>
 		</template>
-	</EmpireDataWrapper>
+	</ManageDataWrapper>
 </template>
