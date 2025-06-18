@@ -1,4 +1,4 @@
-name: Run ESLint
+name: Lint
 
 on:
   - pull_request
