@@ -1,4 +1,4 @@
-name: Run Vitest
+name: Test
 
 on:
   - push
@@ -25,7 +25,3 @@ jobs:
         run: pnpm install
       - name: "Run Tests"
         run: pnpm run test
-      - name: Upload Codacy
-        env:
-          CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
-        run: bash <(curl -Ls https://coverage.codacy.com/get.sh) report -r coverage/lcov.info
