@@ -31,3 +31,51 @@ html {
 	border: solid 3px transparent;
 	border-radius: 10px;
 }
+
+#markdown {
+	@apply font-normal text-md;
+}
+
+#markdown h1 {
+	@apply pb-3 text-lg font-bold;
+}
+
+#markdown h2 {
+	@apply pb-3 font-bold;
+}
+
+#markdown p {
+	@apply pb-3;
+}
+
+#markdown ul {
+	@apply space-y-1  pl-5 list-disc list-outside;
+}
+
+#markdown table {
+	@apply rounded-[3px] overflow-hidden w-full;
+}
+
+#markdown table thead tr {
+	@apply border border-dark-gray bg-gray-dark;
+}
+
+#markdown table th {
+	@apply px-3 py-1 text-left text-white/90;
+}
+
+#markdown table td {
+	@apply text-white/80;
+}
+
+#markdown table tbody {
+	@apply child:even:bg-gray-dark;
+}
+
+#markdown table tbody tr {
+	@apply border-b border-l border-r border-dark-gray child:p-2;
+}
+
+#markdown hr {
+	@apply pb-3 text-white/20;
+}

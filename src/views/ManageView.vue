@@ -9,6 +9,7 @@
 
 	// Components
 	import ManageDataWrapper from "@/features/wrapper/components/ManageDataWrapper.vue";
+	import HelpDrawer from "@/features/help/components/HelpDrawer.vue";
 	const AsyncManagePlanEmpireAssignments = defineAsyncComponent(
 		() =>
 			import(
@@ -42,6 +43,7 @@
 		<div
 			class="px-6 py-3 border-b border-white/10 flex flex-row justify-between gap-x-3">
 			<h1 class="text-2xl font-bold my-auto">Management</h1>
+			<HelpDrawer file-name="management" />
 		</div>
 		<div
 			class="border-b border-white/10 grid grid-cols-1 lg:grid-cols-[60%_auto] divide-x divide-white/10 child:px-6 child:py-3">
