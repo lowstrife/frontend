@@ -1,7 +1,6 @@
-name: Run Vitest
+name: Run ESLint
 
 on:
-  - push
   - pull_request
 jobs:
   test:
@@ -23,9 +22,5 @@ jobs:
           cache: "pnpm"
       - name: "Install dependencies"
         run: pnpm install
-      - name: "Run Tests"
-        run: pnpm run test
-      - name: Upload Codacy
-        env:
-          CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
-        run: bash <(curl -Ls https://coverage.codacy.com/get.sh) report -r coverage/lcov.info
+      - name: "Run Linting"
+        run: pnpm run lint
