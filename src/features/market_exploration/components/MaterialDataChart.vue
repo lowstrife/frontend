@@ -1,15 +1,3 @@
-<template>
-	<div
-		v-if="!chartData"
-		class="w-full h-[300px] flex items-center justify-center">
-		<div class="text-white text-center">
-			<n-spin :size="20" />
-			<div class="text-white/60">Loading Data...</div>
-		</div>
-	</div>
-	<chart v-else ref="chart" class="hc" :options="chartOptions" />
-</template>
-
 <script setup lang="ts">
 	import { computed, ComputedRef, onMounted, ref, Ref } from "vue";
 
@@ -91,3 +79,15 @@
 		};
 	});
 </script>
+
+<template>
+	<div
+		v-if="!chartData"
+		class="w-full h-[300px] flex items-center justify-center">
+		<div class="text-white text-center">
+			<n-spin :size="20" />
+			<div class="text-white/60">Loading Data...</div>
+		</div>
+	</div>
+	<chart v-else ref="chart" class="hc" :options="chartOptions" />
+</template>

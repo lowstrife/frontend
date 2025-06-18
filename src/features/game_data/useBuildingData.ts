@@ -22,7 +22,7 @@ import { SelectMixedOption } from "naive-ui/es/select/src/interface";
 import {
 	IMaterialIOMinimal,
 	IWorkforceRecord,
-} from "../planning/usePlanCalculation.types";
+} from "@/features/planning/usePlanCalculation.types";
 import { PLAN_COGCPROGRAM_TYPE } from "@/stores/planningStore.types";
 
 export function useBuildingData() {

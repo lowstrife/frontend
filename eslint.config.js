@@ -4,6 +4,15 @@ import ts from "typescript-eslint";
 
 export default [
 	{
+		ignores: [
+			"**/dist/*",
+			"**/tests/*",
+			"**/coverage/**",
+			"tsconfig.json",
+			"tailwind.config.js",
+		],
+	},
+	{
 		languageOptions: {
 			ecmaVersion: "latest",
 			globals: {
@@ -37,7 +46,7 @@ export default [
 	// vue
 	...vue.configs["flat/recommended"],
 	{
-		// files: ['*.vue', '**/*.vue'],
+		files: ["*.vue", "**/*.vue"],
 		languageOptions: {
 			parserOptions: {
 				parser: ts.parser,
@@ -46,7 +55,6 @@ export default [
 	},
 	{
 		rules: {
-			"vue/multi-word-component-names": "off",
 			"vue/no-unused-vars": ["error", { ignorePattern: "^_" }],
 			"vue/max-attributes-per-line": ["error", { singleline: 5 }],
 			"vue/html-indent": "off",

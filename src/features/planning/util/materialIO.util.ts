@@ -11,7 +11,6 @@ import {
 	IMaterialIOMaterial,
 	IMaterialIOMinimal,
 } from "@/features/planning/usePlanCalculation.types";
-import { prependListener } from "process";
 
 export function useMaterialIOUtil() {
 	const { getMaterial } = useMaterialData();
@@ -28,7 +27,9 @@ export function useMaterialIOUtil() {
 	function combineMaterialIOMinimal(
 		arrays: IMaterialIOMinimal[][]
 	): IMaterialIOMinimal[] {
-		const combinedArray: IMaterialIOMinimal[] = arrays.flat().filter((v) => v);
+		const combinedArray: IMaterialIOMinimal[] = arrays
+			.flat()
+			.filter((v) => v);
 
 		const tickerMap: { [key: string]: IMaterialIOMinimal } = {};
 
@@ -80,7 +81,6 @@ export function useMaterialIOUtil() {
 	function combineEmpireMaterialIO(
 		data: IEmpirePlanMaterialIO[]
 	): IEmpireMaterialIO[] {
-		const combined: IEmpireMaterialIO[] = [];
 		// key = Material Ticker
 		const combinedMap: Record<string, IEmpireMaterialIO> = {};
 
@@ -115,7 +115,9 @@ export function useMaterialIOUtil() {
 
 				element.delta < 0
 					? combinedMap[element.ticker].inputPlanets.push(planetPart)
-					: combinedMap[element.ticker].outputPlanets.push(planetPart);
+					: combinedMap[element.ticker].outputPlanets.push(
+							planetPart
+						);
 			});
 		});
 
@@ -134,7 +136,9 @@ export function useMaterialIOUtil() {
 				.flat()
 				.filter((v) => v);
 
-			const flatValues: number[] = flatPlanets.map((pv) => Math.abs(pv.value));
+			const flatValues: number[] = flatPlanets.map((pv) =>
+				Math.abs(pv.value)
+			);
 			const flatPrices: number[] = flatPlanets.map((pv) =>
 				Math.abs(pv.price / pv.value)
 			);

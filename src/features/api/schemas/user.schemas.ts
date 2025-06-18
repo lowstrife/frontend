@@ -3,7 +3,6 @@ import { z } from "zod";
 // Types & Interfaces
 import {
 	IUserLoginPayload,
-	IUserProfile,
 	IUserRefreshPayload,
 	IUserTokenResponse,
 } from "@/features/api/userData.types";

@@ -76,7 +76,7 @@
 				<n-table striped>
 					<thead>
 						<tr>
-							<th></th>
+							<th />
 							<th>AI1</th>
 							<th>CI1</th>
 							<th>IC1</th>
