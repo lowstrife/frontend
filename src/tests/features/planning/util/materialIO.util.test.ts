@@ -119,8 +119,12 @@ describe("Util: materialIO ", async () => {
 		expect(findWater?.delta).toBe(5);
 
 		// individual weight
-		expect(findC?.individualVolume).toBe(gameDataStore.materials["C"].Volume);
-		expect(findC?.individualWeight).toBe(gameDataStore.materials["C"].Weight);
+		expect(findC?.individualVolume).toBe(
+			gameDataStore.materials["C"].Volume
+		);
+		expect(findC?.individualWeight).toBe(
+			gameDataStore.materials["C"].Weight
+		);
 
 		// total
 		expect(findWater?.totalVolume).toBe(
@@ -154,8 +158,12 @@ describe("Util: materialIO ", async () => {
 			[{ ticker: "OVE", delta: -1 }]
 		);
 
-		expect(resultSell).toStrictEqual([{ ticker: "OVE", delta: 1, price: 10 }]);
-		expect(resultBuy).toStrictEqual([{ ticker: "OVE", delta: -1, price: -10 }]);
+		expect(resultSell).toStrictEqual([
+			{ ticker: "OVE", delta: 1, price: 10 },
+		]);
+		expect(resultBuy).toStrictEqual([
+			{ ticker: "OVE", delta: -1, price: -10 },
+		]);
 	});
 
 	it("combineEmpireMaterialIO", async () => {
@@ -224,5 +232,41 @@ describe("Util: materialIO ", async () => {
 		expect(result[0].output).toBe(3);
 		expect(result[0].inputPlanets.length).toBe(2);
 		expect(result[0].outputPlanets.length).toBe(0);
+	});
+	it("combineEmpireMaterialIO", async () => {
+		const fakeInput: IEmpirePlanMaterialIO[] = [
+			{
+				planetId: "foo",
+				planUuid: "foo#1",
+				planName: "foo",
+				materialIO: [
+					{
+						ticker: "RAT",
+						input: 10,
+						output: 10,
+						delta: 0,
+						individualVolume: 0,
+						individualWeight: 0,
+						totalWeight: 0,
+						totalVolume: 0,
+						price: 5,
+					},
+				],
+			},
+		];
+
+		const { combineEmpireMaterialIO } = useMaterialIOUtil();
+
+		const result = combineEmpireMaterialIO(fakeInput);
+
+		expect(result.length).toBe(1);
+
+		expect(result[0].ticker).toBe("RAT");
+		expect(result[0].delta).toBe(0);
+		expect(result[0].deltaPrice).toBe(0);
+		expect(result[0].input).toBe(10);
+		expect(result[0].output).toBe(10);
+		expect(result[0].inputPlanets.length).toBe(1);
+		expect(result[0].outputPlanets.length).toBe(1);
 	});
 });

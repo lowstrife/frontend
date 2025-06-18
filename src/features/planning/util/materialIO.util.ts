@@ -113,11 +113,21 @@ export function useMaterialIOUtil() {
 					price: element.price,
 				};
 
-				element.delta < 0
-					? combinedMap[element.ticker].inputPlanets.push(planetPart)
-					: combinedMap[element.ticker].outputPlanets.push(
-							planetPart
-						);
+				/*
+				 * Delta check, handle delta === 0 separately, as the planet is
+				 * full consuming all its producing, so it needs to be on both sides
+				 */
+				if (element.delta < 0) {
+					// only consuming
+					combinedMap[element.ticker].inputPlanets.push(planetPart);
+				} else if (element.delta > 0) {
+					// only producing
+					combinedMap[element.ticker].outputPlanets.push(planetPart);
+				} else if (element.delta === 0) {
+					// full consuming all its producing
+					combinedMap[element.ticker].inputPlanets.push(planetPart);
+					combinedMap[element.ticker].outputPlanets.push(planetPart);
+				}
 			});
 		});
 
@@ -148,7 +158,10 @@ export function useMaterialIOUtil() {
 				0
 			);
 
-			const weightedPrice: number = sumProduct / sumValue;
+			// check for NaN, as sumValue could be 0 and lead to zero-division
+			const weightedPrice: number = isNaN(sumProduct / sumValue)
+				? 0
+				: sumProduct / sumValue;
 
 			// update price
 			combinedMap[ticker].deltaPrice =
