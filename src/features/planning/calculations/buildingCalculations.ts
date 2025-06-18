@@ -34,6 +34,11 @@ export function useBuildingCalculation() {
 
 			// iterate over active_recipes
 			building.activeRecipes.forEach((ar) => {
+				// skip if the recipes amount is set to 0
+				if (ar.amount === 0) {
+					return;
+				}
+
 				// handle inputs
 				ar.recipe.Inputs.forEach((arInput) => {
 					buildingMaterialIOInput = combineMaterialIOMinimal([

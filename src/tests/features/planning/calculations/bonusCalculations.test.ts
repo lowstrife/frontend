@@ -202,11 +202,12 @@ describe("Planning: Bonus Calculations ", async () => {
 		test.each(workforceCases)(
 			"Efficiency: $expected",
 			async ({ building, workforce, expected }) => {
-				const { calculateBuildingWorkforceEfficiency } = useBonusCalculation();
+				const { calculateBuildingWorkforceEfficiency } =
+					useBonusCalculation();
 
-				expect(calculateBuildingWorkforceEfficiency(building, workforce)).toBe(
-					expected
-				);
+				expect(
+					calculateBuildingWorkforceEfficiency(building, workforce)
+				).toBe(expected);
 			}
 		);
 	});
@@ -218,15 +219,15 @@ describe("Planning: Bonus Calculations ", async () => {
 				const { calculateBuildingFactionBonus } = useBonusCalculation();
 
 				if (typeof expected === "object") {
-					// @ts-ignore test data mocking
-					expect(calculateBuildingFactionBonus(building, empire)).toStrictEqual(
-						expected
-					);
+					expect(
+						// @ts-ignore test data mocking
+						calculateBuildingFactionBonus(building, empire)
+					).toStrictEqual(expected);
 				} else {
-					// @ts-ignore test data mocking
-					expect(calculateBuildingFactionBonus(building, empire)).toBe(
-						expected
-					);
+					expect(
+						// @ts-ignore test data mocking
+						calculateBuildingFactionBonus(building, empire)
+					).toBe(expected);
 				}
 			}
 		);
@@ -433,6 +434,118 @@ describe("Planning: Bonus Calculations ", async () => {
 					{
 						efficiencyType: "FERTILITY",
 						value: 1.2575757575757576,
+					},
+					{
+						efficiencyType: "HQ",
+						value: 1.1,
+					},
+					{
+						efficiencyType: "EXPERT",
+						value: 1.1248,
+					},
+					{
+						efficiencyType: "COGC",
+						value: 1.1,
+					},
+					{
+						efficiencyType: "WORKFORCE",
+						value: 1.3138888888888889,
+					},
+					{
+						efficiencyType: "FACTION",
+						value: 1.0438095238095237,
+					},
+				],
+			});
+		});
+		it("Calculate all Efficiency factors and total, workforce COGC", async () => {
+			const { calculateBuildingEfficiency } = useBonusCalculation();
+
+			const testBuilding = {
+				Ticker: "FRM",
+				Pioneers: 20,
+				Settlers: 50,
+				Technicians: 10,
+				Engineers: 5,
+				Scientists: 5,
+				Expertise: "METALLURGY",
+			};
+			const testPlanet = { Fertility: -1.0 };
+			const testCorpHQ = true;
+			const testCOGC = "SETTLERS";
+			const testWorkforce = {
+				pioneer: {
+					name: "pioneer",
+					required: 100,
+					capacity: 100,
+					left: 0,
+					lux1: true,
+					lux2: true,
+					efficiency: 1.25,
+				},
+				settler: {
+					name: "settler",
+					required: 100,
+					capacity: 100,
+					left: 0,
+					lux1: true,
+					lux2: true,
+					efficiency: 1.625,
+				},
+				technician: {
+					name: "technician",
+					required: 100,
+					capacity: 150,
+					left: 50,
+					lux1: true,
+					lux2: false,
+					efficiency: 0.4,
+				},
+				engineer: {
+					name: "engineer",
+					required: 100,
+					capacity: 150,
+					left: 50,
+					lux1: true,
+					lux2: false,
+					efficiency: 0.1,
+				},
+				scientist: {
+					name: "scientist",
+					required: 100,
+					capacity: 150,
+					left: 50,
+					lux1: true,
+					lux2: false,
+					efficiency: 1.5,
+				},
+			};
+			const testExpert = {
+				Metallurgy: { name: "Metallurgy", amount: 3, bonus: 0.1248 },
+			};
+			const testEmpire = {
+				faction: "MORIA",
+				permits_used: 20,
+				permits_total: 21,
+			};
+
+			const result = calculateBuildingEfficiency(
+				// @ts-expect-error mock test data
+				testBuilding,
+				testPlanet,
+				testCorpHQ,
+				testCOGC,
+				testWorkforce,
+				testExpert,
+				testEmpire
+			);
+
+			expect(result).toStrictEqual({
+				totalEfficiency: 0,
+				elements: [
+					{
+						efficiencyType: "FERTILITY",
+						value: 0,
 					},
 					{
 						efficiencyType: "HQ",
