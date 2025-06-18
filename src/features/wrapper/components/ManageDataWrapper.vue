@@ -33,23 +33,46 @@
 	const loading: Ref<boolean> = ref(true);
 	const error: Ref<null | ManageLoadError> = ref(null);
 
+	const props = defineProps({
+		loadEmpires: {
+			type: Boolean,
+			required: false,
+			default: true,
+		},
+		loadCx: {
+			type: Boolean,
+			required: false,
+			default: true,
+		},
+		loadPlans: {
+			type: Boolean,
+			required: false,
+			default: true,
+		},
+		loadSharing: {
+			type: Boolean,
+			required: false,
+			default: true,
+		},
+	});
+
 	const loadingSteps: Ref<
 		Record<string, { status: boolean; description: string }>
 	> = ref({
 		EMPIRES: {
-			status: false,
+			status: !props.loadEmpires,
 			description: "Empire Information",
 		},
 		CX: {
-			status: false,
+			status: !props.loadCx,
 			description: "CX Information",
 		},
 		PLANS: {
-			status: false,
+			status: !props.loadPlans,
 			description: "All Plan Information",
 		},
 		SHARING: {
-			status: false,
+			status: !props.loadSharing,
 			description: "Shared Plans",
 		},
 	});
@@ -66,38 +89,52 @@
 		error.value = null;
 
 		// load all empire data
-		try {
-			emit("update:empireList", await planningStore.getAllEmpires());
-			loadingSteps.value.EMPIRES.status = true;
-		} catch {
-			error.value = new ManageLoadError(
-				"EMPIRES",
-				"Unable to Load Empires"
-			);
+		if (!loadingSteps.value.EMPIRES.status) {
+			try {
+				emit("update:empireList", await planningStore.getAllEmpires());
+				loadingSteps.value.EMPIRES.status = true;
+			} catch {
+				error.value = new ManageLoadError(
+					"EMPIRES",
+					"Unable to Load Empires"
+				);
+			}
 		}
+
 		// load all cx data
-		try {
-			emit("update:cxList", await planningStore.getAllCX());
-			loadingSteps.value.CX.status = true;
-		} catch {
-			error.value = new ManageLoadError("CX", "Unable to Load CX");
+		if (!loadingSteps.value.CX.status) {
+			try {
+				emit("update:cxList", await planningStore.getAllCX());
+				loadingSteps.value.CX.status = true;
+			} catch {
+				error.value = new ManageLoadError("CX", "Unable to Load CX");
+			}
 		}
+
 		// load all plan data
-		try {
-			emit("update:planList", await planningStore.getAllPlans());
-			loadingSteps.value.PLANS.status = true;
-		} catch {
-			error.value = new ManageLoadError("PLANS", "Unable to Load Plans");
+		if (!loadingSteps.value.PLANS.status) {
+			try {
+				emit("update:planList", await planningStore.getAllPlans());
+				loadingSteps.value.PLANS.status = true;
+			} catch {
+				error.value = new ManageLoadError(
+					"PLANS",
+					"Unable to Load Plans"
+				);
+			}
 		}
+
 		// load all shared data
-		try {
-			emit("update:sharedList", await planningStore.getSharedList());
-			loadingSteps.value.SHARING.status = true;
-		} catch {
-			error.value = new ManageLoadError(
-				"SHARING",
-				"Unable to Load Sharing Information"
-			);
+		if (!loadingSteps.value.SHARING.status) {
+			try {
+				emit("update:sharedList", await planningStore.getSharedList());
+				loadingSteps.value.SHARING.status = true;
+			} catch {
+				error.value = new ManageLoadError(
+					"SHARING",
+					"Unable to Load Sharing Information"
+				);
+			}
 		}
 
 		if (error.value === null) {

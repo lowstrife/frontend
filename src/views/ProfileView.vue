@@ -6,7 +6,7 @@
 </script>
 
 <template>
-	<ManageDataWrapper>
+	<ManageDataWrapper :load-cx="false" :load-sharing="false">
 		<template #default>
 			<div class="min-h-screen flex flex-col">
 				<div class="px-6 py-3 border-b border-white/10">
