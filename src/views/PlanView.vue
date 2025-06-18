@@ -37,6 +37,7 @@
 	import PlanProduction from "@/features/planning/components/PlanProduction.vue";
 	import PlanMaterialIO from "@/features/planning/components/PlanMaterialIO.vue";
 	import PlanConfiguration from "@/features/planning/components/PlanConfiguration.vue";
+	import HelpDrawer from "@/features/help/components/HelpDrawer.vue";
 	const ShareButton = defineAsyncComponent(
 		() => import("@/features/sharing/components/SharingButton.vue")
 	);
@@ -414,6 +415,8 @@
 								v-if="!disabled && refPlanData.uuid"
 								button-size="small"
 								:plan-uuid="refPlanData.uuid" />
+
+							<HelpDrawer file-name="plan" />
 						</div>
 					</div>
 				</div>

@@ -40,6 +40,11 @@ const head = createHead();
 
 app.use(head);
 
+// vue-showdown, markdown support
+import { VueShowdownPlugin } from "vue-showdown";
+
+app.use(VueShowdownPlugin, { flavor: "github", tables: true, emoji: true });
+
 // directives
 import clickOutsideDirective from "@/layout/directives/clickOutsideDirective";
 
