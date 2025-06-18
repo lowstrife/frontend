@@ -1,16 +1,3 @@
-<template>
-	<div
-		v-if="!chartData"
-		class="w-full h-[300px] flex items-center justify-center"
-	>
-		<div class="text-white text-center">
-			<n-spin :size="20" />
-			<div class="text-white/60">Loading Data...</div>
-		</div>
-	</div>
-	<chart v-else class="hc" :options="chartOptions" ref="chart" />
-</template>
-
 <script setup lang="ts">
 	import { computed, ComputedRef, onMounted, ref, Ref } from "vue";
 
@@ -41,7 +28,7 @@
 		},
 		displayValue: {
 			type: String,
-			required: true,
+			required: false,
 			default: "volume_max",
 		},
 	});
@@ -54,7 +41,8 @@
 		);
 	});
 
-	const chartData: Ref<IMaterialExplorationRecord | undefined> = ref(undefined);
+	const chartData: Ref<IMaterialExplorationRecord | undefined> =
+		ref(undefined);
 	const chartSeriesData: ComputedRef<IMaterialDataSeries[]> = computed(() => {
 		if (chartData.value) {
 			return Object.keys(chartData.value).map((exchange) => ({
@@ -91,3 +79,15 @@
 		};
 	});
 </script>
+
+<template>
+	<div
+		v-if="!chartData"
+		class="w-full h-[300px] flex items-center justify-center">
+		<div class="text-white text-center">
+			<n-spin :size="20" />
+			<div class="text-white/60">Loading Data...</div>
+		</div>
+	</div>
+	<chart v-else ref="chart" class="hc" :options="chartOptions" />
+</template>

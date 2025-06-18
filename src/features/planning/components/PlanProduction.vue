@@ -55,7 +55,9 @@
 	}>();
 
 	// Local State
-	const localProductionData: Ref<IProductionResult> = ref(props.productionData);
+	const localProductionData: Ref<IProductionResult> = ref(
+		props.productionData
+	);
 	const localSelectedBuilding: Ref<string | undefined> = ref(undefined);
 	const localCOGC: Ref<PLAN_COGCPROGRAM_TYPE> = ref("---");
 	const localMatchCOGC: Ref<boolean> = ref(false);
@@ -85,12 +87,12 @@
 		<div class="flex child:my-auto gap-x-3">
 			<div class="text-sm">Match COGC</div>
 			<n-checkbox
-				:disabled="disabled"
 				v-model:checked="localMatchCOGC"
-				size="small"
-			/>
+				:disabled="disabled"
+				size="small" />
 
 			<n-select
+				v-model:value="localSelectedBuilding"
 				:disabled="disabled"
 				filterable
 				size="small"
@@ -101,13 +103,11 @@
 						localMatchCOGC ? localCOGC : undefined
 					)
 				"
-				v-model:value="localSelectedBuilding"
-				v-on:update:value="
+				@update:value="
 					(value: string) => {
 						emit('create:building', value);
 					}
-				"
-			/>
+				" />
 		</div>
 	</div>
 
@@ -117,25 +117,35 @@
 		:disabled="props.disabled"
 		:building-data="building"
 		:building-index="index"
-		v-on:update:building:amount="
+		@update:building:amount="
 			(index: number, value: number) =>
 				emit('update:building:amount', index, value)
 		"
-		v-on:delete:building="(index: number) => emit('delete:building', index)"
-		v-on:update:building:recipe:amount="
+		@delete:building="(index: number) => emit('delete:building', index)"
+		@update:building:recipe:amount="
 			(buildingIndex: number, recipeIndex: number, value: number) =>
-				emit('update:building:recipe:amount', buildingIndex, recipeIndex, value)
+				emit(
+					'update:building:recipe:amount',
+					buildingIndex,
+					recipeIndex,
+					value
+				)
 		"
-		v-on:delete:building:recipe="
+		@delete:building:recipe="
 			(buildingIndex: number, recipeIndex: number) =>
 				emit('delete:building:recipe', buildingIndex, recipeIndex)
 		"
-		v-on:add:building:recipe="
-			(buildingIndex: number) => emit('add:building:recipe', buildingIndex)
+		@add:building:recipe="
+			(buildingIndex: number) =>
+				emit('add:building:recipe', buildingIndex)
 		"
-		v-on:update:building:recipe="
+		@update:building:recipe="
 			(buildingIndex: number, recipeIndex: number, recipeId: string) =>
-				emit('update:building:recipe', buildingIndex, recipeIndex, recipeId)
-		"
-	/>
+				emit(
+					'update:building:recipe',
+					buildingIndex,
+					recipeIndex,
+					recipeId
+				)
+		" />
 </template>

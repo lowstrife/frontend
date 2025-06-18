@@ -15,16 +15,14 @@
 	import { IMenuSection } from "@/features/navigation/navigation.types";
 
 	// UI
-	import { NIcon, NTag, NSpin, NTooltip } from "naive-ui";
+	import { NIcon, NTag, NTooltip } from "naive-ui";
 	import {
 		HomeSharp,
 		SearchRound,
 		SettingsRound,
 		ApiSharp,
 		LogOutRound,
-		GroupWorkRound,
 		ShoppingBasketSharp,
-		PermDataSettingSharp,
 		CandlestickChartSharp,
 		UpgradeSharp,
 		CompareSharp,
@@ -43,6 +41,7 @@
 	 * a background refresh of FIO data is triggered in the gamedata store
 	 */
 
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	let fioInterval: any;
 
 	function setFIOInterval(): void {
@@ -235,7 +234,7 @@
 
 <template>
 	<!-- Mobile menu toggle button -->
-	<input type="checkbox" id="menu-toggle" class="hidden peer" />
+	<input id="menu-toggle" type="checkbox" class="hidden peer" />
 	<!-- Sidebar -->
 	<div
 		class="hidden peer-checked:flex md:flex border-r border-white/5 flex-col w-60 bg-gray-dark transition-all duration-300 ease-in-out">
@@ -252,7 +251,7 @@
 				<template
 					v-for="section in menuItems"
 					:key="'SECTION#' + section.label">
-					<div class="pb-4" v-if="section.display">
+					<div v-if="section.display" class="pb-4">
 						<div class="px-4 py-2 text-sm text-gray-400">
 							{{ section.label }}
 						</div>
@@ -264,13 +263,13 @@
 							<!-- without children-->
 							<RouterLink
 								v-if="!item.children && item.routerLink"
-								:to="item.routerLink"
-								class="flex items-center px-4 py-2 hover:bg-white/20 hover:rounded-sm group"
-								active-class="bg-white/10 rounded-sm"
 								:key="
 									'ROUTER#' + section.label + '#' + item.label
-								">
-								<n-icon class="mr-2" size="20" v-if="item.icon">
+								"
+								:to="item.routerLink"
+								class="flex items-center px-4 py-2 hover:bg-white/20 hover:rounded-sm group"
+								active-class="bg-white/10 rounded-sm">
+								<n-icon v-if="item.icon" class="mr-2" size="20">
 									<component :is="item.icon" />
 								</n-icon>
 								{{ item.label }}
@@ -279,29 +278,29 @@
 								v-else-if="!item.children && item.functionCall">
 								<div
 									class="flex items-center px-4 py-2 hover:bg-white/20 hover:rounded-sm group hover:cursor-pointer"
-									v-on:click="item.functionCall()">
+									@click="item.functionCall()">
 									<n-icon
+										v-if="item.icon"
 										class="mr-2"
-										size="20"
-										v-if="item.icon">
+										size="20">
 										<component :is="item.icon" />
 									</n-icon>
 									<span>{{ item.label }}</span>
 								</div>
 							</template>
 							<template v-else>
-								<div class="relative group" v-if="item.display">
+								<div v-if="item.display" class="relative group">
 									<input
-										type="checkbox"
 										:id="item.label + '-toggle'"
+										type="checkbox"
 										class="hidden peer" />
 									<label
 										:for="item.label + '-toggle'"
 										class="flex items-center px-4 py-2 hover:bg-white/20 hover:rounded-sm cursor-pointer w-full">
 										<n-icon
+											v-if="item.icon"
 											class="mr-2"
-											size="20"
-											v-if="item.icon">
+											size="20">
 											<component :is="item.icon" />
 										</n-icon>
 										{{ item.label }}
@@ -325,6 +324,12 @@
 											v-for="children in item.children">
 											<RouterLink
 												v-if="children.display"
+												:key="
+													'ROUTER#' +
+													children.label +
+													'#' +
+													children.label
+												"
 												:to="
 													children.routerLink
 														? children.routerLink
@@ -336,17 +341,11 @@
 														? 'pl-6'
 														: 'pl-12'
 												"
-												active-class="bg-white/10 rounded-sm"
-												:key="
-													'ROUTER#' +
-													children.label +
-													'#' +
-													children.label
-												">
+												active-class="bg-white/10 rounded-sm">
 												<n-icon
+													v-if="children.icon"
 													class="mr-2"
-													size="20"
-													v-if="children.icon">
+													size="20">
 													<component
 														:is="children.icon" />
 												</n-icon>
@@ -387,7 +386,7 @@
 					</div>
 				</div>
 			</n-tooltip>
-			<n-tag size="tiny" type="warning" :bordered="false" v-else>
+			<n-tag v-else size="tiny" type="warning" :bordered="false">
 				FIO Inactive
 			</n-tag>
 		</div>

@@ -68,31 +68,32 @@
 <template>
 	<div class="mb-6">
 		<div
-			class="p-3 rounded-tl rounded-tr border-pp-border border-l border-t border-r flex gap-x-3 justify-between"
-		>
+			class="p-3 rounded-tl rounded-tr border-pp-border border-l border-t border-r flex gap-x-3 justify-between">
 			<h3 class="text-2xl font-bold text-white">
 				{{ localBuildingData.name }}
 			</h3>
 			<div class="flex gap-x-3">
 				<n-input-number
-					:disabled="disabled"
 					v-model:value="localBuildingData.amount"
+					:disabled="disabled"
 					:min="0"
 					size="small"
-					:on-update:value="
+					@update:value="
 						(value: number | null) => {
 							if (value !== null) {
-								emit('update:building:amount', buildingIndex, value);
+								emit(
+									'update:building:amount',
+									buildingIndex,
+									value
+								);
 							}
 						}
-					"
-				/>
+					" />
 				<n-button
 					v-if="localBuildingData.recipeOptions.length > 0"
 					:disabled="disabled"
 					size="small"
-					@click="emit('add:building:recipe', buildingIndex)"
-				>
+					@click="emit('add:building:recipe', buildingIndex)">
 					<template #icon><PlusSharp /></template>
 					RECIPE
 				</n-button>
@@ -100,25 +101,23 @@
 					:disabled="disabled"
 					size="small"
 					type="error"
-					@click="emit('delete:building', buildingIndex)"
-				>
+					@click="emit('delete:building', buildingIndex)">
 					<template #icon><ClearSharp /></template>
 				</n-button>
 			</div>
 		</div>
 		<div class="p-3 border-pp-border border-l border-t border-r">
 			<div
-				class="grid grid-cols-1 lg:grid-cols-4 gap-6"
 				v-if="localBuildingData.activeRecipes.length > 0"
-			>
+				class="grid grid-cols-1 lg:grid-cols-4 gap-6">
 				<PlanProductionRecipe
+					v-for="(recipe, index) in localBuildingData.activeRecipes"
+					:key="`${index}#${recipe.recipeId}`"
 					:disabled="disabled"
 					:recipe-index="index"
 					:recipe-data="recipe"
 					:recipe-options="localBuildingData.recipeOptions"
-					v-for="(recipe, index) in localBuildingData.activeRecipes"
-					:key="`${index}#${recipe.recipeId}`"
-					v-on:update:building:recipe:amount="
+					@update:building:recipe:amount="
 						(index: number, value: number) => {
 							emit(
 								'update:building:recipe:amount',
@@ -128,41 +127,52 @@
 							);
 						}
 					"
-					v-on:delete:building:recipe="
+					@delete:building:recipe="
 						(index: number) => {
-							emit('delete:building:recipe', buildingIndex, index);
+							emit(
+								'delete:building:recipe',
+								buildingIndex,
+								index
+							);
 						}
 					"
-					v-on:update:building:recipe="
+					@update:building:recipe="
 						(index: number, recipeid: string) => {
-							emit('update:building:recipe', buildingIndex, index, recipeid);
+							emit(
+								'update:building:recipe',
+								buildingIndex,
+								index,
+								recipeid
+							);
 						}
-					"
-				/>
+					" />
 			</div>
 			<div v-else class="h-full w-full flex items-center justify-center">
 				No Active Recipes
 			</div>
 		</div>
 		<div
-			class="p-3 border-pp-border border rounded-bl rounded-br bg-white/5 flex flex-row gap-x-3 justify-between"
-		>
+			class="p-3 border-pp-border border rounded-bl rounded-br bg-white/5 flex flex-row gap-x-3 justify-between">
 			<div>
 				<n-tooltip trigger="hover">
 					<template #trigger>
 						<div class="flex gap-x-3 hover:cursor-help">
 							<span>Efficiency</span>
 							<span class="font-bold">
-								{{ formatNumber(localBuildingData.totalEfficiency * 100) }} %
+								{{
+									formatNumber(
+										localBuildingData.totalEfficiency * 100
+									)
+								}}
+								%
 							</span>
 						</div>
 					</template>
 
 					<div
-						class="flex flex-row justify-between align-center gap-x-3 child:p-1"
 						v-for="element in localBuildingData.efficiencyElements"
 						:key="`${localBuildingData.name}#EFFICIENCY#${element.efficiencyType}`"
-					>
+						class="flex flex-row justify-between align-center gap-x-3 child:p-1">
 						<div>{{ element.efficiencyType }}</div>
 						<div>{{ formatNumber(element.value * 100) }} %</div>
 					</div>
@@ -175,7 +185,8 @@
 				</span>
 				<span>Construction Cost</span>
 				<span class="font-bold">
-					{{ formatNumber(localBuildingData.constructionCost * -1) }} $
+					{{ formatNumber(localBuildingData.constructionCost * -1) }}
+					$
 				</span>
 			</div>
 		</div>

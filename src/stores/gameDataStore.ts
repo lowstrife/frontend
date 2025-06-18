@@ -89,16 +89,16 @@ export const useGameDataStore = defineStore(
 		let promiseRefreshingExchanges: Promise<boolean> | null = null;
 		let promiseRefreshingRecipes: Promise<boolean> | null = null;
 		let promiseRefreshingBuildings: Promise<boolean> | null = null;
-		let promiseRefreshingPlanets: Ref<
+		const promiseRefreshingPlanets: Ref<
 			Record<string, Promise<boolean> | null>
 		> = ref({});
 
-		let isRefreshingMaterials: Ref<boolean> = ref(false);
-		let isRefreshingExchanges: Ref<boolean> = ref(false);
-		let isRefreshingRecipes: Ref<boolean> = ref(false);
-		let isRefreshingBuildings: Ref<boolean> = ref(false);
-		let isRefreshingPlanets: Ref<Record<string, boolean>> = ref({});
-		let isRefreshingFIO: Ref<boolean> = ref(false);
+		const isRefreshingMaterials: Ref<boolean> = ref(false);
+		const isRefreshingExchanges: Ref<boolean> = ref(false);
+		const isRefreshingRecipes: Ref<boolean> = ref(false);
+		const isRefreshingBuildings: Ref<boolean> = ref(false);
+		const isRefreshingPlanets: Ref<Record<string, boolean>> = ref({});
+		const isRefreshingFIO: Ref<boolean> = ref(false);
 
 		// state reset
 
@@ -576,8 +576,9 @@ export const useGameDataStore = defineStore(
 				}
 			} finally {
 				isRefreshingFIO.value = false;
-				return result;
 			}
+
+			return result;
 		}
 
 		/**
@@ -767,35 +768,23 @@ export const useGameDataStore = defineStore(
 			afterHydrate(context) {
 				const store = context.store;
 
-				store.lastRefreshedMaterials
-					? (store.lastRefreshedMaterials = new Date(
-							store.lastRefreshedMaterials
-						))
+				store.lastRefreshedMaterials = store.lastRefreshedMaterials
+					? new Date(store.lastRefreshedMaterials)
 					: undefined;
-				store.lastRefreshedExchanges
-					? (store.lastRefreshedExchanges = new Date(
-							store.lastRefreshedExchanges
-						))
+				store.lastRefreshedExchanges = store.lastRefreshedExchanges
+					? new Date(store.lastRefreshedExchanges)
 					: undefined;
-				store.lastRefreshedRecipes
-					? (store.lastRefreshedRecipes = new Date(
-							store.lastRefreshedRecipes
-						))
+				store.lastRefreshedRecipes = store.lastRefreshedRecipes
+					? new Date(store.lastRefreshedRecipes)
 					: undefined;
-				store.lastRefreshedBuildings
-					? (store.lastRefreshedBuildings = new Date(
-							store.lastRefreshedBuildings
-						))
+				store.lastRefreshedBuildings = store.lastRefreshedBuildings
+					? new Date(store.lastRefreshedBuildings)
 					: undefined;
-				store.lastRefreshedFIOStorage
-					? (store.lastRefreshedFIOStorage = new Date(
-							store.lastRefreshedFIOStorage
-						))
+				store.lastRefreshedFIOStorage = store.lastRefreshedFIOStorage
+					? new Date(store.lastRefreshedFIOStorage)
 					: undefined;
-				store.lastRefreshedFIOSites
-					? (store.lastRefreshedFIOSites = new Date(
-							store.lastRefreshedFIOSites
-						))
+				store.lastRefreshedFIOSites = store.lastRefreshedFIOSites
+					? new Date(store.lastRefreshedFIOSites)
 					: undefined;
 
 				if (store.lastRefreshedPlanets) {

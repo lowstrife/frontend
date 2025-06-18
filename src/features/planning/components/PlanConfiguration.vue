@@ -17,14 +17,17 @@
 		planName: {
 			type: String,
 			required: false,
+			default: undefined,
 		},
 		empireOptions: {
 			type: Array as PropType<IPlanEmpire[]>,
 			required: false,
+			default: undefined,
 		},
 		activeEmpire: {
 			type: Object as PropType<IPlanEmpire>,
 			required: false,
+			default: undefined,
 		},
 		planEmpires: {
 			type: Array as PropType<IPlanEmpire[]>,
@@ -103,23 +106,22 @@
 		label-placement="left"
 		label-width="auto"
 		label-align="left"
-		size="small"
-	>
+		size="small">
 		<n-form-item label="Name">
 			<n-input
 				v-model:value="localPlanName"
 				placeholder="Plan Name"
-				:on-update:value="(value: string) => emit('update:plan-name', value)"
-			/>
+				:on-update:value="
+					(value: string) => emit('update:plan-name', value)
+				" />
 		</n-form-item>
 		<n-form-item label="Empire">
 			<n-select
-				:options="empireSelectOptions"
 				v-model:value="localActiveEmpireUuid"
+				:options="empireSelectOptions"
 				:on-update:value="
 					(value: string) => emit('update:active-empire', value)
-				"
-			/>
+				" />
 		</n-form-item>
 	</n-form>
 </template>

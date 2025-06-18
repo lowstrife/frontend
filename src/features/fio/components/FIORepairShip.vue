@@ -12,7 +12,7 @@
 	// UI
 	import { XNDataTable, XNDataTableColumn } from "@skit/x.naive-ui";
 
-	const props = defineProps({
+	defineProps({
 		repairData: {
 			type: Array as PropType<IFIOSitesRepairTableShipElement[]>,
 			required: true,
@@ -25,29 +25,29 @@
 
 	<x-n-data-table :data="repairData" striped>
 		<x-n-data-table-column
-			title="Id"
 			key="shipRegistration"
+			title="Id"
 			sorter="default" />
-		<x-n-data-table-column title="Name" key="shipName" sorter="default" />
+		<x-n-data-table-column key="shipName" title="Name" sorter="default" />
 		<x-n-data-table-column
-			title="Condition"
 			key="condition"
+			title="Condition"
 			sorter="default">
 			<template #render-cell="{ rowData }">
 				{{ formatNumber(rowData.condition * 100) }} %
 			</template>
 		</x-n-data-table-column>
 		<x-n-data-table-column
-			title="Repair Materials"
 			key="repairMaterials"
+			title="Repair Materials"
 			sorter="default">
 			<template #render-cell="{ rowData }">
 				<div class="flex gap-x-1">
 					<MaterialTile
-						:ticker="material.ticker"
-						:amount="material.amount"
 						v-for="material in rowData.repairMaterials"
-						:key="material.ticker" />
+						:key="material.ticker"
+						:ticker="material.ticker"
+						:amount="material.amount" />
 				</div>
 			</template>
 		</x-n-data-table-column>

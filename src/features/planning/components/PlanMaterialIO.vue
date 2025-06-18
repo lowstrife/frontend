@@ -53,19 +53,20 @@
 				<th class="!text-center">Input</th>
 				<th class="!text-center">Output</th>
 				<th class="!text-center">Δ</th>
-				<th class="!text-end" v-if="!localShowBasked">$ / day</th>
-				<th class="!text-center" v-if="localShowBasked">Δ t</th>
-				<th class="!text-center" v-if="localShowBasked">Δ m³</th>
+				<th v-if="!localShowBasked" class="!text-end">$ / day</th>
+				<th v-if="localShowBasked" class="!text-center">Δ t</th>
+				<th v-if="localShowBasked" class="!text-center">Δ m³</th>
 			</tr>
 		</thead>
 		<tbody>
 			<tr
 				v-for="material in localMaterialIOData"
 				:key="`IO#${material.ticker}`"
-				class="child:text-center child:first:text-left"
-			>
+				class="child:text-center child:first:text-left">
 				<td>
-					<MaterialTile :ticker="material.ticker" :disable-drawer="false" />
+					<MaterialTile
+						:ticker="material.ticker"
+						:disable-drawer="false" />
 				</td>
 				<td :class="material.input === 0 ? '!text-white/20' : ''">
 					{{ formatNumber(material.input) }}
@@ -73,30 +74,36 @@
 				<td :class="material.output === 0 ? '!text-white/20' : ''">
 					{{ formatNumber(material.output) }}
 				</td>
-				<td :class="material.delta > 0 ? '!text-positive' : '!text-negative'">
+				<td
+					:class="
+						material.delta > 0 ? '!text-positive' : '!text-negative'
+					">
 					{{ formatNumber(material.delta) }}
 				</td>
 				<td
 					v-if="!localShowBasked"
 					class="!text-end"
-					:class="material.price > 0 ? '!text-positive' : '!text-negative'"
-				>
+					:class="
+						material.price > 0 ? '!text-positive' : '!text-negative'
+					">
 					{{ formatNumber(material.price) }}
 				</td>
 				<td
 					v-if="localShowBasked"
 					:class="
-						material.totalWeight > 0 ? '!text-positive' : '!text-negative'
-					"
-				>
+						material.totalWeight > 0
+							? '!text-positive'
+							: '!text-negative'
+					">
 					{{ formatNumber(material.totalWeight) }}
 				</td>
 				<td
 					v-if="localShowBasked"
 					:class="
-						material.totalVolume > 0 ? '!text-positive' : '!text-negative'
-					"
-				>
+						material.totalVolume > 0
+							? '!text-positive'
+							: '!text-negative'
+					">
 					{{ formatNumber(material.totalVolume) }}
 				</td>
 			</tr>

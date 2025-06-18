@@ -53,18 +53,17 @@
 </script>
 
 <template>
-	<div class="bg-red-500/50 p-2 mb-3" v-if="totalExperts > 6">
+	<div v-if="totalExperts > 6" class="bg-red-500/50 p-2 mb-3">
 		Maximum number of experts on a base is 6. You currently have
 		{{ totalExperts }} experts assigned.
 	</div>
 	<div
-		class="grid grid-cols-1 lg:grid-cols-[auto_auto_auto] gap-3 child:my-auto child:text-nowrap"
-	>
+		class="grid grid-cols-1 lg:grid-cols-[auto_auto_auto] gap-3 child:my-auto child:text-nowrap">
 		<template v-for="expert in expertData" :key="expert.name">
 			<div>{{ capitalizeString(expert.name) }}</div>
 			<n-input-number
-				:disabled="disabled"
 				v-model:value="localExpertData[expert.name].amount"
+				:disabled="disabled"
 				:min="0"
 				:max="5"
 				size="small"
@@ -75,9 +74,10 @@
 							emit('update:expert', expert.name, value);
 						}
 					}
-				"
-			/>
-			<div class="text-end" :class="expert.bonus === 0 ? 'text-white/50' : ''">
+				" />
+			<div
+				class="text-end"
+				:class="expert.bonus === 0 ? 'text-white/50' : ''">
 				{{ formatNumber(expert.bonus * 100, 2) }} %
 			</div>
 		</template>

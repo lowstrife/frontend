@@ -27,14 +27,12 @@ import { usePlanCalculationPreComputes } from "@/features/planning/usePlanCalcul
 // Types & Interfaces
 import { IBuilding, IPlanet, IRecipe } from "@/features/api/gameData.types";
 import {
-	EXPERT_TYPE,
 	IAreaResult,
 	IExpertRecord,
 	IInfrastructureRecord,
 	IMaterialIO,
 	IMaterialIOMaterial,
 	IMaterialIOMinimal,
-	INFRASTRUCTURE_TYPE,
 	IPlanResult,
 	IProductionBuilding,
 	IProductionBuildingRecipe,
@@ -167,20 +165,27 @@ export function usePlanCalculation(
 		// calculate capacity from infrastructure buildings
 		data.value.infrastructure.forEach((infrastructure) => {
 			if (infrastructure.amount > 0) {
-				const infBuildingData: IBuilding = getBuilding(infrastructure.building);
+				const infBuildingData: IBuilding = getBuilding(
+					infrastructure.building
+				);
 
 				// must provide workforce habitation
 				if (infBuildingData.Habitation !== null) {
 					result.pioneer.capacity +=
-						infBuildingData.Habitation.Pioneer * infrastructure.amount;
+						infBuildingData.Habitation.Pioneer *
+						infrastructure.amount;
 					result.settler.capacity +=
-						infBuildingData.Habitation.Settler * infrastructure.amount;
+						infBuildingData.Habitation.Settler *
+						infrastructure.amount;
 					result.technician.capacity +=
-						infBuildingData.Habitation.Technician * infrastructure.amount;
+						infBuildingData.Habitation.Technician *
+						infrastructure.amount;
 					result.engineer.capacity +=
-						infBuildingData.Habitation.Engineer * infrastructure.amount;
+						infBuildingData.Habitation.Engineer *
+						infrastructure.amount;
 					result.scientist.capacity +=
-						infBuildingData.Habitation.Scientist * infrastructure.amount;
+						infBuildingData.Habitation.Scientist *
+						infrastructure.amount;
 				}
 			}
 		});
@@ -188,7 +193,9 @@ export function usePlanCalculation(
 		// calculate required workforce from production buildings
 		data.value.buildings.forEach((prodBuilding) => {
 			if (prodBuilding.amount > 0) {
-				const prodBuildingData: IBuilding = getBuilding(prodBuilding.name);
+				const prodBuildingData: IBuilding = getBuilding(
+					prodBuilding.name
+				);
 
 				result.pioneer.required +=
 					prodBuildingData.Pioneers * prodBuilding.amount;
@@ -232,12 +239,14 @@ export function usePlanCalculation(
 	function calculateAreaResult(): IAreaResult {
 		// Core Module holds 25 area
 		let areaUsed: number = 25;
-		let areaTotal: number = 250 + planet.value.permits * 250;
+		const areaTotal: number = 250 + planet.value.permits * 250;
 
 		// calculate area used based on production and infrastructure buildings
 		data.value.infrastructure.forEach((infrastructure) => {
 			if (infrastructure.amount > 0) {
-				const infBuildingData: IBuilding = getBuilding(infrastructure.building);
+				const infBuildingData: IBuilding = getBuilding(
+					infrastructure.building
+				);
 
 				areaUsed += infBuildingData.AreaCost * infrastructure.amount;
 			}
@@ -332,7 +341,7 @@ export function usePlanCalculation(
 		workforce: IWorkforceRecord,
 		experts: IExpertRecord
 	): IProductionResult {
-		let buildings: IProductionBuilding[] = [];
+		const buildings: IProductionBuilding[] = [];
 
 		// add buildings from data
 		data.value.buildings.forEach((b) => {
@@ -386,7 +395,8 @@ export function usePlanCalculation(
 			// update active recipes timeshare
 			activeRecipes.forEach(
 				(updateDailyShare) =>
-					(updateDailyShare.dailyShare = updateDailyShare.time / totalBatchTime)
+					(updateDailyShare.dailyShare =
+						updateDailyShare.time / totalBatchTime)
 			);
 
 			// get construction materials
@@ -411,14 +421,22 @@ export function usePlanCalculation(
 					// output revenue
 					const dailyIncome: number = getMaterialIOTotalPrice(
 						br.Outputs.map((o) => {
-							return { ticker: o.Ticker, output: o.Amount, input: 0 };
+							return {
+								ticker: o.Ticker,
+								output: o.Amount,
+								input: 0,
+							};
 						}),
 						"SELL"
 					);
 					// input cost
 					const dailyCost: number = getMaterialIOTotalPrice(
 						br.Inputs.map((i) => {
-							return { ticker: i.Ticker, output: 0, input: i.Amount };
+							return {
+								ticker: i.Ticker,
+								output: 0,
+								input: i.Amount,
+							};
 						}),
 						"SELL"
 					);
@@ -481,11 +499,15 @@ export function usePlanCalculation(
 					enhanceMaterialIOMinimal(calculateMaterialIO([building]))
 				);
 
-			const productionRevenue: number = productionMaterialIOEnhanced.reduce(
-				(sum, element) =>
-					sum + (element.delta < 0 ? element.price * -1 : element.price),
-				0
-			);
+			const productionRevenue: number =
+				productionMaterialIOEnhanced.reduce(
+					(sum, element) =>
+						sum +
+						(element.delta < 0
+							? element.price * -1
+							: element.price),
+					0
+				);
 
 			// WorkforceDailyCost is just per Building, so need to multiply
 			building.dailyRevenue =
@@ -538,10 +560,12 @@ export function usePlanCalculation(
 
 		// combine and enhance
 		const combinedMaterialIOMinimal: IMaterialIOMinimal[] =
-			combineMaterialIOMinimal([workforceMaterialIO, productionMaterialIO]);
-		const materialIOMaterial: IMaterialIOMaterial[] = enhanceMaterialIOMinimal(
-			combinedMaterialIOMinimal
-		);
+			combineMaterialIOMinimal([
+				workforceMaterialIO,
+				productionMaterialIO,
+			]);
+		const materialIOMaterial: IMaterialIOMaterial[] =
+			enhanceMaterialIOMinimal(combinedMaterialIOMinimal);
 		const materialIO: IMaterialIO[] =
 			enhanceMaterialIOMaterial(materialIOMaterial);
 
@@ -554,7 +578,8 @@ export function usePlanCalculation(
 		 */
 
 		const materialCost: number = materialIO.reduce(
-			(sum, element) => sum + (element.delta < 0 ? element.price * -1 : 0),
+			(sum, element) =>
+				sum + (element.delta < 0 ? element.price * -1 : 0),
 			0
 		);
 		const materialRevenue: number = materialIO.reduce(
@@ -563,7 +588,8 @@ export function usePlanCalculation(
 		);
 		const dailyDegradationCost: number =
 			productionResult.buildings.reduce(
-				(sum, element) => sum + element.constructionCost * -1 * element.amount,
+				(sum, element) =>
+					sum + element.constructionCost * -1 * element.amount,
 				0
 			) *
 			(1 / 180);

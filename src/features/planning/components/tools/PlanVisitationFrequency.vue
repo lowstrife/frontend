@@ -45,6 +45,7 @@
 		planUuid: {
 			type: String,
 			required: false,
+			default: undefined,
 		},
 	});
 
@@ -228,7 +229,7 @@
 			<n-table striped>
 				<thead class="child:text-center">
 					<tr>
-						<th></th>
+						<th />
 						<th>m³</th>
 						<th>t</th>
 					</tr>
@@ -265,13 +266,13 @@
 			</p>
 
 			<n-select
-				:disabled="disabled"
 				v-model:value="refMaterialExclusions"
+				:disabled="disabled"
 				:options="refMaterialExclusionOption"
 				multiple
 				size="small"
 				filterable
-				v-on:update-value="
+				@update-value="
 					(value: string[]) => {
 						if (planPrefs !== null) {
 							planPrefs.visitationMaterialExclusions.value =
@@ -295,7 +296,7 @@
 						<th class="!text-center">Limit</th>
 					</tr>
 					<tr>
-						<th colspan="2"></th>
+						<th colspan="2" />
 						<th colspan="2" class="!text-center">
 							Export Frequency
 						</th>

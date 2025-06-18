@@ -146,11 +146,14 @@ export function useBonusCalculation() {
 		efficiency +=
 			(building.Settlers / totalWorkforce) * workforce.settler.efficiency;
 		efficiency +=
-			(building.Technicians / totalWorkforce) * workforce.technician.efficiency;
+			(building.Technicians / totalWorkforce) *
+			workforce.technician.efficiency;
 		efficiency +=
-			(building.Engineers / totalWorkforce) * workforce.engineer.efficiency;
+			(building.Engineers / totalWorkforce) *
+			workforce.engineer.efficiency;
 		efficiency +=
-			(building.Scientists / totalWorkforce) * workforce.scientist.efficiency;
+			(building.Scientists / totalWorkforce) *
+			workforce.scientist.efficiency;
 
 		return efficiency;
 	}
@@ -215,13 +218,16 @@ export function useBonusCalculation() {
 		totalEfficiency: number;
 		elements: IBuildingEfficiency[];
 	} {
-		let elements: IBuildingEfficiency[] = [];
+		const elements: IBuildingEfficiency[] = [];
 
 		// Fertility and Farming buildings
 		if (["FRM", "ORC"].includes(building.Ticker)) {
 			elements.push({
 				efficiencyType: "FERTILITY",
-				value: planet.Fertility != -1.0 ? 1 + planet.Fertility * (10 / 33) : 0,
+				value:
+					planet.Fertility != -1.0
+						? 1 + planet.Fertility * (10 / 33)
+						: 0,
 			});
 		}
 

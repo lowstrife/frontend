@@ -1,4 +1,4 @@
-import { ref, Ref, watch } from "vue";
+import { ref, Ref } from "vue";
 
 // Composables
 import { useBuildingData } from "@/features/game_data/useBuildingData";
@@ -118,9 +118,8 @@ export function usePlanCalculationHandlers(
 	 * @param {number} value Experts set for type in plan
 	 */
 	function handleUpdateExpert(expert: EXPERT_TYPE, value: number): void {
-		const expertData: IPlanDataExpert | undefined = planet.value.experts.find(
-			(e) => e.type === expert
-		);
+		const expertData: IPlanDataExpert | undefined =
+			planet.value.experts.find((e) => e.type === expert);
 
 		if (expertData) {
 			expertData.amount = clamp(value, 0, 5);
@@ -140,7 +139,9 @@ export function usePlanCalculationHandlers(
 		value: number
 	): void {
 		const infData: IPlanDataInfrastructure | undefined =
-			planData.value.infrastructure.find((i) => i.building === infrastructure);
+			planData.value.infrastructure.find(
+				(i) => i.building === infrastructure
+			);
 
 		if (infData) {
 			infData.amount = value;
@@ -228,7 +229,9 @@ export function usePlanCalculationHandlers(
 	): void {
 		// validate building index
 		if (typeof planData.value.buildings[buildingIndex] === "undefined") {
-			throw new Error(`Building at index '${buildingIndex}' does not exist.`);
+			throw new Error(
+				`Building at index '${buildingIndex}' does not exist.`
+			);
 		}
 
 		// validate recipe index
@@ -242,8 +245,9 @@ export function usePlanCalculationHandlers(
 			);
 		}
 
-		planData.value.buildings[buildingIndex].active_recipes[recipeIndex].amount =
-			value;
+		planData.value.buildings[buildingIndex].active_recipes[
+			recipeIndex
+		].amount = value;
 
 		modified.value = true;
 	}
@@ -262,7 +266,9 @@ export function usePlanCalculationHandlers(
 	): void {
 		// validate building index
 		if (typeof planData.value.buildings[buildingIndex] === "undefined") {
-			throw new Error(`Building at index '${buildingIndex}' does not exist.`);
+			throw new Error(
+				`Building at index '${buildingIndex}' does not exist.`
+			);
 		}
 
 		// validate recipe index
@@ -302,7 +308,9 @@ export function usePlanCalculationHandlers(
 	function handleAddBuildingRecipe(buildingIndex: number): void {
 		// validate building index
 		if (typeof planData.value.buildings[buildingIndex] === "undefined") {
-			throw new Error(`Building at index '${buildingIndex}' does not exist.`);
+			throw new Error(
+				`Building at index '${buildingIndex}' does not exist.`
+			);
 		}
 
 		// ensure the building is also in the result + got recipe options
@@ -320,8 +328,8 @@ export function usePlanCalculationHandlers(
 		// add first option to the data
 		planData.value.buildings[buildingIndex].active_recipes.push({
 			recipeid:
-				planResult.value.production.buildings[buildingIndex].recipeOptions[0]
-					.RecipeId,
+				planResult.value.production.buildings[buildingIndex]
+					.recipeOptions[0].RecipeId,
 			amount: 1,
 		});
 
@@ -344,7 +352,9 @@ export function usePlanCalculationHandlers(
 	): void {
 		// validate building index
 		if (typeof planData.value.buildings[buildingIndex] === "undefined") {
-			throw new Error(`Building at index '${buildingIndex}' does not exist.`);
+			throw new Error(
+				`Building at index '${buildingIndex}' does not exist.`
+			);
 		}
 
 		// validate recipe index

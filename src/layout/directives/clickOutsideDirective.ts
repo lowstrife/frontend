@@ -13,24 +13,30 @@ Is used in Dropdown elements on BaseView to handle the recipe selection:
     "
 >
 */
+import type { DirectiveBinding } from "vue";
 
 export default {
 	name: "ClickOutSide",
-	beforeMount: function (el: any, binding: any) {
-		binding.event = function (event: any) {
-			if (!(el === event.target || el.contains(event.target))) {
-				if (binding.value instanceof Function) {
+
+	beforeMount(
+		el: HTMLElement & { _clickListener?: (event: Event) => void },
+		binding: DirectiveBinding
+	) {
+		const handler = (event: Event) => {
+			if (!(el === event.target || el.contains(event.target as Node))) {
+				if (typeof binding.value === "function") {
 					binding.value(event);
 				}
 			}
 		};
 
-		document.body.addEventListener("click", binding.event);
-		// saving this on the element as the same instance
-		// needs to be removed in unmounted
-		el._clickListener = binding.event;
+		document.body.addEventListener("click", handler);
+		el._clickListener = handler;
 	},
-	unmounted: function (el: any) {
-		document.body.removeEventListener("click", el._clickListener);
+
+	unmounted(el: HTMLElement & { _clickListener?: (event: Event) => void }) {
+		if (el._clickListener) {
+			document.body.removeEventListener("click", el._clickListener);
+		}
 	},
 };

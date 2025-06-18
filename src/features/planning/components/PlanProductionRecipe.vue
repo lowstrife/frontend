@@ -38,13 +38,19 @@
 	});
 
 	const emit = defineEmits<{
-		(e: "update:building:recipe:amount", index: number, value: number): void;
+		(
+			e: "update:building:recipe:amount",
+			index: number,
+			value: number
+		): void;
 		(e: "delete:building:recipe", index: number): void;
 		(e: "update:building:recipe", index: number, recipeid: string): void;
 	}>();
 
 	// Local State
-	const localRecipeData: Ref<IProductionBuildingRecipe> = ref(props.recipeData);
+	const localRecipeData: Ref<IProductionBuildingRecipe> = ref(
+		props.recipeData
+	);
 	const localRecipeOptions: Ref<IRecipeBuildingOption[]> = ref(
 		props.recipeOptions
 	);
@@ -81,51 +87,55 @@
 <template>
 	<div>
 		<n-input-number
-			:disabled="disabled"
 			v-model:value="localRecipeAmount"
+			:disabled="disabled"
 			size="small"
 			:min="0"
-			v-on:update:value="
+			@update:value="
 				(value: number | null) => {
 					if (value !== null) {
-						emit('update:building:recipe:amount', recipeIndex, value);
+						emit(
+							'update:building:recipe:amount',
+							recipeIndex,
+							value
+						);
 					}
 				}
-			"
-		/>
+			" />
 		<div
-			class="border border-pp-border my-3 p-3 flex flex-row justify-between child:my-auto hover:cursor-pointer"
-			@click="refShowRecipeOptions = true"
 			v-click-outside="
 				() => {
 					refShowRecipeOptions = false;
 				}
 			"
-		>
+			class="border border-pp-border my-3 p-3 flex flex-row justify-between child:my-auto hover:cursor-pointer"
+			@click="refShowRecipeOptions = true">
 			<div class="flex gap-x-1">
 				<MaterialTile
-					:ticker="material.Ticker"
-					:amount="material.Amount"
 					v-for="material in localRecipeData.recipe.Outputs"
 					:key="`${localRecipeData.recipe.BuildingTicker}#${material.Ticker}`"
-				/>
+					:ticker="material.Ticker"
+					:amount="material.Amount" />
 			</div>
 			<div class="text-white/50 text-xs">
 				<span class="font-bold">
 					{{ humanizeTimeMs(localRecipeData.time) }}
 				</span>
 				<br />
-				<span>{{ formatNumber(localRecipeData.dailyShare * 100) }} %</span>
+				<span
+					>{{
+						formatNumber(localRecipeData.dailyShare * 100)
+					}}
+					%</span
+				>
 			</div>
 		</div>
 		<div
 			class="relative z-10"
-			:class="refShowRecipeOptions ? 'visible' : 'hidden'"
-		>
+			:class="refShowRecipeOptions ? 'visible' : 'hidden'">
 			<n-table
 				class="absolute lg:!min-w-[500px] border border-pp-border !bg-black"
-				striped
-			>
+				striped>
 				<thead>
 					<tr>
 						<th>Input</th>
@@ -141,23 +151,24 @@
 						:key="`${recipe.BuildingTicker}#${recipe.RecipeId}`"
 						class="child:whitespace-nowrap hover:cursor-pointer"
 						@click="
-							emit('update:building:recipe', localRecipeIndex, recipe.RecipeId)
-						"
-					>
+							emit(
+								'update:building:recipe',
+								localRecipeIndex,
+								recipe.RecipeId
+							)
+						">
 						<td
 							:class="
 								recipe.RecipeId === localRecipeData.recipeId
 									? '!border-l-3 !border-l-green-500'
 									: ''
-							"
-						>
+							">
 							<div class="flex gap-1">
 								<MaterialTile
-									:ticker="material.Ticker"
-									:amount="material.Amount"
 									v-for="material in recipe.Inputs"
 									:key="`${index}#INPUT#${material.Ticker}`"
-								/>
+									:ticker="material.Ticker"
+									:amount="material.Amount" />
 							</div>
 						</td>
 						<td>
@@ -166,38 +177,48 @@
 						<td>
 							<div class="flex gap-1">
 								<MaterialTile
-									:ticker="material.Ticker"
-									:amount="material.Amount"
 									v-for="material in recipe.Outputs"
 									:key="`${index}#OUTPUT#${material.Ticker}`"
-								/>
+									:ticker="material.Ticker"
+									:amount="material.Amount" />
 							</div>
 						</td>
 						<td
 							:class="
-								recipe.dailyRevenue >= 0 ? '!text-positive' : '!text-negative'
-							"
-						>
+								recipe.dailyRevenue >= 0
+									? '!text-positive'
+									: '!text-negative'
+							">
 							{{ formatNumber(recipe.dailyRevenue) }} $
 						</td>
-						<td :class="recipe.roi >= 0 ? '!text-positive' : '!text-negative'">
+						<td
+							:class="
+								recipe.roi >= 0
+									? '!text-positive'
+									: '!text-negative'
+							">
 							{{ formatNumber(recipe.roi) }} d
 						</td>
 					</tr>
 				</tbody>
 				<tbody>
 					<tr>
-						<td colspan="5" class="text-xs !p-2 !text-white/60 !border-t-1">
-							<strong>Revenue / Day</strong> is calculated by taking the daily
-							income generated from a recipe and subtracting both the daily
-							workforce cost (all luxuries provided) and the daily building
-							degradation cost (1/180th of the construction cost). The income
-							from the recipe is based on the difference between the input
-							material costs and the output material values.
-							<strong>ROI (Payback)</strong> is the time required for a
-							continuously operating recipe to generate enough revenue to offset
-							the building's construction cost. This considers daily degradation
-							and workforce costs as well.
+						<td
+							colspan="5"
+							class="text-xs !p-2 !text-white/60 !border-t-1">
+							<strong>Revenue / Day</strong> is calculated by
+							taking the daily income generated from a recipe and
+							subtracting both the daily workforce cost (all
+							luxuries provided) and the daily building
+							degradation cost (1/180th of the construction cost).
+							The income from the recipe is based on the
+							difference between the input material costs and the
+							output material values.
+							<strong>ROI (Payback)</strong> is the time required
+							for a continuously operating recipe to generate
+							enough revenue to offset the building's construction
+							cost. This considers daily degradation and workforce
+							costs as well.
 						</td>
 					</tr>
 				</tbody>
@@ -215,8 +236,7 @@
 					() => {
 						emit('delete:building:recipe', localRecipeIndex);
 					}
-				"
-			>
+				">
 				<template #icon><ClearSharp /></template>
 			</n-button>
 		</div>

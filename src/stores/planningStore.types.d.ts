@@ -1,7 +1,7 @@
-interface IPlanRecord extends Record<string, IPlan> {}
-interface IEmpireRecord extends Record<string, IPlanEmpireElement> {}
-interface ICXRecord extends Record<string, ICX> {}
-interface ISharedRecord extends Record<string, ISharedPlan> {}
+type IPlanRecord = Record<string, IPlan>;
+type IEmpireRecord = Record<string, IPlanEmpireElement>;
+type ICXRecord = Record<string, ICX>;
+type ISharedRecord = Record<string, ISharedPlan>;
 
 export type PLAN_COGCPROGRAM_TYPE =
 	| "---"

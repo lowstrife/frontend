@@ -46,7 +46,7 @@ interface IEmpirePatchPayload {
 	use_fio_storage: boolean;
 }
 
-interface IEmpireCreatePayload extends IEmpirePatchPayload {}
+type IEmpireCreatePayload = IEmpirePatchPayload;
 
 interface IEmpireCostOverview {
 	totalProfit: number;

@@ -68,9 +68,9 @@
 		size="small">
 		<n-form-item label="Default Empire">
 			<n-select
-				:options="empireOptions"
 				v-model:value="defaultEmpireUuid"
-				v-on:update:value="
+				:options="empireOptions"
+				@update:value="
 					(value: string | undefined) => {
 						if (value) {
 							defaultEmpireUuid = value;

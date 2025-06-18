@@ -267,13 +267,13 @@
 							</span>
 						</div>
 					</td>
-					<td></td>
+					<td />
 				</tr>
 			</template>
 		</tbody>
 	</n-table>
 
-	<div class="py-3 text-white/60" v-if="userStore.hasFIO">
+	<div v-if="userStore.hasFIO" class="py-3 text-white/60">
 		Data from FIO is fetched if you did add your Prosperous Universe
 		username and a FIO API Key. The refresh happens periodically in the
 		background, new data becomes available automatically.

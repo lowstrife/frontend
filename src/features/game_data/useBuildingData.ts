@@ -22,7 +22,7 @@ import { SelectMixedOption } from "naive-ui/es/select/src/interface";
 import {
 	IMaterialIOMinimal,
 	IWorkforceRecord,
-} from "../planning/usePlanCalculation.types";
+} from "@/features/planning/usePlanCalculation.types";
 import { PLAN_COGCPROGRAM_TYPE } from "@/stores/planningStore.types";
 
 export function useBuildingData() {
@@ -159,11 +159,14 @@ export function useBuildingData() {
 					RecipeName: buildingTicker,
 					TimeMs: timeMs,
 					Inputs: [],
-					Outputs: [{ Ticker: res.MaterialTicker, Amount: extractionAmount }],
+					Outputs: [
+						{
+							Ticker: res.MaterialTicker,
+							Amount: extractionAmount,
+						},
+					],
 				};
 			});
-
-			relevantResources.forEach((res) => {});
 
 			return resourceRecipes;
 		} else {

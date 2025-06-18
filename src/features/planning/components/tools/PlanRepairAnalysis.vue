@@ -1,11 +1,6 @@
 <script setup lang="ts">
 	import { computed, ComputedRef, PropType, Ref, ref, watch } from "vue";
 
-	import {
-		IMaterialIOMaterial,
-		IMaterialIOMinimal,
-	} from "@/features/planning/usePlanCalculation.types";
-
 	// Composables
 	import { usePrice } from "@/features/cx/usePrice";
 
@@ -18,6 +13,7 @@
 		IPlanRepairAnalysisElement,
 	} from "@/features/planning/components/tools/planRepairAnalysis.types";
 	import { SelectMixedOption } from "naive-ui/es/select/src/interface";
+	import { IMaterialIOMinimal } from "@/features/planning/usePlanCalculation.types";
 	import { Options } from "highcharts";
 
 	// UI
@@ -32,10 +28,12 @@
 		cxUuid: {
 			type: String,
 			required: false,
+			default: undefined,
 		},
 		planetNaturalId: {
 			type: String,
 			required: false,
+			default: undefined,
 		},
 	});
 
@@ -102,17 +100,23 @@
 				0.33 + 0.67 / (1 + Math.exp((1789 / 25000) * (i - 100.87)));
 
 			const dailyRevenue: number =
-				efficiency * localData.value[selectedBuilding.value].dailyRevenue;
+				efficiency *
+				localData.value[selectedBuilding.value].dailyRevenue;
 			previous += dailyRevenue;
 			const dailyRevenue_norm: number = previous / (i + 1);
 
-			const mat: { ticker: string; amount: number }[] = materials.map((m) => {
-				return {
-					ticker: m.ticker,
-					amount:
-						m.input - Math.floor((m.input * (180 - Math.min(180, i))) / 180),
-				};
-			});
+			const mat: { ticker: string; amount: number }[] = materials.map(
+				(m) => {
+					return {
+						ticker: m.ticker,
+						amount:
+							m.input -
+							Math.floor(
+								(m.input * (180 - Math.min(180, i))) / 180
+							),
+					};
+				}
+			);
 
 			const rep: number = mat.reduce(
 				(sum, element) =>
@@ -268,25 +272,22 @@
 		<a
 			href="https://docs.google.com/spreadsheets/d/1ELsfw4ii1hQFWDd-BL4JzwqHc-wGVXbJtvAeprv0pZ0/edit?gid=753753671#gid=753753671"
 			target="_blank"
-			class="underline"
-		>
+			class="underline">
 			MoonSugarTravels PrUn building repair calculator
 		</a>
-		who deeply analyzed the degradation mechanics and how to find the optimal
-		intersection of profitability and repair cost.
+		who deeply analyzed the degradation mechanics and how to find the
+		optimal intersection of profitability and repair cost.
 	</div>
 	<div class="w-1/2 min-w-[400px] pb-3">
 		<n-form
 			label-placement="left"
 			label-width="auto"
 			label-align="left"
-			size="small"
-		>
+			size="small">
 			<n-form-item label="Building">
 				<n-select
 					v-model:value="selectedBuilding"
-					:options="selectionOptions"
-				/>
+					:options="selectionOptions" />
 			</n-form-item>
 		</n-form>
 	</div>
@@ -296,19 +297,17 @@
 				<h2 class="text-lg font-bold pb-3">Profit Curve</h2>
 				<chart
 					v-if="rep.length > 0"
-					class="hc"
-					:options="chartOptions as Options"
 					ref="chart"
-				/>
+					class="hc"
+					:options="chartOptions as Options" />
 			</div>
 			<div>
 				<h2 class="text-lg font-bold pb-3">Repair Cost Breakdown</h2>
 				<chart
 					v-if="rep.length > 0"
-					class="hc"
-					:options="costOptions as Options"
 					ref="chart"
-				/>
+					class="hc"
+					:options="costOptions as Options" />
 			</div>
 		</div>
 	</template>

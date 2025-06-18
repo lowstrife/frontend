@@ -1,5 +1,4 @@
 import numbro from "numbro";
-import { number } from "zod";
 
 /**
  * Formats Number as String of 0,0.00

@@ -45,16 +45,14 @@
 		label-placement="left"
 		label-width="auto"
 		label-align="left"
-		size="small"
-	>
+		size="small">
 		<n-form-item label="Permits">
 			<n-input-number
-				class="text-center"
 				v-model:value="localPermits"
+				class="text-center"
 				button-placement="both"
 				:min="1"
-				:max="3"
-			/>
+				:max="3" />
 		</n-form-item>
 		<n-form-item label="Area">
 			<div class="flex flex-row w-full">
@@ -64,7 +62,11 @@
 				<div>
 					<span
 						class="font-bold"
-						:class="areaData.areaLeft >= 0 ? 'text-positive' : 'text-negative'"
+						:class="
+							areaData.areaLeft >= 0
+								? 'text-positive'
+								: 'text-negative'
+						"
 						>{{ areaData.areaLeft }}</span
 					>
 					Free

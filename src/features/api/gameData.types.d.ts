@@ -1,5 +1,3 @@
-import { z } from "zod";
-
 export interface IMaterial {
 	MaterialId: string;
 	CategoryName: string;

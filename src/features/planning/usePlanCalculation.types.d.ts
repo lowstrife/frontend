@@ -55,14 +55,15 @@ export interface IExpertElement {
 	bonus: number;
 }
 
-export interface IWorkforceRecord
-	extends Required<Record<WORKFORCE_TYPE, IWorkforceElement>> {}
+export type IWorkforceRecord = Required<
+	Record<WORKFORCE_TYPE, IWorkforceElement>
+>;
 
-export interface IInfrastructureRecord
-	extends Required<Record<INFRASTRUCTURE_TYPE, number>> {}
+export type IInfrastructureRecord = Required<
+	Record<INFRASTRUCTURE_TYPE, number>
+>;
 
-export interface IExpertRecord
-	extends Required<Record<EXPERT_TYPE, IExpertElement>> {}
+export type IExpertRecord = Required<Record<EXPERT_TYPE, IExpertElement>>;
 
 export interface IRecipeBuildingOption extends IRecipe {
 	dailyRevenue: number;
@@ -140,5 +141,4 @@ export interface IPreBuildingInformation {
 	workforceMaterials: IMaterialIOMinimal[];
 }
 
-export interface IPreBuildingRecord
-	extends Record<string, IPreBuildingInformation> {}
+export type IPreBuildingRecord = Record<string, IPreBuildingInformation>;

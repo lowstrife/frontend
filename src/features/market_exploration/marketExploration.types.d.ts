@@ -20,5 +20,4 @@ export interface IExplorationRequestPayload {
 	end: string;
 }
 
-export interface IMaterialExplorationRecord
-	extends Record<string, IExploration[]> {}
+export type IMaterialExplorationRecord = Record<string, IExploration[]>;

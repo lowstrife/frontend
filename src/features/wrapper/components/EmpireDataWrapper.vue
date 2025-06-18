@@ -23,6 +23,7 @@
 		empireUuid: {
 			type: String,
 			required: false,
+			default: undefined,
 		},
 	});
 
@@ -72,11 +73,16 @@
 
 			emit("update:empireList", empireLoadList);
 
-			const validEmpireUuid: boolean = empireLoadList.find((e) => e.uuid === props.empireUuid) ? true : false;
+			const validEmpireUuid: boolean = empireLoadList.find(
+				(e) => e.uuid === props.empireUuid
+			)
+				? true
+				: false;
 
-			const initialEmpireUuid: string = props.empireUuid && validEmpireUuid
-				? props.empireUuid
-				: empireLoadList[0].uuid;
+			const initialEmpireUuid: string =
+				props.empireUuid && validEmpireUuid
+					? props.empireUuid
+					: empireLoadList[0].uuid;
 			const findEmpire = empireLoadList.find(
 				(e) => e.uuid === initialEmpireUuid
 			);
@@ -155,12 +161,12 @@
 							Loading Data..
 						</h1>
 						<div
-							class="flex flex-row mb-2 align-middle"
 							v-for="(elem, index) in Object.values(loadingSteps)"
-							:key="index">
+							:key="index"
+							class="flex flex-row mb-2 align-middle">
 							<div class="pr-5">
 								<n-spin v-if="!elem.status" :size="20" />
-								<n-icon :size="20" v-else>
+								<n-icon v-else :size="20">
 									<CheckSharp />
 								</n-icon>
 							</div>

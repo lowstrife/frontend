@@ -138,7 +138,9 @@ export function usePrice(
 				// find potential planet exchange setting
 				const planetExchangePreference = cxData.cx_planets
 					.find((cp) => cp.planet === planetNaturalId.value)
-					?.preferences.find((cpp) => cpp.type === type || cpp.type === "BOTH");
+					?.preferences.find(
+						(cpp) => cpp.type === type || cpp.type === "BOTH"
+					);
 
 				if (planetExchangePreference) {
 					const { exchangeCode, key } = getExchangeCodeKey(
@@ -179,9 +181,11 @@ export function usePrice(
 
 			cache.set(cacheKey, price);
 			return price;
-		} catch (error: any) {
-			const exchangeError: Error = error;
-			console.error(exchangeError);
+		} catch (error) {
+			if (error instanceof Error) {
+				const exchangeError: Error = error;
+				console.error(exchangeError);
+			}
 			return 0;
 		}
 	}
