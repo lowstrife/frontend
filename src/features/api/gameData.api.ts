@@ -19,6 +19,8 @@ import {
 	PlanetMultipleRequestType,
 	PlanetPayloadType,
 	PlanetSchema,
+	PlanetSearchAdvancedPayloadSchema,
+	PlanetSearchAdvancedPayloadType,
 	RecipePayloadSchema,
 	RecipePayloadType,
 } from "@/features/api/schemas/gameData.schemas";
@@ -32,6 +34,7 @@ import {
 	IPlanet,
 	IFIOStorage,
 	IFIOSites,
+	IPlanetSearchAdvanced,
 } from "@/features/api/gameData.types";
 
 /**
@@ -165,5 +168,46 @@ export async function callDataFIOSites(): Promise<IFIOSites> {
 	return apiService.get<FIOSitesSchemaPayloadType>(
 		"/data/fio_sites",
 		FIOSitesSchema
+	);
+}
+
+/**
+ * Calls /data/planets/{searchId} to execute a basic planet search
+ * @author jplacht
+ *
+ * @export
+ * @async
+ * @param {string} searchId Planet Natural Id or Name Part
+ * @returns {Promise<IPlanet[]>} Search Results
+ */
+export async function callDataPlanetSearchSingle(
+	searchId: string
+): Promise<IPlanet[]> {
+	return apiService.get<PlanetMultiplePayloadType>(
+		`/data/planets/${searchId}`,
+		PlanetMultiplePayload
+	);
+}
+
+/**
+ * Executes a planet search request with set of parameters
+ * @author jplacht
+ *
+ * @export
+ * @async
+ * @param {IPlanetSearchAdvanced} searchData Search Parameter
+ * @returns {Promise<IPlanet[]>} Search Results
+ */
+export async function callDataPlanetSearch(
+	searchData: IPlanetSearchAdvanced
+): Promise<IPlanet[]> {
+	return apiService.post<
+		PlanetSearchAdvancedPayloadType,
+		PlanetMultiplePayloadType
+	>(
+		"/data/planet/search",
+		searchData,
+		PlanetSearchAdvancedPayloadSchema,
+		PlanetMultiplePayload
 	);
 }

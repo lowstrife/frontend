@@ -13,6 +13,8 @@ import {
 	callDataRecipes,
 	callDataFIOStorage,
 	callDataFIOSites,
+	callDataPlanetSearch,
+	callDataPlanetSearchSingle,
 } from "@/features/api/gameData.api";
 
 // test data
@@ -24,6 +26,7 @@ import planets from "@/tests/test_data/api_data_planets.json";
 import planet_single from "@/tests/test_data/api_data_planet_single.json";
 import fio_sites from "@/tests/test_data/api_data_fio_sites.json";
 import fio_storage from "@/tests/test_data/api_data_fio_storage.json";
+import planet_search_results from "@/tests/test_data/api_data_planet_search.json";
 
 // mock apiService client
 const mock = new AxiosMockAdapter(apiService.client);
@@ -123,5 +126,48 @@ describe("GameData API Calls", async () => {
 		);
 
 		expect(spyApiServiceGet).toHaveBeenCalled();
+	});
+
+	it("callDataPlanetSearchSingle", async () => {
+		const spyApiServiceGet = vi.spyOn(apiService, "get");
+
+		mock.onGet("/data/planets/foo").reply(200, planet_search_results);
+
+		const result = await callDataPlanetSearchSingle("foo");
+
+		expect(result.length).toBe(planet_search_results.length);
+
+		expect(spyApiServiceGet).toHaveBeenCalled();
+	});
+
+	it("callDataPlanetSearch", async () => {
+		const spyApiServicePost = vi.spyOn(apiService, "post");
+
+		mock.onPost("/data/planet/search").reply(200, planet_search_results);
+
+		const params = {
+			Materials: [],
+			COGC: [],
+			IncludeRocky: true,
+			IncludeGaseous: false,
+			IncludeLowGravity: false,
+			IncludeHighGravity: false,
+			IncludeLowPressure: false,
+			IncludeHighPressure: false,
+			IncludeLowTemperature: false,
+			IncludeHighTemperature: false,
+			MustBeFertile: false,
+			MustHaveLocalMarket: false,
+			MustHaveChamberOfCommerce: false,
+			MustHaveWarehouse: false,
+			MustHaveAdministrationCenter: false,
+			MustHaveShipyard: false,
+		};
+
+		const result = await callDataPlanetSearch(params);
+
+		expect(result.length).toBe(planet_search_results.length);
+
+		expect(spyApiServicePost).toHaveBeenCalled();
 	});
 });

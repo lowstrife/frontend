@@ -1,0 +1,3947 @@
+[
+	{
+		"PlanetId": "0e2167eec4e130aa995fb84b1ab41b3b",
+		"PlanetNaturalId": "OZ-189d",
+		"PlanetName": "OZ-189d",
+		"SystemId": "9172f08e5e490173b289f27e4f417365",
+		"HasLocalMarket": false,
+		"HasChamberOfCommerce": false,
+		"HasWarehouse": false,
+		"HasAdministrationCenter": false,
+		"HasShipyard": false,
+		"Pressure": 128.92788696289062,
+		"Surface": true,
+		"Temperature": -75.58160400390625,
+		"Fertility": -1,
+		"Gravity": 0.9465689063072205,
+		"FactionCode": "IC",
+		"FactionName": "Insitor Cooperative",
+		"GovernorUserName": null,
+		"COGCProgramStatus": null,
+		"Resources": [
+			{
+				"MaterialId": "a4a8a25d01f80586f7bad3488fa11f36",
+				"ResourceType": "MINERAL",
+				"Factor": 0.01246473379433155,
+				"DailyExtraction": 0.8725313656032085,
+				"MaterialTicker": "SCR",
+				"ExtractionMax": 24.403139054775238
+			},
+			{
+				"MaterialId": "7e3f98a49ce2d3c8361975de8b4bbea4",
+				"ResourceType": "MINERAL",
+				"Factor": 0.15828831493854523,
+				"DailyExtraction": 11.080182045698166,
+				"MaterialTicker": "HAL",
+				"ExtractionMax": 20.389353930950165
+			},
+			{
+				"MaterialId": "5d59ddddb1ce9a26eb81b78b8378b3ac",
+				"ResourceType": "GASEOUS",
+				"Factor": 0.054165616631507874,
+				"DailyExtraction": 3.2499369978904724,
+				"MaterialTicker": "N",
+				"ExtractionMax": 44.583009481430054
+			},
+			{
+				"MaterialId": "a014493f8716f1636704dc836acc66ec",
+				"ResourceType": "GASEOUS",
+				"Factor": 0.021073101088404655,
+				"DailyExtraction": 1.2643860653042793,
+				"MaterialTicker": "AR",
+				"ExtractionMax": 12.048392593860626
+			}
+		],
+		"Distances": [
+			{ "name": "Moria Station", "distance": 4 },
+			{ "name": "Antares Station", "distance": 10 },
+			{ "name": "Benten Station", "distance": 10 },
+			{ "name": "Hortus Station", "distance": 2 }
+		],
+		"COGCPrograms": [],
+		"COGCProgramActive": null,
+		"CheckDistances": {
+			"SystemIdStart": "ac35dd2a980e53fedd1a4fe87a909972",
+			"SystemIdTarget": "9172f08e5e490173b289f27e4f417365",
+			"SystemName": "Antares III",
+			"Distance": 10
+		}
+	},
+	{
+		"PlanetId": "6347c692cfb676781d029c2b569b7e2a",
+		"PlanetNaturalId": "LG-093b",
+		"PlanetName": "LG-093b",
+		"SystemId": "4eee5b5b819c3a64bd710bc9b9a7350b",
+		"HasLocalMarket": false,
+		"HasChamberOfCommerce": false,
+		"HasWarehouse": false,
+		"HasAdministrationCenter": false,
+		"HasShipyard": true,
+		"Pressure": 25.47883415222168,
+		"Surface": true,
+		"Temperature": -14.241800308227539,
+		"Fertility": -1,
+		"Gravity": 1.1954728364944458,
+		"FactionCode": null,
+		"FactionName": null,
+		"GovernorUserName": null,
+		"COGCProgramStatus": null,
+		"Resources": [
+			{
+				"MaterialId": "5d59ddddb1ce9a26eb81b78b8378b3ac",
+				"ResourceType": "LIQUID",
+				"Factor": 0.1388479471206665,
+				"DailyExtraction": 9.719356298446655,
+				"MaterialTicker": "N",
+				"ExtractionMax": 52.013511061668396
+			},
+			{
+				"MaterialId": "2adebc00bf7efaa693021426a68a3e65",
+				"ResourceType": "LIQUID",
+				"Factor": 0.02795502357184887,
+				"DailyExtraction": 1.9568516500294209,
+				"MaterialTicker": "HEX",
+				"ExtractionMax": 27.968516051769257
+			}
+		],
+		"Distances": [
+			{ "name": "Moria Station", "distance": 11 },
+			{ "name": "Antares Station", "distance": 9 },
+			{ "name": "Benten Station", "distance": 15 },
+			{ "name": "Hortus Station", "distance": 5 }
+		],
+		"COGCPrograms": [],
+		"COGCProgramActive": null,
+		"CheckDistances": {
+			"SystemIdStart": "ac35dd2a980e53fedd1a4fe87a909972",
+			"SystemIdTarget": "4eee5b5b819c3a64bd710bc9b9a7350b",
+			"SystemName": "Antares III",
+			"Distance": 10
+		}
+	},
+	{
+		"PlanetId": "077f94d08227c92cd609615b19ea7f0d",
+		"PlanetNaturalId": "ZV-307g",
+		"PlanetName": "ZV-307g",
+		"SystemId": "8ecf9670ba070d78cfb5537e8d9f1b6c",
+		"HasLocalMarket": true,
+		"HasChamberOfCommerce": true,
+		"HasWarehouse": true,
+		"HasAdministrationCenter": true,
+		"HasShipyard": false,
+		"Pressure": 1.6229199171066284,
+		"Surface": false,
+		"Temperature": -168.75173950195312,
+		"Fertility": -1,
+		"Gravity": 1.40047025680542,
+		"FactionCode": "AI",
+		"FactionName": "Antares Initiative",
+		"GovernorUserName": null,
+		"COGCProgramStatus": "ACTIVE",
+		"Resources": [
+			{
+				"MaterialId": "c04de28c3e717f236d6ed177b89d9523",
+				"ResourceType": "GASEOUS",
+				"Factor": 0.2652541995048523,
+				"DailyExtraction": 15.915251970291138,
+				"MaterialTicker": "H",
+				"ExtractionMax": 45.372583866119385
+			},
+			{
+				"MaterialId": "5d59ddddb1ce9a26eb81b78b8378b3ac",
+				"ResourceType": "GASEOUS",
+				"Factor": 0.011151357553899288,
+				"DailyExtraction": 0.6690814532339573,
+				"MaterialTicker": "N",
+				"ExtractionMax": 44.583009481430054
+			}
+		],
+		"Distances": [
+			{ "name": "Moria Station", "distance": 12 },
+			{ "name": "Antares Station", "distance": 0 },
+			{ "name": "Benten Station", "distance": 9 },
+			{ "name": "Hortus Station", "distance": 8 }
+		],
+		"COGCPrograms": [
+			{
+				"ProgramType": "ADVERTISING_FUEL_REFINING",
+				"StartEpochMs": 1750340512924,
+				"EndEpochMs": 1750945312924
+			},
+			{
+				"ProgramType": "ADVERTISING_FUEL_REFINING",
+				"StartEpochMs": 1749735712924,
+				"EndEpochMs": 1750340512924
+			},
+			{
+				"ProgramType": "ADVERTISING_FUEL_REFINING",
+				"StartEpochMs": 1749130912924,
+				"EndEpochMs": 1749735712924
+			},
+			{
+				"ProgramType": "ADVERTISING_FUEL_REFINING",
+				"StartEpochMs": 1748526112924,
+				"EndEpochMs": 1749130912924
+			},
+			{
+				"ProgramType": "ADVERTISING_FUEL_REFINING",
+				"StartEpochMs": 1747921312924,
+				"EndEpochMs": 1748526112924
+			},
+			{
+				"ProgramType": "ADVERTISING_FUEL_REFINING",
+				"StartEpochMs": 1747316512924,
+				"EndEpochMs": 1747921312924
+			},
+			{
+				"ProgramType": "ADVERTISING_FUEL_REFINING",
+				"StartEpochMs": 1746711712924,
+				"EndEpochMs": 1747316512924
+			},
+			{
+				"ProgramType": "ADVERTISING_FUEL_REFINING",
+				"StartEpochMs": 1746106912924,
+				"EndEpochMs": 1746711712924
+			},
+			{
+				"ProgramType": "ADVERTISING_FUEL_REFINING",
+				"StartEpochMs": 1745502112924,
+				"EndEpochMs": 1746106912924
+			},
+			{
+				"ProgramType": null,
+				"StartEpochMs": 1750945312924,
+				"EndEpochMs": 1751550112924
+			}
+		],
+		"COGCProgramActive": "ADVERTISING_FUEL_REFINING",
+		"CheckDistances": {
+			"SystemIdStart": "ac35dd2a980e53fedd1a4fe87a909972",
+			"SystemIdTarget": "8ecf9670ba070d78cfb5537e8d9f1b6c",
+			"SystemName": "Antares III",
+			"Distance": 2
+		}
+	},
+	{
+		"PlanetId": "593bb39ca6c6ffe9a5a1c820191c7363",
+		"PlanetNaturalId": "ZV-307e",
+		"PlanetName": "Astraeus",
+		"SystemId": "8ecf9670ba070d78cfb5537e8d9f1b6c",
+		"HasLocalMarket": true,
+		"HasChamberOfCommerce": true,
+		"HasWarehouse": true,
+		"HasAdministrationCenter": true,
+		"HasShipyard": false,
+		"Pressure": 107.71395874023438,
+		"Surface": true,
+		"Temperature": -92.7474594116211,
+		"Fertility": -1,
+		"Gravity": 1.799067735671997,
+		"FactionCode": "AI",
+		"FactionName": "Antares Initiative",
+		"GovernorUserName": null,
+		"COGCProgramStatus": "ACTIVE",
+		"Resources": [
+			{
+				"MaterialId": "ec8dbb1d3f51d89c61b6f58fdd64a7f0",
+				"ResourceType": "MINERAL",
+				"Factor": 0.01549669448286295,
+				"DailyExtraction": 1.0847686138004065,
+				"MaterialTicker": "H2O",
+				"ExtractionMax": 62.82984256744385
+			},
+			{
+				"MaterialId": "b9640b0d66e7d0ca7e4d3132711c97fc",
+				"ResourceType": "MINERAL",
+				"Factor": 0.018374327570199966,
+				"DailyExtraction": 1.2862029299139977,
+				"MaterialTicker": "FEO",
+				"ExtractionMax": 52.42888689041138
+			},
+			{
+				"MaterialId": "5d59ddddb1ce9a26eb81b78b8378b3ac",
+				"ResourceType": "GASEOUS",
+				"Factor": 0.025155706331133842,
+				"DailyExtraction": 1.5093423798680305,
+				"MaterialTicker": "N",
+				"ExtractionMax": 44.583009481430054
+			}
+		],
+		"Distances": [
+			{ "name": "Moria Station", "distance": 12 },
+			{ "name": "Antares Station", "distance": 0 },
+			{ "name": "Benten Station", "distance": 9 },
+			{ "name": "Hortus Station", "distance": 8 }
+		],
+		"COGCPrograms": [
+			{
+				"ProgramType": "ADVERTISING_MANUFACTURING",
+				"StartEpochMs": 1750402855457,
+				"EndEpochMs": 1751007655457
+			},
+			{
+				"ProgramType": "ADVERTISING_MANUFACTURING",
+				"StartEpochMs": 1744959655457,
+				"EndEpochMs": 1745564455457
+			},
+			{
+				"ProgramType": "ADVERTISING_MANUFACTURING",
+				"StartEpochMs": 1749798055457,
+				"EndEpochMs": 1750402855457
+			},
+			{
+				"ProgramType": "ADVERTISING_MANUFACTURING",
+				"StartEpochMs": 1749193255457,
+				"EndEpochMs": 1749798055457
+			},
+			{
+				"ProgramType": "ADVERTISING_MANUFACTURING",
+				"StartEpochMs": 1748588455457,
+				"EndEpochMs": 1749193255457
+			},
+			{
+				"ProgramType": "ADVERTISING_MANUFACTURING",
+				"StartEpochMs": 1747983655457,
+				"EndEpochMs": 1748588455457
+			},
+			{
+				"ProgramType": "ADVERTISING_MANUFACTURING",
+				"StartEpochMs": 1747378855457,
+				"EndEpochMs": 1747983655457
+			},
+			{
+				"ProgramType": "ADVERTISING_MANUFACTURING",
+				"StartEpochMs": 1746774055457,
+				"EndEpochMs": 1747378855457
+			},
+			{
+				"ProgramType": "ADVERTISING_MANUFACTURING",
+				"StartEpochMs": 1746169255457,
+				"EndEpochMs": 1746774055457
+			},
+			{
+				"ProgramType": "ADVERTISING_MANUFACTURING",
+				"StartEpochMs": 1745564455457,
+				"EndEpochMs": 1746169255457
+			}
+		],
+		"COGCProgramActive": "ADVERTISING_MANUFACTURING",
+		"CheckDistances": {
+			"SystemIdStart": "ac35dd2a980e53fedd1a4fe87a909972",
+			"SystemIdTarget": "8ecf9670ba070d78cfb5537e8d9f1b6c",
+			"SystemName": "Antares III",
+			"Distance": 2
+		}
+	},
+	{
+		"PlanetId": "1bfce6cb6feb13e18de4e2803134b475",
+		"PlanetNaturalId": "KI-080d",
+		"PlanetName": "KI-080d",
+		"SystemId": "c876b899b150a72b8c05b640aea1a8a5",
+		"HasLocalMarket": false,
+		"HasChamberOfCommerce": false,
+		"HasWarehouse": false,
+		"HasAdministrationCenter": false,
+		"HasShipyard": false,
+		"Pressure": 0.22016465663909912,
+		"Surface": true,
+		"Temperature": -141.98410034179688,
+		"Fertility": -1,
+		"Gravity": 0.9244201183319092,
+		"FactionCode": null,
+		"FactionName": null,
+		"GovernorUserName": null,
+		"COGCProgramStatus": null,
+		"Resources": [
+			{
+				"MaterialId": "6dd01a9f12e493d44bbb8ce578f7a2d2",
+				"ResourceType": "MINERAL",
+				"Factor": 0.0321158692240715,
+				"DailyExtraction": 2.248110845685005,
+				"MaterialTicker": "LIO",
+				"ExtractionMax": 34.70767855644226
+			},
+			{
+				"MaterialId": "5d59ddddb1ce9a26eb81b78b8378b3ac",
+				"ResourceType": "GASEOUS",
+				"Factor": 0.02819843776524067,
+				"DailyExtraction": 1.6919062659144402,
+				"MaterialTicker": "N",
+				"ExtractionMax": 44.583009481430054
+			}
+		],
+		"Distances": [
+			{ "name": "Moria Station", "distance": 14 },
+			{ "name": "Antares Station", "distance": 6 },
+			{ "name": "Benten Station", "distance": 11 },
+			{ "name": "Hortus Station", "distance": 14 }
+		],
+		"COGCPrograms": [],
+		"COGCProgramActive": null,
+		"CheckDistances": {
+			"SystemIdStart": "ac35dd2a980e53fedd1a4fe87a909972",
+			"SystemIdTarget": "c876b899b150a72b8c05b640aea1a8a5",
+			"SystemName": "Antares III",
+			"Distance": 8
+		}
+	},
+	{
+		"PlanetId": "99e7d5a9a724660328e69730e83139d8",
+		"PlanetNaturalId": "OE-073c",
+		"PlanetName": "OE-073c",
+		"SystemId": "1c6fc194c7f61c4092b037f2539dc1bc",
+		"HasLocalMarket": false,
+		"HasChamberOfCommerce": true,
+		"HasWarehouse": false,
+		"HasAdministrationCenter": true,
+		"HasShipyard": false,
+		"Pressure": 25.789424896240234,
+		"Surface": true,
+		"Temperature": -186.79144287109375,
+		"Fertility": -1,
+		"Gravity": 0.9649947285652161,
+		"FactionCode": null,
+		"FactionName": null,
+		"GovernorUserName": null,
+		"COGCProgramStatus": "ON_STRIKE",
+		"Resources": [
+			{
+				"MaterialId": "b9640b0d66e7d0ca7e4d3132711c97fc",
+				"ResourceType": "MINERAL",
+				"Factor": 0.740644097328186,
+				"DailyExtraction": 51.84508681297302,
+				"MaterialTicker": "FEO",
+				"ExtractionMax": 52.42888689041138
+			},
+			{
+				"MaterialId": "c04de28c3e717f236d6ed177b89d9523",
+				"ResourceType": "GASEOUS",
+				"Factor": 0.132600337266922,
+				"DailyExtraction": 7.95602023601532,
+				"MaterialTicker": "H",
+				"ExtractionMax": 45.372583866119385
+			},
+			{
+				"MaterialId": "e97bde9e60d4c60a16205d2c859eda62",
+				"ResourceType": "MINERAL",
+				"Factor": 0.04141711816191673,
+				"DailyExtraction": 2.8991982713341713,
+				"MaterialTicker": "BRM",
+				"ExtractionMax": 41.98297441005707
+			},
+			{
+				"MaterialId": "5d59ddddb1ce9a26eb81b78b8378b3ac",
+				"ResourceType": "LIQUID",
+				"Factor": 0.010682519525289536,
+				"DailyExtraction": 0.7477763667702675,
+				"MaterialTicker": "N",
+				"ExtractionMax": 52.013511061668396
+			},
+			{
+				"MaterialId": "2adebc00bf7efaa693021426a68a3e65",
+				"ResourceType": "LIQUID",
+				"Factor": 0.31359902024269104,
+				"DailyExtraction": 21.951931416988373,
+				"MaterialTicker": "HEX",
+				"ExtractionMax": 27.968516051769257
+			}
+		],
+		"Distances": [
+			{ "name": "Moria Station", "distance": 17 },
+			{ "name": "Antares Station", "distance": 6 },
+			{ "name": "Benten Station", "distance": 14 },
+			{ "name": "Hortus Station", "distance": 14 }
+		],
+		"COGCPrograms": [
+			{
+				"ProgramType": null,
+				"StartEpochMs": 1742530875050,
+				"EndEpochMs": 1743135675050
+			},
+			{
+				"ProgramType": null,
+				"StartEpochMs": 1737692475050,
+				"EndEpochMs": 1738297275050
+			},
+			{
+				"ProgramType": null,
+				"StartEpochMs": 1741926075050,
+				"EndEpochMs": 1742530875050
+			},
+			{
+				"ProgramType": null,
+				"StartEpochMs": 1741321275050,
+				"EndEpochMs": 1741926075050
+			},
+			{
+				"ProgramType": null,
+				"StartEpochMs": 1740716475050,
+				"EndEpochMs": 1741321275050
+			},
+			{
+				"ProgramType": null,
+				"StartEpochMs": 1740111675050,
+				"EndEpochMs": 1740716475050
+			},
+			{
+				"ProgramType": null,
+				"StartEpochMs": 1739506875050,
+				"EndEpochMs": 1740111675050
+			},
+			{
+				"ProgramType": null,
+				"StartEpochMs": 1738902075050,
+				"EndEpochMs": 1739506875050
+			},
+			{
+				"ProgramType": null,
+				"StartEpochMs": 1738297275050,
+				"EndEpochMs": 1738902075050
+			},
+			{
+				"ProgramType": null,
+				"StartEpochMs": 1737087675050,
+				"EndEpochMs": 1737692475050
+			}
+		],
+		"COGCProgramActive": null,
+		"CheckDistances": {
+			"SystemIdStart": "ac35dd2a980e53fedd1a4fe87a909972",
+			"SystemIdTarget": "1c6fc194c7f61c4092b037f2539dc1bc",
+			"SystemName": "Antares III",
+			"Distance": 8
+		}
+	},
+	{
+		"PlanetId": "9701955ef87a0acfc4f65f1f2923ec89",
+		"PlanetNaturalId": "DW-835c",
+		"PlanetName": "DW-835c",
+		"SystemId": "13c5855261c46cdb093f05ff68e30b42",
+		"HasLocalMarket": true,
+		"HasChamberOfCommerce": true,
+		"HasWarehouse": true,
+		"HasAdministrationCenter": false,
+		"HasShipyard": false,
+		"Pressure": 0.3243245780467987,
+		"Surface": true,
+		"Temperature": -101.1686782836914,
+		"Fertility": -1,
+		"Gravity": 0.7770699858665466,
+		"FactionCode": "NC",
+		"FactionName": "NEO Charter Exploration",
+		"GovernorUserName": null,
+		"COGCProgramStatus": "ACTIVE",
+		"Resources": [
+			{
+				"MaterialId": "fba7294b0f74a4a2527f5a7049c70120",
+				"ResourceType": "MINERAL",
+				"Factor": 0.1833861619234085,
+				"DailyExtraction": 12.837031334638596,
+				"MaterialTicker": "BOR",
+				"ExtractionMax": 17.156646847724915
+			},
+			{
+				"MaterialId": "5d59ddddb1ce9a26eb81b78b8378b3ac",
+				"ResourceType": "GASEOUS",
+				"Factor": 0.01247948408126831,
+				"DailyExtraction": 0.7487690448760986,
+				"MaterialTicker": "N",
+				"ExtractionMax": 44.583009481430054
+			}
+		],
+		"Distances": [
+			{ "name": "Moria Station", "distance": 2 },
+			{ "name": "Antares Station", "distance": 12 },
+			{ "name": "Benten Station", "distance": 6 },
+			{ "name": "Hortus Station", "distance": 6 }
+		],
+		"COGCPrograms": [
+			{
+				"ProgramType": null,
+				"StartEpochMs": 1740366197748,
+				"EndEpochMs": 1740970997748
+			},
+			{
+				"ProgramType": null,
+				"StartEpochMs": 1735527797748,
+				"EndEpochMs": 1736132597748
+			},
+			{
+				"ProgramType": "ADVERTISING_RESOURCE_EXTRACTION",
+				"StartEpochMs": 1739761397748,
+				"EndEpochMs": 1740366197748
+			},
+			{
+				"ProgramType": "ADVERTISING_RESOURCE_EXTRACTION",
+				"StartEpochMs": 1739156597748,
+				"EndEpochMs": 1739761397748
+			},
+			{
+				"ProgramType": "ADVERTISING_RESOURCE_EXTRACTION",
+				"StartEpochMs": 1738551797748,
+				"EndEpochMs": 1739156597748
+			},
+			{
+				"ProgramType": "ADVERTISING_RESOURCE_EXTRACTION",
+				"StartEpochMs": 1737946997748,
+				"EndEpochMs": 1738551797748
+			},
+			{
+				"ProgramType": "ADVERTISING_RESOURCE_EXTRACTION",
+				"StartEpochMs": 1737342197748,
+				"EndEpochMs": 1737946997748
+			},
+			{
+				"ProgramType": null,
+				"StartEpochMs": 1736737397748,
+				"EndEpochMs": 1737342197748
+			},
+			{
+				"ProgramType": "ADVERTISING_RESOURCE_EXTRACTION",
+				"StartEpochMs": 1736132597748,
+				"EndEpochMs": 1736737397748
+			},
+			{
+				"ProgramType": null,
+				"StartEpochMs": 1734922997748,
+				"EndEpochMs": 1735527797748
+			}
+		],
+		"COGCProgramActive": "Invalid",
+		"CheckDistances": {
+			"SystemIdStart": "ac35dd2a980e53fedd1a4fe87a909972",
+			"SystemIdTarget": "13c5855261c46cdb093f05ff68e30b42",
+			"SystemName": "Antares III",
+			"Distance": 10
+		}
+	},
+	{
+		"PlanetId": "eec19a596b348fd93c99dbc288998f23",
+		"PlanetNaturalId": "CG-044c",
+		"PlanetName": "Jotu",
+		"SystemId": "aa5f5966613f9bee0b020ef3f4ca3acb",
+		"HasLocalMarket": true,
+		"HasChamberOfCommerce": true,
+		"HasWarehouse": true,
+		"HasAdministrationCenter": true,
+		"HasShipyard": false,
+		"Pressure": 1.109858751296997,
+		"Surface": true,
+		"Temperature": -218.5553741455078,
+		"Fertility": -1,
+		"Gravity": 1.0220493078231812,
+		"FactionCode": null,
+		"FactionName": null,
+		"GovernorUserName": null,
+		"COGCProgramStatus": "ACTIVE",
+		"Resources": [
+			{
+				"MaterialId": "6e16dbf050b98d9c4fc9c615b3367a0f",
+				"ResourceType": "LIQUID",
+				"Factor": 0.013824772089719772,
+				"DailyExtraction": 0.9677340462803841,
+				"MaterialTicker": "O",
+				"ExtractionMax": 50.470234751701355
+			},
+			{
+				"MaterialId": "bcf4a2029e461cf76d29de8c66ec2ff9",
+				"ResourceType": "MINERAL",
+				"Factor": 0.12835879623889923,
+				"DailyExtraction": 8.985115736722946,
+				"MaterialTicker": "AMM",
+				"ExtractionMax": 41.92359387874603
+			},
+			{
+				"MaterialId": "5d59ddddb1ce9a26eb81b78b8378b3ac",
+				"ResourceType": "MINERAL",
+				"Factor": 0.2584003210067749,
+				"DailyExtraction": 18.088022470474243,
+				"MaterialTicker": "N",
+				"ExtractionMax": 52.013511061668396
+			},
+			{
+				"MaterialId": "1f9a0293d9ba9bf519f71432e695edeb",
+				"ResourceType": "MINERAL",
+				"Factor": 0.42473477125167847,
+				"DailyExtraction": 29.731433987617493,
+				"MaterialTicker": "LST",
+				"ExtractionMax": 55.24479329586029
+			}
+		],
+		"Distances": [
+			{ "name": "Moria Station", "distance": 12 },
+			{ "name": "Antares Station", "distance": 8 },
+			{ "name": "Benten Station", "distance": 14 },
+			{ "name": "Hortus Station", "distance": 6 }
+		],
+		"COGCPrograms": [
+			{
+				"ProgramType": "ADVERTISING_CHEMISTRY",
+				"StartEpochMs": 1748284689063,
+				"EndEpochMs": 1748889489063
+			},
+			{
+				"ProgramType": "ADVERTISING_CHEMISTRY",
+				"StartEpochMs": 1747679889063,
+				"EndEpochMs": 1748284689063
+			},
+			{
+				"ProgramType": "ADVERTISING_CHEMISTRY",
+				"StartEpochMs": 1747075089063,
+				"EndEpochMs": 1747679889063
+			},
+			{
+				"ProgramType": "WORKFORCE_PIONEERS",
+				"StartEpochMs": 1746470289063,
+				"EndEpochMs": 1747075089063
+			},
+			{
+				"ProgramType": "WORKFORCE_PIONEERS",
+				"StartEpochMs": 1745865489063,
+				"EndEpochMs": 1746470289063
+			},
+			{
+				"ProgramType": "WORKFORCE_PIONEERS",
+				"StartEpochMs": 1745260689063,
+				"EndEpochMs": 1745865489063
+			},
+			{
+				"ProgramType": "WORKFORCE_PIONEERS",
+				"StartEpochMs": 1744655889063,
+				"EndEpochMs": 1745260689063
+			},
+			{
+				"ProgramType": "WORKFORCE_PIONEERS",
+				"StartEpochMs": 1744051089063,
+				"EndEpochMs": 1744655889063
+			},
+			{
+				"ProgramType": null,
+				"StartEpochMs": 1743446289063,
+				"EndEpochMs": 1744051089063
+			},
+			{
+				"ProgramType": null,
+				"StartEpochMs": 1748889489063,
+				"EndEpochMs": 1749494289063
+			}
+		],
+		"COGCProgramActive": "Invalid",
+		"CheckDistances": {
+			"SystemIdStart": "ac35dd2a980e53fedd1a4fe87a909972",
+			"SystemIdTarget": "aa5f5966613f9bee0b020ef3f4ca3acb",
+			"SystemName": "Antares III",
+			"Distance": 9
+		}
+	},
+	{
+		"PlanetId": "cb158c1405b3b25c7490eb874fef777a",
+		"PlanetNaturalId": "VH-331b",
+		"PlanetName": "Dreamerr Prime",
+		"SystemId": "f2f57766ebaca9d69efae41ccf4d8853",
+		"HasLocalMarket": true,
+		"HasChamberOfCommerce": true,
+		"HasWarehouse": true,
+		"HasAdministrationCenter": true,
+		"HasShipyard": false,
+		"Pressure": 20.757274627685547,
+		"Surface": true,
+		"Temperature": -132.42739868164062,
+		"Fertility": -1,
+		"Gravity": 0.920630931854248,
+		"FactionCode": "IC",
+		"FactionName": "Insitor Cooperative",
+		"GovernorUserName": null,
+		"COGCProgramStatus": "ACTIVE",
+		"Resources": [
+			{
+				"MaterialId": "c04de28c3e717f236d6ed177b89d9523",
+				"ResourceType": "GASEOUS",
+				"Factor": 0.03469707816839218,
+				"DailyExtraction": 2.081824690103531,
+				"MaterialTicker": "H",
+				"ExtractionMax": 45.372583866119385
+			},
+			{
+				"MaterialId": "c5236c5b79b9e75ddbce16887aeda338",
+				"ResourceType": "MINERAL",
+				"Factor": 0.2027178555727005,
+				"DailyExtraction": 14.190249890089035,
+				"MaterialTicker": "GAL",
+				"ExtractionMax": 33.55893313884735
+			},
+			{
+				"MaterialId": "7e3f98a49ce2d3c8361975de8b4bbea4",
+				"ResourceType": "MINERAL",
+				"Factor": 0.025276120752096176,
+				"DailyExtraction": 1.7693284526467323,
+				"MaterialTicker": "HAL",
+				"ExtractionMax": 20.389353930950165
+			},
+			{
+				"MaterialId": "5d59ddddb1ce9a26eb81b78b8378b3ac",
+				"ResourceType": "LIQUID",
+				"Factor": 0.11117666959762573,
+				"DailyExtraction": 7.782366871833801,
+				"MaterialTicker": "N",
+				"ExtractionMax": 52.013511061668396
+			}
+		],
+		"Distances": [
+			{ "name": "Moria Station", "distance": 6 },
+			{ "name": "Antares Station", "distance": 8 },
+			{ "name": "Benten Station", "distance": 12 },
+			{ "name": "Hortus Station", "distance": 0 }
+		],
+		"COGCPrograms": [
+			{
+				"ProgramType": "ADVERTISING_ELECTRONICS",
+				"StartEpochMs": 1750778564455,
+				"EndEpochMs": 1751383364455
+			},
+			{
+				"ProgramType": "ADVERTISING_ELECTRONICS",
+				"StartEpochMs": 1745335364455,
+				"EndEpochMs": 1745940164455
+			},
+			{
+				"ProgramType": "ADVERTISING_ELECTRONICS",
+				"StartEpochMs": 1750173764455,
+				"EndEpochMs": 1750778564455
+			},
+			{
+				"ProgramType": "ADVERTISING_ELECTRONICS",
+				"StartEpochMs": 1749568964455,
+				"EndEpochMs": 1750173764455
+			},
+			{
+				"ProgramType": "ADVERTISING_ELECTRONICS",
+				"StartEpochMs": 1748964164455,
+				"EndEpochMs": 1749568964455
+			},
+			{
+				"ProgramType": "ADVERTISING_ELECTRONICS",
+				"StartEpochMs": 1748359364455,
+				"EndEpochMs": 1748964164455
+			},
+			{
+				"ProgramType": "ADVERTISING_ELECTRONICS",
+				"StartEpochMs": 1747754564455,
+				"EndEpochMs": 1748359364455
+			},
+			{
+				"ProgramType": "ADVERTISING_ELECTRONICS",
+				"StartEpochMs": 1747149764455,
+				"EndEpochMs": 1747754564455
+			},
+			{
+				"ProgramType": "ADVERTISING_ELECTRONICS",
+				"StartEpochMs": 1746544964455,
+				"EndEpochMs": 1747149764455
+			},
+			{
+				"ProgramType": "ADVERTISING_ELECTRONICS",
+				"StartEpochMs": 1745940164455,
+				"EndEpochMs": 1746544964455
+			}
+		],
+		"COGCProgramActive": "ADVERTISING_ELECTRONICS",
+		"CheckDistances": {
+			"SystemIdStart": "ac35dd2a980e53fedd1a4fe87a909972",
+			"SystemIdTarget": "f2f57766ebaca9d69efae41ccf4d8853",
+			"SystemName": "Antares III",
+			"Distance": 8
+		}
+	},
+	{
+		"PlanetId": "2a9b6208e2391689e9e5c2999f387000",
+		"PlanetNaturalId": "PD-518a",
+		"PlanetName": "PD-518a",
+		"SystemId": "6566b425797921543053a0d58f25f89f",
+		"HasLocalMarket": false,
+		"HasChamberOfCommerce": false,
+		"HasWarehouse": false,
+		"HasAdministrationCenter": false,
+		"HasShipyard": false,
+		"Pressure": 0.020170295611023903,
+		"Surface": true,
+		"Temperature": 80.53497314453125,
+		"Fertility": -1,
+		"Gravity": 0.5490536093711853,
+		"FactionCode": "IC",
+		"FactionName": "Insitor Cooperative",
+		"GovernorUserName": null,
+		"COGCProgramStatus": null,
+		"Resources": [
+			{
+				"MaterialId": "5d59ddddb1ce9a26eb81b78b8378b3ac",
+				"ResourceType": "GASEOUS",
+				"Factor": 0.025859853252768517,
+				"DailyExtraction": 1.551591195166111,
+				"MaterialTicker": "N",
+				"ExtractionMax": 44.583009481430054
+			}
+		],
+		"Distances": [
+			{ "name": "Moria Station", "distance": 9 },
+			{ "name": "Antares Station", "distance": 11 },
+			{ "name": "Benten Station", "distance": 14 },
+			{ "name": "Hortus Station", "distance": 3 }
+		],
+		"COGCPrograms": [],
+		"COGCProgramActive": null,
+		"CheckDistances": {
+			"SystemIdStart": "ac35dd2a980e53fedd1a4fe87a909972",
+			"SystemIdTarget": "6566b425797921543053a0d58f25f89f",
+			"SystemName": "Antares III",
+			"Distance": 9
+		}
+	},
+	{
+		"PlanetId": "8975c85334d6a585aa60999e9bfaef16",
+		"PlanetNaturalId": "RC-796g",
+		"PlanetName": "RC-796g",
+		"SystemId": "a8d28a22eed92d260030cb92d79a6982",
+		"HasLocalMarket": false,
+		"HasChamberOfCommerce": false,
+		"HasWarehouse": false,
+		"HasAdministrationCenter": false,
+		"HasShipyard": false,
+		"Pressure": 1.7635434865951538,
+		"Surface": false,
+		"Temperature": -208.57029724121094,
+		"Fertility": -1,
+		"Gravity": 2.2354743480682373,
+		"FactionCode": "CI",
+		"FactionName": "Castillo-Ito Mercantile",
+		"GovernorUserName": null,
+		"COGCProgramStatus": null,
+		"Resources": [
+			{
+				"MaterialId": "5d59ddddb1ce9a26eb81b78b8378b3ac",
+				"ResourceType": "LIQUID",
+				"Factor": 0.2919137477874756,
+				"DailyExtraction": 20.43396234512329,
+				"MaterialTicker": "N",
+				"ExtractionMax": 52.013511061668396
+			}
+		],
+		"Distances": [
+			{ "name": "Moria Station", "distance": 3 },
+			{ "name": "Antares Station", "distance": 11 },
+			{ "name": "Benten Station", "distance": 3 },
+			{ "name": "Hortus Station", "distance": 9 }
+		],
+		"COGCPrograms": [],
+		"COGCProgramActive": null,
+		"CheckDistances": {
+			"SystemIdStart": "ac35dd2a980e53fedd1a4fe87a909972",
+			"SystemIdTarget": "a8d28a22eed92d260030cb92d79a6982",
+			"SystemName": "Antares III",
+			"Distance": 9
+		}
+	},
+	{
+		"PlanetId": "e06462db210a4ff47f10b00aac084500",
+		"PlanetNaturalId": "PD-518g",
+		"PlanetName": "PD-518g",
+		"SystemId": "6566b425797921543053a0d58f25f89f",
+		"HasLocalMarket": false,
+		"HasChamberOfCommerce": false,
+		"HasWarehouse": false,
+		"HasAdministrationCenter": false,
+		"HasShipyard": false,
+		"Pressure": 1.3953616619110107,
+		"Surface": false,
+		"Temperature": -187.41256713867188,
+		"Fertility": -1,
+		"Gravity": 1.2760671377182007,
+		"FactionCode": "IC",
+		"FactionName": "Insitor Cooperative",
+		"GovernorUserName": null,
+		"COGCProgramStatus": null,
+		"Resources": [
+			{
+				"MaterialId": "5d59ddddb1ce9a26eb81b78b8378b3ac",
+				"ResourceType": "GASEOUS",
+				"Factor": 0.22690516710281372,
+				"DailyExtraction": 13.614310026168823,
+				"MaterialTicker": "N",
+				"ExtractionMax": 44.583009481430054
+			}
+		],
+		"Distances": [
+			{ "name": "Moria Station", "distance": 9 },
+			{ "name": "Antares Station", "distance": 11 },
+			{ "name": "Benten Station", "distance": 14 },
+			{ "name": "Hortus Station", "distance": 3 }
+		],
+		"COGCPrograms": [],
+		"COGCProgramActive": null,
+		"CheckDistances": {
+			"SystemIdStart": "ac35dd2a980e53fedd1a4fe87a909972",
+			"SystemIdTarget": "6566b425797921543053a0d58f25f89f",
+			"SystemName": "Antares III",
+			"Distance": 9
+		}
+	},
+	{
+		"PlanetId": "aca5e89f82b4402767db79661f8561bb",
+		"PlanetNaturalId": "OE-568c",
+		"PlanetName": "OE-568c",
+		"SystemId": "f61a345bdc6d278a8a633148e02b6452",
+		"HasLocalMarket": false,
+		"HasChamberOfCommerce": false,
+		"HasWarehouse": false,
+		"HasAdministrationCenter": false,
+		"HasShipyard": false,
+		"Pressure": 0.00001394708851876203,
+		"Surface": true,
+		"Temperature": 55.92481231689453,
+		"Fertility": -1,
+		"Gravity": 0.19031071662902832,
+		"FactionCode": null,
+		"FactionName": null,
+		"GovernorUserName": null,
+		"COGCProgramStatus": null,
+		"Resources": [
+			{
+				"MaterialId": "ea550373234a7c171de0f525922af5be",
+				"ResourceType": "MINERAL",
+				"Factor": 0.21495677530765533,
+				"DailyExtraction": 15.046974271535873,
+				"MaterialTicker": "TAI",
+				"ExtractionMax": 16.79514616727829
+			},
+			{
+				"MaterialId": "5d59ddddb1ce9a26eb81b78b8378b3ac",
+				"ResourceType": "GASEOUS",
+				"Factor": 0.1601056456565857,
+				"DailyExtraction": 9.606338739395142,
+				"MaterialTicker": "N",
+				"ExtractionMax": 44.583009481430054
+			},
+			{
+				"MaterialId": "04f72b0c957b769c6d45c011e9c9b4b5",
+				"ResourceType": "MINERAL",
+				"Factor": 0.019411418586969376,
+				"DailyExtraction": 1.3587993010878563,
+				"MaterialTicker": "ALO",
+				"ExtractionMax": 34.57814246416092
+			}
+		],
+		"Distances": [
+			{ "name": "Moria Station", "distance": 18 },
+			{ "name": "Antares Station", "distance": 7 },
+			{ "name": "Benten Station", "distance": 15 },
+			{ "name": "Hortus Station", "distance": 15 }
+		],
+		"COGCPrograms": [],
+		"COGCProgramActive": null,
+		"CheckDistances": {
+			"SystemIdStart": "ac35dd2a980e53fedd1a4fe87a909972",
+			"SystemIdTarget": "f61a345bdc6d278a8a633148e02b6452",
+			"SystemName": "Antares III",
+			"Distance": 9
+		}
+	},
+	{
+		"PlanetId": "99eb57fefd18101662bf834cbeea34ed",
+		"PlanetNaturalId": "VH-331a",
+		"PlanetName": "Promitor",
+		"SystemId": "f2f57766ebaca9d69efae41ccf4d8853",
+		"HasLocalMarket": true,
+		"HasChamberOfCommerce": true,
+		"HasWarehouse": true,
+		"HasAdministrationCenter": true,
+		"HasShipyard": false,
+		"Pressure": 1.0065436363220215,
+		"Surface": true,
+		"Temperature": 16.24624252319336,
+		"Fertility": 0.3999999761581421,
+		"Gravity": 0.8896705508232117,
+		"FactionCode": "IC",
+		"FactionName": "Insitor Cooperative",
+		"GovernorUserName": null,
+		"COGCProgramStatus": "ACTIVE",
+		"Resources": [
+			{
+				"MaterialId": "ec8dbb1d3f51d89c61b6f58fdd64a7f0",
+				"ResourceType": "LIQUID",
+				"Factor": 0.5199999809265137,
+				"DailyExtraction": 36.39999866485596,
+				"MaterialTicker": "H2O",
+				"ExtractionMax": 62.82984256744385
+			},
+			{
+				"MaterialId": "6e16dbf050b98d9c4fc9c615b3367a0f",
+				"ResourceType": "GASEOUS",
+				"Factor": 0.25,
+				"DailyExtraction": 15,
+				"MaterialTicker": "O",
+				"ExtractionMax": 43.26020121574402
+			},
+			{
+				"MaterialId": "7e3f98a49ce2d3c8361975de8b4bbea4",
+				"ResourceType": "MINERAL",
+				"Factor": 0.05000000074505806,
+				"DailyExtraction": 3.500000052154064,
+				"MaterialTicker": "HAL",
+				"ExtractionMax": 20.389353930950165
+			},
+			{
+				"MaterialId": "5d59ddddb1ce9a26eb81b78b8378b3ac",
+				"ResourceType": "GASEOUS",
+				"Factor": 0.029999999329447746,
+				"DailyExtraction": 1.7999999597668648,
+				"MaterialTicker": "N",
+				"ExtractionMax": 44.583009481430054
+			}
+		],
+		"Distances": [
+			{ "name": "Moria Station", "distance": 6 },
+			{ "name": "Antares Station", "distance": 8 },
+			{ "name": "Benten Station", "distance": 12 },
+			{ "name": "Hortus Station", "distance": 0 }
+		],
+		"COGCPrograms": [
+			{
+				"ProgramType": "ADVERTISING_AGRICULTURE",
+				"StartEpochMs": 1746641341040,
+				"EndEpochMs": 1747246141040
+			},
+			{
+				"ProgramType": "ADVERTISING_AGRICULTURE",
+				"StartEpochMs": 1746036541040,
+				"EndEpochMs": 1746641341040
+			},
+			{
+				"ProgramType": "ADVERTISING_AGRICULTURE",
+				"StartEpochMs": 1747246141040,
+				"EndEpochMs": 1747850941040
+			},
+			{
+				"ProgramType": "ADVERTISING_AGRICULTURE",
+				"StartEpochMs": 1745431741040,
+				"EndEpochMs": 1746036541040
+			},
+			{
+				"ProgramType": "ADVERTISING_AGRICULTURE",
+				"StartEpochMs": 1747850941040,
+				"EndEpochMs": 1748455741040
+			},
+			{
+				"ProgramType": "ADVERTISING_AGRICULTURE",
+				"StartEpochMs": 1748455741040,
+				"EndEpochMs": 1749060541040
+			},
+			{
+				"ProgramType": "ADVERTISING_AGRICULTURE",
+				"StartEpochMs": 1749060541040,
+				"EndEpochMs": 1749665341040
+			},
+			{
+				"ProgramType": "ADVERTISING_AGRICULTURE",
+				"StartEpochMs": 1749665341040,
+				"EndEpochMs": 1750270141040
+			},
+			{
+				"ProgramType": "ADVERTISING_AGRICULTURE",
+				"StartEpochMs": 1750270141040,
+				"EndEpochMs": 1750874941040
+			},
+			{
+				"ProgramType": "ADVERTISING_AGRICULTURE",
+				"StartEpochMs": 1750874941040,
+				"EndEpochMs": 1751479741040
+			}
+		],
+		"COGCProgramActive": "ADVERTISING_AGRICULTURE",
+		"CheckDistances": {
+			"SystemIdStart": "ac35dd2a980e53fedd1a4fe87a909972",
+			"SystemIdTarget": "f2f57766ebaca9d69efae41ccf4d8853",
+			"SystemName": "Antares III",
+			"Distance": 8
+		}
+	},
+	{
+		"PlanetId": "4c9dffc3e06b5a054a322d0f94e49f26",
+		"PlanetNaturalId": "XH-556c",
+		"PlanetName": "XH-556c",
+		"SystemId": "9fe6ac66ba8786ece36c85fa013bd6f3",
+		"HasLocalMarket": false,
+		"HasChamberOfCommerce": false,
+		"HasWarehouse": false,
+		"HasAdministrationCenter": false,
+		"HasShipyard": false,
+		"Pressure": 0.14598369598388672,
+		"Surface": true,
+		"Temperature": -181.876220703125,
+		"Fertility": -1,
+		"Gravity": 0.9409682154655457,
+		"FactionCode": "CI",
+		"FactionName": "Castillo-Ito Mercantile",
+		"GovernorUserName": null,
+		"COGCProgramStatus": null,
+		"Resources": [
+			{
+				"MaterialId": "eeff5ee913d34354be84177847fbfe48",
+				"ResourceType": "MINERAL",
+				"Factor": 0.012759231962263584,
+				"DailyExtraction": 0.8931462373584509,
+				"MaterialTicker": "SIO",
+				"ExtractionMax": 53.825785517692566
+			},
+			{
+				"MaterialId": "5d59ddddb1ce9a26eb81b78b8378b3ac",
+				"ResourceType": "GASEOUS",
+				"Factor": 0.10697054862976074,
+				"DailyExtraction": 6.4182329177856445,
+				"MaterialTicker": "N",
+				"ExtractionMax": 44.583009481430054
+			},
+			{
+				"MaterialId": "4d2a6c0cf6eb404cda3b35820bcbe453",
+				"ResourceType": "MINERAL",
+				"Factor": 0.34360581636428833,
+				"DailyExtraction": 24.052407145500183,
+				"MaterialTicker": "CLI",
+				"ExtractionMax": 41.99443995952606
+			}
+		],
+		"Distances": [
+			{ "name": "Moria Station", "distance": 3 },
+			{ "name": "Antares Station", "distance": 10 },
+			{ "name": "Benten Station", "distance": 4 },
+			{ "name": "Hortus Station", "distance": 9 }
+		],
+		"COGCPrograms": [],
+		"COGCProgramActive": null,
+		"CheckDistances": {
+			"SystemIdStart": "ac35dd2a980e53fedd1a4fe87a909972",
+			"SystemIdTarget": "9fe6ac66ba8786ece36c85fa013bd6f3",
+			"SystemName": "Antares III",
+			"Distance": 8
+		}
+	},
+	{
+		"PlanetId": "1797e5e1dd80b46620942e0717980128",
+		"PlanetNaturalId": "XH-265c",
+		"PlanetName": "XH-265c",
+		"SystemId": "104cda4aabe700021a97a495fd4d44d3",
+		"HasLocalMarket": false,
+		"HasChamberOfCommerce": false,
+		"HasWarehouse": false,
+		"HasAdministrationCenter": false,
+		"HasShipyard": false,
+		"Pressure": 20.29789924621582,
+		"Surface": true,
+		"Temperature": -197.2654266357422,
+		"Fertility": -1,
+		"Gravity": 1.3030121326446533,
+		"FactionCode": "CI",
+		"FactionName": "Castillo-Ito Mercantile",
+		"GovernorUserName": null,
+		"COGCProgramStatus": null,
+		"Resources": [
+			{
+				"MaterialId": "5d59ddddb1ce9a26eb81b78b8378b3ac",
+				"ResourceType": "LIQUID",
+				"Factor": 0.25370359420776367,
+				"DailyExtraction": 17.759251594543457,
+				"MaterialTicker": "N",
+				"ExtractionMax": 52.013511061668396
+			}
+		],
+		"Distances": [
+			{ "name": "Moria Station", "distance": 5 },
+			{ "name": "Antares Station", "distance": 10 },
+			{ "name": "Benten Station", "distance": 2 },
+			{ "name": "Hortus Station", "distance": 11 }
+		],
+		"COGCPrograms": [],
+		"COGCProgramActive": null,
+		"CheckDistances": {
+			"SystemIdStart": "ac35dd2a980e53fedd1a4fe87a909972",
+			"SystemIdTarget": "104cda4aabe700021a97a495fd4d44d3",
+			"SystemName": "Antares III",
+			"Distance": 8
+		}
+	},
+	{
+		"PlanetId": "3c8949aae05645b81d7449b59c1355db",
+		"PlanetNaturalId": "WU-308c",
+		"PlanetName": "WU-308c",
+		"SystemId": "5c9e612ff4f761a18b23cfb3a708d6bb",
+		"HasLocalMarket": false,
+		"HasChamberOfCommerce": false,
+		"HasWarehouse": false,
+		"HasAdministrationCenter": false,
+		"HasShipyard": false,
+		"Pressure": 49.23165512084961,
+		"Surface": true,
+		"Temperature": -196.6149444580078,
+		"Fertility": -1,
+		"Gravity": 1.0270274877548218,
+		"FactionCode": "AI",
+		"FactionName": "Antares Initiative",
+		"GovernorUserName": null,
+		"COGCProgramStatus": null,
+		"Resources": [
+			{
+				"MaterialId": "5d59ddddb1ce9a26eb81b78b8378b3ac",
+				"ResourceType": "LIQUID",
+				"Factor": 0.03330948203802109,
+				"DailyExtraction": 2.331663742661476,
+				"MaterialTicker": "N",
+				"ExtractionMax": 52.013511061668396
+			}
+		],
+		"Distances": [
+			{ "name": "Moria Station", "distance": 15 },
+			{ "name": "Antares Station", "distance": 3 },
+			{ "name": "Benten Station", "distance": 12 },
+			{ "name": "Hortus Station", "distance": 11 }
+		],
+		"COGCPrograms": [],
+		"COGCProgramActive": null,
+		"CheckDistances": {
+			"SystemIdStart": "ac35dd2a980e53fedd1a4fe87a909972",
+			"SystemIdTarget": "5c9e612ff4f761a18b23cfb3a708d6bb",
+			"SystemName": "Antares III",
+			"Distance": 5
+		}
+	},
+	{
+		"PlanetId": "710ed8165850b9af4565e2bbc3722e83",
+		"PlanetNaturalId": "SE-751a",
+		"PlanetName": "SE-751a",
+		"SystemId": "4328f7d91b6f750d6667706d8247c4e3",
+		"HasLocalMarket": false,
+		"HasChamberOfCommerce": false,
+		"HasWarehouse": false,
+		"HasAdministrationCenter": false,
+		"HasShipyard": false,
+		"Pressure": 0.24985942244529724,
+		"Surface": true,
+		"Temperature": -172.4189910888672,
+		"Fertility": -1,
+		"Gravity": 0.6050340533256531,
+		"FactionCode": null,
+		"FactionName": null,
+		"GovernorUserName": null,
+		"COGCProgramStatus": null,
+		"Resources": [
+			{
+				"MaterialId": "5d59ddddb1ce9a26eb81b78b8378b3ac",
+				"ResourceType": "GASEOUS",
+				"Factor": 0.05005912855267525,
+				"DailyExtraction": 3.003547713160515,
+				"MaterialTicker": "N",
+				"ExtractionMax": 44.583009481430054
+			}
+		],
+		"Distances": [
+			{ "name": "Moria Station", "distance": 11 },
+			{ "name": "Antares Station", "distance": 5 },
+			{ "name": "Benten Station", "distance": 11 },
+			{ "name": "Hortus Station", "distance": 5 }
+		],
+		"COGCPrograms": [],
+		"COGCProgramActive": null,
+		"CheckDistances": {
+			"SystemIdStart": "ac35dd2a980e53fedd1a4fe87a909972",
+			"SystemIdTarget": "4328f7d91b6f750d6667706d8247c4e3",
+			"SystemName": "Antares III",
+			"Distance": 6
+		}
+	},
+	{
+		"PlanetId": "36488b4f038cc9ef0ee6748cf84b7d81",
+		"PlanetNaturalId": "UB-557e",
+		"PlanetName": "UB-557e",
+		"SystemId": "5554b0cd10217fd9db45704f301d837c",
+		"HasLocalMarket": false,
+		"HasChamberOfCommerce": false,
+		"HasWarehouse": false,
+		"HasAdministrationCenter": false,
+		"HasShipyard": false,
+		"Pressure": 1.8467817306518555,
+		"Surface": false,
+		"Temperature": -142.97573852539062,
+		"Fertility": -1,
+		"Gravity": 1.4774318933486938,
+		"FactionCode": "IC",
+		"FactionName": "Insitor Cooperative",
+		"GovernorUserName": null,
+		"COGCProgramStatus": null,
+		"Resources": [
+			{
+				"MaterialId": "e9dc6ec89adb62b9ef83031d89e3ce99",
+				"ResourceType": "GASEOUS",
+				"Factor": 0.033697836101055145,
+				"DailyExtraction": 2.0218701660633087,
+				"MaterialTicker": "HE",
+				"ExtractionMax": 24.212270379066467
+			},
+			{
+				"MaterialId": "bcf4a2029e461cf76d29de8c66ec2ff9",
+				"ResourceType": "MINERAL",
+				"Factor": 0.0183534175157547,
+				"DailyExtraction": 1.284739226102829,
+				"MaterialTicker": "AMM",
+				"ExtractionMax": 41.92359387874603
+			},
+			{
+				"MaterialId": "5d59ddddb1ce9a26eb81b78b8378b3ac",
+				"ResourceType": "GASEOUS",
+				"Factor": 0.3561860918998718,
+				"DailyExtraction": 21.37116551399231,
+				"MaterialTicker": "N",
+				"ExtractionMax": 44.583009481430054
+			}
+		],
+		"Distances": [
+			{ "name": "Moria Station", "distance": 9 },
+			{ "name": "Antares Station", "distance": 7 },
+			{ "name": "Benten Station", "distance": 12 },
+			{ "name": "Hortus Station", "distance": 3 }
+		],
+		"COGCPrograms": [],
+		"COGCProgramActive": null,
+		"CheckDistances": {
+			"SystemIdStart": "ac35dd2a980e53fedd1a4fe87a909972",
+			"SystemIdTarget": "5554b0cd10217fd9db45704f301d837c",
+			"SystemName": "Antares III",
+			"Distance": 7
+		}
+	},
+	{
+		"PlanetId": "d7add9a69e452002fdc96ef30f5e7557",
+		"PlanetNaturalId": "OE-462c",
+		"PlanetName": "OE-462c",
+		"SystemId": "e4dc7cd40309ef3c03b7a215034666b5",
+		"HasLocalMarket": false,
+		"HasChamberOfCommerce": false,
+		"HasWarehouse": false,
+		"HasAdministrationCenter": false,
+		"HasShipyard": false,
+		"Pressure": 0.11396539956331253,
+		"Surface": true,
+		"Temperature": -127.91988372802734,
+		"Fertility": -1,
+		"Gravity": 0.5265385508537292,
+		"FactionCode": null,
+		"FactionName": null,
+		"GovernorUserName": null,
+		"COGCProgramStatus": null,
+		"Resources": [
+			{
+				"MaterialId": "b25e1857f8234dc9779d83d7abea3d77",
+				"ResourceType": "MINERAL",
+				"Factor": 0.025592710822820663,
+				"DailyExtraction": 1.7914897575974464,
+				"MaterialTicker": "CUO",
+				"ExtractionMax": 30.91161996126175
+			},
+			{
+				"MaterialId": "bcf4a2029e461cf76d29de8c66ec2ff9",
+				"ResourceType": "MINERAL",
+				"Factor": 0.015895524993538857,
+				"DailyExtraction": 1.11268674954772,
+				"MaterialTicker": "AMM",
+				"ExtractionMax": 41.92359387874603
+			},
+			{
+				"MaterialId": "5d59ddddb1ce9a26eb81b78b8378b3ac",
+				"ResourceType": "GASEOUS",
+				"Factor": 0.21889199316501617,
+				"DailyExtraction": 13.13351958990097,
+				"MaterialTicker": "N",
+				"ExtractionMax": 44.583009481430054
+			},
+			{
+				"MaterialId": "1f9a0293d9ba9bf519f71432e695edeb",
+				"ResourceType": "MINERAL",
+				"Factor": 0.03890353813767433,
+				"DailyExtraction": 2.723247669637203,
+				"MaterialTicker": "LST",
+				"ExtractionMax": 55.24479329586029
+			}
+		],
+		"Distances": [
+			{ "name": "Moria Station", "distance": 18 },
+			{ "name": "Antares Station", "distance": 7 },
+			{ "name": "Benten Station", "distance": 15 },
+			{ "name": "Hortus Station", "distance": 15 }
+		],
+		"COGCPrograms": [],
+		"COGCProgramActive": null,
+		"CheckDistances": {
+			"SystemIdStart": "ac35dd2a980e53fedd1a4fe87a909972",
+			"SystemIdTarget": "e4dc7cd40309ef3c03b7a215034666b5",
+			"SystemName": "Antares III",
+			"Distance": 9
+		}
+	},
+	{
+		"PlanetId": "855a5f1267ba42e2e3513530bf5170fb",
+		"PlanetNaturalId": "IA-603b",
+		"PlanetName": "Apothecary",
+		"SystemId": "35ea90a22a12427cf9143d25b6d1d2e5",
+		"HasLocalMarket": false,
+		"HasChamberOfCommerce": false,
+		"HasWarehouse": false,
+		"HasAdministrationCenter": false,
+		"HasShipyard": false,
+		"Pressure": 2.021153450012207,
+		"Surface": true,
+		"Temperature": -28.460147857666016,
+		"Fertility": -1,
+		"Gravity": 1.1330647468566895,
+		"FactionCode": "AI",
+		"FactionName": "Antares Initiative",
+		"GovernorUserName": null,
+		"COGCProgramStatus": null,
+		"Resources": [
+			{
+				"MaterialId": "51531f3012276e93e60cb06b194bac7f",
+				"ResourceType": "MINERAL",
+				"Factor": 0.44999998807907104,
+				"DailyExtraction": 31.499999165534973,
+				"MaterialTicker": "MGS",
+				"ExtractionMax": 48.28994035720825
+			},
+			{
+				"MaterialId": "7e3f98a49ce2d3c8361975de8b4bbea4",
+				"ResourceType": "MINERAL",
+				"Factor": 0.20000000298023224,
+				"DailyExtraction": 14.000000208616257,
+				"MaterialTicker": "HAL",
+				"ExtractionMax": 20.389353930950165
+			},
+			{
+				"MaterialId": "5d59ddddb1ce9a26eb81b78b8378b3ac",
+				"ResourceType": "GASEOUS",
+				"Factor": 0.05000000074505806,
+				"DailyExtraction": 3.0000000447034836,
+				"MaterialTicker": "N",
+				"ExtractionMax": 44.583009481430054
+			}
+		],
+		"Distances": [
+			{ "name": "Moria Station", "distance": 10 },
+			{ "name": "Antares Station", "distance": 4 },
+			{ "name": "Benten Station", "distance": 7 },
+			{ "name": "Hortus Station", "distance": 6 }
+		],
+		"COGCPrograms": [],
+		"COGCProgramActive": null,
+		"CheckDistances": {
+			"SystemIdStart": "ac35dd2a980e53fedd1a4fe87a909972",
+			"SystemIdTarget": "35ea90a22a12427cf9143d25b6d1d2e5",
+			"SystemName": "Antares III",
+			"Distance": 2
+		}
+	},
+	{
+		"PlanetId": "8813549132a2ac1d5c3436e6de667534",
+		"PlanetNaturalId": "ZV-194d",
+		"PlanetName": "ZV-194d",
+		"SystemId": "ac35dd2a980e53fedd1a4fe87a909972",
+		"HasLocalMarket": true,
+		"HasChamberOfCommerce": true,
+		"HasWarehouse": true,
+		"HasAdministrationCenter": true,
+		"HasShipyard": false,
+		"Pressure": 0.052781470119953156,
+		"Surface": true,
+		"Temperature": -188.3927001953125,
+		"Fertility": -1,
+		"Gravity": 1.3328211307525635,
+		"FactionCode": "AI",
+		"FactionName": "Antares Initiative",
+		"GovernorUserName": null,
+		"COGCProgramStatus": "ACTIVE",
+		"Resources": [
+			{
+				"MaterialId": "a4a8a25d01f80586f7bad3488fa11f36",
+				"ResourceType": "MINERAL",
+				"Factor": 0.04030298814177513,
+				"DailyExtraction": 2.821209169924259,
+				"MaterialTicker": "SCR",
+				"ExtractionMax": 24.403139054775238
+			},
+			{
+				"MaterialId": "5d59ddddb1ce9a26eb81b78b8378b3ac",
+				"ResourceType": "GASEOUS",
+				"Factor": 0.05308832228183746,
+				"DailyExtraction": 3.185299336910248,
+				"MaterialTicker": "N",
+				"ExtractionMax": 44.583009481430054
+			},
+			{
+				"MaterialId": "3efc94d2a18702eee04ba2850bdb9bef",
+				"ResourceType": "MINERAL",
+				"Factor": 0.16912119090557098,
+				"DailyExtraction": 11.838483363389969,
+				"MaterialTicker": "AUO",
+				"ExtractionMax": 18.655375242233276
+			}
+		],
+		"Distances": [
+			{ "name": "Moria Station", "distance": 10 },
+			{ "name": "Antares Station", "distance": 2 },
+			{ "name": "Benten Station", "distance": 7 },
+			{ "name": "Hortus Station", "distance": 8 }
+		],
+		"COGCPrograms": [
+			{
+				"ProgramType": "ADVERTISING_METALLURGY",
+				"StartEpochMs": 1750365512702,
+				"EndEpochMs": 1750970312702
+			},
+			{
+				"ProgramType": "ADVERTISING_METALLURGY",
+				"StartEpochMs": 1745527112702,
+				"EndEpochMs": 1746131912702
+			},
+			{
+				"ProgramType": "ADVERTISING_METALLURGY",
+				"StartEpochMs": 1749760712702,
+				"EndEpochMs": 1750365512702
+			},
+			{
+				"ProgramType": "ADVERTISING_METALLURGY",
+				"StartEpochMs": 1749155912702,
+				"EndEpochMs": 1749760712702
+			},
+			{
+				"ProgramType": "ADVERTISING_METALLURGY",
+				"StartEpochMs": 1748551112702,
+				"EndEpochMs": 1749155912702
+			},
+			{
+				"ProgramType": "ADVERTISING_METALLURGY",
+				"StartEpochMs": 1747946312702,
+				"EndEpochMs": 1748551112702
+			},
+			{
+				"ProgramType": "ADVERTISING_METALLURGY",
+				"StartEpochMs": 1747341512702,
+				"EndEpochMs": 1747946312702
+			},
+			{
+				"ProgramType": "ADVERTISING_METALLURGY",
+				"StartEpochMs": 1746736712702,
+				"EndEpochMs": 1747341512702
+			},
+			{
+				"ProgramType": "ADVERTISING_METALLURGY",
+				"StartEpochMs": 1746131912702,
+				"EndEpochMs": 1746736712702
+			},
+			{
+				"ProgramType": "ADVERTISING_METALLURGY",
+				"StartEpochMs": 1744922312702,
+				"EndEpochMs": 1745527112702
+			}
+		],
+		"COGCProgramActive": "ADVERTISING_METALLURGY",
+		"CheckDistances": {
+			"SystemIdStart": "ac35dd2a980e53fedd1a4fe87a909972",
+			"SystemIdTarget": "ac35dd2a980e53fedd1a4fe87a909972",
+			"SystemName": "Antares III",
+			"Distance": 0
+		}
+	},
+	{
+		"PlanetId": "7de63f8caf7f1093798f7de6bd8d995d",
+		"PlanetNaturalId": "ZV-759d",
+		"PlanetName": "Agamemnon",
+		"SystemId": "f02f1292a7520f7bc96453010102f8c1",
+		"HasLocalMarket": true,
+		"HasChamberOfCommerce": true,
+		"HasWarehouse": true,
+		"HasAdministrationCenter": true,
+		"HasShipyard": false,
+		"Pressure": 34.20396041870117,
+		"Surface": true,
+		"Temperature": -92.84961700439453,
+		"Fertility": -1,
+		"Gravity": 1.0256391763687134,
+		"FactionCode": "AI",
+		"FactionName": "Antares Initiative",
+		"GovernorUserName": null,
+		"COGCProgramStatus": "ACTIVE",
+		"Resources": [
+			{
+				"MaterialId": "5d59ddddb1ce9a26eb81b78b8378b3ac",
+				"ResourceType": "GASEOUS",
+				"Factor": 0.026765722781419754,
+				"DailyExtraction": 1.6059433668851852,
+				"MaterialTicker": "N",
+				"ExtractionMax": 44.583009481430054
+			},
+			{
+				"MaterialId": "7e3f98a49ce2d3c8361975de8b4bbea4",
+				"ResourceType": "MINERAL",
+				"Factor": 0.15096580982208252,
+				"DailyExtraction": 10.567606687545776,
+				"MaterialTicker": "HAL",
+				"ExtractionMax": 20.389353930950165
+			},
+			{
+				"MaterialId": "51531f3012276e93e60cb06b194bac7f",
+				"ResourceType": "MINERAL",
+				"Factor": 0.4334995448589325,
+				"DailyExtraction": 30.344968140125275,
+				"MaterialTicker": "MGS",
+				"ExtractionMax": 48.28994035720825
+			},
+			{
+				"MaterialId": "24a2518b138203909eb13f330ac298d3",
+				"ResourceType": "MINERAL",
+				"Factor": 0.027964087203145027,
+				"DailyExtraction": 1.957486104220152,
+				"MaterialTicker": "MAG",
+				"ExtractionMax": 17.5
+			}
+		],
+		"Distances": [
+			{ "name": "Moria Station", "distance": 11 },
+			{ "name": "Antares Station", "distance": 1 },
+			{ "name": "Benten Station", "distance": 8 },
+			{ "name": "Hortus Station", "distance": 9 }
+		],
+		"COGCPrograms": [
+			{
+				"ProgramType": "ADVERTISING_CHEMISTRY",
+				"StartEpochMs": 1749991609570,
+				"EndEpochMs": 1750596409570
+			},
+			{
+				"ProgramType": "ADVERTISING_CHEMISTRY",
+				"StartEpochMs": 1749386809570,
+				"EndEpochMs": 1749991609570
+			},
+			{
+				"ProgramType": "ADVERTISING_CHEMISTRY",
+				"StartEpochMs": 1748782009570,
+				"EndEpochMs": 1749386809570
+			},
+			{
+				"ProgramType": "ADVERTISING_CHEMISTRY",
+				"StartEpochMs": 1748177209570,
+				"EndEpochMs": 1748782009570
+			},
+			{
+				"ProgramType": "ADVERTISING_CHEMISTRY",
+				"StartEpochMs": 1747572409570,
+				"EndEpochMs": 1748177209570
+			},
+			{
+				"ProgramType": "ADVERTISING_CHEMISTRY",
+				"StartEpochMs": 1746967609570,
+				"EndEpochMs": 1747572409570
+			},
+			{
+				"ProgramType": "ADVERTISING_CHEMISTRY",
+				"StartEpochMs": 1746362809570,
+				"EndEpochMs": 1746967609570
+			},
+			{
+				"ProgramType": "ADVERTISING_CHEMISTRY",
+				"StartEpochMs": 1745758009570,
+				"EndEpochMs": 1746362809570
+			},
+			{
+				"ProgramType": "ADVERTISING_CHEMISTRY",
+				"StartEpochMs": 1745153209570,
+				"EndEpochMs": 1745758009570
+			},
+			{
+				"ProgramType": "ADVERTISING_CHEMISTRY",
+				"StartEpochMs": 1750596409570,
+				"EndEpochMs": 1751201209570
+			}
+		],
+		"COGCProgramActive": "ADVERTISING_CHEMISTRY",
+		"CheckDistances": {
+			"SystemIdStart": "ac35dd2a980e53fedd1a4fe87a909972",
+			"SystemIdTarget": "f02f1292a7520f7bc96453010102f8c1",
+			"SystemName": "Antares III",
+			"Distance": 1
+		}
+	},
+	{
+		"PlanetId": "a1c7d6f0e43c6059c094a1a3c6afbfd5",
+		"PlanetNaturalId": "IA-982b",
+		"PlanetName": "IA-982b",
+		"SystemId": "5ac1d66839b2ad5eae84d46f8ebe4df3",
+		"HasLocalMarket": false,
+		"HasChamberOfCommerce": false,
+		"HasWarehouse": false,
+		"HasAdministrationCenter": false,
+		"HasShipyard": false,
+		"Pressure": 0.45888030529022217,
+		"Surface": true,
+		"Temperature": 186.8050079345703,
+		"Fertility": -1,
+		"Gravity": 0.6195766925811768,
+		"FactionCode": null,
+		"FactionName": null,
+		"GovernorUserName": null,
+		"COGCProgramStatus": null,
+		"Resources": [
+			{
+				"MaterialId": "5d59ddddb1ce9a26eb81b78b8378b3ac",
+				"ResourceType": "GASEOUS",
+				"Factor": 0.017196010798215866,
+				"DailyExtraction": 1.031760647892952,
+				"MaterialTicker": "N",
+				"ExtractionMax": 44.583009481430054
+			}
+		],
+		"Distances": [
+			{ "name": "Moria Station", "distance": 12 },
+			{ "name": "Antares Station", "distance": 6 },
+			{ "name": "Benten Station", "distance": 9 },
+			{ "name": "Hortus Station", "distance": 6 }
+		],
+		"COGCPrograms": [],
+		"COGCProgramActive": null,
+		"CheckDistances": {
+			"SystemIdStart": "ac35dd2a980e53fedd1a4fe87a909972",
+			"SystemIdTarget": "5ac1d66839b2ad5eae84d46f8ebe4df3",
+			"SystemName": "Antares III",
+			"Distance": 4
+		}
+	},
+	{
+		"PlanetId": "9e7dcecb753a3e3f9c3a15e4f53d1c28",
+		"PlanetNaturalId": "KW-358e",
+		"PlanetName": "KW-358e",
+		"SystemId": "e2e004d158202f9fa4a1cd4f3434e8bd",
+		"HasLocalMarket": false,
+		"HasChamberOfCommerce": false,
+		"HasWarehouse": false,
+		"HasAdministrationCenter": false,
+		"HasShipyard": false,
+		"Pressure": 1.5385085344314575,
+		"Surface": false,
+		"Temperature": -212.4225616455078,
+		"Fertility": -1,
+		"Gravity": 0.5045647025108337,
+		"FactionCode": "CI",
+		"FactionName": "Castillo-Ito Mercantile",
+		"GovernorUserName": null,
+		"COGCProgramStatus": null,
+		"Resources": [
+			{
+				"MaterialId": "5d59ddddb1ce9a26eb81b78b8378b3ac",
+				"ResourceType": "MINERAL",
+				"Factor": 0.1329674869775772,
+				"DailyExtraction": 9.307724088430405,
+				"MaterialTicker": "N",
+				"ExtractionMax": 52.013511061668396
+			}
+		],
+		"Distances": [
+			{ "name": "Moria Station", "distance": 7 },
+			{ "name": "Antares Station", "distance": 7 },
+			{ "name": "Benten Station", "distance": 2 },
+			{ "name": "Hortus Station", "distance": 11 }
+		],
+		"COGCPrograms": [],
+		"COGCProgramActive": null,
+		"CheckDistances": {
+			"SystemIdStart": "ac35dd2a980e53fedd1a4fe87a909972",
+			"SystemIdTarget": "e2e004d158202f9fa4a1cd4f3434e8bd",
+			"SystemName": "Antares III",
+			"Distance": 5
+		}
+	},
+	{
+		"PlanetId": "e88f97b775d04e3e3e3f229e8cb2dfb4",
+		"PlanetNaturalId": "CG-021g",
+		"PlanetName": "CG-021g",
+		"SystemId": "3df82dc88cd691771e105f85946db6dc",
+		"HasLocalMarket": false,
+		"HasChamberOfCommerce": false,
+		"HasWarehouse": false,
+		"HasAdministrationCenter": false,
+		"HasShipyard": false,
+		"Pressure": 1.0215542316436768,
+		"Surface": false,
+		"Temperature": -150.658447265625,
+		"Fertility": -1,
+		"Gravity": 2.5040805339813232,
+		"FactionCode": null,
+		"FactionName": null,
+		"GovernorUserName": null,
+		"COGCProgramStatus": null,
+		"Resources": [
+			{
+				"MaterialId": "5d59ddddb1ce9a26eb81b78b8378b3ac",
+				"ResourceType": "GASEOUS",
+				"Factor": 0.252449631690979,
+				"DailyExtraction": 15.14697790145874,
+				"MaterialTicker": "N",
+				"ExtractionMax": 44.583009481430054
+			}
+		],
+		"Distances": [
+			{ "name": "Moria Station", "distance": 12 },
+			{ "name": "Antares Station", "distance": 6 },
+			{ "name": "Benten Station", "distance": 12 },
+			{ "name": "Hortus Station", "distance": 6 }
+		],
+		"COGCPrograms": [],
+		"COGCProgramActive": null,
+		"CheckDistances": {
+			"SystemIdStart": "ac35dd2a980e53fedd1a4fe87a909972",
+			"SystemIdTarget": "3df82dc88cd691771e105f85946db6dc",
+			"SystemName": "Antares III",
+			"Distance": 7
+		}
+	},
+	{
+		"PlanetId": "192e3d69605d3516e86ebdb78e529c8e",
+		"PlanetNaturalId": "UV-351d",
+		"PlanetName": "Biogenesis",
+		"SystemId": "92029ff27c1abe932bd2c61ee4c492c7",
+		"HasLocalMarket": true,
+		"HasChamberOfCommerce": true,
+		"HasWarehouse": true,
+		"HasAdministrationCenter": true,
+		"HasShipyard": false,
+		"Pressure": 0.8327193856239319,
+		"Surface": false,
+		"Temperature": -158.329833984375,
+		"Fertility": -1,
+		"Gravity": 1.9664082527160645,
+		"FactionCode": "CI",
+		"FactionName": "Castillo-Ito Mercantile",
+		"GovernorUserName": null,
+		"COGCProgramStatus": "ACTIVE",
+		"Resources": [
+			{
+				"MaterialId": "bcf4a2029e461cf76d29de8c66ec2ff9",
+				"ResourceType": "MINERAL",
+				"Factor": 0.4204149544239044,
+				"DailyExtraction": 29.42904680967331,
+				"MaterialTicker": "AMM",
+				"ExtractionMax": 41.92359387874603
+			},
+			{
+				"MaterialId": "5d59ddddb1ce9a26eb81b78b8378b3ac",
+				"ResourceType": "GASEOUS",
+				"Factor": 0.47363778948783875,
+				"DailyExtraction": 28.418267369270325,
+				"MaterialTicker": "N",
+				"ExtractionMax": 44.583009481430054
+			}
+		],
+		"Distances": [
+			{ "name": "Moria Station", "distance": 6 },
+			{ "name": "Antares Station", "distance": 9 },
+			{ "name": "Benten Station", "distance": 0 },
+			{ "name": "Hortus Station", "distance": 12 }
+		],
+		"COGCPrograms": [
+			{
+				"ProgramType": "ADVERTISING_RESOURCE_EXTRACTION",
+				"StartEpochMs": 1749871848035,
+				"EndEpochMs": 1750476648035
+			},
+			{
+				"ProgramType": "ADVERTISING_RESOURCE_EXTRACTION",
+				"StartEpochMs": 1749267048035,
+				"EndEpochMs": 1749871848035
+			},
+			{
+				"ProgramType": "ADVERTISING_RESOURCE_EXTRACTION",
+				"StartEpochMs": 1748662248035,
+				"EndEpochMs": 1749267048035
+			},
+			{
+				"ProgramType": "ADVERTISING_RESOURCE_EXTRACTION",
+				"StartEpochMs": 1748057448035,
+				"EndEpochMs": 1748662248035
+			},
+			{
+				"ProgramType": "ADVERTISING_RESOURCE_EXTRACTION",
+				"StartEpochMs": 1747452648035,
+				"EndEpochMs": 1748057448035
+			},
+			{
+				"ProgramType": "ADVERTISING_RESOURCE_EXTRACTION",
+				"StartEpochMs": 1746847848035,
+				"EndEpochMs": 1747452648035
+			},
+			{
+				"ProgramType": "ADVERTISING_RESOURCE_EXTRACTION",
+				"StartEpochMs": 1746243048035,
+				"EndEpochMs": 1746847848035
+			},
+			{
+				"ProgramType": "ADVERTISING_RESOURCE_EXTRACTION",
+				"StartEpochMs": 1745638248035,
+				"EndEpochMs": 1746243048035
+			},
+			{
+				"ProgramType": "ADVERTISING_RESOURCE_EXTRACTION",
+				"StartEpochMs": 1745033448035,
+				"EndEpochMs": 1745638248035
+			},
+			{
+				"ProgramType": "ADVERTISING_RESOURCE_EXTRACTION",
+				"StartEpochMs": 1750476648035,
+				"EndEpochMs": 1751081448035
+			}
+		],
+		"COGCProgramActive": "ADVERTISING_RESOURCE_EXTRACTION",
+		"CheckDistances": {
+			"SystemIdStart": "ac35dd2a980e53fedd1a4fe87a909972",
+			"SystemIdTarget": "92029ff27c1abe932bd2c61ee4c492c7",
+			"SystemName": "Antares III",
+			"Distance": 7
+		}
+	},
+	{
+		"PlanetId": "b87981a937354be1783b3919da32eafa",
+		"PlanetNaturalId": "KW-358h",
+		"PlanetName": "KW-358h",
+		"SystemId": "e2e004d158202f9fa4a1cd4f3434e8bd",
+		"HasLocalMarket": false,
+		"HasChamberOfCommerce": false,
+		"HasWarehouse": false,
+		"HasAdministrationCenter": false,
+		"HasShipyard": false,
+		"Pressure": 1.622973918914795,
+		"Surface": false,
+		"Temperature": -239.892822265625,
+		"Fertility": -1,
+		"Gravity": 0.909680962562561,
+		"FactionCode": "CI",
+		"FactionName": "Castillo-Ito Mercantile",
+		"GovernorUserName": null,
+		"COGCProgramStatus": null,
+		"Resources": [
+			{
+				"MaterialId": "c04de28c3e717f236d6ed177b89d9523",
+				"ResourceType": "GASEOUS",
+				"Factor": 0.017899878323078156,
+				"DailyExtraction": 1.0739926993846893,
+				"MaterialTicker": "H",
+				"ExtractionMax": 45.372583866119385
+			},
+			{
+				"MaterialId": "5d59ddddb1ce9a26eb81b78b8378b3ac",
+				"ResourceType": "MINERAL",
+				"Factor": 0.033120159059762955,
+				"DailyExtraction": 2.318411134183407,
+				"MaterialTicker": "N",
+				"ExtractionMax": 52.013511061668396
+			}
+		],
+		"Distances": [
+			{ "name": "Moria Station", "distance": 7 },
+			{ "name": "Antares Station", "distance": 7 },
+			{ "name": "Benten Station", "distance": 2 },
+			{ "name": "Hortus Station", "distance": 11 }
+		],
+		"COGCPrograms": [],
+		"COGCProgramActive": null,
+		"CheckDistances": {
+			"SystemIdStart": "ac35dd2a980e53fedd1a4fe87a909972",
+			"SystemIdTarget": "e2e004d158202f9fa4a1cd4f3434e8bd",
+			"SystemName": "Antares III",
+			"Distance": 5
+		}
+	},
+	{
+		"PlanetId": "838c5b203aa8597f7d3c43bce78eaacb",
+		"PlanetNaturalId": "ZV-639d",
+		"PlanetName": "ZV-639d",
+		"SystemId": "76efb33ed2c068611e880b02ef2b700a",
+		"HasLocalMarket": true,
+		"HasChamberOfCommerce": true,
+		"HasWarehouse": true,
+		"HasAdministrationCenter": true,
+		"HasShipyard": false,
+		"Pressure": 1.3038296699523926,
+		"Surface": false,
+		"Temperature": -191.9311981201172,
+		"Fertility": -1,
+		"Gravity": 2.4220972061157227,
+		"FactionCode": "AI",
+		"FactionName": "Antares Initiative",
+		"GovernorUserName": null,
+		"COGCProgramStatus": "ACTIVE",
+		"Resources": [
+			{
+				"MaterialId": "5d59ddddb1ce9a26eb81b78b8378b3ac",
+				"ResourceType": "LIQUID",
+				"Factor": 0.4197182357311249,
+				"DailyExtraction": 29.38027650117874,
+				"MaterialTicker": "N",
+				"ExtractionMax": 52.013511061668396
+			}
+		],
+		"Distances": [
+			{ "name": "Moria Station", "distance": 13 },
+			{ "name": "Antares Station", "distance": 1 },
+			{ "name": "Benten Station", "distance": 10 },
+			{ "name": "Hortus Station", "distance": 7 }
+		],
+		"COGCPrograms": [
+			{
+				"ProgramType": "ADVERTISING_CHEMISTRY",
+				"StartEpochMs": 1749784077328,
+				"EndEpochMs": 1750388877328
+			},
+			{
+				"ProgramType": "ADVERTISING_CHEMISTRY",
+				"StartEpochMs": 1749179277328,
+				"EndEpochMs": 1749784077328
+			},
+			{
+				"ProgramType": "ADVERTISING_CHEMISTRY",
+				"StartEpochMs": 1748574477328,
+				"EndEpochMs": 1749179277328
+			},
+			{
+				"ProgramType": "ADVERTISING_CHEMISTRY",
+				"StartEpochMs": 1747969677328,
+				"EndEpochMs": 1748574477328
+			},
+			{
+				"ProgramType": "ADVERTISING_CHEMISTRY",
+				"StartEpochMs": 1747364877328,
+				"EndEpochMs": 1747969677328
+			},
+			{
+				"ProgramType": "ADVERTISING_CHEMISTRY",
+				"StartEpochMs": 1746760077328,
+				"EndEpochMs": 1747364877328
+			},
+			{
+				"ProgramType": "ADVERTISING_CHEMISTRY",
+				"StartEpochMs": 1746155277328,
+				"EndEpochMs": 1746760077328
+			},
+			{
+				"ProgramType": "ADVERTISING_CHEMISTRY",
+				"StartEpochMs": 1745550477328,
+				"EndEpochMs": 1746155277328
+			},
+			{
+				"ProgramType": "ADVERTISING_CHEMISTRY",
+				"StartEpochMs": 1744945677328,
+				"EndEpochMs": 1745550477328
+			},
+			{
+				"ProgramType": "ADVERTISING_CHEMISTRY",
+				"StartEpochMs": 1750388877328,
+				"EndEpochMs": 1750993677328
+			}
+		],
+		"COGCProgramActive": "ADVERTISING_CHEMISTRY",
+		"CheckDistances": {
+			"SystemIdStart": "ac35dd2a980e53fedd1a4fe87a909972",
+			"SystemIdTarget": "76efb33ed2c068611e880b02ef2b700a",
+			"SystemName": "Antares III",
+			"Distance": 3
+		}
+	},
+	{
+		"PlanetId": "17b2dc2824e3942a56f1124781473002",
+		"PlanetNaturalId": "AJ-946h",
+		"PlanetName": "AJ-946h",
+		"SystemId": "fbbf232ab076c0ae572ba4e98b994317",
+		"HasLocalMarket": false,
+		"HasChamberOfCommerce": false,
+		"HasWarehouse": false,
+		"HasAdministrationCenter": false,
+		"HasShipyard": false,
+		"Pressure": 1.231329321861267,
+		"Surface": false,
+		"Temperature": -197.86111450195312,
+		"Fertility": -1,
+		"Gravity": 2.8878188133239746,
+		"FactionCode": null,
+		"FactionName": null,
+		"GovernorUserName": null,
+		"COGCProgramStatus": null,
+		"Resources": [
+			{
+				"MaterialId": "c04de28c3e717f236d6ed177b89d9523",
+				"ResourceType": "GASEOUS",
+				"Factor": 0.2542576789855957,
+				"DailyExtraction": 15.255460739135742,
+				"MaterialTicker": "H",
+				"ExtractionMax": 45.372583866119385
+			},
+			{
+				"MaterialId": "5d59ddddb1ce9a26eb81b78b8378b3ac",
+				"ResourceType": "LIQUID",
+				"Factor": 0.1953120231628418,
+				"DailyExtraction": 13.671841621398926,
+				"MaterialTicker": "N",
+				"ExtractionMax": 52.013511061668396
+			}
+		],
+		"Distances": [
+			{ "name": "Moria Station", "distance": 10 },
+			{ "name": "Antares Station", "distance": 10 },
+			{ "name": "Benten Station", "distance": 15 },
+			{ "name": "Hortus Station", "distance": 4 }
+		],
+		"COGCPrograms": [],
+		"COGCProgramActive": null,
+		"CheckDistances": {
+			"SystemIdStart": "ac35dd2a980e53fedd1a4fe87a909972",
+			"SystemIdTarget": "fbbf232ab076c0ae572ba4e98b994317",
+			"SystemName": "Antares III",
+			"Distance": 10
+		}
+	},
+	{
+		"PlanetId": "fcb395b48842eee69da017c57fd53055",
+		"PlanetNaturalId": "UB-808b",
+		"PlanetName": "UB-808b",
+		"SystemId": "a4a61946de1849fe1375a9ae3cde0bc0",
+		"HasLocalMarket": false,
+		"HasChamberOfCommerce": false,
+		"HasWarehouse": false,
+		"HasAdministrationCenter": false,
+		"HasShipyard": false,
+		"Pressure": 1.8789210319519043,
+		"Surface": true,
+		"Temperature": -136.67196655273438,
+		"Fertility": -1,
+		"Gravity": 0.7203261256217957,
+		"FactionCode": null,
+		"FactionName": null,
+		"GovernorUserName": null,
+		"COGCProgramStatus": null,
+		"Resources": [
+			{
+				"MaterialId": "eeff5ee913d34354be84177847fbfe48",
+				"ResourceType": "MINERAL",
+				"Factor": 0.04391651973128319,
+				"DailyExtraction": 3.074156381189823,
+				"MaterialTicker": "SIO",
+				"ExtractionMax": 53.825785517692566
+			},
+			{
+				"MaterialId": "5d59ddddb1ce9a26eb81b78b8378b3ac",
+				"ResourceType": "GASEOUS",
+				"Factor": 0.04845310375094414,
+				"DailyExtraction": 2.9071862250566483,
+				"MaterialTicker": "N",
+				"ExtractionMax": 44.583009481430054
+			}
+		],
+		"Distances": [
+			{ "name": "Moria Station", "distance": 10 },
+			{ "name": "Antares Station", "distance": 8 },
+			{ "name": "Benten Station", "distance": 11 },
+			{ "name": "Hortus Station", "distance": 4 }
+		],
+		"COGCPrograms": [],
+		"COGCProgramActive": null,
+		"CheckDistances": {
+			"SystemIdStart": "ac35dd2a980e53fedd1a4fe87a909972",
+			"SystemIdTarget": "a4a61946de1849fe1375a9ae3cde0bc0",
+			"SystemName": "Antares III",
+			"Distance": 6
+		}
+	},
+	{
+		"PlanetId": "2c1761dbceb679152955996b4e6c0522",
+		"PlanetNaturalId": "VH-874e",
+		"PlanetName": "VH-874e",
+		"SystemId": "6164359edc05c084251cd7bc75cb126a",
+		"HasLocalMarket": false,
+		"HasChamberOfCommerce": false,
+		"HasWarehouse": false,
+		"HasAdministrationCenter": false,
+		"HasShipyard": false,
+		"Pressure": 0.9423913359642029,
+		"Surface": false,
+		"Temperature": -203.61444091796875,
+		"Fertility": -1,
+		"Gravity": 1.9645717144012451,
+		"FactionCode": "IC",
+		"FactionName": "Insitor Cooperative",
+		"GovernorUserName": null,
+		"COGCProgramStatus": null,
+		"Resources": [
+			{
+				"MaterialId": "5d59ddddb1ce9a26eb81b78b8378b3ac",
+				"ResourceType": "LIQUID",
+				"Factor": 0.03210652619600296,
+				"DailyExtraction": 2.247456833720207,
+				"MaterialTicker": "N",
+				"ExtractionMax": 52.013511061668396
+			}
+		],
+		"Distances": [
+			{ "name": "Moria Station", "distance": 7 },
+			{ "name": "Antares Station", "distance": 9 },
+			{ "name": "Benten Station", "distance": 13 },
+			{ "name": "Hortus Station", "distance": 1 }
+		],
+		"COGCPrograms": [],
+		"COGCProgramActive": null,
+		"CheckDistances": {
+			"SystemIdStart": "ac35dd2a980e53fedd1a4fe87a909972",
+			"SystemIdTarget": "6164359edc05c084251cd7bc75cb126a",
+			"SystemName": "Antares III",
+			"Distance": 9
+		}
+	},
+	{
+		"PlanetId": "f76838c5cd3a2c2105306309f27a7163",
+		"PlanetNaturalId": "XH-400b",
+		"PlanetName": "XH-400b",
+		"SystemId": "3ccf1ec43745f90d7f4ecc374304fe18",
+		"HasLocalMarket": false,
+		"HasChamberOfCommerce": false,
+		"HasWarehouse": false,
+		"HasAdministrationCenter": false,
+		"HasShipyard": false,
+		"Pressure": 21.397357940673828,
+		"Surface": true,
+		"Temperature": -37.829254150390625,
+		"Fertility": -1,
+		"Gravity": 0.8029205799102783,
+		"FactionCode": null,
+		"FactionName": null,
+		"GovernorUserName": null,
+		"COGCProgramStatus": null,
+		"Resources": [
+			{
+				"MaterialId": "5d59ddddb1ce9a26eb81b78b8378b3ac",
+				"ResourceType": "LIQUID",
+				"Factor": 0.010001299902796745,
+				"DailyExtraction": 0.7000909931957722,
+				"MaterialTicker": "N",
+				"ExtractionMax": 52.013511061668396
+			},
+			{
+				"MaterialId": "1f9a0293d9ba9bf519f71432e695edeb",
+				"ResourceType": "MINERAL",
+				"Factor": 0.03882336989045143,
+				"DailyExtraction": 2.7176358923316,
+				"MaterialTicker": "LST",
+				"ExtractionMax": 55.24479329586029
+			}
+		],
+		"Distances": [
+			{ "name": "Moria Station", "distance": 4 },
+			{ "name": "Antares Station", "distance": 8 },
+			{ "name": "Benten Station", "distance": 4 },
+			{ "name": "Hortus Station", "distance": 10 }
+		],
+		"COGCPrograms": [],
+		"COGCProgramActive": null,
+		"CheckDistances": {
+			"SystemIdStart": "ac35dd2a980e53fedd1a4fe87a909972",
+			"SystemIdTarget": "3ccf1ec43745f90d7f4ecc374304fe18",
+			"SystemName": "Antares III",
+			"Distance": 6
+		}
+	},
+	{
+		"PlanetId": "be46dade797cf15dd31951f7940049ba",
+		"PlanetNaturalId": "JS-913a",
+		"PlanetName": "JS-913a",
+		"SystemId": "a441ac0097030d519de5f8c2b822b558",
+		"HasLocalMarket": false,
+		"HasChamberOfCommerce": true,
+		"HasWarehouse": false,
+		"HasAdministrationCenter": false,
+		"HasShipyard": false,
+		"Pressure": 0.9092808365821838,
+		"Surface": true,
+		"Temperature": -31.96413803100586,
+		"Fertility": -1,
+		"Gravity": 0.7687140107154846,
+		"FactionCode": "CI",
+		"FactionName": "Castillo-Ito Mercantile",
+		"GovernorUserName": null,
+		"COGCProgramStatus": null,
+		"Resources": [
+			{
+				"MaterialId": "5d59ddddb1ce9a26eb81b78b8378b3ac",
+				"ResourceType": "GASEOUS",
+				"Factor": 0.19782784581184387,
+				"DailyExtraction": 11.869670748710632,
+				"MaterialTicker": "N",
+				"ExtractionMax": 44.583009481430054
+			},
+			{
+				"MaterialId": "4d2a6c0cf6eb404cda3b35820bcbe453",
+				"ResourceType": "MINERAL",
+				"Factor": 0.014332941733300686,
+				"DailyExtraction": 1.003305921331048,
+				"MaterialTicker": "CLI",
+				"ExtractionMax": 41.99443995952606
+			}
+		],
+		"Distances": [
+			{ "name": "Moria Station", "distance": 8 },
+			{ "name": "Antares Station", "distance": 9 },
+			{ "name": "Benten Station", "distance": 4 },
+			{ "name": "Hortus Station", "distance": 13 }
+		],
+		"COGCPrograms": [],
+		"COGCProgramActive": null,
+		"CheckDistances": {
+			"SystemIdStart": "ac35dd2a980e53fedd1a4fe87a909972",
+			"SystemIdTarget": "a441ac0097030d519de5f8c2b822b558",
+			"SystemName": "Antares III",
+			"Distance": 7
+		}
+	},
+	{
+		"PlanetId": "4fa5452b23e7ba33328dd2f45eebb4c7",
+		"PlanetNaturalId": "UV-795h",
+		"PlanetName": "UV-795h",
+		"SystemId": "e636004bf63f401fe5f38aade206f70e",
+		"HasLocalMarket": false,
+		"HasChamberOfCommerce": true,
+		"HasWarehouse": false,
+		"HasAdministrationCenter": false,
+		"HasShipyard": false,
+		"Pressure": 1.427761197090149,
+		"Surface": false,
+		"Temperature": -245.59152221679688,
+		"Fertility": -1,
+		"Gravity": 1.2895429134368896,
+		"FactionCode": "CI",
+		"FactionName": "Castillo-Ito Mercantile",
+		"GovernorUserName": null,
+		"COGCProgramStatus": null,
+		"Resources": [
+			{
+				"MaterialId": "e9dc6ec89adb62b9ef83031d89e3ce99",
+				"ResourceType": "GASEOUS",
+				"Factor": 0.20331093668937683,
+				"DailyExtraction": 12.19865620136261,
+				"MaterialTicker": "HE",
+				"ExtractionMax": 24.212270379066467
+			},
+			{
+				"MaterialId": "5d59ddddb1ce9a26eb81b78b8378b3ac",
+				"ResourceType": "MINERAL",
+				"Factor": 0.42596060037612915,
+				"DailyExtraction": 29.81724202632904,
+				"MaterialTicker": "N",
+				"ExtractionMax": 52.013511061668396
+			}
+		],
+		"Distances": [
+			{ "name": "Moria Station", "distance": 4 },
+			{ "name": "Antares Station", "distance": 11 },
+			{ "name": "Benten Station", "distance": 2 },
+			{ "name": "Hortus Station", "distance": 10 }
+		],
+		"COGCPrograms": [],
+		"COGCProgramActive": null,
+		"CheckDistances": {
+			"SystemIdStart": "ac35dd2a980e53fedd1a4fe87a909972",
+			"SystemIdTarget": "e636004bf63f401fe5f38aade206f70e",
+			"SystemName": "Antares III",
+			"Distance": 9
+		}
+	},
+	{
+		"PlanetId": "6654cdaafeb819451a09da518192d002",
+		"PlanetNaturalId": "FK-317c",
+		"PlanetName": "FK-317c",
+		"SystemId": "8d193b9600131b0ecd9da2aceb6c31e7",
+		"HasLocalMarket": false,
+		"HasChamberOfCommerce": false,
+		"HasWarehouse": false,
+		"HasAdministrationCenter": false,
+		"HasShipyard": false,
+		"Pressure": 0.9078877568244934,
+		"Surface": false,
+		"Temperature": -172.26864624023438,
+		"Fertility": -1,
+		"Gravity": 0.41881558299064636,
+		"FactionCode": "IC",
+		"FactionName": "Insitor Cooperative",
+		"GovernorUserName": null,
+		"COGCProgramStatus": null,
+		"Resources": [
+			{
+				"MaterialId": "5d59ddddb1ce9a26eb81b78b8378b3ac",
+				"ResourceType": "GASEOUS",
+				"Factor": 0.03633210062980652,
+				"DailyExtraction": 2.179926037788391,
+				"MaterialTicker": "N",
+				"ExtractionMax": 44.583009481430054
+			}
+		],
+		"Distances": [
+			{ "name": "Moria Station", "distance": 9 },
+			{ "name": "Antares Station", "distance": 9 },
+			{ "name": "Benten Station", "distance": 14 },
+			{ "name": "Hortus Station", "distance": 3 }
+		],
+		"COGCPrograms": [],
+		"COGCProgramActive": null,
+		"CheckDistances": {
+			"SystemIdStart": "ac35dd2a980e53fedd1a4fe87a909972",
+			"SystemIdTarget": "8d193b9600131b0ecd9da2aceb6c31e7",
+			"SystemName": "Antares III",
+			"Distance": 9
+		}
+	},
+	{
+		"PlanetId": "e4070af043788f487a83eafac06e7ba5",
+		"PlanetNaturalId": "MG-483a",
+		"PlanetName": "MG-483a",
+		"SystemId": "668d6575f79ad8dd14679afc60a54950",
+		"HasLocalMarket": false,
+		"HasChamberOfCommerce": false,
+		"HasWarehouse": false,
+		"HasAdministrationCenter": false,
+		"HasShipyard": false,
+		"Pressure": 0.30526334047317505,
+		"Surface": true,
+		"Temperature": 155.08590698242188,
+		"Fertility": -1,
+		"Gravity": 0.5502022504806519,
+		"FactionCode": null,
+		"FactionName": null,
+		"GovernorUserName": null,
+		"COGCProgramStatus": null,
+		"Resources": [
+			{
+				"MaterialId": "e97bde9e60d4c60a16205d2c859eda62",
+				"ResourceType": "MINERAL",
+				"Factor": 0.37649568915367126,
+				"DailyExtraction": 26.35469824075699,
+				"MaterialTicker": "BRM",
+				"ExtractionMax": 41.98297441005707
+			},
+			{
+				"MaterialId": "5d59ddddb1ce9a26eb81b78b8378b3ac",
+				"ResourceType": "GASEOUS",
+				"Factor": 0.034909456968307495,
+				"DailyExtraction": 2.0945674180984497,
+				"MaterialTicker": "N",
+				"ExtractionMax": 44.583009481430054
+			}
+		],
+		"Distances": [
+			{ "name": "Moria Station", "distance": 19 },
+			{ "name": "Antares Station", "distance": 8 },
+			{ "name": "Benten Station", "distance": 16 },
+			{ "name": "Hortus Station", "distance": 16 }
+		],
+		"COGCPrograms": [],
+		"COGCProgramActive": null,
+		"CheckDistances": {
+			"SystemIdStart": "ac35dd2a980e53fedd1a4fe87a909972",
+			"SystemIdTarget": "668d6575f79ad8dd14679afc60a54950",
+			"SystemName": "Antares III",
+			"Distance": 10
+		}
+	},
+	{
+		"PlanetId": "741e7bee7b79bd0d86a8aefbdbfea28d",
+		"PlanetNaturalId": "WR-709h",
+		"PlanetName": "WR-709h",
+		"SystemId": "d349ef8a9054e9d09d6946cb4ac883ed",
+		"HasLocalMarket": false,
+		"HasChamberOfCommerce": false,
+		"HasWarehouse": false,
+		"HasAdministrationCenter": false,
+		"HasShipyard": false,
+		"Pressure": 0.6364927291870117,
+		"Surface": false,
+		"Temperature": -217.1676788330078,
+		"Fertility": -1,
+		"Gravity": 0.9880614280700684,
+		"FactionCode": null,
+		"FactionName": null,
+		"GovernorUserName": null,
+		"COGCProgramStatus": null,
+		"Resources": [
+			{
+				"MaterialId": "bcf4a2029e461cf76d29de8c66ec2ff9",
+				"ResourceType": "MINERAL",
+				"Factor": 0.3956100642681122,
+				"DailyExtraction": 27.692704498767853,
+				"MaterialTicker": "AMM",
+				"ExtractionMax": 41.92359387874603
+			},
+			{
+				"MaterialId": "5d59ddddb1ce9a26eb81b78b8378b3ac",
+				"ResourceType": "MINERAL",
+				"Factor": 0.011180906556546688,
+				"DailyExtraction": 0.7826634589582682,
+				"MaterialTicker": "N",
+				"ExtractionMax": 52.013511061668396
+			}
+		],
+		"Distances": [
+			{ "name": "Moria Station", "distance": 19 },
+			{ "name": "Antares Station", "distance": 8 },
+			{ "name": "Benten Station", "distance": 16 },
+			{ "name": "Hortus Station", "distance": 16 }
+		],
+		"COGCPrograms": [],
+		"COGCProgramActive": null,
+		"CheckDistances": {
+			"SystemIdStart": "ac35dd2a980e53fedd1a4fe87a909972",
+			"SystemIdTarget": "d349ef8a9054e9d09d6946cb4ac883ed",
+			"SystemName": "Antares III",
+			"Distance": 10
+		}
+	},
+	{
+		"PlanetId": "eb005d4c00ed7856c48e29b173e374ff",
+		"PlanetNaturalId": "HM-223b",
+		"PlanetName": "HM-223b",
+		"SystemId": "077f812a1d7003fc0734190de1945a4f",
+		"HasLocalMarket": true,
+		"HasChamberOfCommerce": false,
+		"HasWarehouse": true,
+		"HasAdministrationCenter": true,
+		"HasShipyard": false,
+		"Pressure": 2.0372018814086914,
+		"Surface": true,
+		"Temperature": -115.83731079101562,
+		"Fertility": -1,
+		"Gravity": 0.6695377230644226,
+		"FactionCode": null,
+		"FactionName": null,
+		"GovernorUserName": null,
+		"COGCProgramStatus": null,
+		"Resources": [
+			{
+				"MaterialId": "5d59ddddb1ce9a26eb81b78b8378b3ac",
+				"ResourceType": "GASEOUS",
+				"Factor": 0.02103336714208126,
+				"DailyExtraction": 1.2620020285248756,
+				"MaterialTicker": "N",
+				"ExtractionMax": 44.583009481430054
+			}
+		],
+		"Distances": [
+			{ "name": "Moria Station", "distance": 11 },
+			{ "name": "Antares Station", "distance": 12 },
+			{ "name": "Benten Station", "distance": 7 },
+			{ "name": "Hortus Station", "distance": 16 }
+		],
+		"COGCPrograms": [],
+		"COGCProgramActive": null,
+		"CheckDistances": {
+			"SystemIdStart": "ac35dd2a980e53fedd1a4fe87a909972",
+			"SystemIdTarget": "077f812a1d7003fc0734190de1945a4f",
+			"SystemName": "Antares III",
+			"Distance": 10
+		}
+	},
+	{
+		"PlanetId": "8bcfea492130d81eb0a63c2a4cd7b4bd",
+		"PlanetNaturalId": "JS-952d",
+		"PlanetName": "JS-952d",
+		"SystemId": "9e0f4a18381e14dcf7f525c027b62314",
+		"HasLocalMarket": false,
+		"HasChamberOfCommerce": false,
+		"HasWarehouse": false,
+		"HasAdministrationCenter": false,
+		"HasShipyard": false,
+		"Pressure": 5.106785774230957,
+		"Surface": true,
+		"Temperature": -32.13908767700195,
+		"Fertility": -1,
+		"Gravity": 0.5747901797294617,
+		"FactionCode": "CI",
+		"FactionName": "Castillo-Ito Mercantile",
+		"GovernorUserName": null,
+		"COGCProgramStatus": null,
+		"Resources": [
+			{
+				"MaterialId": "c5236c5b79b9e75ddbce16887aeda338",
+				"ResourceType": "MINERAL",
+				"Factor": 0.03211560100317001,
+				"DailyExtraction": 2.248092070221901,
+				"MaterialTicker": "GAL",
+				"ExtractionMax": 33.55893313884735
+			},
+			{
+				"MaterialId": "e9dc6ec89adb62b9ef83031d89e3ce99",
+				"ResourceType": "GASEOUS",
+				"Factor": 0.1002528965473175,
+				"DailyExtraction": 6.01517379283905,
+				"MaterialTicker": "HE",
+				"ExtractionMax": 24.212270379066467
+			},
+			{
+				"MaterialId": "bcf4a2029e461cf76d29de8c66ec2ff9",
+				"ResourceType": "LIQUID",
+				"Factor": 0.028088169172406197,
+				"DailyExtraction": 1.9661718420684338,
+				"MaterialTicker": "AMM",
+				"ExtractionMax": 41.92359387874603
+			},
+			{
+				"MaterialId": "5d59ddddb1ce9a26eb81b78b8378b3ac",
+				"ResourceType": "GASEOUS",
+				"Factor": 0.010473640635609627,
+				"DailyExtraction": 0.6284184381365776,
+				"MaterialTicker": "N",
+				"ExtractionMax": 44.583009481430054
+			}
+		],
+		"Distances": [
+			{ "name": "Moria Station", "distance": 6 },
+			{ "name": "Antares Station", "distance": 9 },
+			{ "name": "Benten Station", "distance": 2 },
+			{ "name": "Hortus Station", "distance": 12 }
+		],
+		"COGCPrograms": [],
+		"COGCProgramActive": null,
+		"CheckDistances": {
+			"SystemIdStart": "ac35dd2a980e53fedd1a4fe87a909972",
+			"SystemIdTarget": "9e0f4a18381e14dcf7f525c027b62314",
+			"SystemName": "Antares III",
+			"Distance": 7
+		}
+	},
+	{
+		"PlanetId": "25878dea6be23d3924f0ef9cece718c9",
+		"PlanetNaturalId": "BS-658j",
+		"PlanetName": "BS-658j",
+		"SystemId": "f56e1f31ba3ac98d8f0875e91cbcc850",
+		"HasLocalMarket": false,
+		"HasChamberOfCommerce": false,
+		"HasWarehouse": false,
+		"HasAdministrationCenter": false,
+		"HasShipyard": false,
+		"Pressure": 18.992183685302734,
+		"Surface": true,
+		"Temperature": -257.8673095703125,
+		"Fertility": -1,
+		"Gravity": 1.445014476776123,
+		"FactionCode": "IC",
+		"FactionName": "Insitor Cooperative",
+		"GovernorUserName": null,
+		"COGCProgramStatus": null,
+		"Resources": [
+			{
+				"MaterialId": "c5236c5b79b9e75ddbce16887aeda338",
+				"ResourceType": "MINERAL",
+				"Factor": 0.03744734823703766,
+				"DailyExtraction": 2.621314376592636,
+				"MaterialTicker": "GAL",
+				"ExtractionMax": 33.55893313884735
+			},
+			{
+				"MaterialId": "fba7294b0f74a4a2527f5a7049c70120",
+				"ResourceType": "MINERAL",
+				"Factor": 0.1773998886346817,
+				"DailyExtraction": 12.41799220442772,
+				"MaterialTicker": "BOR",
+				"ExtractionMax": 17.156646847724915
+			},
+			{
+				"MaterialId": "5d59ddddb1ce9a26eb81b78b8378b3ac",
+				"ResourceType": "MINERAL",
+				"Factor": 0.061545878648757935,
+				"DailyExtraction": 4.308211505413055,
+				"MaterialTicker": "N",
+				"ExtractionMax": 52.013511061668396
+			},
+			{
+				"MaterialId": "4d2a6c0cf6eb404cda3b35820bcbe453",
+				"ResourceType": "MINERAL",
+				"Factor": 0.4075953960418701,
+				"DailyExtraction": 28.531677722930908,
+				"MaterialTicker": "CLI",
+				"ExtractionMax": 41.99443995952606
+			}
+		],
+		"Distances": [
+			{ "name": "Moria Station", "distance": 9 },
+			{ "name": "Antares Station", "distance": 9 },
+			{ "name": "Benten Station", "distance": 14 },
+			{ "name": "Hortus Station", "distance": 3 }
+		],
+		"COGCPrograms": [],
+		"COGCProgramActive": null,
+		"CheckDistances": {
+			"SystemIdStart": "ac35dd2a980e53fedd1a4fe87a909972",
+			"SystemIdTarget": "f56e1f31ba3ac98d8f0875e91cbcc850",
+			"SystemName": "Antares III",
+			"Distance": 9
+		}
+	},
+	{
+		"PlanetId": "69e1590b68cba8526421fb7cc74d1c8d",
+		"PlanetNaturalId": "EW-652d",
+		"PlanetName": "EW-652d",
+		"SystemId": "1886e0e01ed5ac9bcb9d0ad85ac719c5",
+		"HasLocalMarket": false,
+		"HasChamberOfCommerce": false,
+		"HasWarehouse": false,
+		"HasAdministrationCenter": false,
+		"HasShipyard": false,
+		"Pressure": 59.573333740234375,
+		"Surface": true,
+		"Temperature": -155.15623474121094,
+		"Fertility": -1,
+		"Gravity": 1.3007475137710571,
+		"FactionCode": null,
+		"FactionName": null,
+		"GovernorUserName": null,
+		"COGCProgramStatus": null,
+		"Resources": [
+			{
+				"MaterialId": "5d59ddddb1ce9a26eb81b78b8378b3ac",
+				"ResourceType": "LIQUID",
+				"Factor": 0.0662904605269432,
+				"DailyExtraction": 4.6403322368860245,
+				"MaterialTicker": "N",
+				"ExtractionMax": 52.013511061668396
+			},
+			{
+				"MaterialId": "51531f3012276e93e60cb06b194bac7f",
+				"ResourceType": "MINERAL",
+				"Factor": 0.020234065130352974,
+				"DailyExtraction": 1.4163845591247082,
+				"MaterialTicker": "MGS",
+				"ExtractionMax": 48.28994035720825
+			}
+		],
+		"Distances": [
+			{ "name": "Moria Station", "distance": 15 },
+			{ "name": "Antares Station", "distance": 8 },
+			{ "name": "Benten Station", "distance": 16 },
+			{ "name": "Hortus Station", "distance": 9 }
+		],
+		"COGCPrograms": [],
+		"COGCProgramActive": null,
+		"CheckDistances": {
+			"SystemIdStart": "ac35dd2a980e53fedd1a4fe87a909972",
+			"SystemIdTarget": "1886e0e01ed5ac9bcb9d0ad85ac719c5",
+			"SystemName": "Antares III",
+			"Distance": 10
+		}
+	},
+	{
+		"PlanetId": "4bc9c759005580751a319ea1bcd08c93",
+		"PlanetNaturalId": "EW-652a",
+		"PlanetName": "EW-652a",
+		"SystemId": "1886e0e01ed5ac9bcb9d0ad85ac719c5",
+		"HasLocalMarket": false,
+		"HasChamberOfCommerce": false,
+		"HasWarehouse": false,
+		"HasAdministrationCenter": false,
+		"HasShipyard": false,
+		"Pressure": 0.21191662549972534,
+		"Surface": true,
+		"Temperature": 88.91565704345703,
+		"Fertility": -1,
+		"Gravity": 0.4468885064125061,
+		"FactionCode": null,
+		"FactionName": null,
+		"GovernorUserName": null,
+		"COGCProgramStatus": null,
+		"Resources": [
+			{
+				"MaterialId": "5d59ddddb1ce9a26eb81b78b8378b3ac",
+				"ResourceType": "GASEOUS",
+				"Factor": 0.15854063630104065,
+				"DailyExtraction": 9.512438178062439,
+				"MaterialTicker": "N",
+				"ExtractionMax": 44.583009481430054
+			},
+			{
+				"MaterialId": "b9640b0d66e7d0ca7e4d3132711c97fc",
+				"ResourceType": "MINERAL",
+				"Factor": 0.049717411398887634,
+				"DailyExtraction": 3.4802187979221344,
+				"MaterialTicker": "FEO",
+				"ExtractionMax": 52.42888689041138
+			},
+			{
+				"MaterialId": "c5236c5b79b9e75ddbce16887aeda338",
+				"ResourceType": "MINERAL",
+				"Factor": 0.34964802861213684,
+				"DailyExtraction": 24.47536200284958,
+				"MaterialTicker": "GAL",
+				"ExtractionMax": 33.55893313884735
+			},
+			{
+				"MaterialId": "4e66cc6157f132ba934a79ae38776521",
+				"ResourceType": "MINERAL",
+				"Factor": 0.22695831954479218,
+				"DailyExtraction": 15.887082368135452,
+				"MaterialTicker": "TIO",
+				"ExtractionMax": 23.93017053604126
+			},
+			{
+				"MaterialId": "24a2518b138203909eb13f330ac298d3",
+				"ResourceType": "MINERAL",
+				"Factor": 0.022148212417960167,
+				"DailyExtraction": 1.5503748692572117,
+				"MaterialTicker": "MAG",
+				"ExtractionMax": 17.5
+			}
+		],
+		"Distances": [
+			{ "name": "Moria Station", "distance": 15 },
+			{ "name": "Antares Station", "distance": 8 },
+			{ "name": "Benten Station", "distance": 16 },
+			{ "name": "Hortus Station", "distance": 9 }
+		],
+		"COGCPrograms": [],
+		"COGCProgramActive": null,
+		"CheckDistances": {
+			"SystemIdStart": "ac35dd2a980e53fedd1a4fe87a909972",
+			"SystemIdTarget": "1886e0e01ed5ac9bcb9d0ad85ac719c5",
+			"SystemName": "Antares III",
+			"Distance": 10
+		}
+	},
+	{
+		"PlanetId": "eecd5eb7a6a4559c65eb58f809c24a4f",
+		"PlanetNaturalId": "FK-037g",
+		"PlanetName": "FK-037g",
+		"SystemId": "8d4ec34bba8b86fb8bd086415b282331",
+		"HasLocalMarket": false,
+		"HasChamberOfCommerce": false,
+		"HasWarehouse": false,
+		"HasAdministrationCenter": false,
+		"HasShipyard": false,
+		"Pressure": 0.7192195653915405,
+		"Surface": false,
+		"Temperature": -195.75308227539062,
+		"Fertility": -1,
+		"Gravity": 2.669118881225586,
+		"FactionCode": null,
+		"FactionName": null,
+		"GovernorUserName": null,
+		"COGCProgramStatus": null,
+		"Resources": [
+			{
+				"MaterialId": "bcf4a2029e461cf76d29de8c66ec2ff9",
+				"ResourceType": "MINERAL",
+				"Factor": 0.37535879015922546,
+				"DailyExtraction": 26.275115311145782,
+				"MaterialTicker": "AMM",
+				"ExtractionMax": 41.92359387874603
+			},
+			{
+				"MaterialId": "5d59ddddb1ce9a26eb81b78b8378b3ac",
+				"ResourceType": "GASEOUS",
+				"Factor": 0.6438161730766296,
+				"DailyExtraction": 38.62897038459778,
+				"MaterialTicker": "N",
+				"ExtractionMax": 44.583009481430054
+			}
+		],
+		"Distances": [
+			{ "name": "Moria Station", "distance": 10 },
+			{ "name": "Antares Station", "distance": 10 },
+			{ "name": "Benten Station", "distance": 15 },
+			{ "name": "Hortus Station", "distance": 4 }
+		],
+		"COGCPrograms": [],
+		"COGCProgramActive": null,
+		"CheckDistances": {
+			"SystemIdStart": "ac35dd2a980e53fedd1a4fe87a909972",
+			"SystemIdTarget": "8d4ec34bba8b86fb8bd086415b282331",
+			"SystemName": "Antares III",
+			"Distance": 10
+		}
+	},
+	{
+		"PlanetId": "d23e0276ba8b16fe9d032e6f0365c0a7",
+		"PlanetNaturalId": "CB-045e",
+		"PlanetName": "CB-045e",
+		"SystemId": "6aa86509e9074c6e2e7d4841cd5c4a64",
+		"HasLocalMarket": false,
+		"HasChamberOfCommerce": false,
+		"HasWarehouse": false,
+		"HasAdministrationCenter": false,
+		"HasShipyard": false,
+		"Pressure": 18.093175888061523,
+		"Surface": true,
+		"Temperature": -83.64810180664062,
+		"Fertility": -1,
+		"Gravity": 1.0179377794265747,
+		"FactionCode": "CI",
+		"FactionName": "Castillo-Ito Mercantile",
+		"GovernorUserName": null,
+		"COGCProgramStatus": null,
+		"Resources": [
+			{
+				"MaterialId": "6e16dbf050b98d9c4fc9c615b3367a0f",
+				"ResourceType": "LIQUID",
+				"Factor": 0.013052561320364475,
+				"DailyExtraction": 0.9136792924255133,
+				"MaterialTicker": "O",
+				"ExtractionMax": 50.470234751701355
+			},
+			{
+				"MaterialId": "5d59ddddb1ce9a26eb81b78b8378b3ac",
+				"ResourceType": "LIQUID",
+				"Factor": 0.04558010771870613,
+				"DailyExtraction": 3.190607540309429,
+				"MaterialTicker": "N",
+				"ExtractionMax": 52.013511061668396
+			},
+			{
+				"MaterialId": "4d2a6c0cf6eb404cda3b35820bcbe453",
+				"ResourceType": "MINERAL",
+				"Factor": 0.2096042037010193,
+				"DailyExtraction": 14.67229425907135,
+				"MaterialTicker": "CLI",
+				"ExtractionMax": 41.99443995952606
+			}
+		],
+		"Distances": [
+			{ "name": "Moria Station", "distance": 8 },
+			{ "name": "Antares Station", "distance": 11 },
+			{ "name": "Benten Station", "distance": 4 },
+			{ "name": "Hortus Station", "distance": 14 }
+		],
+		"COGCPrograms": [],
+		"COGCProgramActive": null,
+		"CheckDistances": {
+			"SystemIdStart": "ac35dd2a980e53fedd1a4fe87a909972",
+			"SystemIdTarget": "6aa86509e9074c6e2e7d4841cd5c4a64",
+			"SystemName": "Antares III",
+			"Distance": 9
+		}
+	},
+	{
+		"PlanetId": "ffb9ea9bc7a502581dc69fff063ec7ba",
+		"PlanetNaturalId": "WU-070i",
+		"PlanetName": "WU-070i",
+		"SystemId": "e92123538c66403bbc8edecb5fbed50a",
+		"HasLocalMarket": false,
+		"HasChamberOfCommerce": false,
+		"HasWarehouse": false,
+		"HasAdministrationCenter": false,
+		"HasShipyard": false,
+		"Pressure": 1.0962210893630981,
+		"Surface": false,
+		"Temperature": -231.10693359375,
+		"Fertility": -1,
+		"Gravity": 1.486546277999878,
+		"FactionCode": null,
+		"FactionName": null,
+		"GovernorUserName": null,
+		"COGCProgramStatus": null,
+		"Resources": [
+			{
+				"MaterialId": "5d59ddddb1ce9a26eb81b78b8378b3ac",
+				"ResourceType": "MINERAL",
+				"Factor": 0.3294774293899536,
+				"DailyExtraction": 23.063420057296753,
+				"MaterialTicker": "N",
+				"ExtractionMax": 52.013511061668396
+			}
+		],
+		"Distances": [
+			{ "name": "Moria Station", "distance": 16 },
+			{ "name": "Antares Station", "distance": 4 },
+			{ "name": "Benten Station", "distance": 13 },
+			{ "name": "Hortus Station", "distance": 10 }
+		],
+		"COGCPrograms": [],
+		"COGCProgramActive": null,
+		"CheckDistances": {
+			"SystemIdStart": "ac35dd2a980e53fedd1a4fe87a909972",
+			"SystemIdTarget": "e92123538c66403bbc8edecb5fbed50a",
+			"SystemName": "Antares III",
+			"Distance": 6
+		}
+	},
+	{
+		"PlanetId": "11f236b2d28a5068b2b1098fce650e9e",
+		"PlanetNaturalId": "UV-135c",
+		"PlanetName": "UV-135c",
+		"SystemId": "1f049cd960c90fc8e201f90f32e9c6be",
+		"HasLocalMarket": false,
+		"HasChamberOfCommerce": false,
+		"HasWarehouse": false,
+		"HasAdministrationCenter": false,
+		"HasShipyard": false,
+		"Pressure": 1.6934878826141357,
+		"Surface": true,
+		"Temperature": -202.98573303222656,
+		"Fertility": -1,
+		"Gravity": 0.5909593105316162,
+		"FactionCode": "CI",
+		"FactionName": "Castillo-Ito Mercantile",
+		"GovernorUserName": null,
+		"COGCProgramStatus": null,
+		"Resources": [
+			{
+				"MaterialId": "c04de28c3e717f236d6ed177b89d9523",
+				"ResourceType": "GASEOUS",
+				"Factor": 0.019935503602027893,
+				"DailyExtraction": 1.1961302161216736,
+				"MaterialTicker": "H",
+				"ExtractionMax": 45.372583866119385
+			},
+			{
+				"MaterialId": "ec8dbb1d3f51d89c61b6f58fdd64a7f0",
+				"ResourceType": "MINERAL",
+				"Factor": 0.028529854491353035,
+				"DailyExtraction": 1.9970898143947124,
+				"MaterialTicker": "H2O",
+				"ExtractionMax": 62.82984256744385
+			},
+			{
+				"MaterialId": "a4a8a25d01f80586f7bad3488fa11f36",
+				"ResourceType": "MINERAL",
+				"Factor": 0.2252211570739746,
+				"DailyExtraction": 15.765480995178223,
+				"MaterialTicker": "SCR",
+				"ExtractionMax": 24.403139054775238
+			},
+			{
+				"MaterialId": "5d59ddddb1ce9a26eb81b78b8378b3ac",
+				"ResourceType": "LIQUID",
+				"Factor": 0.015567732974886894,
+				"DailyExtraction": 1.0897413082420826,
+				"MaterialTicker": "N",
+				"ExtractionMax": 52.013511061668396
+			}
+		],
+		"Distances": [
+			{ "name": "Moria Station", "distance": 7 },
+			{ "name": "Antares Station", "distance": 11 },
+			{ "name": "Benten Station", "distance": 2 },
+			{ "name": "Hortus Station", "distance": 13 }
+		],
+		"COGCPrograms": [],
+		"COGCProgramActive": null,
+		"CheckDistances": {
+			"SystemIdStart": "ac35dd2a980e53fedd1a4fe87a909972",
+			"SystemIdTarget": "1f049cd960c90fc8e201f90f32e9c6be",
+			"SystemName": "Antares III",
+			"Distance": 9
+		}
+	},
+	{
+		"PlanetId": "61528bd5c6d35a28ea42d0ad0fe4eb6e",
+		"PlanetNaturalId": "IA-335c",
+		"PlanetName": "IA-335c",
+		"SystemId": "df5378430083e4a3da37e0444e4356b9",
+		"HasLocalMarket": false,
+		"HasChamberOfCommerce": false,
+		"HasWarehouse": false,
+		"HasAdministrationCenter": false,
+		"HasShipyard": false,
+		"Pressure": 7.212074279785156,
+		"Surface": true,
+		"Temperature": -197.0494842529297,
+		"Fertility": -1,
+		"Gravity": 1.0159971714019775,
+		"FactionCode": null,
+		"FactionName": null,
+		"GovernorUserName": null,
+		"COGCProgramStatus": null,
+		"Resources": [
+			{
+				"MaterialId": "5d59ddddb1ce9a26eb81b78b8378b3ac",
+				"ResourceType": "LIQUID",
+				"Factor": 0.03948447108268738,
+				"DailyExtraction": 2.7639129757881165,
+				"MaterialTicker": "N",
+				"ExtractionMax": 52.013511061668396
+			}
+		],
+		"Distances": [
+			{ "name": "Moria Station", "distance": 12 },
+			{ "name": "Antares Station", "distance": 8 },
+			{ "name": "Benten Station", "distance": 11 },
+			{ "name": "Hortus Station", "distance": 6 }
+		],
+		"COGCPrograms": [],
+		"COGCProgramActive": null,
+		"CheckDistances": {
+			"SystemIdStart": "ac35dd2a980e53fedd1a4fe87a909972",
+			"SystemIdTarget": "df5378430083e4a3da37e0444e4356b9",
+			"SystemName": "Antares III",
+			"Distance": 6
+		}
+	},
+	{
+		"PlanetId": "9e601d43258cf918b09736b6ab62b89c",
+		"PlanetNaturalId": "LS-828d",
+		"PlanetName": "LS-828d",
+		"SystemId": "34bd78ba1ae1ad1961eabe17400ce28e",
+		"HasLocalMarket": false,
+		"HasChamberOfCommerce": false,
+		"HasWarehouse": false,
+		"HasAdministrationCenter": false,
+		"HasShipyard": false,
+		"Pressure": 4.701462745666504,
+		"Surface": true,
+		"Temperature": -206.0684814453125,
+		"Fertility": -1,
+		"Gravity": 1.0167102813720703,
+		"FactionCode": null,
+		"FactionName": null,
+		"GovernorUserName": null,
+		"COGCProgramStatus": null,
+		"Resources": [
+			{
+				"MaterialId": "c5236c5b79b9e75ddbce16887aeda338",
+				"ResourceType": "MINERAL",
+				"Factor": 0.12327669560909271,
+				"DailyExtraction": 8.62936869263649,
+				"MaterialTicker": "GAL",
+				"ExtractionMax": 33.55893313884735
+			},
+			{
+				"MaterialId": "5d59ddddb1ce9a26eb81b78b8378b3ac",
+				"ResourceType": "LIQUID",
+				"Factor": 0.010193082503974438,
+				"DailyExtraction": 0.7135157752782106,
+				"MaterialTicker": "N",
+				"ExtractionMax": 52.013511061668396
+			}
+		],
+		"Distances": [
+			{ "name": "Moria Station", "distance": 8 },
+			{ "name": "Antares Station", "distance": 5 },
+			{ "name": "Benten Station", "distance": 5 },
+			{ "name": "Hortus Station", "distance": 9 }
+		],
+		"COGCPrograms": [],
+		"COGCProgramActive": null,
+		"CheckDistances": {
+			"SystemIdStart": "ac35dd2a980e53fedd1a4fe87a909972",
+			"SystemIdTarget": "34bd78ba1ae1ad1961eabe17400ce28e",
+			"SystemName": "Antares III",
+			"Distance": 3
+		}
+	},
+	{
+		"PlanetId": "310bd9b111ace6f0b5e5fd9b9e222fb0",
+		"PlanetNaturalId": "VH-778e",
+		"PlanetName": "VH-778e",
+		"SystemId": "8de3101e1865b4bb7edad269a4b0dda7",
+		"HasLocalMarket": false,
+		"HasChamberOfCommerce": false,
+		"HasWarehouse": false,
+		"HasAdministrationCenter": false,
+		"HasShipyard": false,
+		"Pressure": 0.6687529683113098,
+		"Surface": false,
+		"Temperature": -194.39578247070312,
+		"Fertility": -1,
+		"Gravity": 1.7538529634475708,
+		"FactionCode": "IC",
+		"FactionName": "Insitor Cooperative",
+		"GovernorUserName": null,
+		"COGCProgramStatus": null,
+		"Resources": [
+			{
+				"MaterialId": "5d59ddddb1ce9a26eb81b78b8378b3ac",
+				"ResourceType": "GASEOUS",
+				"Factor": 0.03812398016452789,
+				"DailyExtraction": 2.2874388098716736,
+				"MaterialTicker": "N",
+				"ExtractionMax": 44.583009481430054
+			}
+		],
+		"Distances": [
+			{ "name": "Moria Station", "distance": 5 },
+			{ "name": "Antares Station", "distance": 9 },
+			{ "name": "Benten Station", "distance": 11 },
+			{ "name": "Hortus Station", "distance": 1 }
+		],
+		"COGCPrograms": [],
+		"COGCProgramActive": null,
+		"CheckDistances": {
+			"SystemIdStart": "ac35dd2a980e53fedd1a4fe87a909972",
+			"SystemIdTarget": "8de3101e1865b4bb7edad269a4b0dda7",
+			"SystemName": "Antares III",
+			"Distance": 9
+		}
+	},
+	{
+		"PlanetId": "272c3cb8860a9687a712a805bc8edbc6",
+		"PlanetNaturalId": "LG-430d",
+		"PlanetName": "LG-430d",
+		"SystemId": "57d8ac43df123df0613bbf64ae0fb579",
+		"HasLocalMarket": false,
+		"HasChamberOfCommerce": false,
+		"HasWarehouse": false,
+		"HasAdministrationCenter": false,
+		"HasShipyard": false,
+		"Pressure": 0.011883175931870937,
+		"Surface": true,
+		"Temperature": -84.64586639404297,
+		"Fertility": -1,
+		"Gravity": 1.4159907102584839,
+		"FactionCode": null,
+		"FactionName": null,
+		"GovernorUserName": null,
+		"COGCProgramStatus": null,
+		"Resources": [
+			{
+				"MaterialId": "e9dc6ec89adb62b9ef83031d89e3ce99",
+				"ResourceType": "GASEOUS",
+				"Factor": 0.01653098873794079,
+				"DailyExtraction": 0.9918593242764473,
+				"MaterialTicker": "HE",
+				"ExtractionMax": 24.212270379066467
+			},
+			{
+				"MaterialId": "5d59ddddb1ce9a26eb81b78b8378b3ac",
+				"ResourceType": "GASEOUS",
+				"Factor": 0.030597057193517685,
+				"DailyExtraction": 1.835823431611061,
+				"MaterialTicker": "N",
+				"ExtractionMax": 44.583009481430054
+			}
+		],
+		"Distances": [
+			{ "name": "Moria Station", "distance": 10 },
+			{ "name": "Antares Station", "distance": 8 },
+			{ "name": "Benten Station", "distance": 14 },
+			{ "name": "Hortus Station", "distance": 4 }
+		],
+		"COGCPrograms": [],
+		"COGCProgramActive": null,
+		"CheckDistances": {
+			"SystemIdStart": "ac35dd2a980e53fedd1a4fe87a909972",
+			"SystemIdTarget": "57d8ac43df123df0613bbf64ae0fb579",
+			"SystemName": "Antares III",
+			"Distance": 9
+		}
+	},
+	{
+		"PlanetId": "59b20b16b3784f1d1dba1049f37b46bd",
+		"PlanetNaturalId": "RC-944g",
+		"PlanetName": "RC-944g",
+		"SystemId": "cb1ee6ffe4e56f8b98152a1febda694d",
+		"HasLocalMarket": false,
+		"HasChamberOfCommerce": true,
+		"HasWarehouse": true,
+		"HasAdministrationCenter": false,
+		"HasShipyard": false,
+		"Pressure": 1.1023082733154297,
+		"Surface": false,
+		"Temperature": -200.65249633789062,
+		"Fertility": -1,
+		"Gravity": 1.7472115755081177,
+		"FactionCode": null,
+		"FactionName": null,
+		"GovernorUserName": null,
+		"COGCProgramStatus": "ACTIVE",
+		"Resources": [
+			{
+				"MaterialId": "e9dc6ec89adb62b9ef83031d89e3ce99",
+				"ResourceType": "GASEOUS",
+				"Factor": 0.34232744574546814,
+				"DailyExtraction": 20.53964674472809,
+				"MaterialTicker": "HE",
+				"ExtractionMax": 24.212270379066467
+			},
+			{
+				"MaterialId": "5d59ddddb1ce9a26eb81b78b8378b3ac",
+				"ResourceType": "LIQUID",
+				"Factor": 0.2703533172607422,
+				"DailyExtraction": 18.924732208251953,
+				"MaterialTicker": "N",
+				"ExtractionMax": 52.013511061668396
+			}
+		],
+		"Distances": [
+			{ "name": "Moria Station", "distance": 5 },
+			{ "name": "Antares Station", "distance": 12 },
+			{ "name": "Benten Station", "distance": 5 },
+			{ "name": "Hortus Station", "distance": 9 }
+		],
+		"COGCPrograms": [
+			{
+				"ProgramType": "ADVERTISING_MANUFACTURING",
+				"StartEpochMs": 1745250533635,
+				"EndEpochMs": 1745855333635
+			},
+			{
+				"ProgramType": "ADVERTISING_MANUFACTURING",
+				"StartEpochMs": 1750088933635,
+				"EndEpochMs": 1750693733635
+			},
+			{
+				"ProgramType": "ADVERTISING_MANUFACTURING",
+				"StartEpochMs": 1749484133635,
+				"EndEpochMs": 1750088933635
+			},
+			{
+				"ProgramType": "ADVERTISING_MANUFACTURING",
+				"StartEpochMs": 1748879333635,
+				"EndEpochMs": 1749484133635
+			},
+			{
+				"ProgramType": "ADVERTISING_MANUFACTURING",
+				"StartEpochMs": 1748274533635,
+				"EndEpochMs": 1748879333635
+			},
+			{
+				"ProgramType": "ADVERTISING_MANUFACTURING",
+				"StartEpochMs": 1747669733635,
+				"EndEpochMs": 1748274533635
+			},
+			{
+				"ProgramType": "ADVERTISING_MANUFACTURING",
+				"StartEpochMs": 1747064933635,
+				"EndEpochMs": 1747669733635
+			},
+			{
+				"ProgramType": "ADVERTISING_MANUFACTURING",
+				"StartEpochMs": 1746460133635,
+				"EndEpochMs": 1747064933635
+			},
+			{
+				"ProgramType": "ADVERTISING_MANUFACTURING",
+				"StartEpochMs": 1745855333635,
+				"EndEpochMs": 1746460133635
+			},
+			{
+				"ProgramType": null,
+				"StartEpochMs": 1750693733635,
+				"EndEpochMs": 1751298533635
+			}
+		],
+		"COGCProgramActive": "ADVERTISING_MANUFACTURING",
+		"CheckDistances": {
+			"SystemIdStart": "ac35dd2a980e53fedd1a4fe87a909972",
+			"SystemIdTarget": "cb1ee6ffe4e56f8b98152a1febda694d",
+			"SystemName": "Antares III",
+			"Distance": 10
+		}
+	},
+	{
+		"PlanetId": "7290ef2ca1c3ba9485a8393fcc495ee2",
+		"PlanetNaturalId": "FK-037f",
+		"PlanetName": "Toktu",
+		"SystemId": "8d4ec34bba8b86fb8bd086415b282331",
+		"HasLocalMarket": true,
+		"HasChamberOfCommerce": true,
+		"HasWarehouse": true,
+		"HasAdministrationCenter": true,
+		"HasShipyard": false,
+		"Pressure": 0.6624418497085571,
+		"Surface": false,
+		"Temperature": -192.7586669921875,
+		"Fertility": -1,
+		"Gravity": 2.1865828037261963,
+		"FactionCode": null,
+		"FactionName": null,
+		"GovernorUserName": null,
+		"COGCProgramStatus": "ON_STRIKE",
+		"Resources": [
+			{
+				"MaterialId": "6e16dbf050b98d9c4fc9c615b3367a0f",
+				"ResourceType": "GASEOUS",
+				"Factor": 0.18624156713485718,
+				"DailyExtraction": 11.17449402809143,
+				"MaterialTicker": "O",
+				"ExtractionMax": 43.26020121574402
+			},
+			{
+				"MaterialId": "5d59ddddb1ce9a26eb81b78b8378b3ac",
+				"ResourceType": "GASEOUS",
+				"Factor": 0.6611326932907104,
+				"DailyExtraction": 39.66796159744263,
+				"MaterialTicker": "N",
+				"ExtractionMax": 44.583009481430054
+			}
+		],
+		"Distances": [
+			{ "name": "Moria Station", "distance": 10 },
+			{ "name": "Antares Station", "distance": 10 },
+			{ "name": "Benten Station", "distance": 15 },
+			{ "name": "Hortus Station", "distance": 4 }
+		],
+		"COGCPrograms": [
+			{
+				"ProgramType": null,
+				"StartEpochMs": 1750784282959,
+				"EndEpochMs": 1751389082959
+			},
+			{
+				"ProgramType": null,
+				"StartEpochMs": 1745945882959,
+				"EndEpochMs": 1746550682959
+			},
+			{
+				"ProgramType": "ADVERTISING_RESOURCE_EXTRACTION",
+				"StartEpochMs": 1750179482959,
+				"EndEpochMs": 1750784282959
+			},
+			{
+				"ProgramType": "ADVERTISING_RESOURCE_EXTRACTION",
+				"StartEpochMs": 1749574682959,
+				"EndEpochMs": 1750179482959
+			},
+			{
+				"ProgramType": null,
+				"StartEpochMs": 1748969882959,
+				"EndEpochMs": 1749574682959
+			},
+			{
+				"ProgramType": null,
+				"StartEpochMs": 1748365082959,
+				"EndEpochMs": 1748969882959
+			},
+			{
+				"ProgramType": "ADVERTISING_RESOURCE_EXTRACTION",
+				"StartEpochMs": 1747760282959,
+				"EndEpochMs": 1748365082959
+			},
+			{
+				"ProgramType": "ADVERTISING_RESOURCE_EXTRACTION",
+				"StartEpochMs": 1747155482959,
+				"EndEpochMs": 1747760282959
+			},
+			{
+				"ProgramType": "ADVERTISING_RESOURCE_EXTRACTION",
+				"StartEpochMs": 1746550682959,
+				"EndEpochMs": 1747155482959
+			},
+			{
+				"ProgramType": "ADVERTISING_RESOURCE_EXTRACTION",
+				"StartEpochMs": 1745341082959,
+				"EndEpochMs": 1745945882959
+			}
+		],
+		"COGCProgramActive": null,
+		"CheckDistances": {
+			"SystemIdStart": "ac35dd2a980e53fedd1a4fe87a909972",
+			"SystemIdTarget": "8d4ec34bba8b86fb8bd086415b282331",
+			"SystemName": "Antares III",
+			"Distance": 10
+		}
+	},
+	{
+		"PlanetId": "61fc637ccb3c7a41c11dd3dc023bfca6",
+		"PlanetNaturalId": "KI-840a",
+		"PlanetName": "KI-840a",
+		"SystemId": "c5a14a76a6ad8ea6234c6c1a6709604f",
+		"HasLocalMarket": false,
+		"HasChamberOfCommerce": false,
+		"HasWarehouse": false,
+		"HasAdministrationCenter": false,
+		"HasShipyard": false,
+		"Pressure": 0.051422249525785446,
+		"Surface": true,
+		"Temperature": 296.7283020019531,
+		"Fertility": -1,
+		"Gravity": 0.3867420554161072,
+		"FactionCode": null,
+		"FactionName": null,
+		"GovernorUserName": null,
+		"COGCProgramStatus": null,
+		"Resources": [
+			{
+				"MaterialId": "e97bde9e60d4c60a16205d2c859eda62",
+				"ResourceType": "MINERAL",
+				"Factor": 0.0499325692653656,
+				"DailyExtraction": 3.495279848575592,
+				"MaterialTicker": "BRM",
+				"ExtractionMax": 41.98297441005707
+			},
+			{
+				"MaterialId": "5d59ddddb1ce9a26eb81b78b8378b3ac",
+				"ResourceType": "GASEOUS",
+				"Factor": 0.10872216522693634,
+				"DailyExtraction": 6.52332991361618,
+				"MaterialTicker": "N",
+				"ExtractionMax": 44.583009481430054
+			},
+			{
+				"MaterialId": "4d2a6c0cf6eb404cda3b35820bcbe453",
+				"ResourceType": "MINERAL",
+				"Factor": 0.2861350178718567,
+				"DailyExtraction": 20.02945125102997,
+				"MaterialTicker": "CLI",
+				"ExtractionMax": 41.99443995952606
+			}
+		],
+		"Distances": [
+			{ "name": "Moria Station", "distance": 17 },
+			{ "name": "Antares Station", "distance": 5 },
+			{ "name": "Benten Station", "distance": 14 },
+			{ "name": "Hortus Station", "distance": 13 }
+		],
+		"COGCPrograms": [],
+		"COGCProgramActive": null,
+		"CheckDistances": {
+			"SystemIdStart": "ac35dd2a980e53fedd1a4fe87a909972",
+			"SystemIdTarget": "c5a14a76a6ad8ea6234c6c1a6709604f",
+			"SystemName": "Antares III",
+			"Distance": 7
+		}
+	},
+	{
+		"PlanetId": "7ffe555448610b74544be429d163b600",
+		"PlanetNaturalId": "YK-649e",
+		"PlanetName": "YK-649e",
+		"SystemId": "1ef59a64aa3e127f820a71be9b4d6716",
+		"HasLocalMarket": false,
+		"HasChamberOfCommerce": false,
+		"HasWarehouse": false,
+		"HasAdministrationCenter": false,
+		"HasShipyard": false,
+		"Pressure": 18.640390396118164,
+		"Surface": true,
+		"Temperature": -210.380859375,
+		"Fertility": -1,
+		"Gravity": 0.9973530173301697,
+		"FactionCode": "AI",
+		"FactionName": "Antares Initiative",
+		"GovernorUserName": null,
+		"COGCProgramStatus": null,
+		"Resources": [
+			{
+				"MaterialId": "5d59ddddb1ce9a26eb81b78b8378b3ac",
+				"ResourceType": "LIQUID",
+				"Factor": 0.03580910339951515,
+				"DailyExtraction": 2.5066372379660606,
+				"MaterialTicker": "N",
+				"ExtractionMax": 52.013511061668396
+			}
+		],
+		"Distances": [
+			{ "name": "Moria Station", "distance": 10 },
+			{ "name": "Antares Station", "distance": 3 },
+			{ "name": "Benten Station", "distance": 7 },
+			{ "name": "Hortus Station", "distance": 11 }
+		],
+		"COGCPrograms": [],
+		"COGCProgramActive": null,
+		"CheckDistances": {
+			"SystemIdStart": "ac35dd2a980e53fedd1a4fe87a909972",
+			"SystemIdTarget": "1ef59a64aa3e127f820a71be9b4d6716",
+			"SystemName": "Antares III",
+			"Distance": 3
+		}
+	},
+	{
+		"PlanetId": "857b7f083f20006d5f469ac1fee1186b",
+		"PlanetNaturalId": "UV-072d",
+		"PlanetName": "UV-072d",
+		"SystemId": "582cd0502d397ca3fbabe9e88e60b804",
+		"HasLocalMarket": false,
+		"HasChamberOfCommerce": false,
+		"HasWarehouse": false,
+		"HasAdministrationCenter": false,
+		"HasShipyard": false,
+		"Pressure": 15.099613189697266,
+		"Surface": true,
+		"Temperature": -106.26740264892578,
+		"Fertility": -1,
+		"Gravity": 0.9333717823028564,
+		"FactionCode": "CI",
+		"FactionName": "Castillo-Ito Mercantile",
+		"GovernorUserName": null,
+		"COGCProgramStatus": null,
+		"Resources": [
+			{
+				"MaterialId": "b9640b0d66e7d0ca7e4d3132711c97fc",
+				"ResourceType": "MINERAL",
+				"Factor": 0.023510893806815147,
+				"DailyExtraction": 1.6457625664770603,
+				"MaterialTicker": "FEO",
+				"ExtractionMax": 52.42888689041138
+			},
+			{
+				"MaterialId": "bcf4a2029e461cf76d29de8c66ec2ff9",
+				"ResourceType": "MINERAL",
+				"Factor": 0.01687588356435299,
+				"DailyExtraction": 1.1813118495047092,
+				"MaterialTicker": "AMM",
+				"ExtractionMax": 41.92359387874603
+			},
+			{
+				"MaterialId": "7e3f98a49ce2d3c8361975de8b4bbea4",
+				"ResourceType": "MINERAL",
+				"Factor": 0.02977060154080391,
+				"DailyExtraction": 2.0839421078562737,
+				"MaterialTicker": "HAL",
+				"ExtractionMax": 20.389353930950165
+			},
+			{
+				"MaterialId": "5d59ddddb1ce9a26eb81b78b8378b3ac",
+				"ResourceType": "LIQUID",
+				"Factor": 0.010961375199258327,
+				"DailyExtraction": 0.7672962639480829,
+				"MaterialTicker": "N",
+				"ExtractionMax": 52.013511061668396
+			}
+		],
+		"Distances": [
+			{ "name": "Moria Station", "distance": 5 },
+			{ "name": "Antares Station", "distance": 10 },
+			{ "name": "Benten Station", "distance": 1 },
+			{ "name": "Hortus Station", "distance": 11 }
+		],
+		"COGCPrograms": [],
+		"COGCProgramActive": null,
+		"CheckDistances": {
+			"SystemIdStart": "ac35dd2a980e53fedd1a4fe87a909972",
+			"SystemIdTarget": "582cd0502d397ca3fbabe9e88e60b804",
+			"SystemName": "Antares III",
+			"Distance": 8
+		}
+	},
+	{
+		"PlanetId": "346308f000abe0bde12a93037e9be9d4",
+		"PlanetNaturalId": "OF-208d",
+		"PlanetName": "OF-208d",
+		"SystemId": "78a296e39ee33484beb38faa244cfcd2",
+		"HasLocalMarket": false,
+		"HasChamberOfCommerce": true,
+		"HasWarehouse": false,
+		"HasAdministrationCenter": false,
+		"HasShipyard": false,
+		"Pressure": 3.5050106048583984,
+		"Surface": true,
+		"Temperature": -4.61395788192749,
+		"Fertility": -1,
+		"Gravity": 0.9085395336151123,
+		"FactionCode": "IC",
+		"FactionName": "Insitor Cooperative",
+		"GovernorUserName": null,
+		"COGCProgramStatus": "ACTIVE",
+		"Resources": [
+			{
+				"MaterialId": "5d59ddddb1ce9a26eb81b78b8378b3ac",
+				"ResourceType": "GASEOUS",
+				"Factor": 0.0296346303075552,
+				"DailyExtraction": 1.778077818453312,
+				"MaterialTicker": "N",
+				"ExtractionMax": 44.583009481430054
+			}
+		],
+		"Distances": [
+			{ "name": "Moria Station", "distance": 7 },
+			{ "name": "Antares Station", "distance": 11 },
+			{ "name": "Benten Station", "distance": 13 },
+			{ "name": "Hortus Station", "distance": 3 }
+		],
+		"COGCPrograms": [
+			{
+				"ProgramType": "WORKFORCE_PIONEERS",
+				"StartEpochMs": 1748456437156,
+				"EndEpochMs": 1749061237156
+			},
+			{
+				"ProgramType": "ADVERTISING_AGRICULTURE",
+				"StartEpochMs": 1749061237156,
+				"EndEpochMs": 1749666037156
+			},
+			{
+				"ProgramType": "ADVERTISING_AGRICULTURE",
+				"StartEpochMs": 1749666037156,
+				"EndEpochMs": 1750270837156
+			},
+			{
+				"ProgramType": "ADVERTISING_AGRICULTURE",
+				"StartEpochMs": 1750270837156,
+				"EndEpochMs": 1750875637156
+			},
+			{
+				"ProgramType": "ADVERTISING_AGRICULTURE",
+				"StartEpochMs": 1750875637156,
+				"EndEpochMs": 1751480437156
+			}
+		],
+		"COGCProgramActive": "ADVERTISING_AGRICULTURE",
+		"CheckDistances": {
+			"SystemIdStart": "ac35dd2a980e53fedd1a4fe87a909972",
+			"SystemIdTarget": "78a296e39ee33484beb38faa244cfcd2",
+			"SystemName": "Antares III",
+			"Distance": 9
+		}
+	},
+	{
+		"PlanetId": "9ac361873125ad6fdcfe4bf78723eebe",
+		"PlanetNaturalId": "JS-570h",
+		"PlanetName": "JS-570h",
+		"SystemId": "d06f82bd4862dcc3b4fa52fca1c9ca48",
+		"HasLocalMarket": false,
+		"HasChamberOfCommerce": false,
+		"HasWarehouse": false,
+		"HasAdministrationCenter": false,
+		"HasShipyard": false,
+		"Pressure": 1.0343228578567505,
+		"Surface": false,
+		"Temperature": -197.7008056640625,
+		"Fertility": -1,
+		"Gravity": 1.208346962928772,
+		"FactionCode": "CI",
+		"FactionName": "Castillo-Ito Mercantile",
+		"GovernorUserName": null,
+		"COGCProgramStatus": null,
+		"Resources": [
+			{
+				"MaterialId": "ee320953d3d725c83bfbc594449979a2",
+				"ResourceType": "GASEOUS",
+				"Factor": 0.036680351942777634,
+				"DailyExtraction": 2.200821116566658,
+				"MaterialTicker": "F",
+				"ExtractionMax": 8.552480041980743
+			},
+			{
+				"MaterialId": "5d59ddddb1ce9a26eb81b78b8378b3ac",
+				"ResourceType": "LIQUID",
+				"Factor": 0.03718181326985359,
+				"DailyExtraction": 2.6027269288897514,
+				"MaterialTicker": "N",
+				"ExtractionMax": 52.013511061668396
+			}
+		],
+		"Distances": [
+			{ "name": "Moria Station", "distance": 7 },
+			{ "name": "Antares Station", "distance": 10 },
+			{ "name": "Benten Station", "distance": 3 },
+			{ "name": "Hortus Station", "distance": 13 }
+		],
+		"COGCPrograms": [],
+		"COGCProgramActive": null,
+		"CheckDistances": {
+			"SystemIdStart": "ac35dd2a980e53fedd1a4fe87a909972",
+			"SystemIdTarget": "d06f82bd4862dcc3b4fa52fca1c9ca48",
+			"SystemName": "Antares III",
+			"Distance": 8
+		}
+	},
+	{
+		"PlanetId": "1f79a6b992b048476276c698b0cbef6f",
+		"PlanetNaturalId": "ZV-896g",
+		"PlanetName": "ZV-896g",
+		"SystemId": "ad1291e7bd5bbab1edebd67500c22150",
+		"HasLocalMarket": false,
+		"HasChamberOfCommerce": false,
+		"HasWarehouse": false,
+		"HasAdministrationCenter": false,
+		"HasShipyard": false,
+		"Pressure": 1.4490185976028442,
+		"Surface": false,
+		"Temperature": -169.73289489746094,
+		"Fertility": -1,
+		"Gravity": 2.6947710514068604,
+		"FactionCode": "AI",
+		"FactionName": "Antares Initiative",
+		"GovernorUserName": null,
+		"COGCProgramStatus": "PLANNED",
+		"Resources": [
+			{
+				"MaterialId": "5d59ddddb1ce9a26eb81b78b8378b3ac",
+				"ResourceType": "GASEOUS",
+				"Factor": 0.6430567502975464,
+				"DailyExtraction": 38.58340501785278,
+				"MaterialTicker": "N",
+				"ExtractionMax": 44.583009481430054
+			}
+		],
+		"Distances": [
+			{ "name": "Moria Station", "distance": 11 },
+			{ "name": "Antares Station", "distance": 2 },
+			{ "name": "Benten Station", "distance": 8 },
+			{ "name": "Hortus Station", "distance": 10 }
+		],
+		"COGCPrograms": [],
+		"COGCProgramActive": null,
+		"CheckDistances": {
+			"SystemIdStart": "ac35dd2a980e53fedd1a4fe87a909972",
+			"SystemIdTarget": "ad1291e7bd5bbab1edebd67500c22150",
+			"SystemName": "Antares III",
+			"Distance": 2
+		}
+	},
+	{
+		"PlanetId": "494389d36ac082fd753fd2a7fbcd7ac4",
+		"PlanetNaturalId": "ZV-896a",
+		"PlanetName": "ZV-896a",
+		"SystemId": "ad1291e7bd5bbab1edebd67500c22150",
+		"HasLocalMarket": false,
+		"HasChamberOfCommerce": false,
+		"HasWarehouse": false,
+		"HasAdministrationCenter": false,
+		"HasShipyard": false,
+		"Pressure": 0.10340438783168793,
+		"Surface": true,
+		"Temperature": 405.2122802734375,
+		"Fertility": -1,
+		"Gravity": 0.4985296130180359,
+		"FactionCode": "AI",
+		"FactionName": "Antares Initiative",
+		"GovernorUserName": null,
+		"COGCProgramStatus": "PLANNED",
+		"Resources": [
+			{
+				"MaterialId": "a2e3d2f078583c564476f8d4062c2d1a",
+				"ResourceType": "MINERAL",
+				"Factor": 0.0287778303027153,
+				"DailyExtraction": 2.014448121190071,
+				"MaterialTicker": "TS",
+				"ExtractionMax": 24.311107993125916
+			},
+			{
+				"MaterialId": "eeff5ee913d34354be84177847fbfe48",
+				"ResourceType": "MINERAL",
+				"Factor": 0.4006567895412445,
+				"DailyExtraction": 28.045975267887115,
+				"MaterialTicker": "SIO",
+				"ExtractionMax": 53.825785517692566
+			},
+			{
+				"MaterialId": "5d59ddddb1ce9a26eb81b78b8378b3ac",
+				"ResourceType": "GASEOUS",
+				"Factor": 0.08147188276052475,
+				"DailyExtraction": 4.888312965631485,
+				"MaterialTicker": "N",
+				"ExtractionMax": 44.583009481430054
+			},
+			{
+				"MaterialId": "1f9a0293d9ba9bf519f71432e695edeb",
+				"ResourceType": "MINERAL",
+				"Factor": 0.027604205533862114,
+				"DailyExtraction": 1.932294387370348,
+				"MaterialTicker": "LST",
+				"ExtractionMax": 55.24479329586029
+			}
+		],
+		"Distances": [
+			{ "name": "Moria Station", "distance": 11 },
+			{ "name": "Antares Station", "distance": 2 },
+			{ "name": "Benten Station", "distance": 8 },
+			{ "name": "Hortus Station", "distance": 10 }
+		],
+		"COGCPrograms": [],
+		"COGCProgramActive": null,
+		"CheckDistances": {
+			"SystemIdStart": "ac35dd2a980e53fedd1a4fe87a909972",
+			"SystemIdTarget": "ad1291e7bd5bbab1edebd67500c22150",
+			"SystemName": "Antares III",
+			"Distance": 2
+		}
+	}
+]
