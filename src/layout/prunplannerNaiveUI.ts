@@ -155,6 +155,7 @@ export const prunplannerTheme: GlobalThemeOverrides = {
 		thPaddingMedium: "5px 10px",
 		tdPaddingMedium: "5px 10px",
 		tdColorSorting: "rgba(255,255,255,0)",
+		tdColorHover: "rgba(255,255,255,0)",
 	},
 	Table: {
 		thTextColor: "rgba(255,255,255,0.9)",
