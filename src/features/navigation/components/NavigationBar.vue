@@ -83,7 +83,7 @@
 				{
 					label: "Planet Search",
 					display: true,
-					routerLink: "/none",
+					routerLink: "/search",
 					icon: SearchRound,
 				},
 				{

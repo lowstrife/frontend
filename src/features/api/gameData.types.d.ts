@@ -299,3 +299,26 @@ export interface IFIOSites {
 	planets: Record<string, IFIOSitePlanet>;
 	ships: Record<string, IFIOSiteShip>;
 }
+
+export interface IPlanetSearchAdvanced {
+	Materials: string[];
+	COGC: PLANET_COGCPROGRAM_TYPE[];
+	IncludeRocky: boolean;
+	IncludeGaseous: boolean;
+	IncludeLowGravity: boolean;
+	IncludeHighGravity: boolean;
+	IncludeLowPressure: boolean;
+	IncludeHighPressure: boolean;
+	IncludeLowTemperature: boolean;
+	IncludeHighTemperature: boolean;
+	MustBeFertile: boolean;
+	MustHaveLocalMarket: boolean;
+	MustHaveChamberOfCommerce: boolean;
+	MustHaveWarehouse: boolean;
+	MustHaveAdministrationCenter: boolean;
+	MustHaveShipyard: boolean;
+	MaxDistanceCheck?: {
+		SystemId: string;
+		MaxDistance: number;
+	};
+}

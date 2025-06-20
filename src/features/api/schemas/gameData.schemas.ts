@@ -21,6 +21,7 @@ import {
 	IFIOSiteShip,
 	IFIOSiteShipRepairMaterial,
 	IFIOSiteShipAddressLine,
+	IPlanetSearchAdvanced,
 } from "@/features/api/gameData.types";
 
 // Schemas
@@ -343,6 +344,29 @@ export const FIOSitesSchema: z.ZodType<IFIOSites> = z.object({
 	ships: z.record(z.string(), FIOSiteShipSchema),
 });
 
+export const PlanetSearchAdvancedPayloadSchema: z.ZodType<IPlanetSearchAdvanced> =
+	z.object({
+		Materials: z.array(z.string().min(1).max(3)),
+		COGC: z.array(PLANET_COGCPROGRAM_TYPE_ZOD),
+		IncludeRocky: z.boolean(),
+		IncludeGaseous: z.boolean(),
+		IncludeLowGravity: z.boolean(),
+		IncludeHighGravity: z.boolean(),
+		IncludeLowPressure: z.boolean(),
+		IncludeHighPressure: z.boolean(),
+		IncludeLowTemperature: z.boolean(),
+		IncludeHighTemperature: z.boolean(),
+		MustBeFertile: z.boolean(),
+		MustHaveLocalMarket: z.boolean(),
+		MustHaveChamberOfCommerce: z.boolean(),
+		MustHaveWarehouse: z.boolean(),
+		MustHaveAdministrationCenter: z.boolean(),
+		MustHaveShipyard: z.boolean(),
+		MaxDistanceCheck: z
+			.object({ SystemId: z.string(), MaxDistance: PositiveOrZeroNumber })
+			.optional(),
+	});
+
 // Schema Types
 export type MaterialType = z.infer<typeof MaterialSchema>;
 export type MaterialPayloadType = z.infer<typeof MaterialPayloadSchema>;
@@ -360,3 +384,6 @@ export type PlanetMultipleRequestType = z.infer<
 >;
 export type FIOStoragePayloadType = z.infer<typeof FIOStorageSchema>;
 export type FIOSitesSchemaPayloadType = z.infer<typeof FIOSitesSchema>;
+export type PlanetSearchAdvancedPayloadType = z.infer<
+	typeof PlanetSearchAdvancedPayloadSchema
+>;
