@@ -31,7 +31,8 @@ export const prunplannerTheme: GlobalThemeOverrides = {
 
 		borderRadius: "6px",
 		borderColor: "rgba(255,255,255,0.05)",
-		boxShadow: "0 10px 15px -3px rgba(0,0,0,.1),0 4px 6px -4px rgba(0,0,0,.1)",
+		boxShadow:
+			"0 10px 15px -3px rgba(0,0,0,.1),0 4px 6px -4px rgba(0,0,0,.1)",
 
 		textColor: "rgba(255,255,255,0.8)",
 
@@ -153,6 +154,7 @@ export const prunplannerTheme: GlobalThemeOverrides = {
 		// padding
 		thPaddingMedium: "5px 10px",
 		tdPaddingMedium: "5px 10px",
+		tdColorSorting: "rgba(255,255,255,0)",
 	},
 	Table: {
 		thTextColor: "rgba(255,255,255,0.9)",
@@ -169,10 +171,12 @@ export const prunplannerTheme: GlobalThemeOverrides = {
 	},
 	Select: {
 		menuBoxShadow: "",
+		fontSizeSmall: "10px",
 		peers: {
 			InternalSelection: {
 				color: GRAY_DARK,
 				fontSizeSmall: "12px",
+				fontSizeMedium: "12px",
 				textColor: "rgba(255,255,255,0.8)",
 				border: "0",
 				borderFocus: GRAY_DARK,
@@ -181,6 +185,7 @@ export const prunplannerTheme: GlobalThemeOverrides = {
 				colorActive: GRAY_DARK,
 			},
 			InternalSelectMenu: {
+				optionFontSizeSmall: "12px",
 				color: GRAY_DARK,
 				borderRadius: "0",
 				optionFontSizeMedium: "12px",
