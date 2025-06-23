@@ -164,6 +164,25 @@ export function usePreferences() {
 		}
 	}
 
+	/**
+	 * Generates CSS classes to visualize a value in relation to the users
+	 * preferred minimum burn days to display the "red" or "yellow" category
+	 *
+	 * @author jplacht
+	 *
+	 * @param {number} value Value of days actual
+	 * @returns {ComputedRef<string>} Burn Type CSS class
+	 */
+	function getBurnDisplayClass(value: number): ComputedRef<string> {
+		return computed(() => {
+			if (value <= burnDaysRed.value) {
+				return "text-white bg-negative";
+			} else if (value <= burnDaysYellow.value)
+				return "text-black bg-positive";
+			else return "";
+		});
+	}
+
 	return {
 		// preferences
 		defaultEmpireUuid,
@@ -173,5 +192,6 @@ export function usePreferences() {
 		planSettingsOverview,
 		// functions
 		cleanPlanPreferences,
+		getBurnDisplayClass,
 	};
 }

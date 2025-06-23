@@ -19,9 +19,21 @@ export function useFIOBurn(
 ) {
 	const gameDataStore = useGameDataStore();
 
+	/**
+	 * Burn data reference from Game Data Store
+	 * @author jplacht
+	 *
+	 * @type {Record<string, IFIOStoragePlanet>}
+	 */
 	const burnData: Record<string, IFIOStoragePlanet> =
 		gameDataStore.fio_storage_planets;
 
+	/**
+	 * Creates record of plan list
+	 * @author jplacht
+	 *
+	 * @type {ComputedRef<Record<string, IPlan>>}
+	 */
 	const planRecord: ComputedRef<Record<string, IPlan>> = computed(() => {
 		return plans.value.reduce(
 			(acc, item) => ((acc[item.uuid!] = item), acc),
@@ -29,6 +41,12 @@ export function useFIOBurn(
 		);
 	});
 
+	/**
+	 * Plan Table from Burn Calculation
+	 * @author jplacht
+	 *
+	 * @type {ComputedRef<IFIOBurnPlanetTableElement[]>}
+	 */
 	const planTable: ComputedRef<IFIOBurnPlanetTableElement[]> = computed(
 		() => {
 			const table: IFIOBurnPlanetTableElement[] = burnTable.value.map(
@@ -49,6 +67,14 @@ export function useFIOBurn(
 		}
 	);
 
+	/**
+	 * Performs burn calculation on given plans and their production
+	 * material io data taking existing storage information into account
+	 *
+	 * @author jplacht
+	 *
+	 * @type {ComputedRef<IFIOBurnTableElement[]>}
+	 */
 	const burnTable: ComputedRef<IFIOBurnTableElement[]> = computed(() => {
 		const tableData: IFIOBurnTableElement[] = [];
 
@@ -119,5 +145,6 @@ export function useFIOBurn(
 	return {
 		burnTable,
 		planTable,
+		planRecord,
 	};
 }

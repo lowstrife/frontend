@@ -18,24 +18,27 @@
 	import { useGameDataStore } from "@/stores/gameDataStore";
 
 	// Composables
+	import { useFIOBurn } from "@/features/fio/useFIOBurn";
 	import { usePlanCalculation } from "@/features/planning/usePlanCalculation";
 	import { usePreferences } from "@/features/preferences/usePreferences";
 	const { defaultEmpireUuid, burnDaysRed, burnDaysYellow } = usePreferences();
-	import { useFIOBurn } from "@/features/fio/useFIOBurn";
-	import { usePlanetData } from "@/features/game_data/usePlanetData";
-	const { getPlanetName } = usePlanetData();
 
 	// Components
 	import EmpireDataWrapper from "@/features/wrapper/components/EmpireDataWrapper.vue";
 	import HelpDrawer from "@/features/help/components/HelpDrawer.vue";
-	import MaterialTile from "@/features/material_tile/components/MaterialTile.vue";
+
 	const AsyncGameDataWrapper = defineAsyncComponent(
 		() => import("@/features/wrapper/components/GameDataWrapper.vue")
+	);
+	const AsyncFIOBurnPlanTable = defineAsyncComponent(
+		() => import("@/features/fio/components/FIOBurnPlanTable.vue")
+	);
+	const AsyncFIOBurnTable = defineAsyncComponent(
+		() => import("@/features/fio/components/FIOBurnTable.vue")
 	);
 
 	// Util
 	import { relativeFromDate } from "@/util/date";
-	import { formatNumber, formatAmount } from "@/util/numbers";
 
 	// Types & Interfaces
 	import { IPlan, IPlanEmpireElement } from "@/stores/planningStore.types";
@@ -43,7 +46,10 @@
 
 	// UI
 	import { NSelect, NForm, NFormItem, NInputNumber } from "naive-ui";
-	import { XNDataTable, XNDataTableColumn } from "@skit/x.naive-ui";
+	import {
+		IFIOBurnPlanetTableElement,
+		IFIOBurnTableElement,
+	} from "@/features/fio/useFIOBurn.types";
 
 	const gameDataStore = useGameDataStore();
 
@@ -74,23 +80,15 @@
 		refIsCalculating.value = false;
 	}
 
-	const burnTable = computed(() => {
-		return useFIOBurn(refPlanData, refCalculatedPlans).burnTable;
+	const burnTable: ComputedRef<IFIOBurnTableElement[]> = computed(() => {
+		return useFIOBurn(refPlanData, refCalculatedPlans).burnTable.value;
 	});
 
-	const planTable = computed(() => {
-		return useFIOBurn(refPlanData, refCalculatedPlans).planTable;
-	});
-
-	function getBurnDisplayClass(value: number): ComputedRef<string> {
-		return computed(() => {
-			if (value <= burnDaysRed.value) {
-				return "text-white bg-negative";
-			} else if (value <= burnDaysYellow.value)
-				return "text-black bg-yellow-300";
-			else return "";
-		});
-	}
+	const planTable: ComputedRef<IFIOBurnPlanetTableElement[]> = computed(
+		() => {
+			return useFIOBurn(refPlanData, refCalculatedPlans).planTable.value;
+		}
+	);
 </script>
 
 <template>
@@ -184,217 +182,13 @@
 							</n-form>
 
 							<h2 class="text-white/80 font-bold text-lg py-3">
-								Overview
+								Plan Burn Overview
 							</h2>
 
-							<XNDataTable :data="planTable.value" striped>
-								<XNDataTableColumn
-									key="planUuid"
-									title="Plan"
-									sorter="default">
-									<template #render-cell="{ rowData }">
-										<router-link
-											:to="`/plan/${rowData.planetId}/${rowData.planUuid}`"
-											class="text-link-primary font-bold hover:underline">
-											{{ rowData.planName }}
-										</router-link>
-									</template>
-								</XNDataTableColumn>
-								<XNDataTableColumn
-									key="planetId"
-									title="Planet">
-									<template #render-cell="{ rowData }">
-										{{ getPlanetName(rowData.planetId) }}
-									</template>
-								</XNDataTableColumn>
-								<XNDataTableColumn
-									key="minDays"
-									title="Exhaustion"
-									sorter="default">
-									<template #render-cell="{ rowData }">
-										<div class="text-center">
-											<span
-												:class="
-													getBurnDisplayClass(
-														rowData.minDays
-													).value
-												"
-												class="py-1 px-2">
-												{{
-													formatNumber(
-														rowData.minDays
-													)
-												}}
-											</span>
-										</div>
-									</template>
-								</XNDataTableColumn>
-							</XNDataTable>
+							<AsyncFIOBurnPlanTable :plan-table="planTable" />
 						</div>
 						<div>
-							<XNDataTable :data="burnTable.value" striped>
-								<XNDataTableColumn title="" type="expand">
-									<template #render-cell="{ rowData }">
-										{{ rowData.planName }}
-									</template>
-									<template #render-expand="{ rowData }">
-										<XNDataTable
-											:data="rowData.burnMaterials"
-											striped>
-											<XNDataTableColumn
-												key="ticker"
-												title="Ticker"
-												sorter="default">
-												<template #render-cell="data">
-													<MaterialTile
-														:ticker="
-															data.rowData.ticker
-														" />
-												</template>
-											</XNDataTableColumn>
-											<XNDataTableColumn
-												key="input"
-												title="Consumption"
-												sorter="default">
-												<template #render-cell="data">
-													<span
-														:class="
-															data.rowData
-																.input <= 0
-																? 'text-white/50'
-																: ''
-														">
-														{{
-															formatNumber(
-																data.rowData
-																	.input
-															)
-														}}
-													</span>
-												</template>
-											</XNDataTableColumn>
-											<XNDataTableColumn
-												key="output"
-												title="Production"
-												sorter="default">
-												<template #render-cell="data">
-													<span
-														:class="
-															data.rowData
-																.output <= 0
-																? 'text-white/50'
-																: ''
-														">
-														{{
-															formatNumber(
-																data.rowData
-																	.output
-															)
-														}}
-													</span>
-												</template>
-											</XNDataTableColumn>
-											<XNDataTableColumn
-												key="delta"
-												title="Delta"
-												sorter="default">
-												<template #render-cell="data">
-													<span
-														:class="
-															data.rowData
-																.delta >= 0
-																? 'text-positive'
-																: 'text-negative'
-														">
-														{{
-															formatNumber(
-																data.rowData
-																	.delta
-															)
-														}}
-													</span>
-												</template>
-											</XNDataTableColumn>
-											<XNDataTableColumn
-												key="stock"
-												title="Stock"
-												sorter="default">
-												<template #render-cell="data">
-													{{
-														formatAmount(
-															data.rowData.stock
-														)
-													}}
-												</template>
-											</XNDataTableColumn>
-											<XNDataTableColumn
-												key="exhaustion"
-												title="Exhaustion"
-												sorter="default">
-												<template #render-cell="data">
-													<span
-														:class="
-															getBurnDisplayClass(
-																data.rowData
-																	.exhaustion
-															).value
-														"
-														class="py-1 px-2">
-														{{
-															formatNumber(
-																data.rowData
-																	.exhaustion
-															)
-														}}
-													</span>
-												</template>
-											</XNDataTableColumn>
-										</XNDataTable>
-									</template>
-								</XNDataTableColumn>
-								<XNDataTableColumn key="planName" title="Plan">
-									<template #title>
-										<div
-											class="flex flex-row justify-between">
-											<div>Plan</div>
-											<div>Exhaustion</div>
-										</div>
-									</template>
-									<template #render-cell="{ rowData }">
-										<div
-											class="flex flex-row justify-between">
-											<div>
-												<span class="font-bold">
-													{{ rowData.planName }}
-												</span>
-												<span class="!text-white/50">
-													&mdash;
-													{{
-														getPlanetName(
-															rowData.planetId
-														)
-													}}
-												</span>
-											</div>
-											<div>
-												<span
-													class="py-1 px-2"
-													:class="
-														getBurnDisplayClass(
-															rowData.minDays
-														).value
-													">
-													{{
-														formatNumber(
-															rowData.minDays
-														)
-													}}
-												</span>
-											</div>
-										</div>
-									</template>
-								</XNDataTableColumn>
-							</XNDataTable>
+							<AsyncFIOBurnTable :burn-table="burnTable" />
 						</div>
 					</div>
 				</div>
