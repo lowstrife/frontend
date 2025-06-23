@@ -57,6 +57,11 @@ describe("inertClone", () => {
 		expect(inertClone(undefined)).toBe(undefined);
 	});
 
+	it("function as unclonable type, return input", () => {
+		const fct = Function;
+		expect(inertClone(fct)).toBe(fct);
+	});
+
 	describe("fallback: structuredClone fails on non-cloneable data", () => {
 		it("falls back for function-containing objects (shallow copy)", () => {
 			const original = { name: "bad", method: () => "fail" };
