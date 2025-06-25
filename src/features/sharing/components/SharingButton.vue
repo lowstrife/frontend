@@ -4,6 +4,9 @@
 	// Composables
 	import { useSharing } from "@/features/sharing/useSharing";
 
+	// Util
+	import { copyToClipboard } from "@/util/data";
+
 	// UI
 	import { NModal, NButton } from "naive-ui";
 	import { LinkSharp, RemoveRedEyeSharp } from "@vicons/material";
@@ -37,11 +40,6 @@
 	const showModal: Ref<boolean> = ref(false);
 	const isDeleting: Ref<boolean> = ref(false);
 	const isCreating: Ref<boolean> = ref(false);
-
-	function copyToClipboard(value: string): void {
-		// eslint-disable-next-line no-undef
-		navigator.clipboard.writeText(value);
-	}
 
 	async function stopSharing(): Promise<void> {
 		isDeleting.value = true;
