@@ -162,10 +162,13 @@ export const prunplannerTheme: GlobalThemeOverrides = {
 		tdTextColor: "rgba(255,255,255,0.8)",
 		fontSizeMedium: "12px",
 		thFontWeight: "bold",
-		// colors
+		// color
 		thColor: GRAY_DARK,
+		thColorModal: GRAY_DARK,
 		tdColorStriped: GRAY_DARK,
+		tdColorStripedModal: GRAY_DARK,
 		tdColor: "rgba(255,255,255,0.02)",
+		tdColorModal: "rgba(255,255,255,0.02)",
 		// padding
 		thPaddingMedium: "5px 10px",
 		tdPaddingMedium: "5px 10px",

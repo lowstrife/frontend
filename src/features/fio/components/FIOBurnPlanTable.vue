@@ -40,7 +40,7 @@
 				{{ getPlanetName(rowData.planetId) }}
 			</template>
 		</XNDataTableColumn>
-		<XNDataTableColumn key="minDays" title="Exhaustion" sorter="default">
+		<XNDataTableColumn key="minDays" title="Burn" sorter="default">
 			<template #render-cell="{ rowData }">
 				<div class="text-center">
 					<span

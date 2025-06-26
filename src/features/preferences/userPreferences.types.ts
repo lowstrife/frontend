@@ -7,6 +7,8 @@ export interface IPreference {
 	defaultEmpireUuid: string | undefined;
 	burnDaysRed: number;
 	burnDaysYellow: number;
+	burnResupplyDays: number;
+	burnOrigin: string;
 
 	// seeding per plan defaults
 	planOverrides: Record<string, Partial<IPreferencePerPlan>>;

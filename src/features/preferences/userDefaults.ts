@@ -12,6 +12,8 @@ export const preferenceDefaults: IPreferenceDefault = {
 	defaultEmpireUuid: undefined,
 	burnDaysRed: 5,
 	burnDaysYellow: 10,
+	burnResupplyDays: 20,
+	burnOrigin: "Configure on Execution",
 
 	planOverrides: {},
 	planDefaults: {

@@ -7,6 +7,9 @@
 	// Composables
 	import { usePreferences } from "@/features/preferences/usePreferences";
 
+	// Constants
+	import { XITSTATIONWAREHOUSES } from "@/features/xit/xitConstants";
+
 	// Types & Interfaces
 	import { SelectMixedOption } from "naive-ui/es/select/src/interface";
 
@@ -18,6 +21,8 @@
 	const {
 		burnDaysRed,
 		burnDaysYellow,
+		burnResupplyDays,
+		burnOrigin,
 		planSettingsOverview,
 		cleanPlanPreferences,
 	} = usePreferences();
@@ -78,18 +83,32 @@
 					}
 				" />
 		</n-form-item>
-		<n-form-item label="Burn Red Threshold">
+		<h4 class="font-bold pb-3">FIO Burn</h4>
+		<n-form-item label="Red Threshold">
 			<n-input-number
 				v-model:value="burnDaysRed"
 				show-button
 				:min="1"
 				class="w-full" />
 		</n-form-item>
-		<n-form-item label="Burn Yellow Threshold">
+		<n-form-item label="Yellow Threshold">
 			<n-input-number
 				v-model:value="burnDaysYellow"
 				show-button
 				:min="1"
+				class="w-full" />
+		</n-form-item>
+		<n-form-item label="Resupply Days">
+			<n-input-number
+				v-model:value="burnResupplyDays"
+				show-button
+				:min="1"
+				class="w-full" />
+		</n-form-item>
+		<n-form-item label="XIT Origin">
+			<n-select
+				v-model:value="burnOrigin"
+				:options="XITSTATIONWAREHOUSES"
 				class="w-full" />
 		</n-form-item>
 	</n-form>

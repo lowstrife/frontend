@@ -66,6 +66,29 @@ export function usePreferences() {
 		});
 
 	/**
+	 * Writable computed for users resupply setting on xit actions
+	 * @author jplacht
+	 *
+	 * @type {WritableComputedRef<number, number>}
+	 */
+	const burnResupplyDays: WritableComputedRef<number, number> =
+		computed<number>({
+			get: () => userStore.preferences.burnResupplyDays,
+			set: (v) => userStore.setPreference("burnResupplyDays", v),
+		});
+
+	/**
+	 * Writable computed for users burn origin setting on xit actions
+	 * @author jplacht
+	 *
+	 * @type {WritableComputedRef<number, number>}
+	 */
+	const burnOrigin: WritableComputedRef<string, string> = computed<string>({
+		get: () => userStore.preferences.burnOrigin,
+		set: (v) => userStore.setPreference("burnOrigin", v),
+	});
+
+	/**
 	 * Computed getter for users overrides on invididual plan preferences
 	 *
 	 * @author jplacht
@@ -188,6 +211,8 @@ export function usePreferences() {
 		defaultEmpireUuid,
 		burnDaysRed,
 		burnDaysYellow,
+		burnResupplyDays,
+		burnOrigin,
 		planSettings,
 		planSettingsOverview,
 		// functions

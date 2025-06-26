@@ -43,13 +43,13 @@
 	// Types & Interfaces
 	import { IPlan, IPlanEmpireElement } from "@/stores/planningStore.types";
 	import { IPlanResult } from "@/features/planning/usePlanCalculation.types";
-
-	// UI
-	import { NSelect, NForm, NFormItem, NInputNumber } from "naive-ui";
 	import {
 		IFIOBurnPlanetTableElement,
 		IFIOBurnTableElement,
 	} from "@/features/fio/useFIOBurn.types";
+
+	// UI
+	import { NSelect, NForm, NFormItem, NInputNumber } from "naive-ui";
 
 	const gameDataStore = useGameDataStore();
 
@@ -132,7 +132,7 @@
 					</div>
 
 					<div
-						class="flex-grow grid grid-cols-1 lg:grid-cols-[30%_auto] gap-3 divide-x divide-white/10 child:px-6 child:py-3">
+						class="flex-grow grid grid-cols-1 xl:grid-cols-[40%_auto] gap-3 divide-x divide-white/10 child:px-6 child:py-3">
 						<div>
 							<h2 class="text-white/80 font-bold text-lg pb-3">
 								Empire
@@ -165,19 +165,19 @@
 								label-width="auto"
 								label-align="left"
 								size="small">
-								<n-form-item label="Red Threshold">
+								<n-form-item label="Red">
 									<n-input-number
 										v-model:value="burnDaysRed"
 										show-button
 										:min="1"
-										class="w-full" />
+										class="w-1/2 max-w-[400px]" />
 								</n-form-item>
-								<n-form-item label="Yellow Threshold">
+								<n-form-item label="Yellow">
 									<n-input-number
 										v-model:value="burnDaysYellow"
 										show-button
 										:min="1"
-										class="w-full" />
+										class="w-1/2 max-w-[400px]" />
 								</n-form-item>
 							</n-form>
 

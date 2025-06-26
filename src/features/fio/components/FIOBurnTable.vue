@@ -9,12 +9,16 @@
 
 	// Components
 	import MaterialTile from "@/features/material_tile/components/MaterialTile.vue";
+	import XITActionButton from "@/features/xit/components/XITActionButton.vue";
 
 	// Util
 	import { formatNumber, formatAmount } from "@/util/numbers";
 
 	// Type & Interfaces
-	import { IFIOBurnTableElement } from "@/features/fio/useFIOBurn.types";
+	import {
+		IFIOBurnTableElement,
+		IFIOBurnTableElementMaterial,
+	} from "@/features/fio/useFIOBurn.types";
 
 	// UI
 	import { XNDataTable, XNDataTableColumn } from "@skit/x.naive-ui";
@@ -98,7 +102,7 @@
 					</XNDataTableColumn>
 					<XNDataTableColumn
 						key="exhaustion"
-						title="Exhaustion"
+						title="Burn"
 						sorter="default">
 						<template #render-cell="data">
 							<span
@@ -123,7 +127,7 @@
 			</template>
 			<template #render-cell="{ rowData }">
 				<div class="flex flex-row justify-between">
-					<div>
+					<div class="my-auto">
 						<span class="font-bold">
 							{{ rowData.planName }}
 						</span>
@@ -132,7 +136,7 @@
 							{{ getPlanetName(rowData.planetId) }}
 						</span>
 					</div>
-					<div class="flex gap-x-3">
+					<div class="flex gap-x-3 child:my-auto">
 						<div>
 							<span
 								class="py-1 px-2"
@@ -142,7 +146,22 @@
 								{{ formatNumber(rowData.minDays) }}
 							</span>
 						</div>
-						<div>XIT</div>
+						<div>
+							<XITActionButton
+								:drawer-title="`XIT Resupply: ${rowData.planName}`"
+								:button-size="'tiny'"
+								:elements="
+									rowData.burnMaterials.map(
+										(e: IFIOBurnTableElementMaterial) => {
+											return {
+												ticker: e.ticker,
+												stock: e.stock,
+												delta: e.delta,
+											};
+										}
+									)
+								" />
+						</div>
 					</div>
 				</div>
 			</template>
