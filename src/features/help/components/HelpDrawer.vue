@@ -6,10 +6,12 @@
 
 	const showDrawer: Ref<boolean> = ref(false);
 
-	async function loadMarkdown() {
+	async function loadMarkdown(): Promise<string> {
 		const markdownFiles = import.meta.glob("@/assets/help/*.md", {
-			as: "raw",
-		});
+			query: "?raw",
+			import: "default",
+		}) as Record<string, () => Promise<string>>;
+
 		const path = `/src/assets/help/${props.fileName}.md`;
 		const loader = markdownFiles[path];
 		if (!loader)
