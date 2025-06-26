@@ -69,6 +69,12 @@ const router = createRouter({
 			meta: { requiresAuth: true },
 			component: () => import("@/views/fio/FIORepairView.vue"),
 		},
+		{
+			name: "fio-burn",
+			path: "/fio/burn",
+			meta: { requiresAuth: true },
+			component: () => import("@/views/fio/FIOBurnView.vue"),
+		},
 	],
 });
 

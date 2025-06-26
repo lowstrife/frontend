@@ -175,7 +175,7 @@
 						{
 							label: "Burn",
 							display: userStore.hasFIO,
-							routerLink: "/none",
+							routerLink: "/fio/burn",
 						},
 						{
 							label: "Storage",

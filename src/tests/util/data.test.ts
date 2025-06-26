@@ -1,6 +1,6 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, beforeEach, vi } from "vitest";
 import { ref, reactive } from "vue";
-import { inertClone } from "@/util/data";
+import { copyToClipboard, inertClone } from "@/util/data";
 
 describe("inertClone", () => {
 	it("clones plain object deeply", () => {
@@ -57,6 +57,11 @@ describe("inertClone", () => {
 		expect(inertClone(undefined)).toBe(undefined);
 	});
 
+	it("function as unclonable type, return input", () => {
+		const fct = Function;
+		expect(inertClone(fct)).toBe(fct);
+	});
+
 	describe("fallback: structuredClone fails on non-cloneable data", () => {
 		it("falls back for function-containing objects (shallow copy)", () => {
 			const original = { name: "bad", method: () => "fail" };
@@ -86,5 +91,26 @@ describe("inertClone", () => {
 			const copy = inertClone(original);
 			expect(copy).not.toBe(original);
 		});
+	});
+});
+
+describe("copyToClipboard", async () => {
+	beforeEach(() => {
+		vi.resetAllMocks();
+	});
+
+	it("call navigator.clipboard.writeText with correct value", async () => {
+		const mockWriteText = vi.fn();
+		Object.assign(navigator, {
+			clipboard: {
+				writeText: mockWriteText,
+			},
+		});
+
+		const testValue = "Foo";
+		copyToClipboard(testValue);
+
+		expect(mockWriteText).toHaveBeenCalledWith(testValue);
+		expect(mockWriteText).toHaveBeenCalledTimes(1);
 	});
 });

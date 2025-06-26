@@ -123,4 +123,39 @@ describe("usePreferences", async () => {
 
 		expect(Object.keys(planSettings.value).length).toBe(1);
 	});
+
+	describe("getBurnDisplayClass", async () => {
+		beforeEach(() => {
+			userStore.setPreference("burnDaysRed", 5);
+			userStore.setPreference("burnDaysYellow", 10);
+		});
+
+		it("red class", async () => {
+			const { getBurnDisplayClass } = usePreferences();
+
+			expect(
+				getBurnDisplayClass(4).value.includes("bg-negative")
+			).toBeTruthy();
+			expect(
+				getBurnDisplayClass(4).value.includes("bg-positive")
+			).toBeFalsy();
+		});
+
+		it("yellow class", async () => {
+			const { getBurnDisplayClass } = usePreferences();
+
+			const result = getBurnDisplayClass(6).value;
+
+			expect(result.includes("bg-positive")).toBeTruthy();
+			expect(result.includes("bg-negative")).toBeFalsy();
+		});
+
+		it("no class", async () => {
+			const { getBurnDisplayClass } = usePreferences();
+
+			const result = getBurnDisplayClass(11).value;
+
+			expect(result).toBe("");
+		});
+	});
 });

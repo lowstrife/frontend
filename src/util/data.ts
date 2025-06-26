@@ -16,3 +16,14 @@ export function inertClone<T>(value: T): T {
 		return raw as T;
 	}
 }
+
+/**
+ * Copies string value to users clipboard
+ * @author jplacht
+ *
+ * @export
+ * @param {string} value Text
+ */
+export function copyToClipboard(value: string): void {
+	navigator.clipboard.writeText(value);
+}

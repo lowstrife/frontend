@@ -32,7 +32,7 @@
 			<template #render-cell="{ rowData }">
 				<router-link
 					:to="`/plan/${rowData.planet}/${rowData.uuid}`"
-					class="text-link-primary font-bold hover:underline">
+					class="text-link-primary font-bold hover:underline text-nowrap">
 					{{ rowData.name }}
 				</router-link>
 			</template>
