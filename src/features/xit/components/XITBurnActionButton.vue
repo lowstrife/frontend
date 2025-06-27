@@ -2,10 +2,13 @@
 	import { nextTick, PropType, ref, Ref, watch } from "vue";
 
 	// Composables
+	import { useBurnXITAction } from "@/features/xit/useBurnXITAction";
 	import { useXITAction } from "@/features/xit/useXITAction";
 	import { usePreferences } from "@/features/preferences/usePreferences";
+
 	const { burnResupplyDays, burnOrigin, getBurnDisplayClass } =
 		usePreferences();
+	const { transferJSON } = useXITAction();
 
 	// Util
 	import { copyToClipboard } from "@/util/data";
@@ -92,14 +95,13 @@
 	const refMaterialOverrides: Ref<Record<string, number>> = ref({});
 	const refMaterialInactives: Ref<Set<string>> = ref(new Set([]));
 
-	const { materialTable, totalWeightVolume, generateTransferJSON } =
-		useXITAction(
-			localElements,
-			burnResupplyDays,
-			refHideInfinite,
-			refMaterialOverrides,
-			refMaterialInactives
-		);
+	const { materialTable, totalWeightVolume } = useBurnXITAction(
+		localElements,
+		burnResupplyDays,
+		refHideInfinite,
+		refMaterialOverrides,
+		refMaterialInactives
+	);
 </script>
 
 <template>
@@ -139,8 +141,22 @@
 					<div class="text-nowrap">JSON</div>
 					<n-input
 						v-model:value="
-							generateTransferJSON('Burn Supply', burnOrigin)
-								.value
+							transferJSON(
+								materialTable
+									.filter(
+										(mt) =>
+											mt.total !== Infinity &&
+											mt.total > 0 &&
+											mt.active
+									)
+									.map((m) => {
+										return {
+											ticker: m.ticker,
+											value: m.total,
+										};
+									}),
+								{ name: 'Burn Supply', origin: burnOrigin }
+							).value
 						"
 						size="small"
 						type="textarea" />
@@ -148,8 +164,22 @@
 						size="small"
 						@click="
 							copyToClipboard(
-								generateTransferJSON('Burn Supply', burnOrigin)
-									.value
+								transferJSON(
+									materialTable
+										.filter(
+											(mt) =>
+												mt.total !== Infinity &&
+												mt.total > 0 &&
+												mt.active
+										)
+										.map((m) => {
+											return {
+												ticker: m.ticker,
+												value: m.total,
+											};
+										}),
+									{ name: 'Burn Supply', origin: burnOrigin }
+								).value
 							)
 						">
 						Copy

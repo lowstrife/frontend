@@ -36,3 +36,8 @@ export interface IXITJSON {
 	global: IXITJSONGlobal;
 	groups: IXITJSONGroup[];
 }
+
+export interface IXITTransferMaterial {
+	ticker: string;
+	value: number;
+}

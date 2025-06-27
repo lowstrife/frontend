@@ -9,7 +9,7 @@
 
 	// Components
 	import MaterialTile from "@/features/material_tile/components/MaterialTile.vue";
-	import XITActionButton from "@/features/xit/components/XITActionButton.vue";
+	import XITBurnActionButton from "@/features/xit/components/XITBurnActionButton.vue";
 
 	// Util
 	import { formatNumber, formatAmount } from "@/util/numbers";
@@ -147,7 +147,7 @@
 							</span>
 						</div>
 						<div>
-							<XITActionButton
+							<XITBurnActionButton
 								:drawer-title="`XIT Resupply: ${rowData.planName}`"
 								:button-size="'tiny'"
 								:elements="
