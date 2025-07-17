@@ -232,6 +232,20 @@ export const useGameDataStore = defineStore(
 			);
 		}
 
+		function setMaterials(data: IMaterial[]): void {
+			materials.value = {};
+			data.forEach((e) => {
+				materials.value[e.Ticker] = e;
+			});
+		}
+
+		function setExchanges(data: IExchange[]): void {
+			exchanges.value = {};
+			data.forEach((e) => {
+				exchanges.value[e.TickerId] = e;
+			});
+		}
+
 		/// Data Loader
 
 		/**
@@ -711,6 +725,9 @@ export const useGameDataStore = defineStore(
 			isRefreshingFIO,
 			// reset
 			$reset,
+			// setters
+			setMaterials,
+			setExchanges,
 			// getters
 			hasMaterials,
 			hasExchanges,

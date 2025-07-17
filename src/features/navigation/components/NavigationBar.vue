@@ -203,7 +203,7 @@
 				{
 					label: "API",
 					display: true,
-					routerLink: "/none",
+					routerLink: "/api",
 					icon: ExtensionSharp,
 				},
 				{
