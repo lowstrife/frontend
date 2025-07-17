@@ -1,8 +1,10 @@
 <script setup lang="ts">
 	import {
+		IBuilding,
 		IExchange,
 		IMaterial,
 		IPlanet,
+		IRecipe,
 	} from "@/features/api/gameData.types";
 	import {
 		QueryDefinition,
@@ -12,7 +14,7 @@
 	import { computed, onMounted, ref, Ref, watch, watchEffect } from "vue";
 
 	// UI
-	import { NSpin, NIcon, NTable } from "naive-ui";
+	import { NSpin, NIcon } from "naive-ui";
 	import { CheckSharp, ClearSharp } from "@vicons/material";
 
 	// Components
@@ -21,14 +23,20 @@
 	const props = defineProps<{
 		loadMaterials?: boolean;
 		loadExchanges?: boolean;
+		loadBuildings?: boolean;
+		loadRecipes?: boolean;
 		loadPlanet?: string;
+		loadPlanetMultiple?: string[];
 	}>();
 
 	const emit = defineEmits<{
-		(e: "allLoaded"): void;
-		(e: "materialsLoaded", data: IMaterial[]): void;
-		(e: "exchangesLoaded", data: IExchange[]): void;
-		(e: "planetLoaded", data: IPlanet): void;
+		(e: "complete"): void;
+		(e: "data:materials", data: IMaterial[]): void;
+		(e: "data:exchanges", data: IExchange[]): void;
+		(e: "data:buildings", data: IBuilding[]): void;
+		(e: "data:recipes", data: IRecipe[]): void;
+		(e: "data:planet", data: IPlanet): void;
+		(e: "data:planet:multiple", data: IPlanet[]): void;
 	}>();
 
 	const queryStore = useQueryStore();
@@ -44,31 +52,53 @@
 	const loaders: [
 		loaderType<void, IMaterial[]>,
 		loaderType<void, IExchange[]>,
+		loaderType<void, IBuilding[]>,
+		loaderType<void, IRecipe[]>,
 		loaderType<{ planetNaturalId: string }, IPlanet>,
+		loaderType<{ planetNaturalIds: string[] }, IPlanet[]>,
 	] = [
 		{
 			propKey: "loadMaterials",
 			name: "Material Information",
 			query: queryRepository.GetMaterials,
-			emitEvent: "materialsLoaded",
+			emitEvent: "data:materials",
 		},
 		{
 			propKey: "loadExchanges",
 			name: "Exchange Information",
 			query: queryRepository.GetExchanges,
-			emitEvent: "exchangesLoaded",
+			emitEvent: "data:exchanges",
+		},
+		{
+			propKey: "loadBuildings",
+			name: "Building Information",
+			query: queryRepository.GetBuildings,
+			emitEvent: "data:buildings",
+		},
+		{
+			propKey: "loadRecipes",
+			name: "Recipe Information",
+			query: queryRepository.GetRecipes,
+			emitEvent: "data:recipes",
 		},
 		{
 			propKey: "loadPlanet",
 			name: `Planet '${props.loadPlanet ?? ""}'`,
 			query: queryRepository.GetPlanet,
-			emitEvent: "planetLoaded",
+			emitEvent: "data:planet",
 			params: { planetNaturalId: props.loadPlanet ?? "" },
+		},
+		{
+			propKey: "loadPlanetMultiple",
+			name: `Planets '${props.loadPlanetMultiple?.join(", ") ?? ""}'`,
+			query: queryRepository.GetMultiplePlanets,
+			emitEvent: "data:planet",
+			params: { planetNaturalIds: props.loadPlanetMultiple ?? [] },
 		},
 	];
 
 	const loaderStates = loaders.map((loader) => {
-		const propValue: string | boolean | undefined =
+		const propValue: string | boolean | undefined | string[] =
 			props[loader.propKey as keyof typeof props];
 
 		const shouldLoad = computed(
@@ -166,27 +196,13 @@
 	watch(allLoaded, (value) => {
 		if (value) {
 			done.value = true;
-			emit("allLoaded");
+			emit("complete");
 		}
 	});
-
-	const w = false;
 </script>
 
 <template>
-	<!-- <template v-if="!done && !allLoaded"> -->
-	<template v-if="!w">
-		<n-table>
-			<tbody>
-				<tr v-for="l in loaderStates" :key="`${l.key}`">
-					<td>{{ l.name }}</td>
-					<td>{{ l.key }}</td>
-					<td>{{ l.param }}</td>
-					<td>{{ l.state.value.loading }}</td>
-				</tr>
-			</tbody>
-		</n-table>
-
+	<template v-if="!done && !allLoaded">
 		<div
 			class="relative w-full h-full bg-center bg-repeat"
 			:class="
@@ -230,6 +246,14 @@
 				"
 				:exchanges="
 					loaderStates.find((e) => e.propKey === 'loadExchanges')
+						?.data ?? undefined
+				"
+				:buildings="
+					loaderStates.find((e) => e.propKey === 'loadBuildings')
+						?.data ?? undefined
+				"
+				:recipes="
+					loaderStates.find((e) => e.propKey === 'loadRecipes')
 						?.data ?? undefined
 				" />
 

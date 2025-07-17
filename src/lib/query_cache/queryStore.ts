@@ -2,9 +2,13 @@
 import { defineStore } from "pinia";
 import { reactive, computed, ComputedRef } from "vue";
 import { QueryDefinition } from "./queryRepository";
-import { JSONValue, toCacheKey } from "./cacheKeys";
+import { isSubset, JSONValue, toCacheKey } from "./cacheKeys";
 
-export interface QueryState<TData> {
+export interface QueryState<TParams, TData> {
+	// definition
+	definition: QueryDefinition<TParams, TData> | null;
+	params: TParams | null;
+	// state
 	data: TData | null;
 	loading: boolean;
 	error: Error | null;
@@ -13,20 +17,17 @@ export interface QueryState<TData> {
 }
 
 export const useQueryStore = defineStore("queryStore", () => {
-	// 1) Our shared cache
-	const cache = reactive(new Map<JSONValue, QueryState<unknown>>());
-
-	// 2) In-flight promises to dedupe parallel fetches
-	const inFlight = new Map<JSONValue, Promise<unknown>>();
+	const cache = reactive(new Map<string, QueryState<unknown, unknown>>());
+	const inFlight = new Map<string, Promise<unknown>>();
 
 	/**
 	 * Read-only: peek at an existing state entry (never creates).
 	 */
-	function peekQueryState<TData>(
+	function peekQueryState<TParams, TData>(
 		key: JSONValue
-	): QueryState<TData> | undefined {
+	): QueryState<TParams, TData> | undefined {
 		return isKnownAndFresh(key)
-			? (cache.get(toCacheKey(key)) as QueryState<TData>)
+			? (cache.get(toCacheKey(key)) as QueryState<TParams, TData>)
 			: undefined;
 	}
 
@@ -69,12 +70,14 @@ export const useQueryStore = defineStore("queryStore", () => {
 		params?: TParams,
 		options?: { forceRefetch?: boolean }
 	): Promise<TData> {
-		const key = toCacheKey(definition.key(params));
-		const shouldCache = definition.persist !== false;
+		const keyHash: string = toCacheKey(definition.key(params));
+		const shouldCache: boolean = definition.persist !== false;
 
 		// initialize cache entry once
-		if (!cache.has(key)) {
-			cache.set(key, {
+		if (!cache.has(keyHash)) {
+			cache.set(keyHash, {
+				definition: null,
+				params: null,
 				data: null,
 				loading: false,
 				error: null,
@@ -82,7 +85,7 @@ export const useQueryStore = defineStore("queryStore", () => {
 				expireTime: undefined,
 			});
 		}
-		const state = cache.get(key)! as QueryState<TData>;
+		const state = cache.get(keyHash)! as QueryState<TParams, TData>;
 
 		state.expireTime = definition.expireTime;
 		const now = Date.now();
@@ -100,9 +103,13 @@ export const useQueryStore = defineStore("queryStore", () => {
 		}
 
 		// if a fetch is already running for this key, reuse it
-		if (inFlight.has(key) && !options?.forceRefetch) {
-			return inFlight.get(key)! as Promise<TData>;
+		if (inFlight.has(keyHash) && !options?.forceRefetch) {
+			return inFlight.get(keyHash)! as Promise<TData>;
 		}
+
+		// set definition and params
+		state.definition = definition;
+		if (params) state.params = params;
 
 		// mark loading
 		state.loading = true;
@@ -127,15 +134,90 @@ export const useQueryStore = defineStore("queryStore", () => {
 			} finally {
 				state.loading = false;
 
-				inFlight.delete(key);
+				inFlight.delete(keyHash);
 				if (!shouldCache) {
-					cache.delete(key);
+					cache.delete(keyHash);
 				}
 			}
 		})();
 
-		inFlight.set(key, promise);
+		inFlight.set(keyHash, promise);
 		return promise;
+	}
+
+	/**
+	 * Remove from cache (and cancel in-flight).
+	 * Optionally refetch if `autoRefetch` or `options.refetch` is true.
+	 */
+	async function invalidateKey<TParams, TData>(
+		key: JSONValue,
+		options: { exact?: boolean; forceRefetch?: boolean } = {
+			exact: true,
+			forceRefetch: false,
+		}
+	): Promise<void> {
+		const keyHash: string = toCacheKey(key);
+
+		const toRefetch: {
+			definition: QueryDefinition<TParams, TData> | null;
+			params: TParams | null;
+		}[] = [];
+
+		if (options.exact) {
+			if (cache.has(keyHash)) {
+				const existingEntry = cache.get(keyHash)!;
+				toRefetch.push({
+					definition: existingEntry.definition as QueryDefinition<
+						TParams,
+						TData
+					> | null,
+					params: existingEntry.params as TParams | null,
+				});
+			}
+
+			// delete exact matched key and inflight
+			cache.delete(keyHash);
+			inFlight.delete(keyHash);
+		} else {
+			for (const existingKey of cache.keys()) {
+				// Note: as keys are strings, need to parse them to JSONValue
+				if (isSubset(key, JSON.parse(existingKey) as JSONValue)) {
+					// add subset query
+					const existingEntry = cache.get(existingKey)!;
+					toRefetch.push({
+						definition: existingEntry.definition as QueryDefinition<
+							TParams,
+							TData
+						> | null,
+						params: existingEntry.params as TParams | null,
+					});
+
+					// delete non-exact matched key and inflight
+					cache.delete(existingKey);
+					inFlight.delete(keyHash);
+				}
+			}
+		}
+
+		// check and trigger refetches if defined or forced
+		toRefetch.map(async (refetchEntry) => {
+			// refetch without definition not possible
+			if (refetchEntry.definition && refetchEntry.definition == null)
+				return;
+
+			// refetch can be forced from invalidate options or set
+			// in the query definition itself
+
+			if (options.forceRefetch || refetchEntry.definition!.autoRefetch) {
+				// if params are null, no params required, pass undefined
+				await executeQuery(
+					refetchEntry.definition!,
+					refetchEntry.params !== null
+						? refetchEntry.params
+						: undefined
+				);
+			}
+		});
 	}
 
 	/**
@@ -145,13 +227,30 @@ export const useQueryStore = defineStore("queryStore", () => {
 	async function invalidateQuery<TParams, TData>(
 		definition: QueryDefinition<TParams, TData>,
 		params?: TParams,
-		options?: { refetch?: boolean }
+		options: { exact?: boolean; refetch?: boolean } = {
+			exact: true,
+			refetch: false,
+		}
 	): Promise<void> {
-		const key = toCacheKey(definition.key(params));
-		cache.delete(key);
-		inFlight.delete(key);
+		const keyHash: string = toCacheKey(definition.key(params));
 
-		const shouldRefetch = options?.refetch ?? definition.autoRefetch;
+		if (options.exact) {
+			cache.delete(keyHash);
+			inFlight.delete(keyHash);
+		} else {
+			for (const key of cache.keys()) {
+				if (
+					isSubset(
+						definition.key(params),
+						JSON.parse(key) as JSONValue
+					)
+				) {
+					cache.delete(key);
+				}
+			}
+		}
+
+		const shouldRefetch = options.refetch ?? definition.autoRefetch;
 		if (shouldRefetch) {
 			await executeQuery(definition, params);
 		}
@@ -170,11 +269,46 @@ export const useQueryStore = defineStore("queryStore", () => {
 		Array.from(cache.values()).some((s) => s.loading)
 	);
 
+	// Regular status watcher
+	let intervalId: ReturnType<typeof setInterval> | null = null;
+
+	function checkEntryStatusAndRefresh() {
+		const now = Date.now();
+
+		for (const entry of cache.values()) {
+			if (
+				entry.expireTime &&
+				!entry.loading &&
+				entry.error === null &&
+				now - entry.timestamp > entry.expireTime
+			) {
+				// trigger refresh
+				if (entry.definition !== null && entry.definition.autoRefetch) {
+					executeQuery(
+						entry.definition,
+						entry.params !== null ? entry.params : undefined
+					);
+				}
+			}
+		}
+	}
+
+	function statusWatcher() {
+		// prevent multiple invervals running
+		if (intervalId !== null) return;
+
+		intervalId = setInterval(() => checkEntryStatusAndRefresh(), 1000);
+	}
+
+	// start the status watcher
+	statusWatcher();
+
 	return {
 		cache,
 		peekQueryState,
 		executeQuery,
 		invalidateQuery,
+		invalidateKey,
 		refetchQuery,
 		isAnythingLoading,
 	};

@@ -12,12 +12,15 @@
 	const entries = computed(() => {
 		return Array.from(queryStore.cache.entries()).map(([key, state]) => ({
 			key,
-			state: state as QueryState<unknown>,
+			state: state as QueryState<unknown, unknown>,
 			// Prettify JSON or show placeholder
 			jsonData:
 				state.data !== null
 					? JSON.stringify(state.data, null, 2)
 					: "null",
+			expireAt: state.expireTime
+				? state.timestamp + state.expireTime
+				: null,
 		}));
 	});
 
@@ -69,14 +72,20 @@
 	}
 
 	import WrapperGameDataLoader from "@/features/wrapper/components/WrapperGameDataLoader.vue";
+
+	const testPlanet: Ref<string> = ref("KW-688c");
 </script>
 
 <template>
 	<WrapperGameDataLoader
+		:key="`Loader#${testPlanet}`"
 		load-materials
 		load-exchanges
-		:load-planet="'KW-688c'"
-		@planet-loaded="(d) => console.log(d)">
+		load-buildings
+		load-recipes
+		:load-planet="testPlanet"
+		:load-planet-multiple="['RC-040b', 'CH-771a', 'JS-299a', 'ZV-307c']"
+		@data:planet="(d) => console.log(d)">
 		<template #default="{ materials: _m, exchanges: _e }">
 			<div class="p-3">
 				<div class="flex flex-row justify-between">
@@ -110,22 +119,41 @@
 							">
 							Clone Plan
 						</n-button>
+						<n-button
+							@click="
+								() => {
+									testPlanet = 'OT-580b';
+								}
+							">
+							Montem
+						</n-button>
+						<n-button
+							@click="
+								() => {
+									testPlanet = 'KW-688c';
+								}
+							">
+							Etherwind
+						</n-button>
 					</div>
 				</div>
-				<n-table>
+				<n-table class="mt-3">
 					<thead>
 						<tr>
 							<th>Key</th>
 							<th>Loading</th>
 							<th>Error</th>
 							<th>Timestamp</th>
-							<th>Expire</th>
+							<th>ExpireMs</th>
+							<th>ExpireAt</th>
 							<th>Data</th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr v-for="entry in entries" :key="`${entry.key}`">
-							<td>{{ entry.key }}</td>
+							<td>
+								<pre>{{ entry.key }}</pre>
+							</td>
 							<td>
 								<span v-if="entry.state.loading">⏳</span>
 								<span v-else>✔️</span>
@@ -146,11 +174,20 @@
 								</span>
 								<span v-else>—</span>
 							</td>
-							<td>{{ entry.state.expireTime }}</td>
 							<td>
-								<pre class="json-data">{{
-									entry.jsonData.length
-								}}</pre>
+								<pre>{{ entry.state.expireTime }}</pre>
+							</td>
+							<td>
+								{{
+									entry.expireAt
+										? new Date(
+												entry.expireAt
+											).toLocaleString()
+										: "—"
+								}}
+							</td>
+							<td>
+								<pre>{{ entry.jsonData.length }}</pre>
 							</td>
 						</tr>
 						<tr v-if="entries.length === 0">

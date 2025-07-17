@@ -246,6 +246,32 @@ export const useGameDataStore = defineStore(
 			});
 		}
 
+		function setRecipes(data: IRecipe[]): void {
+			recipes.value = {};
+			data.forEach((e) => {
+				if (recipes.value[e.BuildingTicker]) {
+					recipes.value[e.BuildingTicker].push(e);
+				} else {
+					recipes.value[e.BuildingTicker] = [e];
+				}
+			});
+		}
+
+		function setBuildings(data: IBuilding[]): void {
+			buildings.value = {};
+			data.forEach((e) => {
+				buildings.value[e.Ticker] = e;
+			});
+		}
+
+		function setPlanet(data: IPlanet): void {
+			planets.value[data.PlanetNaturalId] = data;
+		}
+
+		function setMultiplePlanets(data: IPlanet[]): void {
+			data.forEach((e) => setPlanet(e));
+		}
+
 		/// Data Loader
 
 		/**
@@ -728,6 +754,10 @@ export const useGameDataStore = defineStore(
 			// setters
 			setMaterials,
 			setExchanges,
+			setRecipes,
+			setBuildings,
+			setPlanet,
+			setMultiplePlanets,
 			// getters
 			hasMaterials,
 			hasExchanges,
