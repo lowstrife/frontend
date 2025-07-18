@@ -2,9 +2,9 @@
 	import { defineAsyncComponent } from "vue";
 
 	// Components
-	import PlanningDataWrapper from "@/features/wrapper/components/PlanningDataWrapper.vue";
-	const AsyncGameDataWrapper = defineAsyncComponent(
-		() => import("@/features/wrapper/components/GameDataWrapper.vue")
+	import WrapperPlanningDataLoader from "@/features/wrapper/components/WrapperPlanningDataLoader.vue";
+	const AsyncWrapperGameData = defineAsyncComponent(
+		() => import("@/features/wrapper/components/WrapperGameDataLoader.vue")
 	);
 
 	// Views
@@ -34,24 +34,23 @@
 </script>
 
 <template>
-	<PlanningDataWrapper
+	<WrapperPlanningDataLoader
 		:planet-natural-id="planetNaturalId"
 		:plan-uuid="planUuid"
 		:shared-plan-uuid="sharedPlanUuid"
-		:load-c-x-data="loadCX">
-		<template #default="{ planDefintion, empireList, disabled }">
-			<AsyncGameDataWrapper
-				v-if="planDefintion != null && empireList != null"
+		:load-c-x="loadCX">
+		<template #default="{ planDefinition, empireList, disabled }">
+			<AsyncWrapperGameData
+				v-if="planDefinition != null"
 				load-materials
 				load-exchanges
 				load-recipes
 				load-buildings>
 				<AsyncPlanView
 					:disabled="disabled"
-					:plan-data="planDefintion"
+					:plan-data="planDefinition"
 					:empire-list="empireList" />
-			</AsyncGameDataWrapper>
-			<template v-else> Rendering </template>
+			</AsyncWrapperGameData>
 		</template>
-	</PlanningDataWrapper>
+	</WrapperPlanningDataLoader>
 </template>

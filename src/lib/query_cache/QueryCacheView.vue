@@ -71,140 +71,111 @@
 		}
 	}
 
-	// import WrapperGameDataLoader from "@/features/wrapper/components/WrapperGameDataLoader.vue";
-	import WrapperPlanningDataLoader from "@/features/wrapper/components/WrapperPlanningDataLoader.vue";
-
 	const testPlanet: Ref<string> = ref("KW-688c");
 </script>
 
 <template>
-	<!-- <WrapperGameDataLoader
-		:key="`Loader#${testPlanet}`"
-		load-materials
-		load-exchanges
-		load-buildings
-		load-recipes
-		:load-planet="testPlanet"
-		:load-planet-multiple="['RC-040b', 'CH-771a', 'JS-299a', 'ZV-307c']">
-		<template #default="{ materials: _m, exchanges: _e }"> -->
-	<WrapperPlanningDataLoader
-		:shared-plan-id="'0acbc82b-5497-48e5-bbe5-8db53816be67'"
-		:plan-uuid="'3b440416-e814-4c9a-9216-f4860cc1e316'"
-		empire-list>
-		<template #default="{ empireList }">
-			{{ empireList }}
-
-			<div class="p-3">
-				<div class="flex flex-row justify-between">
-					<h2 class="text-2xl pb-3">Query Cache</h2>
-					<div class="flex flex-row gap-x-3">
-						<n-button
-							:loading="
-								getMaterialsState
-									? getMaterialsState.loading
-									: false
-							"
-							@click="loadMaterials">
-							Load Materials
-						</n-button>
-						<n-button
-							:loading="
-								getExchangesState
-									? getExchangesState.loading
-									: false
-							"
-							@click="loadExchanges">
-							Load Exchanges
-						</n-button>
-						<n-button
-							:loading="cloneState"
-							@click="
-								clonePlan(
-									'da105ce1-25f2-479d-b1eb-944353f4784f',
-									'CLONE FOO'
-								)
-							">
-							Clone Plan
-						</n-button>
-						<n-button
-							@click="
-								() => {
-									testPlanet = 'OT-580b';
-								}
-							">
-							Montem
-						</n-button>
-						<n-button
-							@click="
-								() => {
-									testPlanet = 'KW-688c';
-								}
-							">
-							Etherwind
-						</n-button>
-					</div>
-				</div>
-				<n-table class="mt-3">
-					<thead>
-						<tr>
-							<th>Key</th>
-							<th>Loading</th>
-							<th>Error</th>
-							<th>Timestamp</th>
-							<th>ExpireMs</th>
-							<th>ExpireAt</th>
-							<th>Data</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr v-for="entry in entries" :key="`${entry.key}`">
-							<td>
-								<pre>{{ entry.key }}</pre>
-							</td>
-							<td>
-								<span v-if="entry.state.loading">⏳</span>
-								<span v-else>✔️</span>
-							</td>
-							<td>
-								<span v-if="entry.state.error">{{
-									entry.state.error.message
-								}}</span>
-								<span v-else>—</span>
-							</td>
-							<td>
-								<span v-if="entry.state.timestamp">
-									{{
-										new Date(
-											entry.state.timestamp
-										).toLocaleString()
-									}}
-								</span>
-								<span v-else>—</span>
-							</td>
-							<td>
-								<pre>{{ entry.state.expireTime }}</pre>
-							</td>
-							<td>
-								{{
-									entry.expireAt
-										? new Date(
-												entry.expireAt
-											).toLocaleString()
-										: "—"
-								}}
-							</td>
-							<td>
-								<pre>{{ entry.jsonData.length }}</pre>
-							</td>
-						</tr>
-						<tr v-if="entries.length === 0">
-							<td colspan="5">No queries in cache.</td>
-						</tr>
-					</tbody>
-				</n-table>
+	<div class="p-3">
+		<div class="flex flex-row justify-between">
+			<h2 class="text-2xl pb-3">Query Cache</h2>
+			<div class="flex flex-row gap-x-3">
+				<n-button
+					:loading="
+						getMaterialsState ? getMaterialsState.loading : false
+					"
+					@click="loadMaterials">
+					Load Materials
+				</n-button>
+				<n-button
+					:loading="
+						getExchangesState ? getExchangesState.loading : false
+					"
+					@click="loadExchanges">
+					Load Exchanges
+				</n-button>
+				<n-button
+					:loading="cloneState"
+					@click="
+						clonePlan(
+							'da105ce1-25f2-479d-b1eb-944353f4784f',
+							'CLONE FOO'
+						)
+					">
+					Clone Plan
+				</n-button>
+				<n-button
+					@click="
+						() => {
+							testPlanet = 'OT-580b';
+						}
+					">
+					Montem
+				</n-button>
+				<n-button
+					@click="
+						() => {
+							testPlanet = 'KW-688c';
+						}
+					">
+					Etherwind
+				</n-button>
 			</div>
-		</template>
-	</WrapperPlanningDataLoader>
-	<!-- </template>
-	</WrapperGameDataLoader> -->
+		</div>
+		<n-table class="mt-3">
+			<thead>
+				<tr>
+					<th>Key</th>
+					<th>Loading</th>
+					<th>Error</th>
+					<th>Timestamp</th>
+					<th>ExpireMs</th>
+					<th>ExpireAt</th>
+					<th>AutoRefetch</th>
+					<th>Data</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr v-for="entry in entries" :key="`${entry.key}`">
+					<td>
+						<pre>{{ entry.key }}</pre>
+					</td>
+					<td>
+						<span v-if="entry.state.loading">⏳</span>
+						<span v-else>✔️</span>
+					</td>
+					<td>
+						<span v-if="entry.state.error">{{
+							entry.state.error.message
+						}}</span>
+						<span v-else>—</span>
+					</td>
+					<td>
+						<span v-if="entry.state.timestamp">
+							{{
+								new Date(entry.state.timestamp).toLocaleString()
+							}}
+						</span>
+						<span v-else>—</span>
+					</td>
+					<td>
+						<pre>{{ entry.state.expireTime }}</pre>
+					</td>
+					<td>
+						{{
+							entry.expireAt
+								? new Date(entry.expireAt).toLocaleString()
+								: "—"
+						}}
+					</td>
+					<td>{{ entry.state.definition?.autoRefetch }}</td>
+					<td>
+						<pre>{{ entry.jsonData.length }}</pre>
+					</td>
+				</tr>
+				<tr v-if="entries.length === 0">
+					<td colspan="5">No queries in cache.</td>
+				</tr>
+			</tbody>
+		</n-table>
+	</div>
 </template>

@@ -23,11 +23,18 @@ import {
 import { IPlanCloneResponse } from "@/features/manage/manage.types";
 import { useQueryStore } from "./queryStore";
 import {
+	ICX,
 	IPlan,
 	IPlanEmpireElement,
 	IPlanShare,
 } from "@/stores/planningStore.types";
-import { callGetEmpireList } from "@/features/api/empireData.api";
+import {
+	callGetEmpireList,
+	callGetEmpirePlans,
+} from "@/features/api/empireData.api";
+import { callGetCXList } from "@/features/api/cxData.api";
+import { IShared } from "@/features/api/sharingData.types";
+import { callGetSharedList } from "@/features/api/sharingData.api";
 const queryStore = useQueryStore();
 
 export interface QueryDefinition<TParams, TData> {
@@ -94,7 +101,6 @@ export const queryRepository = {
 		],
 		fetchFn: async (params: { planetNaturalId: string }) => {
 			const data: IPlanet = await callDataPlanet(params.planetNaturalId);
-			console.log("fetch planet", params.planetNaturalId, data);
 			gameDataStore.setPlanet(data);
 			return data;
 		},
@@ -133,8 +139,17 @@ export const queryRepository = {
 		autoRefetch: false,
 		expireTime: 10_000,
 	} as QueryDefinition<{ sharedPlanUuid: string }, IPlanShare>,
+	GetAllShared: {
+		key: () => ["planningdata", "shared"],
+		fetchFn: async () => {
+			return await callGetSharedList();
+		},
+		persist: true,
+		autoRefetch: true,
+		expireTime: 60_000 * 60,
+	} as QueryDefinition<void, IShared[]>,
 	GetAllEmpires: {
-		key: () => ["planningdata", "empires", "list"],
+		key: () => ["planningdata", "empires"],
 		fetchFn: async () => {
 			await new Promise((resolve) => setTimeout(resolve, 3000));
 			const data = await callGetEmpireList();
@@ -142,9 +157,33 @@ export const queryRepository = {
 			// set!
 			return data;
 		},
-		autoRefetch: true,
+		autoRefetch: false,
 		persist: true,
 	} as QueryDefinition<void, IPlanEmpireElement[]>,
+	GetEmpirePlans: {
+		key: (params: { empireUuid: string }) => [
+			"planningdata",
+			"empire",
+			"plans",
+			params.empireUuid,
+		],
+		fetchFn: async (params: { empireUuid: string }) => {
+			const data = await callGetEmpirePlans(params.empireUuid);
+
+			return data;
+		},
+		autoRefetch: false,
+		persist: true,
+	} as QueryDefinition<{ empireUuid: string }, IPlan[]>,
+	GetAllCX: {
+		key: () => ["planningdata", "cx"],
+		fetchFn: async () => {
+			const data = await callGetCXList();
+			return data;
+		},
+		autoRefetch: false,
+		persist: true,
+	} as QueryDefinition<void, ICX[]>,
 	GetPlan: {
 		key: (params: { planUuid: string }) => [
 			"planningdata",
@@ -169,11 +208,10 @@ export const queryRepository = {
 		fetchFn: async (params: { planUuid: string; cloneName: string }) => {
 			await new Promise((resolve) => setTimeout(resolve, 3000));
 
-			queryStore.invalidateKey(["exchanges", "list"]);
+			queryStore.invalidateKey(["planningdata", "empires"]);
 
 			return await callClonePlan(params.planUuid, params.cloneName);
 		},
-		expireTime: 5_000, // 5 sec,
 		autoRefetch: false,
 		persist: false,
 	} as QueryDefinition<
