@@ -1,19 +1,23 @@
+import { computed, reactive, ref, Ref, watch, watchEffect } from "vue";
+
+// Stores & Repository
 import { queryRepository } from "@/lib/query_cache/queryRepository";
 import { useQueryStore } from "@/lib/query_cache/queryStore";
+
+// Types & Interfaces
+import {
+	GameDataLoaderEmits,
+	GameDataLoaderProps,
+	GameDataStepConfigsType,
+} from "@/features/wrapper/gameDataLoader.types";
+import { StepState } from "@/features/wrapper/dataLoader.types";
 import {
 	IBuilding,
 	IExchange,
 	IMaterial,
 	IPlanet,
 	IRecipe,
-} from "../api/gameData.types";
-import { computed, reactive, ref, Ref, watch, watchEffect } from "vue";
-import { StepState } from "./dataLoader.types";
-import {
-	GameDataLoaderEmits,
-	GameDataLoaderProps,
-	GameDataStepConfigsType,
-} from "./gameDataLoader.types";
+} from "@/features/api/gameData.types";
 
 export function useGameDataLoader(
 	props: GameDataLoaderProps,

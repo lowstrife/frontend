@@ -1,18 +1,21 @@
 <script setup lang="ts">
+	// Composables
+	import { useGameDataLoader } from "@/features/wrapper/useGameDataLoader";
+
+	// Types & Interfaces
+	import {
+		GameDataLoaderEmits,
+		GameDataLoaderProps,
+	} from "@/features/wrapper/gameDataLoader.types";
+
+	// Components
+	import RenderingProgress from "@/layout/components/RenderingProgress.vue";
+
 	// UI
 	import { NSpin, NIcon } from "naive-ui";
 	import { CheckSharp, ClearSharp } from "@vicons/material";
 
-	// Components
-	import RenderingProgress from "@/layout/components/RenderingProgress.vue";
-	import {
-		GameDataLoaderEmits,
-		GameDataLoaderProps,
-	} from "../gameDataLoader.types";
-	import { useGameDataLoader } from "../useGameDataLoader";
-
 	const props: GameDataLoaderProps = defineProps<GameDataLoaderProps>();
-
 	const emit: GameDataLoaderEmits = defineEmits<GameDataLoaderEmits>();
 
 	const { done, allLoaded, hasError, loadingSteps, results } =
@@ -22,6 +25,7 @@
 <template>
 	<template v-if="!done && !allLoaded">
 		<div
+			v-if="!props.minimal"
 			class="relative w-full h-full bg-center bg-repeat"
 			:class="
 				!hasError
@@ -30,7 +34,7 @@
 			">
 			<div class="absolute inset-0 flex items-center justify-center">
 				<div
-					class="bg-black p-8 rounded shadow-lg text-center flex flex-col gap-y-3">
+					class="max-w-[500px] bg-black p-8 rounded shadow-lg text-center flex flex-col gap-y-3">
 					<h1 class="text-2xl font-bold font-mono mb-3">
 						Loading Data...
 					</h1>
@@ -38,7 +42,7 @@
 						v-for="e in loadingSteps"
 						:key="e.name"
 						class="flex flex-row align-middle gap-x-3">
-						<div class="mr-5 w-[30px]">
+						<div class="mr-5">
 							<div v-if="e.loading" class="my-1">
 								<n-spin :size="14" />
 							</div>
@@ -47,9 +51,14 @@
 								<ClearSharp v-else />
 							</n-icon>
 						</div>
-						<div>{{ e.name }}</div>
+						<div class="!text-left">{{ e.name }}</div>
 					</div>
 				</div>
+			</div>
+		</div>
+		<div v-else class="relative w-full h-full">
+			<div class="absolute inset-0 flex items-center justify-center">
+				<n-spin :size="15" />
 			</div>
 		</div>
 	</template>

@@ -1,17 +1,22 @@
 <script setup lang="ts">
-	import { NSpin, NIcon } from "naive-ui";
-	import { CheckSharp, ClearSharp } from "@vicons/material";
-	import RenderingProgress from "@/layout/components/RenderingProgress.vue";
+	// Composables
+	import { usePlanningDataLoader } from "@/features/wrapper/usePlanningDataLoader";
 
+	// Types & Interfaces
 	import {
 		PlanningDataLoaderEmits,
 		PlanningDataLoaderProps,
 	} from "@/features/wrapper/planningDataLoader.types";
-	import { usePlanningDataLoader } from "@/features/wrapper/usePlanningDataLoader";
+
+	// Components
+	import RenderingProgress from "@/layout/components/RenderingProgress.vue";
+
+	// UI
+	import { NSpin, NIcon } from "naive-ui";
+	import { CheckSharp, ClearSharp } from "@vicons/material";
 
 	const props: PlanningDataLoaderProps =
 		defineProps<PlanningDataLoaderProps>();
-
 	const emit = defineEmits<PlanningDataLoaderEmits>();
 
 	const { done, allLoaded, hasError, loadingSteps, results } =

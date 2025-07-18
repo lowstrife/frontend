@@ -135,9 +135,12 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr v-for="entry in entries" :key="`${entry.key}`">
-					<td>
-						<pre>{{ entry.key }}</pre>
+				<tr
+					v-for="entry in entries"
+					:key="`${entry.key}`"
+					class="child:text-nowrap">
+					<td class="!text-wrap">
+						{{ entry.key }}
 					</td>
 					<td>
 						<span v-if="entry.state.loading">⏳</span>

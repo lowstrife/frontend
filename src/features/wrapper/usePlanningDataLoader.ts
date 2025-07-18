@@ -1,21 +1,27 @@
+import { computed, reactive, ref, Ref, watch, watchEffect } from "vue";
+
+// Stores & Repository
+import { queryRepository } from "@/lib/query_cache/queryRepository";
+import { useQueryStore } from "@/lib/query_cache/queryStore";
+
+// Composables
+import { usePlan } from "@/features/planning_data/usePlan";
+
+// Types & Interfaces
 import {
 	PlanningDataLoaderEmits,
 	PlanningDataLoaderProps,
 	PlanningStepConfigsType,
 } from "@/features/wrapper/planningDataLoader.types";
-import { queryRepository } from "@/lib/query_cache/queryRepository";
-import { useQueryStore } from "@/lib/query_cache/queryStore";
+import { StepState } from "@/features/wrapper/dataLoader.types";
 import {
 	ICX,
 	IPlan,
 	IPlanEmpireElement,
 	IPlanShare,
 } from "@/stores/planningStore.types";
-import { IPlanet } from "../api/gameData.types";
-import { computed, reactive, ref, Ref, watch, watchEffect } from "vue";
-import { usePlan } from "../planning_data/usePlan";
-import { StepState } from "./dataLoader.types";
-import { IShared } from "../api/sharingData.types";
+import { IPlanet } from "@/features/api/gameData.types";
+import { IShared } from "@/features/api/sharingData.types";
 
 export function usePlanningDataLoader(
 	props: PlanningDataLoaderProps,

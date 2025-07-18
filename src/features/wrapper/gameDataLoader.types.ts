@@ -8,6 +8,7 @@ import {
 import { StepConfig } from "./dataLoader.types";
 
 export type GameDataLoaderProps = {
+	readonly minimal?: boolean | undefined;
 	readonly loadMaterials?: boolean | undefined;
 	readonly loadExchanges?: boolean | undefined;
 	readonly loadBuildings?: boolean | undefined;
