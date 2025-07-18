@@ -10,28 +10,35 @@ import { IShared } from "@/features/api/sharingData.types";
 
 export type PlanningDataLoaderProps = {
 	readonly empireList?: boolean | undefined;
+	readonly empireUuid?: string | undefined;
 	readonly sharedPlanUuid?: string | undefined;
 	readonly planetNaturalId?: string | undefined;
 	readonly planUuid?: string | undefined;
 	readonly loadCX?: boolean | undefined;
 	readonly loadShared?: boolean | undefined;
+	readonly planList?: boolean | undefined;
 };
 
 export type PlanningDataLoaderEmits = {
 	(e: "complete"): void;
 	(e: "data:shared:plan", data: IPlanShare): void;
 	(e: "data:empire:list", data: IPlanEmpireElement[]): void;
+	(e: "data:empire:plans", data: IPlan[]): void;
 	(e: "data:planet", data: IPlanet): void;
 	(e: "data:plan", data: IPlan): void;
+	(e: "data:plan:list", data: IPlan[]): void;
 	(e: "data:cx", data: ICX[]): void;
 	(e: "data:shared", data: IShared[]): void;
+	(e: "update:cxUuid", data: string | undefined): void;
 };
 
 export type PlanningStepConfigsType = [
 	StepConfig<IPlanShare>,
 	StepConfig<IPlanEmpireElement[]>,
 	StepConfig<IPlan>,
+	StepConfig<IPlan[]>,
 	StepConfig<IPlanet>,
 	StepConfig<ICX[]>,
 	StepConfig<IShared[]>,
+	StepConfig<IPlan[]>,
 ];

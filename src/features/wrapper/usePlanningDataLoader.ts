@@ -6,6 +6,9 @@ import { useQueryStore } from "@/lib/query_cache/queryStore";
 
 // Composables
 import { usePlan } from "@/features/planning_data/usePlan";
+// Composables
+import { useCXData } from "@/features/cx/useCXData";
+const { findEmpireCXUuid } = useCXData();
 
 // Types & Interfaces
 import {
@@ -57,7 +60,7 @@ export function usePlanningDataLoader(
 				queryStore.executeQuery(queryRepository.GetSharedPlan, {
 					sharedPlanUuid: props.sharedPlanUuid!,
 				}),
-			onSuccess: (d: IPlanShare) => emits("data:shared:plan", d),
+			onSuccess: (data: IPlanShare) => emits("data:shared:plan", data),
 		},
 		{
 			key: "empireList",
@@ -68,8 +71,20 @@ export function usePlanningDataLoader(
 					queryRepository.GetAllEmpires,
 					undefined
 				),
-			onSuccess: (d: IPlanEmpireElement[]) =>
-				emits("data:empire:list", d),
+			onSuccess: (data: IPlanEmpireElement[]) => {
+				if (!props.empireUuid) {
+					/*
+						It might be required to send the empire uuid of the first
+						available empire fetched as there could be a frontend select
+						needing a value or a full refresh happing, e.g. default empire
+						uuid missing or not set.
+					*/
+
+					if (data.length > 0)
+						emits("update:empireUuid", data[0].uuid);
+				}
+				emits("data:empire:list", data);
+			},
 		},
 		{
 			key: "plan",
@@ -79,7 +94,15 @@ export function usePlanningDataLoader(
 				queryStore.executeQuery(queryRepository.GetPlan, {
 					planUuid: props.planUuid!,
 				}),
-			onSuccess: (d: IPlan) => emits("data:plan", d),
+			onSuccess: (data: IPlan) => emits("data:plan", data),
+		},
+		{
+			key: "planList",
+			name: "All Plan Configurations",
+			enabled: () => !!props.planList,
+			load: () =>
+				queryStore.executeQuery(queryRepository.GetAllPlans, undefined),
+			onSuccess: (data: IPlan[]) => emits("data:plan:list", data),
 		},
 		{
 			key: "planet",
@@ -101,7 +124,7 @@ export function usePlanningDataLoader(
 					planetNaturalId: id,
 				});
 			},
-			onSuccess: (d: IPlanet) => emits("data:planet", d),
+			onSuccess: (data: IPlanet) => emits("data:planet", data),
 		},
 		{
 			key: "cx",
@@ -114,13 +137,28 @@ export function usePlanningDataLoader(
 		{
 			key: "sharedList",
 			name: "Shared Plan Configurations",
-			enabled: () => !!props.loadCX,
+			enabled: () => !!props.loadShared,
 			load: () =>
 				queryStore.executeQuery(
 					queryRepository.GetAllShared,
 					undefined
 				),
-			onSuccess: (d: IShared[]) => emits("data:shared", d),
+			onSuccess: (data: IShared[]) => emits("data:shared", data),
+		},
+		{
+			key: "empirePlans",
+			name: "Empire Plans",
+			enabled: () => !!props.empireUuid,
+			load: () =>
+				queryStore.executeQuery(queryRepository.GetEmpirePlans, {
+					empireUuid: props.empireUuid!,
+				}),
+			onSuccess: (data: IPlan[]) => {
+				// emit empire data
+				emits("data:empire:plans", data);
+				// emit potential empire cx uuid
+				emits("update:cxUuid", findEmpireCXUuid(props.empireUuid!));
+			},
 		},
 	];
 
@@ -204,19 +242,63 @@ export function usePlanningDataLoader(
 			planetData: steps.find((s) => s.cfg.key === "planet")
 				?.data as IPlanet,
 			planData: steps.find((s) => s.cfg.key === "plan")?.data as IPlan,
+			planList: steps.find((s) => s.cfg.key === "planList")
+				?.data as IPlan[],
 			sharedData: steps.find((s) => s.cfg.key === "sharedList")
 				?.data as IShared[],
+			empirePlansData: steps.find((s) => s.cfg.key === "empirePlans")
+				?.data as IPlan[],
+			empirePlanetList: computed(() => {
+				/*
+					empire planet list can either come from loading empire plans
+					directly or by just loading a list of empire which would
+					potentially require to fetch all planets
+				*/
+				const empirePlans = steps.find(
+					(s) => s.cfg.key === "empirePlans"
+				)?.data as undefined | IPlan[];
+
+				const empireList = steps.find((s) => s.cfg.key === "empireList")
+					?.data as undefined | IPlanEmpireElement[];
+
+				if (empirePlans)
+					return [...new Set(empirePlans.map((p) => p.planet_id))];
+				if (empireList) {
+					return [
+						...new Set(
+							empireList
+								.map((e) =>
+									e.baseplanners.map((p) => p.planet_id)
+								)
+								.flat()
+						),
+					];
+				}
+
+				return [] as string[];
+			}),
 		};
 
+		/*
+			The plan definition (i.e. the actual plan setup) depends on the
+			requested parameters with the following variants:
+
+			1) shared plan uuid provided, shared plan to use
+			2) plan uuid provided, plan data to use
+			3) only planet natural id provided, new plan definition created
+		*/
 		const planDefinition = props.sharedPlanUuid
 			? data.sharedPlan.baseplanner
 			: props.planUuid
 				? data.planData
-				: createBlankDefinition(
-						data.planetData.PlanetNaturalId,
-						data.planetData.COGCProgramActive
-					);
+				: data.planetData
+					? createBlankDefinition(
+							data.planetData.PlanetNaturalId,
+							data.planetData.COGCProgramActive
+						)
+					: undefined;
 
+		// if there is a shared plan uuid, the plan editing is disabled
 		const disabled: boolean = props.sharedPlanUuid ? true : false;
 
 		return { ...data, planDefinition, disabled };

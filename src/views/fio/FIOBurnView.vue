@@ -24,7 +24,7 @@
 	const { defaultEmpireUuid, burnDaysRed, burnDaysYellow } = usePreferences();
 
 	// Components
-	import EmpireDataWrapper from "@/features/wrapper/components/EmpireDataWrapper.vue";
+	import WrapperPlanningDataLoader from "@/features/wrapper/components/WrapperPlanningDataLoader.vue";
 	import HelpDrawer from "@/features/help/components/HelpDrawer.vue";
 
 	const AsyncWrapperGameDataLoader = defineAsyncComponent(
@@ -92,25 +92,25 @@
 </script>
 
 <template>
-	<EmpireDataWrapper
-		:key="`EMPIREWRAPPER#${refSelectedEmpireUuid}`"
+	<WrapperPlanningDataLoader
+		:key="`WrapperPlanningDataLoader#${refSelectedEmpireUuid}`"
+		empire-list
 		:empire-uuid="refSelectedEmpireUuid"
-		@update:empire-uuid="(value: string) => (refSelectedEmpireUuid = value)"
-		@update:plan-list="(value: IPlan[]) => (refPlanData = value)"
 		@update:cx-uuid="
 			(value: string | undefined) => (refSelectedCXUuid = value)
 		"
-		@update:empire-list="
+		@data:empire:list="
 			(value: IPlanEmpireElement[]) => (refEmpireList = value)
-		">
-		<template #default="{ planetList }">
+		"
+		@data:empire:plans="(value: IPlan[]) => (refPlanData = value)">
+		<template #default="{ empirePlanetList }">
 			<AsyncWrapperGameDataLoader
 				:key="`GAMEDATAWRAPPER#${refSelectedEmpireUuid}`"
 				load-materials
 				load-exchanges
 				load-recipes
 				load-buildings
-				:load-planet-multiple="planetList"
+				:load-planet-multiple="empirePlanetList"
 				@complete="calculateEmpire">
 				<div class="min-h-screen flex flex-col">
 					<div
@@ -194,5 +194,5 @@
 				</div>
 			</AsyncWrapperGameDataLoader>
 		</template>
-	</EmpireDataWrapper>
+	</WrapperPlanningDataLoader>
 </template>

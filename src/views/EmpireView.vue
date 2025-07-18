@@ -27,7 +27,7 @@
 
 	// Components
 	import RenderingProgress from "@/layout/components/RenderingProgress.vue";
-	import EmpireDataWrapper from "@/features/wrapper/components/EmpireDataWrapper.vue";
+	import WrapperPlanningDataLoader from "@/features/wrapper/components/WrapperPlanningDataLoader.vue";
 
 	const AsyncWrapperGameDataLoader = defineAsyncComponent(
 		() => import("@/features/wrapper/components/WrapperGameDataLoader.vue")
@@ -220,25 +220,26 @@
 </script>
 
 <template>
-	<EmpireDataWrapper
-		:key="`EMPIREWRAPPER#${selectedEmpireUuid}`"
+	<WrapperPlanningDataLoader
+		:key="`WrapperPlanningDataLoader#${selectedEmpireUuid}`"
+		empire-list
 		:empire-uuid="selectedEmpireUuid"
+		@data:empire:plans="(value: IPlan[]) => (planData = value)"
 		@update:empire-uuid="(value: string) => (selectedEmpireUuid = value)"
-		@update:plan-list="(value: IPlan[]) => (planData = value)"
 		@update:cx-uuid="
 			(value: string | undefined) => (selectedCXUuid = value)
 		"
-		@update:empire-list="
+		@data:empire:list="
 			(value: IPlanEmpireElement[]) => (refEmpireList = value)
 		">
-		<template #default="{ empireList, planetList }">
+		<template #default="{ empireList, empirePlanetList }">
 			<AsyncWrapperGameDataLoader
 				:key="`GAMEDATAWRAPPER#${selectedEmpireUuid}`"
 				load-materials
 				load-exchanges
 				load-recipes
 				load-buildings
-				:load-planet-multiple="planetList"
+				:load-planet-multiple="empirePlanetList"
 				@complete="calculateEmpire">
 				<template v-if="isCalculating">
 					<div>Calculating</div>
@@ -385,5 +386,5 @@
 				</template>
 			</AsyncWrapperGameDataLoader>
 		</template>
-	</EmpireDataWrapper>
+	</WrapperPlanningDataLoader>
 </template>

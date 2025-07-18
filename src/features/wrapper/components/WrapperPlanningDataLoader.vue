@@ -64,8 +64,10 @@
 				:disabled="results.disabled"
 				:shared-plan="results.sharedPlan"
 				:empire-list="results.empireList"
+				:empire-planet-list="results.empirePlanetList.value"
 				:planet-data="results.planetData"
 				:plan-data="results.planData"
+				:plan-list="results.planList"
 				:shared-data="results.sharedData"
 				:plan-definition="results.planDefinition" />
 			<template #fallback>

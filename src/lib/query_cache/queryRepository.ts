@@ -18,6 +18,7 @@ import { useGameDataStore } from "@/stores/gameDataStore";
 import {
 	callClonePlan,
 	callGetPlan,
+	callGetPlanlist,
 	callGetShared,
 } from "@/features/api/planData.api";
 import { IPlanCloneResponse } from "@/features/manage/manage.types";
@@ -140,7 +141,7 @@ export const queryRepository = {
 		expireTime: 10_000,
 	} as QueryDefinition<{ sharedPlanUuid: string }, IPlanShare>,
 	GetAllShared: {
-		key: () => ["planningdata", "shared"],
+		key: () => ["planningdata", "shared", "list"],
 		fetchFn: async () => {
 			return await callGetSharedList();
 		},
@@ -149,12 +150,11 @@ export const queryRepository = {
 		expireTime: 60_000 * 60,
 	} as QueryDefinition<void, IShared[]>,
 	GetAllEmpires: {
-		key: () => ["planningdata", "empires"],
+		key: () => ["planningdata", "empire", "list"],
 		fetchFn: async () => {
-			await new Promise((resolve) => setTimeout(resolve, 3000));
 			const data = await callGetEmpireList();
 
-			// set!
+			// # TODO set!
 			return data;
 		},
 		autoRefetch: false,
@@ -169,7 +169,7 @@ export const queryRepository = {
 		],
 		fetchFn: async (params: { empireUuid: string }) => {
 			const data = await callGetEmpirePlans(params.empireUuid);
-
+			// # TODO set!
 			return data;
 		},
 		autoRefetch: false,
@@ -179,6 +179,7 @@ export const queryRepository = {
 		key: () => ["planningdata", "cx"],
 		fetchFn: async () => {
 			const data = await callGetCXList();
+			// # TODO set!
 			return data;
 		},
 		autoRefetch: false,
@@ -192,12 +193,22 @@ export const queryRepository = {
 		],
 		fetchFn: async (params: { planUuid: string }) => {
 			const data = await callGetPlan(params.planUuid);
-
+			// # TODO set!
 			return data;
 		},
 		autoRefetch: false,
 		persist: true,
 	} as QueryDefinition<{ planUuid: string }, IPlan>,
+	GetAllPlans: {
+		key: () => ["planningdata", "plan", "list"],
+		fetchFn: async () => {
+			const data = await callGetPlanlist();
+			// # TODO set!
+			return data;
+		},
+		autoRefetch: false,
+		persist: true,
+	} as QueryDefinition<void, IPlan[]>,
 	ClonePlan: {
 		key: (params: { planUuid: string; cloneName: string }) => [
 			"planningdata",

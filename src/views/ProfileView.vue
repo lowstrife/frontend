@@ -1,13 +1,13 @@
 <script setup lang="ts">
 	// Components
-	import ManageDataWrapper from "@/features/wrapper/components/ManageDataWrapper.vue";
+	import WrapperPlanningDataLoader from "@/features/wrapper/components/WrapperPlanningDataLoader.vue";
 	import UserPreferences from "@/features/profile/components/UserPreferences.vue";
 	import StorageData from "@/features/profile/components/StorageData.vue";
 	import HelpDrawer from "@/features/help/components/HelpDrawer.vue";
 </script>
 
 <template>
-	<ManageDataWrapper :load-cx="false" :load-sharing="false">
+	<WrapperPlanningDataLoader empire-list plan-list>
 		<template #default>
 			<div class="min-h-screen flex flex-col">
 				<div
@@ -28,5 +28,5 @@
 				</div>
 			</div>
 		</template>
-	</ManageDataWrapper>
+	</WrapperPlanningDataLoader>
 </template>
