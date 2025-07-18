@@ -71,22 +71,29 @@
 		}
 	}
 
-	import WrapperGameDataLoader from "@/features/wrapper/components/WrapperGameDataLoader.vue";
+	// import WrapperGameDataLoader from "@/features/wrapper/components/WrapperGameDataLoader.vue";
+	import WrapperPlanningDataLoader from "@/features/wrapper/components/WrapperPlanningDataLoader.vue";
 
 	const testPlanet: Ref<string> = ref("KW-688c");
 </script>
 
 <template>
-	<WrapperGameDataLoader
+	<!-- <WrapperGameDataLoader
 		:key="`Loader#${testPlanet}`"
 		load-materials
 		load-exchanges
 		load-buildings
 		load-recipes
 		:load-planet="testPlanet"
-		:load-planet-multiple="['RC-040b', 'CH-771a', 'JS-299a', 'ZV-307c']"
-		@data:planet="(d) => console.log(d)">
-		<template #default="{ materials: _m, exchanges: _e }">
+		:load-planet-multiple="['RC-040b', 'CH-771a', 'JS-299a', 'ZV-307c']">
+		<template #default="{ materials: _m, exchanges: _e }"> -->
+	<WrapperPlanningDataLoader
+		:shared-plan-id="'0acbc82b-5497-48e5-bbe5-8db53816be67'"
+		:plan-uuid="'3b440416-e814-4c9a-9216-f4860cc1e316'"
+		empire-list>
+		<template #default="{ empireList }">
+			{{ empireList }}
+
 			<div class="p-3">
 				<div class="flex flex-row justify-between">
 					<h2 class="text-2xl pb-3">Query Cache</h2>
@@ -197,5 +204,7 @@
 				</n-table>
 			</div>
 		</template>
-	</WrapperGameDataLoader>
+	</WrapperPlanningDataLoader>
+	<!-- </template>
+	</WrapperGameDataLoader> -->
 </template>
