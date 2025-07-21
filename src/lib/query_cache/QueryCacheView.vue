@@ -39,7 +39,7 @@
 					<th>Timestamp</th>
 					<th>ExpireMs</th>
 					<th>ExpireAt</th>
-					<th>AutoRefetch</th>
+					<th>Refetch</th>
 					<th>Data</th>
 					<th></th>
 				</tr>

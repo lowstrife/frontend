@@ -218,7 +218,6 @@ export const queryRepository = {
 		key: () => ["planningdata", "shared", "list"],
 		fetchFn: async () => {
 			const data = await callGetSharedList();
-			console.log("new shared data", data);
 			planningStore.setSharedList(data);
 			return data;
 		},
