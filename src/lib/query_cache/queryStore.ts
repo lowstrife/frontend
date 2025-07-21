@@ -1,20 +1,8 @@
 // stores/queryStore.ts
 import { defineStore } from "pinia";
 import { reactive, computed, ComputedRef } from "vue";
-import { QueryDefinition } from "./queryRepository";
-import { isSubset, JSONValue, toCacheKey } from "./cacheKeys";
-
-export interface QueryState<TParams, TData> {
-	// definition
-	definition: QueryDefinition<TParams, TData> | null;
-	params: TParams | null;
-	// state
-	data: TData | null;
-	loading: boolean;
-	error: Error | null;
-	timestamp: number;
-	expireTime?: number;
-}
+import { isSubset, toCacheKey } from "./cacheKeys";
+import { JSONValue, QueryDefinition, QueryState } from "./queryCache.types";
 
 export const useQueryStore = defineStore("prunplanner_query_store", () => {
 	const cache = reactive(new Map<string, QueryState<unknown, unknown>>());
@@ -293,19 +281,24 @@ export const useQueryStore = defineStore("prunplanner_query_store", () => {
 	function checkEntryStatusAndRefresh() {
 		const now = Date.now();
 
-		for (const entry of cache.values()) {
+		for (const [key, entry] of cache.entries()) {
 			if (
 				entry.expireTime &&
 				!entry.loading &&
 				entry.error === null &&
 				now - entry.timestamp > entry.expireTime
 			) {
-				// trigger refresh
-				if (entry.definition !== null && entry.definition.autoRefetch) {
-					executeQuery(
-						entry.definition,
-						entry.params !== null ? entry.params : undefined
-					);
+				if (entry.definition !== null) {
+					// trigger refresh
+					if (entry.definition.autoRefetch) {
+						executeQuery(
+							entry.definition,
+							entry.params !== null ? entry.params : undefined
+						);
+					} else {
+						// delete as stale and should not refetch
+						invalidateKey(JSON.parse(key) as JSONValue);
+					}
 				}
 			}
 		}

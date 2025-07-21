@@ -1,8 +1,9 @@
 <script setup lang="ts">
 	import { computed } from "vue";
-	import { QueryState, useQueryStore } from "./queryStore";
+	import { useQueryStore } from "@/lib/query_cache/queryStore";
 
-	import { NTable, NButton } from "naive-ui";
+	import { NTable, NButton, NTag } from "naive-ui";
+	import { QueryState } from "./queryCache.types";
 
 	// Grab the Pinia store
 	const queryStore = useQueryStore();
@@ -52,8 +53,14 @@
 						{{ entry.key }}
 					</td>
 					<td>
-						<span v-if="entry.state.loading">⏳</span>
-						<span v-else>✔️</span>
+						<n-tag
+							v-if="entry.state.loading"
+							size="small"
+							:bordered="false"
+							type="success">
+							yes
+						</n-tag>
+						<n-tag v-else size="small" :bordered="false">no</n-tag>
 					</td>
 					<td>
 						<span v-if="entry.state.error">{{
@@ -79,7 +86,22 @@
 								: "—"
 						}}
 					</td>
-					<td>{{ entry.state.definition?.autoRefetch }}</td>
+					<td>
+						<n-tag
+							v-if="entry.state.definition?.autoRefetch"
+							size="small"
+							:bordered="false"
+							type="success">
+							yes
+						</n-tag>
+						<n-tag
+							v-else
+							size="small"
+							:bordered="false"
+							type="error">
+							no
+						</n-tag>
+					</td>
 					<td>
 						<pre>{{ entry.jsonData.length }}</pre>
 					</td>

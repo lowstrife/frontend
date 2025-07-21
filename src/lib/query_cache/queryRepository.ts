@@ -1,4 +1,7 @@
-import { JSONValue } from "@/lib/query_cache/cacheKeys";
+import { QueryDefinition } from "@/lib/query_cache/queryCache.types";
+
+// config
+import config from "@/lib/config";
 
 // stores
 import { useQueryStore } from "@/lib/query_cache/queryStore";
@@ -90,14 +93,6 @@ const queryStore = useQueryStore();
 const gameDataStore = useGameDataStore();
 const planningStore = usePlanningStore();
 
-export interface QueryDefinition<TParams, TData> {
-	key: (params?: TParams) => JSONValue;
-	fetchFn: (params?: TParams) => Promise<TData>;
-	autoRefetch?: boolean;
-	expireTime?: number;
-	persist?: boolean;
-}
-
 // # TODO: Set proper expiry times!
 
 export const queryRepository = {
@@ -109,8 +104,7 @@ export const queryRepository = {
 			return data;
 		},
 		autoRefetch: true,
-		expireTime: 60_000 * 5, // 5 min,
-		// expireTime: 5_000, // 5 sec,
+		expireTime: 60_000 * config.GAME_DATA_STALE_MINUTES_MATERIALS,
 		persist: true,
 	} as QueryDefinition<void, IMaterial[]>,
 	GetExchanges: {
@@ -121,7 +115,7 @@ export const queryRepository = {
 			return data;
 		},
 		autoRefetch: true,
-		expireTime: 60_000 * 30, // 30 min,
+		expireTime: 60_000 * config.GAME_DATA_STALE_MINUTES_EXCHANGES,
 		persist: true,
 	} as QueryDefinition<void, IExchange[]>,
 	GetRecipes: {
@@ -132,7 +126,7 @@ export const queryRepository = {
 			return data;
 		},
 		autoRefetch: true,
-		expireTime: 60_000 * 30, // 30 min,
+		expireTime: 60_000 * config.GAME_DATA_STALE_MINUTES_RECIPES,
 		persist: true,
 	} as QueryDefinition<void, IRecipe[]>,
 	GetBuildings: {
@@ -143,7 +137,7 @@ export const queryRepository = {
 			return data;
 		},
 		autoRefetch: true,
-		expireTime: 60_000 * 30, // 30 min,
+		expireTime: 60_000 * config.GAME_DATA_STALE_MINUTES_BUILDINGS,
 		persist: true,
 	} as QueryDefinition<void, IBuilding[]>,
 	GetPlanet: {
@@ -157,7 +151,7 @@ export const queryRepository = {
 			gameDataStore.setPlanet(data);
 			return data;
 		},
-		expireTime: 60_000 * 60 * 3, // 3 hours,
+		expireTime: 60_000 * config.GAME_DATA_STALE_MINUTES_PLANETS,
 		autoRefetch: true,
 		persist: true,
 	} as QueryDefinition<{ planetNaturalId: string }, IPlanet>,
@@ -175,7 +169,7 @@ export const queryRepository = {
 			gameDataStore.setMultiplePlanets(data);
 			return data;
 		},
-		expireTime: 60_000 * 60 * 3, // 3 hours,
+		expireTime: 60_000 * config.GAME_DATA_STALE_MINUTES_PLANETS,
 		autoRefetch: true,
 		persist: true,
 	} as QueryDefinition<{ planetNaturalIds: string[] }, IPlanet[]>,
@@ -189,7 +183,7 @@ export const queryRepository = {
 		fetchFn: async (params: { searchId: string }) => {
 			return await callDataPlanetSearchSingle(params.searchId);
 		},
-		expireTime: 60_000 * 60 * 1, // 1 hour,
+		expireTime: 60_000 * config.GAME_DATA_STALE_MINUTES_PLANETS,
 		persist: true,
 		autoRefetch: false,
 	} as QueryDefinition<{ searchId: string }, IPlanet[]>,
@@ -203,7 +197,7 @@ export const queryRepository = {
 		fetchFn: async (params: { searchData: IPlanetSearchAdvanced }) => {
 			return await callDataPlanetSearch(params.searchData);
 		},
-		expireTime: 60_000 * 60 * 1, // 1 hour,
+		expireTime: 60_000 * config.GAME_DATA_STALE_MINUTES_PLANETS,
 		persist: true,
 		autoRefetch: false,
 	} as QueryDefinition<{ searchData: IPlanetSearchAdvanced }, IPlanet[]>,
@@ -555,7 +549,7 @@ export const queryRepository = {
 		},
 		autoRefetch: false,
 		persist: true,
-		expireTime: 60_000 * 30, // 30 minutes,
+		expireTime: 60_000 * 15, // 15 minutes,
 	} as QueryDefinition<
 		{
 			exchangeTicker: string;

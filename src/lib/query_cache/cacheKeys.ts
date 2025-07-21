@@ -1,5 +1,4 @@
-export type JSONObject = { [key: string]: JSONValue };
-export type JSONValue = null | boolean | number | string | object;
+import { JSONObject, JSONValue } from "@/lib/query_cache/queryCache.types";
 
 export function toCacheKey(key: JSONValue): string {
 	return JSON.stringify(key, (_, val) => {

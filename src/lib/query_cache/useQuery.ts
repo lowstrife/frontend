@@ -1,6 +1,6 @@
 import { computed } from "vue";
-import { QueryDefinition } from "./queryRepository";
 import { useQueryStore } from "./queryStore";
+import { QueryDefinition } from "./queryCache.types";
 
 export function useQuery<TParam, TData>(
 	fnDef: QueryDefinition<TParam, TData>,
