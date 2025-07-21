@@ -1,9 +1,8 @@
 <script setup lang="ts">
-	import { computed, Ref, ref } from "vue";
+	import { computed } from "vue";
 	import { QueryState, useQueryStore } from "./queryStore";
 
 	import { NTable, NButton } from "naive-ui";
-	import { queryRepository } from "./queryRepository";
 
 	// Grab the Pinia store
 	const queryStore = useQueryStore();
@@ -23,105 +22,14 @@
 				: null,
 		}));
 	});
-
-	const getMaterialsDef = queryRepository.GetMaterials;
-	const getMaterialsState = computed(() =>
-		queryStore.peekQueryState(getMaterialsDef.key)
-	);
-
-	const getExchangesDef = queryRepository.GetExchanges;
-	const getExchangesState = computed(() =>
-		queryStore.peekQueryState(getExchangesDef.key)
-	);
-
-	const cloneUuid: Ref<string | null> = ref<string | null>(null);
-
-	const cloneState = computed(() => {
-		if (cloneUuid.value === null) return false;
-		const def = queryRepository.ClonePlan.key({
-			planUuid: cloneUuid.value,
-			cloneName: "",
-		});
-		return queryStore.peekQueryState(def)?.loading ?? false;
-	});
-
-	async function loadMaterials() {
-		try {
-			await queryStore.executeQuery(getMaterialsDef);
-		} catch (e) {
-			console.error(e);
-		}
-	}
-	async function loadExchanges() {
-		try {
-			await queryStore.executeQuery(getExchangesDef);
-		} catch (e) {
-			console.error(e);
-		}
-	}
-
-	async function clonePlan(planUuid: string, cloneName: string) {
-		try {
-			await queryStore.executeQuery(queryRepository.ClonePlan, {
-				planUuid,
-				cloneName,
-			});
-		} catch (e) {
-			console.error(e);
-		}
-	}
-
-	const testPlanet: Ref<string> = ref("KW-688c");
 </script>
 
 <template>
 	<div class="p-3">
-		<div class="flex flex-row justify-between">
-			<h2 class="text-2xl pb-3">Query Cache</h2>
-			<div class="flex flex-row gap-x-3">
-				<n-button
-					:loading="
-						getMaterialsState ? getMaterialsState.loading : false
-					"
-					@click="loadMaterials">
-					Load Materials
-				</n-button>
-				<n-button
-					:loading="
-						getExchangesState ? getExchangesState.loading : false
-					"
-					@click="loadExchanges">
-					Load Exchanges
-				</n-button>
-				<n-button
-					:loading="cloneState"
-					@click="
-						clonePlan(
-							'da105ce1-25f2-479d-b1eb-944353f4784f',
-							'CLONE FOO'
-						)
-					">
-					Clone Plan
-				</n-button>
-				<n-button
-					@click="
-						() => {
-							testPlanet = 'OT-580b';
-						}
-					">
-					Montem
-				</n-button>
-				<n-button
-					@click="
-						() => {
-							testPlanet = 'KW-688c';
-						}
-					">
-					Etherwind
-				</n-button>
-			</div>
+		<div class="flex flex-row justify-between pb-3">
+			<h2 class="text-2xl">Query Cache</h2>
 		</div>
-		<n-table class="mt-3">
+		<n-table>
 			<thead>
 				<tr>
 					<th>Key</th>
@@ -132,6 +40,7 @@
 					<th>ExpireAt</th>
 					<th>AutoRefetch</th>
 					<th>Data</th>
+					<th></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -139,7 +48,7 @@
 					v-for="entry in entries"
 					:key="`${entry.key}`"
 					class="child:text-nowrap">
-					<td class="!text-wrap">
+					<td class="!text-wrap break-all">
 						{{ entry.key }}
 					</td>
 					<td>
@@ -174,9 +83,24 @@
 					<td>
 						<pre>{{ entry.jsonData.length }}</pre>
 					</td>
+					<td>
+						<n-button
+							size="tiny"
+							type="error"
+							@click="
+								async () => {
+									await queryStore.invalidateKey(
+										JSON.parse(entry.key),
+										{ skipRefetch: true }
+									);
+								}
+							">
+							Invalidate
+						</n-button>
+					</td>
 				</tr>
 				<tr v-if="entries.length === 0">
-					<td colspan="5">No queries in cache.</td>
+					<td colspan="9">No queries in cache.</td>
 				</tr>
 			</tbody>
 		</n-table>

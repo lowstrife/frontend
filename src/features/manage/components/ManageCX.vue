@@ -1,12 +1,9 @@
 <script setup lang="ts">
 	import { computed, ComputedRef, PropType, ref, Ref, watch } from "vue";
 
-	// Stores
-	import { usePlanningStore } from "@/stores/planningStore";
-	const planningStore = usePlanningStore();
-
-	// API
-	import { callCreateCX, callDeleteCX } from "@/features/api/cxData.api";
+	// Composables
+	import { queryRepository } from "@/lib/query_cache/queryRepository";
+	import { useQuery } from "@/lib/query_cache/useQuery";
 
 	// Types & Interfaces
 	import { ICX } from "@/stores/planningStore.types";
@@ -68,10 +65,15 @@
 		if (compCanCreate.value) {
 			refIsCreating.value = true;
 
-			await callCreateCX(refNewCXName.value!);
+			await useQuery(queryRepository.CreateCX, {
+				cxName: refNewCXName.value!,
+			}).execute();
 
 			// forced reload of all CX
-			emit("update:cxList", await planningStore.getAllCX(true));
+			emit(
+				"update:cxList",
+				await useQuery(queryRepository.GetAllCX).execute()
+			);
 
 			refNewCXName.value = "";
 			refShowCreateCX.value = false;
@@ -94,11 +96,17 @@
 
 	async function deleteCX(cxUuid: string): Promise<void> {
 		refIsDeleting.value = cxUuid;
-		const deletionResult: boolean = await callDeleteCX(cxUuid);
+		const deletionResult: boolean = await useQuery(
+			queryRepository.DeleteCX,
+			{ cxUuid: cxUuid }
+		).execute();
 
 		if (deletionResult) {
 			// forced reload of all CX
-			emit("update:cxList", await planningStore.getAllCX(true));
+			emit(
+				"update:cxList",
+				await useQuery(queryRepository.GetAllCX).execute()
+			);
 		}
 
 		refIsDeleting.value = undefined;

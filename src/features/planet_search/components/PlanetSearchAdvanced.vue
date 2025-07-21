@@ -2,7 +2,8 @@
 	import { computed, ComputedRef, ref, Ref } from "vue";
 
 	// API
-	import { callDataPlanetSearch } from "@/features/api/gameData.api";
+	import { useQuery } from "@/lib/query_cache/useQuery";
+	import { queryRepository } from "@/lib/query_cache/queryRepository";
 
 	// Types & Interfaces
 	import {
@@ -129,11 +130,16 @@
 
 	async function doSearch() {
 		refIsLoading.value = true;
-		const result = await callDataPlanetSearch(searchPayload.value);
 
-		emit("update:results", result);
-		emit("update:materials", inputMaterials.value);
-		refIsLoading.value = false;
+		await useQuery(queryRepository.PostPlanetSearch, {
+			searchData: searchPayload.value,
+		})
+			.execute()
+			.then((data: IPlanet[]) => {
+				emit("update:results", data);
+				emit("update:materials", inputMaterials.value);
+			})
+			.finally(() => (refIsLoading.value = false));
 	}
 </script>
 

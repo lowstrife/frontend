@@ -1,8 +1,9 @@
 <script setup lang="ts">
-	import { ref, Ref } from "vue";
+	import { computed, ComputedRef, ref, Ref } from "vue";
 
 	// API
-	import { callDataPlanetSearchSingle } from "@/features/api/gameData.api";
+	import { useQuery } from "@/lib/query_cache/useQuery";
+	import { queryRepository } from "@/lib/query_cache/queryRepository";
 
 	// Types & Interfaces
 	import { IPlanet } from "@/features/api/gameData.types";
@@ -17,10 +18,20 @@
 		(e: "update:results", value: IPlanet[]): void;
 	}>();
 
+	const isLoading: Ref<boolean> = ref(false);
+	const canSearch: ComputedRef<boolean> = computed(
+		() => refSearchId.value !== null && refSearchId.value.length >= 3
+	);
+
 	async function doSearch() {
-		if (refSearchId.value !== null && refSearchId.value.length >= 3) {
-			const result = await callDataPlanetSearchSingle(refSearchId.value);
-			emit("update:results", result);
+		if (canSearch.value) {
+			isLoading.value = true;
+			await useQuery(queryRepository.GetPlanetSearchSingle, {
+				searchId: refSearchId.value!,
+			})
+				.execute()
+				.then((data: IPlanet[]) => emit("update:results", data))
+				.finally(() => (isLoading.value = false));
 		}
 	}
 </script>
@@ -28,7 +39,11 @@
 <template>
 	<div class="flex flex-row justify-between">
 		<h2 class="text-lg font-bold my-auto">Plan Name or ID</h2>
-		<n-button size="small" @click="doSearch">
+		<n-button
+			size="small"
+			:loading="isLoading"
+			:disabled="!canSearch"
+			@click="doSearch">
 			<template #icon><SearchSharp /></template>
 			Search
 		</n-button>

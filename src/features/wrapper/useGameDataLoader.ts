@@ -18,6 +18,7 @@ import {
 	IPlanet,
 	IRecipe,
 } from "@/features/api/gameData.types";
+import { inertClone } from "@/util/data";
 
 export function useGameDataLoader(
 	props: GameDataLoaderProps,
@@ -127,8 +128,9 @@ export function useGameDataLoader(
 					s.cfg
 						.load()
 						.then((d) => {
-							s.data = d;
-							s.cfg.onSuccess(d);
+							const shallowData = inertClone(d);
+							s.data = shallowData;
+							s.cfg.onSuccess(shallowData);
 						})
 						.catch((e) => {
 							s.error =

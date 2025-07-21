@@ -1,7 +1,5 @@
-// API
-import { callCreatePlan, callSavePlan } from "@/features/api/planData.api";
-
-// Stores
+import { useQuery } from "@/lib/query_cache/useQuery";
+import { queryRepository } from "@/lib/query_cache/queryRepository";
 
 import { usePlanningStore } from "@/stores/planningStore";
 
@@ -164,11 +162,15 @@ export function usePlan() {
 		data: IPlanCreateData
 	): Promise<string | undefined> {
 		try {
-			const createdData: IPlanSaveCreateResponse =
-				await callCreatePlan(data);
+			const createdData: IPlanSaveCreateResponse = await useQuery(
+				queryRepository.CreatePlan,
+				{ data: data }
+			).execute();
 
 			// trigger backend data load
-			planningStore.getPlan(createdData.uuid);
+			await useQuery(queryRepository.GetPlan, {
+				planUuid: createdData.uuid,
+			});
 			return createdData.uuid;
 		} catch (err) {
 			console.error(`Error creating plan: ${err}`);
@@ -191,18 +193,21 @@ export function usePlan() {
 		data: IPlanCreateData
 	): Promise<string | undefined> {
 		try {
-			const savedData: IPlanSaveCreateResponse = await callSavePlan(
-				planUuid,
+			const savedData: IPlanSaveCreateResponse = await useQuery(
+				queryRepository.PatchPlan,
 				{
-					uuid: planUuid,
-					...data,
+					planUuid: planUuid,
+					data: {
+						uuid: planUuid,
+						...data,
+					},
 				}
-			);
+			).execute();
 
 			if (savedData) {
-				// delete from currently stored version and fetch new
-				delete planningStore.plans[savedData.uuid];
-				planningStore.getPlan(savedData.uuid);
+				await useQuery(queryRepository.GetPlan, {
+					planUuid: savedData.uuid,
+				}).execute();
 				return savedData.uuid;
 			}
 		} catch (err) {

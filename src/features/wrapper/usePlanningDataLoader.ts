@@ -25,6 +25,7 @@ import {
 } from "@/stores/planningStore.types";
 import { IPlanet } from "@/features/api/gameData.types";
 import { IShared } from "@/features/api/sharingData.types";
+import { inertClone } from "@/util/data";
 
 export function usePlanningDataLoader(
 	props: PlanningDataLoaderProps,
@@ -187,8 +188,9 @@ export function usePlanningDataLoader(
 					s.cfg
 						.load()
 						.then((d) => {
-							s.data = d;
-							s.cfg.onSuccess(d);
+							const shallowData = inertClone(d);
+							s.data = shallowData;
+							s.cfg.onSuccess(shallowData);
 						})
 						.catch((e) => {
 							s.error =
@@ -309,6 +311,6 @@ export function usePlanningDataLoader(
 		allLoaded,
 		hasError,
 		loadingSteps,
-		results,
+		results: results,
 	};
 }

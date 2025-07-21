@@ -30,6 +30,7 @@ export type PlanningDataLoaderEmits = {
 	(e: "data:cx", data: ICX[]): void;
 	(e: "data:shared", data: IShared[]): void;
 	(e: "update:cxUuid", data: string | undefined): void;
+	(e: "update:empireUuid", data: string): void;
 };
 
 export type PlanningStepConfigsType = [

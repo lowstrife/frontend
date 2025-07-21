@@ -30,7 +30,8 @@
 		},
 	});
 
-	const loadCX: boolean = props.sharedPlanUuid === undefined ? true : false;
+	const notShared: boolean =
+		props.sharedPlanUuid === undefined ? true : false;
 </script>
 
 <template>
@@ -38,7 +39,8 @@
 		:planet-natural-id="planetNaturalId"
 		:plan-uuid="planUuid"
 		:shared-plan-uuid="sharedPlanUuid"
-		:load-c-x="loadCX">
+		:empire-list="notShared"
+		:load-c-x="notShared">
 		<template #default="{ planDefinition, empireList, disabled }">
 			<AsyncWrapperGameData
 				v-if="planDefinition != null"

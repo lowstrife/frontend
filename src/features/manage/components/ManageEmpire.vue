@@ -10,16 +10,9 @@
 		VNodeChild,
 	} from "vue";
 
-	// Stores
-	import { usePlanningStore } from "@/stores/planningStore";
-	const planningStore = usePlanningStore();
-
-	// API
-	import { callUpdateCXJunctions } from "@/features/api/cxData.api";
-	import {
-		callCreateEmpire,
-		callDeleteEmpire,
-	} from "@/features/api/empireData.api";
+	// Composables
+	import { useQuery } from "@/lib/query_cache/useQuery";
+	import { queryRepository } from "@/lib/query_cache/queryRepository";
 
 	// Types & Interfaces
 	import {
@@ -205,9 +198,14 @@
 		refIsUpdatingJunctions.value = true;
 
 		try {
-			await callUpdateCXJunctions(cxEmpireJunctions.value);
-			// forced reload of all CX
-			emit("update:cxList", await planningStore.getAllCX(true));
+			await useQuery(queryRepository.PatchEmpireCXJunctions, {
+				junctions: cxEmpireJunctions.value,
+			}).execute();
+
+			emit(
+				"update:cxList",
+				await useQuery(queryRepository.GetAllCX).execute()
+			);
 			refCreateName.value = "";
 		} catch (err) {
 			console.error(err);
@@ -221,18 +219,20 @@
 
 		try {
 			if (compCanCreate.value) {
-				await callCreateEmpire({
-					faction: refCreateFaction.value,
-					permits_used: refCreatePermitsUsed.value,
-					permits_total: refCreatePermitsTotal.value,
-					name: refCreateName.value!,
-					use_fio_storage: refCreateUseFioStorage.value,
-				});
+				await useQuery(queryRepository.CreateEmpire, {
+					data: {
+						faction: refCreateFaction.value,
+						permits_used: refCreatePermitsUsed.value,
+						permits_total: refCreatePermitsTotal.value,
+						name: refCreateName.value!,
+						use_fio_storage: refCreateUseFioStorage.value,
+					},
+				}).execute();
 
 				// forced reload of all Empires
 				emit(
 					"update:empireList",
-					await planningStore.getAllEmpires(true)
+					await useQuery(queryRepository.GetAllEmpires).execute()
 				);
 			}
 		} catch (err) {
@@ -258,11 +258,17 @@
 
 	async function deleteEmpire(empireUuid: string): Promise<void> {
 		refIsDeleting.value = empireUuid;
-		const deletionResult: boolean = await callDeleteEmpire(empireUuid);
+		const deletionResult: boolean = await useQuery(
+			queryRepository.DeleteEmpire,
+			{ empireUuid: empireUuid }
+		).execute();
 
 		if (deletionResult) {
 			// forced reload of all Empires
-			emit("update:empireList", await planningStore.getAllEmpires(true));
+			emit(
+				"update:empireList",
+				await useQuery(queryRepository.GetAllEmpires).execute()
+			);
 		}
 
 		refIsDeleting.value = undefined;

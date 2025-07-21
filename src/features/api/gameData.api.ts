@@ -36,6 +36,16 @@ import {
 	IFIOSites,
 	IPlanetSearchAdvanced,
 } from "@/features/api/gameData.types";
+import {
+	IExploration,
+	IExplorationRequestPayload,
+} from "@/features/market_exploration/marketExploration.types";
+import {
+	ExplorationPayloadSchema,
+	ExplorationPayloadType,
+	ExplorationRequestPayloadSchema,
+	ExplorationRequestPayloadType,
+} from "../market_exploration/marketExploration.schemas";
 
 /**
  * Calls the /data/materials API endpoint
@@ -209,5 +219,32 @@ export async function callDataPlanetSearch(
 		searchData,
 		PlanetSearchAdvancedPayloadSchema,
 		PlanetMultiplePayload
+	);
+}
+
+/**
+ * Calls the market exploration endpoint to fetch data
+ * @author jplacht
+ *
+ * @export
+ * @async
+ * @param {string} exchange Exchange Code
+ * @param {string} ticker Material Ticker
+ * @param {IExplorationRequestPayload} payload Payload with start and end date
+ * @returns {Promise<IExploration[]>} Exploration data
+ */
+export async function callExplorationData(
+	exchange: string,
+	ticker: string,
+	payload: IExplorationRequestPayload
+): Promise<IExploration[]> {
+	return apiService.post<
+		ExplorationRequestPayloadType,
+		ExplorationPayloadType
+	>(
+		`/data/market/${exchange}/${ticker}`,
+		payload,
+		ExplorationRequestPayloadSchema,
+		ExplorationPayloadSchema
 	);
 }

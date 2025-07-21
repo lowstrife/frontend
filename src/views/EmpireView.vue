@@ -14,10 +14,6 @@
 		title: "Empire | PRUNplanner",
 	});
 
-	// Stores
-	import { usePlanningStore } from "@/stores/planningStore";
-	const planningStore = usePlanningStore();
-
 	// Composables
 	import { usePlanCalculation } from "@/features/planning/usePlanCalculation";
 	import { useMaterialIOUtil } from "@/features/planning/util/materialIO.util";
@@ -56,6 +52,8 @@
 
 	// UI
 	import { NForm, NFormItem, NSelect } from "naive-ui";
+	import { useQuery } from "@/lib/query_cache/useQuery";
+	import { queryRepository } from "@/lib/query_cache/queryRepository";
 
 	const props = defineProps({
 		empireUuid: {
@@ -111,7 +109,9 @@
 	async function reloadEmpires(): Promise<void> {
 		try {
 			// make a forced call to also update store
-			refEmpireList.value = await planningStore.getAllEmpires(true);
+			refEmpireList.value = await useQuery(
+				queryRepository.GetAllEmpires
+			).execute();
 		} catch (err) {
 			console.error("Error reloading empires", err);
 		}

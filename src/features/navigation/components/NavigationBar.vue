@@ -1,9 +1,13 @@
 <script setup lang="ts">
-	import { onMounted, onUnmounted, watch } from "vue";
+	import { computed, watch } from "vue";
 
 	// Stores
 	import { useUserStore } from "@/stores/userStore";
-	import { useGameDataStore } from "@/stores/gameDataStore";
+	import { useQueryStore } from "@/lib/query_cache/queryStore";
+
+	// API
+	import { useQuery } from "@/lib/query_cache/useQuery";
+	import { queryRepository } from "@/lib/query_cache/queryRepository";
 
 	// Router
 	import router from "@/router";
@@ -34,39 +38,37 @@
 	} from "@vicons/material";
 
 	const userStore = useUserStore();
-	const gameDataStore = useGameDataStore();
-
+	const queryStore = useQueryStore();
 	/*
 	 * FIO Data Refresh, if the user either already has FIO or if this is changed,
 	 * a background refresh of FIO data is triggered in the gamedata store
 	 */
 
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	let fioInterval: any;
-
-	function setFIOInterval(): void {
-		if (userStore.hasFIO) {
-			// trigger initially
-			gameDataStore.performFIORefresh();
-			// set interval
-			fioInterval = setInterval(() => {
-				gameDataStore.performFIORefresh();
-			}, 600000);
-		}
-	}
-
-	onMounted(() => {
-		setFIOInterval();
-	});
-
-	onUnmounted(() => clearInterval(fioInterval));
-
 	watch(
 		() => userStore.hasFIO,
 		(newValue: boolean) => {
-			if (newValue) setFIOInterval();
-			else clearInterval(fioInterval);
-		}
+			if (newValue) {
+				useQuery(queryRepository.GetFIOStorage).execute();
+				useQuery(queryRepository.GetFIOSites).execute();
+			} else {
+				queryStore.invalidateKey(["gamedata", "fio"], {
+					exact: false,
+					skipRefetch: true,
+				});
+			}
+		},
+		{ immediate: true }
+	);
+
+	const storageTimestamp = computed(
+		() =>
+			queryStore.peekQueryState(["gamedata", "fio", "storage"])
+				?.timestamp ?? 0
+	);
+	const sitesTimestamp = computed(
+		() =>
+			queryStore.peekQueryState(["gamedata", "fio", "sites"])
+				?.timestamp ?? 0
 	);
 
 	const menuItems: IMenuSection[] = [
@@ -361,7 +363,12 @@
 			</nav>
 		</div>
 		<div class="p-4 text-center child:my-auto">
-			<n-tooltip v-if="userStore.hasFIO">
+			<n-tooltip
+				v-if="
+					userStore.hasFIO &&
+					storageTimestamp !== 0 &&
+					sitesTimestamp !== 0
+				">
 				<template #trigger>
 					<n-tag size="tiny" type="success" :bordered="false">
 						FIO Active
@@ -370,19 +377,11 @@
 				<div class="grid grid-cols-2">
 					<div>Storage</div>
 					<div>
-						{{
-							relativeFromDate(
-								gameDataStore.lastRefreshedFIOStorage
-							)
-						}}
+						{{ relativeFromDate(storageTimestamp) }}
 					</div>
 					<div>Sites</div>
 					<div>
-						{{
-							relativeFromDate(
-								gameDataStore.lastRefreshedFIOSites
-							)
-						}}
+						{{ relativeFromDate(sitesTimestamp) }}
 					</div>
 				</div>
 			</n-tooltip>

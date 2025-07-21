@@ -16,12 +16,22 @@ export interface QueryState<TParams, TData> {
 	expireTime?: number;
 }
 
-export const useQueryStore = defineStore("queryStore", () => {
+export const useQueryStore = defineStore("prunplanner_query_store", () => {
 	const cache = reactive(new Map<string, QueryState<unknown, unknown>>());
 	const inFlight = new Map<string, Promise<unknown>>();
 
 	/**
-	 * Read-only: peek at an existing state entry (never creates).
+	 * Peaks a queries state readonly without ever creating it on call.
+	 * Will take into account existance as well as "fresh" state, will
+	 * return undefined if the state is not existing or stale.
+	 *
+	 * @author jplacht
+	 *
+	 * @readonly
+	 * @template TParams Query Params Type
+	 * @template TData Query Data Type
+	 * @param {JSONValue} key Query Key
+	 * @returns {(QueryState<TParams, TData> | undefined)} QueryState or Undefined
 	 */
 	function peekQueryState<TParams, TData>(
 		key: JSONValue
@@ -31,6 +41,18 @@ export const useQueryStore = defineStore("queryStore", () => {
 			: undefined;
 	}
 
+	/**
+	 * Checks a given query key for existance and if still fresh.
+	 * Freshness is given if:
+	 * - Key must exist
+	 * - Key does not have an expiry time, it is always fresh
+	 * - Or key has an expiry time that is still valid now
+	 *
+	 * @author jplacht
+	 *
+	 * @param {JSONValue} key Query Key
+	 * @returns {ComputedRef<boolean>} Existing and fresh state
+	 */
 	function isKnownAndFresh(key: JSONValue): ComputedRef<boolean> {
 		return computed(() => {
 			const keyHash: string = toCacheKey(key);
@@ -49,21 +71,29 @@ export const useQueryStore = defineStore("queryStore", () => {
 			const expired = now - state.timestamp > state.expireTime;
 
 			if (expired) {
-				console.log("expired", keyHash, state);
 				return false;
 			} else {
-				console.log("fresh", keyHash, state);
 				return true;
 			}
 		});
 	}
 
 	/**
-	 * Core fetch logic:
-	 * - Creates an entry if missing
-	 * - Caches results per `persist`
-	 * - Honors `expireTime`
-	 * - Dedupes parallel calls
+	 * Executes a query with the following core fetch logic:
+	 * - Creates the query entry if missing
+	 * - Caches results if the definition states persist = true
+	 * - Honors the expireTime value on the queryState for staleness
+	 * - Dedupes parallel call executions
+	 *
+	 * @author jplacht
+	 *
+	 * @async
+	 * @template TParams Query Params Type
+	 * @template TData Query Data Type
+	 * @param {QueryDefinition<TParams, TData>} definition Query Definition
+	 * @param {?TParams} [params] Query Params
+	 * @param {?{ forceRefetch?: boolean }} [options] Should always load fresh
+	 * @returns {Promise<TData>} Query Execution Response
 	 */
 	async function executeQuery<TParams, TData>(
 		definition: QueryDefinition<TParams, TData>,
@@ -130,6 +160,7 @@ export const useQueryStore = defineStore("queryStore", () => {
 				state.error =
 					err instanceof Error ? err : new Error(String(err));
 
+				console.error(err);
 				throw state.error;
 			} finally {
 				state.loading = false;
@@ -146,14 +177,31 @@ export const useQueryStore = defineStore("queryStore", () => {
 	}
 
 	/**
-	 * Remove from cache (and cancel in-flight).
-	 * Optionally refetch if `autoRefetch` or `options.refetch` is true.
+	 * Invalidates given key in the store
+	 *
+	 * @author jplacht
+	 *
+	 * @async
+	 * @template TParams Query Params Type
+	 * @template TData Query Data Type
+	 * @param {JSONValue} key Query Key
+	 * @param {{ exact?: boolean; forceRefetch?: boolean; skipRefetch?: boolean }} [options={
+	 * 			exact: true,
+	 * 			forceRefetch: false,
+	 * 			skipRefetch: false,
+	 * 		}] Options, by default will check for exact matches and doesn't force refresh
+	 * @returns {Promise<void>}
 	 */
 	async function invalidateKey<TParams, TData>(
 		key: JSONValue,
-		options: { exact?: boolean; forceRefetch?: boolean } = {
+		options: {
+			exact?: boolean;
+			forceRefetch?: boolean;
+			skipRefetch?: boolean;
+		} = {
 			exact: true,
 			forceRefetch: false,
+			skipRefetch: false,
 		}
 	): Promise<void> {
 		const keyHash: string = toCacheKey(key);
@@ -208,7 +256,10 @@ export const useQueryStore = defineStore("queryStore", () => {
 			// refetch can be forced from invalidate options or set
 			// in the query definition itself
 
-			if (options.forceRefetch || refetchEntry.definition!.autoRefetch) {
+			if (
+				!options.skipRefetch &&
+				(options.forceRefetch || refetchEntry.definition!.autoRefetch)
+			) {
 				// if params are null, no params required, pass undefined
 				await executeQuery(
 					refetchEntry.definition!,
@@ -221,57 +272,24 @@ export const useQueryStore = defineStore("queryStore", () => {
 	}
 
 	/**
-	 * Remove from cache (and cancel in-flight).
-	 * Optionally refetch if `autoRefetch` or `options.refetch` is true.
+	 * True, if any cache state is currently loading
+	 * @author jplacht
+	 *
+	 * @type {ComputedRef<boolean>}
 	 */
-	async function invalidateQuery<TParams, TData>(
-		definition: QueryDefinition<TParams, TData>,
-		params?: TParams,
-		options: { exact?: boolean; refetch?: boolean } = {
-			exact: true,
-			refetch: false,
-		}
-	): Promise<void> {
-		const keyHash: string = toCacheKey(definition.key(params));
-
-		if (options.exact) {
-			cache.delete(keyHash);
-			inFlight.delete(keyHash);
-		} else {
-			for (const key of cache.keys()) {
-				if (
-					isSubset(
-						definition.key(params),
-						JSON.parse(key) as JSONValue
-					)
-				) {
-					cache.delete(key);
-				}
-			}
-		}
-
-		const shouldRefetch = options.refetch ?? definition.autoRefetch;
-		if (shouldRefetch) {
-			await executeQuery(definition, params);
-		}
-	}
-
-	/** Force cache bypass */
-	function refetchQuery<TParams, TData>(
-		definition: QueryDefinition<TParams, TData>,
-		params: TParams
-	): Promise<TData> {
-		return executeQuery(definition, params, { forceRefetch: true });
-	}
-
-	/** True if any query in cache is loading */
-	const isAnythingLoading = computed(() =>
+	const isAnythingLoading: ComputedRef<boolean> = computed(() =>
 		Array.from(cache.values()).some((s) => s.loading)
 	);
 
 	// Regular status watcher
 	let intervalId: ReturnType<typeof setInterval> | null = null;
 
+	/**
+	 * Iterates over cache entries and triggers refresh if
+	 * marked as to be automatically refetched
+	 *
+	 * @author jplacht
+	 */
 	function checkEntryStatusAndRefresh() {
 		const now = Date.now();
 
@@ -293,7 +311,13 @@ export const useQueryStore = defineStore("queryStore", () => {
 		}
 	}
 
-	function statusWatcher() {
+	/**
+	 * Starts the entry status watcher, prevents multiple watchers
+	 * to be running in parallel.
+	 *
+	 * @author jplacht
+	 */
+	function startStatusWatcher() {
 		// prevent multiple invervals running
 		if (intervalId !== null) return;
 
@@ -301,15 +325,16 @@ export const useQueryStore = defineStore("queryStore", () => {
 	}
 
 	// start the status watcher
-	statusWatcher();
+	startStatusWatcher();
 
 	return {
 		cache,
 		peekQueryState,
 		executeQuery,
-		invalidateQuery,
 		invalidateKey,
-		refetchQuery,
 		isAnythingLoading,
+		// only exposed for testing
+		checkEntryStatusAndRefresh,
+		startStatusWatcher,
 	};
 });
