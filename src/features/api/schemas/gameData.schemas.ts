@@ -22,6 +22,7 @@ import {
 	IFIOSiteShipRepairMaterial,
 	IFIOSiteShipAddressLine,
 	IPlanetSearchAdvanced,
+	IPopulationReport,
 } from "@/features/api/gameData.types";
 
 // Schemas
@@ -367,7 +368,44 @@ export const PlanetSearchAdvancedPayloadSchema: z.ZodType<IPlanetSearchAdvanced>
 			.optional(),
 	});
 
+export const PopulationReportPayloadSchema: z.ZodType<IPopulationReport> =
+	z.object({
+		InfrastructureReportId: z.string(),
+		ExplorersGraceEnabled: z.boolean(),
+		SimulationPeriod: z.number().int(),
+		NextPopulationPioneer: z.number().int(),
+		NextPopulationSettler: z.number().int(),
+		NextPopulationTechnician: z.number().int(),
+		NextPopulationEngineer: z.number().int(),
+		NextPopulationScientist: z.number().int(),
+		PopulationDifferencePioneer: z.number().int(),
+		PopulationDifferenceSettler: z.number().int(),
+		PopulationDifferenceTechnician: z.number().int(),
+		PopulationDifferenceEngineer: z.number().int(),
+		PopulationDifferenceScientist: z.number().int(),
+		UnemploymentRatePioneer: z.number(),
+		UnemploymentRateSettler: z.number(),
+		UnemploymentRateTechnician: z.number(),
+		UnemploymentRateEngineer: z.number(),
+		UnemploymentRateScientist: z.number(),
+		OpenJobsPioneer: z.number(),
+		OpenJobsSettler: z.number(),
+		OpenJobsTechnician: z.number(),
+		OpenJobsEngineer: z.number(),
+		OpenJobsScientist: z.number(),
+		TimestampMs: z.iso.datetime().transform((arg) => new Date(arg)),
+		FreePioneer: z.number().int(),
+		FreeSettler: z.number().int(),
+		FreeTechnician: z.number().int(),
+		FreeEngineer: z.number().int(),
+		FreeScientist: z.number().int(),
+	});
+
 // Schema Types
+export type MaterialPayloadType = z.infer<typeof MaterialPayloadSchema>;
+export type BuildingPayloadType = z.infer<typeof BuildingPayloadSchema>;
+export type ExchangePayloadType = z.infer<typeof ExchangePayloadSchema>;
+export type RecipePayloadType = z.infer<typeof RecipePayloadSchema>;
 export type PlanetPayloadType = z.infer<typeof PlanetSchema>;
 export type PlanetMultiplePayloadType = z.infer<typeof PlanetMultiplePayload>;
 export type PlanetMultipleRequestType = z.infer<
@@ -377,4 +415,7 @@ export type FIOStoragePayloadType = z.infer<typeof FIOStorageSchema>;
 export type FIOSitesSchemaPayloadType = z.infer<typeof FIOSitesSchema>;
 export type PlanetSearchAdvancedPayloadType = z.infer<
 	typeof PlanetSearchAdvancedPayloadSchema
+>;
+export type PopulationReportPayloadType = z.infer<
+	typeof PopulationReportPayloadSchema
 >;

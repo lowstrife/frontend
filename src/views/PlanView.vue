@@ -140,7 +140,11 @@
 	 * Tool Setup
 	 */
 
-	type toolOptions = "visitation-frequency" | "repair-analysis" | null;
+	type toolOptions =
+		| "visitation-frequency"
+		| "repair-analysis"
+		| "popr"
+		| null;
 	const refShowTool: Ref<toolOptions> = ref(null);
 
 	function openTool(key: toolOptions): void {
@@ -189,6 +193,20 @@
 						}),
 						cxUuid: refCXUuid.value,
 						planetNaturalId: planetData.PlanetNaturalId,
+					},
+					listeners: {},
+				};
+			case "popr":
+				return {
+					component: defineAsyncComponent(
+						() =>
+							import(
+								"@/features/planning/components/tools/PlanPOPR.vue"
+							)
+					),
+					props: {
+						planetNaturalId: planetData.PlanetNaturalId,
+						workforceData: result.value.workforce,
 					},
 					listeners: {},
 				};
@@ -426,7 +444,9 @@
 					<n-button size="small" secondary disabled>
 						Empire Override
 					</n-button>
-					<n-button size="small" secondary disabled>POPR</n-button>
+					<n-button size="small" secondary @click="openTool('popr')">
+						POPR
+					</n-button>
 					<n-button
 						size="small"
 						secondary
@@ -461,7 +481,7 @@
 					<template #default>
 						<component
 							:is="compViewToolMeta.component"
-							:key="refShowTool"
+							:key="`${refShowTool}`"
 							v-bind="compViewToolMeta.props"
 							v-on="compViewToolMeta.listeners"
 							@close="() => (refShowTool = null)" />

@@ -168,14 +168,14 @@ class ApiService {
 	 */
 	private normalizeError(err: unknown): Error {
 		if (err instanceof ZodError) {
-			return new Error(
-				`Validation error: ${err.errors.map((o) => `${o.message}: ${o.path}`).join(", ")}`
-			);
+			return new Error(`Validation error: ${err.message}`);
 		} else if (isAxiosError(err)) {
 			const status = err.response?.status;
 			const body = err.response?.data;
 			const msg =
-				body && typeof body === "object" ? JSON.stringify(body) : err.message;
+				body && typeof body === "object"
+					? JSON.stringify(body)
+					: err.message;
 
 			return new Error(`HTTP ${status}: ${msg}`);
 		}

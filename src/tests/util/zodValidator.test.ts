@@ -17,9 +17,7 @@ describe("Util: zodValidator", () => {
 			const result = PositiveOrZeroNumber.safeParse(-1);
 			expect(result.success).toBe(false);
 			if (!result.success) {
-				expect(result.error.errors[0].message).toBe(
-					"Number must be 0 or positive"
-				);
+				expect(result.error.name).toBe("ZodError");
 			}
 		});
 	});

@@ -10,6 +10,7 @@
 
 	// Components
 	import MaterialTile from "@/features/material_tile/components/MaterialTile.vue";
+	import PlanetPOPRButton from "@/features/government/components/PlanetPOPRButton.vue";
 
 	// Types & Interfaces
 	import { IPlanet } from "@/features/api/gameData.types";
@@ -131,6 +132,13 @@
 						:amount="am.dailyExtraction"
 						:max="am.maxExtraction" />
 				</div>
+			</template>
+		</XNDataTableColumn>
+		<XNDataTableColumn key="popr" title="POPR">
+			<template #render-cell="{ rowData }">
+				<PlanetPOPRButton
+					:planet-natural-id="rowData.planetId"
+					button-size="tiny" />
 			</template>
 		</XNDataTableColumn>
 		<XNDataTableColumn
