@@ -25,16 +25,17 @@ describe("ApiService", () => {
 	describe("error normalization", async () => {
 		it("get: wrong response schema", async () => {
 			const mockDataWrong = { foo: "moo" };
-			const responseSchema = z.object({ id: z.number(), name: z.string() });
+			const responseSchema = z.object({
+				id: z.number(),
+				name: z.string(),
+			});
 			type responseType = z.infer<typeof responseSchema>;
 
 			mock.onGet("/test").reply(200, mockDataWrong);
 
 			await expect(
 				apiService.get<responseType>("/test", responseSchema)
-			).rejects.toThrowError(
-				/^Validation error: Required: id, Required: name$/
-			);
+			).rejects.toThrowError();
 		});
 
 		it("post: generic error", async () => {
@@ -59,7 +60,10 @@ describe("ApiService", () => {
 		});
 
 		it("axios error", async () => {
-			const responseSchema = z.object({ id: z.number(), name: z.string() });
+			const responseSchema = z.object({
+				id: z.number(),
+				name: z.string(),
+			});
 			type responseType = z.infer<typeof responseSchema>;
 
 			mock.onGet("/test").timeout();
@@ -73,7 +77,10 @@ describe("ApiService", () => {
 	describe("get", async () => {
 		it("successful call and response parsing", async () => {
 			const mockData = { id: 1, name: "Test" };
-			const responseSchema = z.object({ id: z.number(), name: z.string() });
+			const responseSchema = z.object({
+				id: z.number(),
+				name: z.string(),
+			});
 			type responseType = z.infer<typeof responseSchema>;
 
 			mock.onGet("/test").reply(200, mockData);

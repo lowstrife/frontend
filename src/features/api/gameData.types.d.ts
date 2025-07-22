@@ -322,3 +322,53 @@ export interface IPlanetSearchAdvanced {
 		MaxDistance: number;
 	};
 }
+
+export interface IPopulationReport {
+	InfrastructureReportId: string;
+	ExplorersGraceEnabled: boolean;
+	SimulationPeriod: number;
+	NextPopulationPioneer: number;
+	NextPopulationSettler: number;
+	NextPopulationTechnician: number;
+	NextPopulationEngineer: number;
+	NextPopulationScientist: number;
+	PopulationDifferencePioneer: number;
+	PopulationDifferenceSettler: number;
+	PopulationDifferenceTechnician: number;
+	PopulationDifferenceEngineer: number;
+	PopulationDifferenceScientist: number;
+	UnemploymentRatePioneer: number;
+	UnemploymentRateSettler: number;
+	UnemploymentRateTechnician: number;
+	UnemploymentRateEngineer: number;
+	UnemploymentRateScientist: number;
+	OpenJobsPioneer: number;
+	OpenJobsSettler: number;
+	OpenJobsTechnician: number;
+	OpenJobsEngineer: number;
+	OpenJobsScientist: number;
+	TimestampMs: Date;
+	FreePioneer: number;
+	FreeSettler: number;
+	FreeTechnician: number;
+	FreeEngineer: number;
+	FreeScientist: number;
+
+	CurrentOpenJobsPioneer?: number;
+	CurrentOpenJobsSettler?: number;
+	CurrentOpenJobsTechnician?: number;
+	CurrentOpenJobsEngineer?: number;
+	CurrentOpenJobsScientist?: number;
+
+	AvailablePioneer?: number;
+	AvailableSettler?: number;
+	AvailableTechnician?: number;
+	AvailableEngineer?: number;
+	AvailableScientist?: number;
+
+	TrueHappinessPioneer?: number;
+	TrueHappinessSettler?: number;
+	TrueHappinessTechnician?: number;
+	TrueHappinessEngineer?: number;
+	TrueHappinessScientist?: number;
+}

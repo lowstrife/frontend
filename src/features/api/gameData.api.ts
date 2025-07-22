@@ -21,6 +21,8 @@ import {
 	PlanetSchema,
 	PlanetSearchAdvancedPayloadSchema,
 	PlanetSearchAdvancedPayloadType,
+	PopulationReportPayloadSchema,
+	PopulationReportPayloadType,
 	RecipePayloadSchema,
 	RecipePayloadType,
 } from "@/features/api/schemas/gameData.schemas";
@@ -35,6 +37,7 @@ import {
 	IFIOStorage,
 	IFIOSites,
 	IPlanetSearchAdvanced,
+	IPopulationReport,
 } from "@/features/api/gameData.types";
 import {
 	IExploration,
@@ -246,5 +249,23 @@ export async function callExplorationData(
 		payload,
 		ExplorationRequestPayloadSchema,
 		ExplorationPayloadSchema
+	);
+}
+
+/**
+ * Calls the population report endpoint and fetches the latest available report
+ * @author jplacht
+ *
+ * @export
+ * @async
+ * @param {string} planetNaturalId Planet Natural Id
+ * @returns {Promise<IPopulationReport>} Population Report Data
+ */
+export async function callPlanetLastPOPR(
+	planetNaturalId: string
+): Promise<IPopulationReport> {
+	return apiService.get<PopulationReportPayloadType>(
+		`/data/planet/popi/${planetNaturalId}`,
+		PopulationReportPayloadSchema
 	);
 }
