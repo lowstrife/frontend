@@ -7,7 +7,7 @@
 
 	// API
 	import { useQuery } from "@/lib/query_cache/useQuery";
-	import { queryRepository } from "@/lib/query_cache/queryRepository";
+	import { useQueryRepository } from "@/lib/query_cache/queryRepository";
 
 	// Router
 	import router from "@/router";
@@ -48,8 +48,10 @@
 		() => userStore.hasFIO,
 		(newValue: boolean) => {
 			if (newValue) {
-				useQuery(queryRepository.GetFIOStorage).execute();
-				useQuery(queryRepository.GetFIOSites).execute();
+				useQuery(
+					useQueryRepository().repository.GetFIOStorage
+				).execute();
+				useQuery(useQueryRepository().repository.GetFIOSites).execute();
 			} else {
 				queryStore.invalidateKey(["gamedata", "fio"], {
 					exact: false,

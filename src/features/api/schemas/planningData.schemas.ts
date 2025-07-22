@@ -181,9 +181,6 @@ export type PlanEmpireSchemaType = z.infer<typeof PlanEmpireSchema>;
 export type PlanEmpirePlanListType = z.infer<typeof PlanEmpirePlanListPayload>;
 export type PlanSchemaType = z.infer<typeof PlanSchema>;
 export type PlanShareSchemaType = z.infer<typeof PlanShareSchema>;
-type PlanEmpireElementSchemaType = z.infer<
-	typeof PlanEmpireElementSchema
->;
 export type PlanEmpireElementPayloadType = z.infer<
 	typeof PlanEmpireElementPayload
 >;

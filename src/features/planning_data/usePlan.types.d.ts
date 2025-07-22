@@ -11,12 +11,6 @@ export interface IPlanRouteParams {
 	sharedPlanUuid: string | undefined;
 }
 
-type LOAD_STATUS =
-	| "LOADING"
-	| "DONE"
-	| "LOAD_FAILURE"
-	| "MISSING_PLANET_ID";
-
 export interface IPlanCreateData {
 	name: string;
 	planet_id: string;

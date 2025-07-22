@@ -38,25 +38,6 @@ export const usePlanningStore = defineStore(
 			shared.value = {};
 		}
 
-		// computed getters
-
-		/**
-		 * Get CX Preference information by CX Uuid
-		 * @author jplacht
-		 *
-		 * @param {string} cxUuid UUid
-		 * @returns {ICX} CX Preference Data
-		 */
-		function getCX(cxUuid: string): ICX {
-			const findCX = cxs.value[cxUuid];
-
-			if (findCX) return findCX;
-
-			throw new Error(
-				`No data: CX '${cxUuid}'. Ensure CX uuid is valid and planning data has been loaded.`
-			);
-		}
-
 		// setters
 		function setEmpires(empireList: IPlanEmpireElement[]): void {
 			empires.value = {};
@@ -100,7 +81,22 @@ export const usePlanningStore = defineStore(
 			delete shared.value[planUuid];
 		}
 
-		// functions
+		/**
+		 * Get CX Preference information by CX Uuid
+		 * @author jplacht
+		 *
+		 * @param {string} cxUuid UUid
+		 * @returns {ICX} CX Preference Data
+		 */
+		function getCX(cxUuid: string): ICX {
+			const findCX = cxs.value[cxUuid];
+
+			if (findCX) return findCX;
+
+			throw new Error(
+				`No data: CX '${cxUuid}'. Ensure CX uuid is valid and planning data has been loaded.`
+			);
+		}
 
 		/**
 		 * Fetches a plan from store or backend depending if it was
@@ -180,9 +176,6 @@ export const usePlanningStore = defineStore(
 			shared,
 			// reset
 			$reset,
-			// computed getters
-			// getters
-			getCX,
 			// setters
 			setEmpires,
 			setPlan,
@@ -191,7 +184,8 @@ export const usePlanningStore = defineStore(
 			setSharedList,
 			deleteShared,
 			deletePlan,
-			// functions
+			// getters
+			getCX,
 			getPlan,
 			getAllEmpires,
 			getAllCX,

@@ -1,5 +1,5 @@
 import { useQuery } from "@/lib/query_cache/useQuery";
-import { queryRepository } from "@/lib/query_cache/queryRepository";
+import { useQueryRepository } from "@/lib/query_cache/queryRepository";
 
 import { usePlanningStore } from "@/stores/planningStore";
 
@@ -163,12 +163,12 @@ export function usePlan() {
 	): Promise<string | undefined> {
 		try {
 			const createdData: IPlanSaveCreateResponse = await useQuery(
-				queryRepository.CreatePlan,
+				useQueryRepository().repository.CreatePlan,
 				{ data: data }
 			).execute();
 
 			// trigger backend data load
-			await useQuery(queryRepository.GetPlan, {
+			await useQuery(useQueryRepository().repository.GetPlan, {
 				planUuid: createdData.uuid,
 			});
 			return createdData.uuid;
@@ -194,7 +194,7 @@ export function usePlan() {
 	): Promise<string | undefined> {
 		try {
 			const savedData: IPlanSaveCreateResponse = await useQuery(
-				queryRepository.PatchPlan,
+				useQueryRepository().repository.PatchPlan,
 				{
 					planUuid: planUuid,
 					data: {
@@ -205,7 +205,7 @@ export function usePlan() {
 			).execute();
 
 			if (savedData) {
-				await useQuery(queryRepository.GetPlan, {
+				await useQuery(useQueryRepository().repository.GetPlan, {
 					planUuid: savedData.uuid,
 				}).execute();
 				return savedData.uuid;

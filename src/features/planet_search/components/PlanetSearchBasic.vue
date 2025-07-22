@@ -3,7 +3,7 @@
 
 	// API
 	import { useQuery } from "@/lib/query_cache/useQuery";
-	import { queryRepository } from "@/lib/query_cache/queryRepository";
+	import { useQueryRepository } from "@/lib/query_cache/queryRepository";
 
 	// Types & Interfaces
 	import { IPlanet } from "@/features/api/gameData.types";
@@ -26,9 +26,12 @@
 	async function doSearch() {
 		if (canSearch.value) {
 			isLoading.value = true;
-			await useQuery(queryRepository.GetPlanetSearchSingle, {
-				searchId: refSearchId.value!,
-			})
+			await useQuery(
+				useQueryRepository().repository.GetPlanetSearchSingle,
+				{
+					searchId: refSearchId.value!,
+				}
+			)
 				.execute()
 				.then((data: IPlanet[]) => emit("update:results", data))
 				.finally(() => (isLoading.value = false));

@@ -53,7 +53,7 @@
 	// UI
 	import { NForm, NFormItem, NSelect } from "naive-ui";
 	import { useQuery } from "@/lib/query_cache/useQuery";
-	import { queryRepository } from "@/lib/query_cache/queryRepository";
+	import { useQueryRepository } from "@/lib/query_cache/queryRepository";
 
 	const props = defineProps({
 		empireUuid: {
@@ -110,7 +110,7 @@
 		try {
 			// make a forced call to also update store
 			refEmpireList.value = await useQuery(
-				queryRepository.GetAllEmpires
+				useQueryRepository().repository.GetAllEmpires
 			).execute();
 		} catch (err) {
 			console.error("Error reloading empires", err);

@@ -76,15 +76,14 @@ const BuildingCostSchema: z.ZodType<IBuildingCost> = z.object({
 	Amount: PositiveOrZeroNumber,
 });
 
-const BuildingHabitationSchema: z.ZodType<IBuildingHabitation> =
-	z.object({
-		Pioneer: PositiveOrZeroNumber,
-		Settler: PositiveOrZeroNumber,
-		Technician: PositiveOrZeroNumber,
-		Engineer: PositiveOrZeroNumber,
-		Scientist: PositiveOrZeroNumber,
-		Area: z.number().gt(0),
-	});
+const BuildingHabitationSchema: z.ZodType<IBuildingHabitation> = z.object({
+	Pioneer: PositiveOrZeroNumber,
+	Settler: PositiveOrZeroNumber,
+	Technician: PositiveOrZeroNumber,
+	Engineer: PositiveOrZeroNumber,
+	Scientist: PositiveOrZeroNumber,
+	Area: z.number().gt(0),
+});
 
 const BUILDING_TYPE_ZOD = z.enum(["INFRASTRUCTURE", "PLANETARY", "PRODUCTION"]);
 const EXPERTISE_TYPE_ZOD = z.enum([
@@ -280,8 +279,8 @@ const FIOSitePlanetBuildingMaterialSchema: z.ZodType<IFIOSitePlanetBuildingMater
 		MaterialAmount: PositiveOrZeroNumber,
 	});
 
-const FIOSitePlanetBuildingSchema: z.ZodType<IFIOSitePlanetBuilding> =
-	z.object({
+const FIOSitePlanetBuildingSchema: z.ZodType<IFIOSitePlanetBuilding> = z.object(
+	{
 		SiteBuildingId: z.string(),
 		BuildingId: z.string(),
 		BuildingCreated: z.coerce.date(),
@@ -292,7 +291,8 @@ const FIOSitePlanetBuildingSchema: z.ZodType<IFIOSitePlanetBuilding> =
 		ReclaimableMaterials: z.array(FIOSitePlanetBuildingMaterialSchema),
 		RepairMaterials: z.array(FIOSitePlanetBuildingMaterialSchema),
 		AgeDays: z.number().nullable(),
-	});
+	}
+);
 
 const FIOSitePlanetSchema: z.ZodType<IFIOSitePlanet> = z.object({
 	SiteId: z.string(),
@@ -368,15 +368,6 @@ export const PlanetSearchAdvancedPayloadSchema: z.ZodType<IPlanetSearchAdvanced>
 	});
 
 // Schema Types
-type MaterialType = z.infer<typeof MaterialSchema>;
-export type MaterialPayloadType = z.infer<typeof MaterialPayloadSchema>;
-type ExchangeType = z.infer<typeof ExchangeSchema>;
-export type ExchangePayloadType = z.infer<typeof ExchangePayloadSchema>;
-type RecipeType = z.infer<typeof RecipeSchema>;
-export type RecipePayloadType = z.infer<typeof RecipePayloadSchema>;
-type BuildingType = z.infer<typeof BuildingSchema>;
-export type BuildingPayloadType = z.infer<typeof BuildingPayloadSchema>;
-type PlanetType = z.infer<typeof PlanetSchema>;
 export type PlanetPayloadType = z.infer<typeof PlanetSchema>;
 export type PlanetMultiplePayloadType = z.infer<typeof PlanetMultiplePayload>;
 export type PlanetMultipleRequestType = z.infer<

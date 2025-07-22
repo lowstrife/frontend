@@ -3,7 +3,7 @@
 
 	// API
 	import { useQuery } from "@/lib/query_cache/useQuery";
-	import { queryRepository } from "@/lib/query_cache/queryRepository";
+	import { useQueryRepository } from "@/lib/query_cache/queryRepository";
 
 	// Types & Interfaces
 	import {
@@ -101,7 +101,7 @@
 					? {
 							SystemId: inputSystem.value,
 							MaxDistance: inputSystemDistance.value,
-						}
+					  }
 					: undefined,
 		};
 	});
@@ -131,7 +131,7 @@
 	async function doSearch() {
 		refIsLoading.value = true;
 
-		await useQuery(queryRepository.PostPlanetSearch, {
+		await useQuery(useQueryRepository().repository.PostPlanetSearch, {
 			searchData: searchPayload.value,
 		})
 			.execute()

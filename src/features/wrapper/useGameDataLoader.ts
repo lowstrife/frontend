@@ -1,7 +1,7 @@
 import { computed, reactive, ref, Ref, watch, watchEffect } from "vue";
 
 // Stores & Repository
-import { queryRepository } from "@/lib/query_cache/queryRepository";
+import { useQueryRepository } from "@/lib/query_cache/queryRepository";
 import { useQueryStore } from "@/lib/query_cache/queryStore";
 
 // Types & Interfaces
@@ -34,7 +34,7 @@ export function useGameDataLoader(
 			enabled: () => !!props.loadMaterials,
 			load: () => {
 				return queryStore.executeQuery(
-					queryRepository.GetMaterials,
+					useQueryRepository().repository.GetMaterials,
 					undefined
 				);
 			},
@@ -46,7 +46,7 @@ export function useGameDataLoader(
 			enabled: () => !!props.loadExchanges,
 			load: () => {
 				return queryStore.executeQuery(
-					queryRepository.GetExchanges,
+					useQueryRepository().repository.GetExchanges,
 					undefined
 				);
 			},
@@ -58,7 +58,7 @@ export function useGameDataLoader(
 			enabled: () => !!props.loadBuildings,
 			load: () => {
 				return queryStore.executeQuery(
-					queryRepository.GetBuildings,
+					useQueryRepository().repository.GetBuildings,
 					undefined
 				);
 			},
@@ -70,7 +70,7 @@ export function useGameDataLoader(
 			enabled: () => !!props.loadRecipes,
 			load: () => {
 				return queryStore.executeQuery(
-					queryRepository.GetRecipes,
+					useQueryRepository().repository.GetRecipes,
 					undefined
 				);
 			},
@@ -81,9 +81,12 @@ export function useGameDataLoader(
 			name: `Planet '${props.loadPlanet}' Data`,
 			enabled: () => !!props.loadPlanet,
 			load: () => {
-				return queryStore.executeQuery(queryRepository.GetPlanet, {
-					planetNaturalId: props.loadPlanet!,
-				});
+				return queryStore.executeQuery(
+					useQueryRepository().repository.GetPlanet,
+					{
+						planetNaturalId: props.loadPlanet!,
+					}
+				);
 			},
 			onSuccess: (d: IPlanet) => emits("data:planet", d),
 		},
@@ -93,7 +96,7 @@ export function useGameDataLoader(
 			enabled: () => !!props.loadPlanetMultiple,
 			load: () => {
 				return queryStore.executeQuery(
-					queryRepository.GetMultiplePlanets,
+					useQueryRepository().repository.GetMultiplePlanets,
 					{
 						planetNaturalIds: props.loadPlanetMultiple!,
 					}

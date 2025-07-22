@@ -12,7 +12,7 @@
 
 	// Composables
 	import { useQuery } from "@/lib/query_cache/useQuery";
-	import { queryRepository } from "@/lib/query_cache/queryRepository";
+	import { useQueryRepository } from "@/lib/query_cache/queryRepository";
 
 	// Types & Interfaces
 	import {
@@ -198,13 +198,18 @@
 		refIsUpdatingJunctions.value = true;
 
 		try {
-			await useQuery(queryRepository.PatchEmpireCXJunctions, {
-				junctions: cxEmpireJunctions.value,
-			}).execute();
+			await useQuery(
+				useQueryRepository().repository.PatchEmpireCXJunctions,
+				{
+					junctions: cxEmpireJunctions.value,
+				}
+			).execute();
 
 			emit(
 				"update:cxList",
-				await useQuery(queryRepository.GetAllCX).execute()
+				await useQuery(
+					useQueryRepository().repository.GetAllCX
+				).execute()
 			);
 			refCreateName.value = "";
 		} catch (err) {
@@ -219,7 +224,7 @@
 
 		try {
 			if (compCanCreate.value) {
-				await useQuery(queryRepository.CreateEmpire, {
+				await useQuery(useQueryRepository().repository.CreateEmpire, {
 					data: {
 						faction: refCreateFaction.value,
 						permits_used: refCreatePermitsUsed.value,
@@ -232,7 +237,9 @@
 				// forced reload of all Empires
 				emit(
 					"update:empireList",
-					await useQuery(queryRepository.GetAllEmpires).execute()
+					await useQuery(
+						useQueryRepository().repository.GetAllEmpires
+					).execute()
 				);
 			}
 		} catch (err) {
@@ -259,7 +266,7 @@
 	async function deleteEmpire(empireUuid: string): Promise<void> {
 		refIsDeleting.value = empireUuid;
 		const deletionResult: boolean = await useQuery(
-			queryRepository.DeleteEmpire,
+			useQueryRepository().repository.DeleteEmpire,
 			{ empireUuid: empireUuid }
 		).execute();
 
@@ -267,7 +274,9 @@
 			// forced reload of all Empires
 			emit(
 				"update:empireList",
-				await useQuery(queryRepository.GetAllEmpires).execute()
+				await useQuery(
+					useQueryRepository().repository.GetAllEmpires
+				).execute()
 			);
 		}
 

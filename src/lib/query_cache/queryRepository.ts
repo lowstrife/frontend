@@ -8,6 +8,7 @@ import { useQueryStore } from "@/lib/query_cache/queryStore";
 import { useGameDataStore } from "@/stores/gameDataStore";
 import { usePlanningStore } from "@/stores/planningStore";
 
+// API Calls
 import {
 	callDataBuildings,
 	callDataExchanges,
@@ -22,16 +23,6 @@ import {
 	callExplorationData,
 } from "@/features/api/gameData.api";
 import {
-	IBuilding,
-	IExchange,
-	IFIOSites,
-	IFIOStorage,
-	IMaterial,
-	IPlanet,
-	IPlanetSearchAdvanced,
-	IRecipe,
-} from "@/features/api/gameData.types";
-import {
 	callClonePlan,
 	callCreatePlan,
 	callDeletePlan,
@@ -40,18 +31,6 @@ import {
 	callGetShared,
 	callSavePlan,
 } from "@/features/api/planData.api";
-import {
-	ICXEmpireJunction,
-	IPlanCloneResponse,
-	IPlanEmpireJunction,
-} from "@/features/manage/manage.types";
-import {
-	ICX,
-	IPlan,
-	IPlanEmpire,
-	IPlanEmpireElement,
-	IPlanShare,
-} from "@/stores/planningStore.types";
 import {
 	callCreateEmpire,
 	callDeleteEmpire,
@@ -67,14 +46,43 @@ import {
 	callUpdateCXJunctions,
 } from "@/features/api/cxData.api";
 import {
-	IShared,
-	ISharedCreateResponse,
-} from "@/features/api/sharingData.types";
-import {
 	callCreateSharing,
 	callDeleteSharing,
 	callGetSharedList,
 } from "@/features/api/sharingData.api";
+
+// Types & Interfaces
+import { QueryRepositoryType } from "@/lib/query_cache/queryRepository.types";
+
+import {
+	IBuilding,
+	IExchange,
+	IFIOSites,
+	IFIOStorage,
+	IMaterial,
+	IPlanet,
+	IPlanetSearchAdvanced,
+	IRecipe,
+} from "@/features/api/gameData.types";
+
+import {
+	ICXEmpireJunction,
+	IPlanCloneResponse,
+	IPlanEmpireJunction,
+} from "@/features/manage/manage.types";
+import {
+	ICX,
+	IPlan,
+	IPlanEmpire,
+	IPlanEmpireElement,
+	IPlanShare,
+} from "@/stores/planningStore.types";
+
+import {
+	IShared,
+	ISharedCreateResponse,
+} from "@/features/api/sharingData.types";
+
 import {
 	IExploration,
 	IExplorationRequestPayload,
@@ -89,496 +97,524 @@ import {
 } from "@/features/planning_data/usePlan.types";
 import { PlanSaveCreateResponseType } from "@/features/api/schemas/planningData.schemas";
 
-const queryStore = useQueryStore();
-const gameDataStore = useGameDataStore();
-const planningStore = usePlanningStore();
+export function useQueryRepository() {
+	const queryStore = useQueryStore();
+	const gameDataStore = useGameDataStore();
+	const planningStore = usePlanningStore();
 
-// # TODO: Set proper expiry times!
+	const queryRepository: QueryRepositoryType = {
+		GetMaterials: {
+			key: () => ["gamedata", "materials"],
+			fetchFn: async () => {
+				const data: IMaterial[] = await callDataMaterials();
+				gameDataStore.setMaterials(data);
+				return data;
+			},
+			autoRefetch: true,
+			expireTime: 60_000 * config.GAME_DATA_STALE_MINUTES_MATERIALS,
+			persist: true,
+		} as QueryDefinition<void, IMaterial[]>,
+		GetExchanges: {
+			key: () => ["gamedata", "exchanges"],
+			fetchFn: async () => {
+				const data: IExchange[] = await callDataExchanges();
+				gameDataStore.setExchanges(data);
+				return data;
+			},
+			autoRefetch: true,
+			expireTime: 60_000 * config.GAME_DATA_STALE_MINUTES_EXCHANGES,
+			persist: true,
+		} as QueryDefinition<void, IExchange[]>,
+		GetRecipes: {
+			key: () => ["gamedata", "recipes"],
+			fetchFn: async () => {
+				const data: IRecipe[] = await callDataRecipes();
+				gameDataStore.setRecipes(data);
+				return data;
+			},
+			autoRefetch: true,
+			expireTime: 60_000 * config.GAME_DATA_STALE_MINUTES_RECIPES,
+			persist: true,
+		} as QueryDefinition<void, IRecipe[]>,
+		GetBuildings: {
+			key: () => ["gamedata", "buildings"],
+			fetchFn: async () => {
+				const data: IBuilding[] = await callDataBuildings();
+				gameDataStore.setBuildings(data);
+				return data;
+			},
+			autoRefetch: true,
+			expireTime: 60_000 * config.GAME_DATA_STALE_MINUTES_BUILDINGS,
+			persist: true,
+		} as QueryDefinition<void, IBuilding[]>,
+		GetPlanet: {
+			key: (params: { planetNaturalId: string }) => [
+				"gamedata",
+				"planet",
+				params.planetNaturalId,
+			],
+			fetchFn: async (params: { planetNaturalId: string }) => {
+				const data: IPlanet = await callDataPlanet(
+					params.planetNaturalId
+				);
+				gameDataStore.setPlanet(data);
+				return data;
+			},
+			expireTime: 60_000 * config.GAME_DATA_STALE_MINUTES_PLANETS,
+			autoRefetch: true,
+			persist: true,
+		} as QueryDefinition<{ planetNaturalId: string }, IPlanet>,
+		GetMultiplePlanets: {
+			key: (params: { planetNaturalIds: string[] }) => [
+				"gamedata",
+				"planet",
+				"multiple",
+				params.planetNaturalIds,
+			],
+			fetchFn: async (params: { planetNaturalIds: string[] }) => {
+				const data: IPlanet[] = await callDataMultiplePlanets(
+					params.planetNaturalIds
+				);
+				gameDataStore.setMultiplePlanets(data);
+				return data;
+			},
+			expireTime: 60_000 * config.GAME_DATA_STALE_MINUTES_PLANETS,
+			autoRefetch: true,
+			persist: true,
+		} as QueryDefinition<{ planetNaturalIds: string[] }, IPlanet[]>,
+		GetPlanetSearchSingle: {
+			key: (params: { searchId: string }) => [
+				"gamedata",
+				"planet",
+				"search",
+				params.searchId,
+			],
+			fetchFn: async (params: { searchId: string }) => {
+				return await callDataPlanetSearchSingle(params.searchId);
+			},
+			expireTime: 60_000 * config.GAME_DATA_STALE_MINUTES_PLANETS,
+			persist: true,
+			autoRefetch: false,
+		} as QueryDefinition<{ searchId: string }, IPlanet[]>,
+		PostPlanetSearch: {
+			key: (params: { searchData: IPlanetSearchAdvanced }) => [
+				"gamedata",
+				"planet",
+				"search",
+				params.searchData,
+			],
+			fetchFn: async (params: { searchData: IPlanetSearchAdvanced }) => {
+				return await callDataPlanetSearch(params.searchData);
+			},
+			expireTime: 60_000 * config.GAME_DATA_STALE_MINUTES_PLANETS,
+			persist: true,
+			autoRefetch: false,
+		} as QueryDefinition<{ searchData: IPlanetSearchAdvanced }, IPlanet[]>,
+		GetSharedPlan: {
+			key: (params: { sharedPlanUuid: string }) => [
+				"planningdata",
+				"shared",
+				params.sharedPlanUuid,
+			],
+			fetchFn: async (params: { sharedPlanUuid: string }) => {
+				return await callGetShared(params.sharedPlanUuid);
+			},
+			persist: true,
+			autoRefetch: false,
+			expireTime: 10_000,
+		} as QueryDefinition<{ sharedPlanUuid: string }, IPlanShare>,
+		GetAllShared: {
+			key: () => ["planningdata", "shared", "list"],
+			fetchFn: async () => {
+				const data = await callGetSharedList();
+				planningStore.setSharedList(data);
+				return data;
+			},
+			persist: true,
+			autoRefetch: true,
+			expireTime: 60_000 * 60,
+		} as QueryDefinition<void, IShared[]>,
+		DeleteSharedPlan: {
+			key: (params: { sharedUuid: string }) => [
+				"planningdata",
+				"shared",
+				"delete",
+				params.sharedUuid,
+			],
+			fetchFn: async (params: { sharedUuid: string }) => {
+				const data = await callDeleteSharing(params.sharedUuid);
+				queryStore.invalidateKey(["planningdata", "shared"], {
+					exact: false,
+					skipRefetch: true,
+				});
+				return data;
+			},
+			persist: false,
+			autoRefetch: false,
+		} as QueryDefinition<{ sharedUuid: string }, boolean>,
+		CreateSharedPlan: {
+			key: (params: { planUuid: string }) => [
+				"planningdata",
+				"shared",
+				"create",
+				params.planUuid,
+			],
+			fetchFn: async (params: { planUuid: string }) => {
+				queryStore.invalidateKey(["planningdata", "shared"], {
+					exact: false,
+					skipRefetch: true,
+				});
+				return await callCreateSharing(params.planUuid);
+			},
+			persist: false,
+			autoRefetch: false,
+		} as QueryDefinition<{ planUuid: string }, ISharedCreateResponse>,
+		CreateEmpire: {
+			key: () => ["planningdata", "empire", "create"],
+			fetchFn: async (params: { data: IEmpireCreatePayload }) => {
+				const data = await callCreateEmpire(params.data);
+				queryStore.invalidateKey(["planningdata", "empire"], {
+					exact: false,
+				});
+				return data;
+			},
+			autoRefetch: false,
+			persist: false,
+		} as QueryDefinition<{ data: IEmpireCreatePayload }, IPlanEmpire>,
+		DeleteEmpire: {
+			key: (params: { empireUuid: string }) => [
+				"planningdata",
+				"empire",
+				"delete",
+				params.empireUuid,
+			],
+			fetchFn: async (params: { empireUuid: string }) => {
+				const data = await callDeleteEmpire(params.empireUuid);
+				queryStore.invalidateKey(["planningdata", "empire"], {
+					exact: false,
+				});
+				return data;
+			},
+			autoRefetch: false,
+			persist: false,
+		} as QueryDefinition<{ empireUuid: string }, boolean>,
+		PatchEmpireCXJunctions: {
+			key: () => ["planningdata", "empire", "cx", "junctions"],
+			fetchFn: async (params: { junctions: ICXEmpireJunction[] }) => {
+				const data = await callUpdateCXJunctions(params.junctions);
+				queryStore.invalidateKey(["planningdata", "empire"], {
+					exact: false,
+				});
+				queryStore.invalidateKey(["planningdata", "cx"], {
+					exact: false,
+				});
+				return data;
+			},
+			autoRefetch: false,
+			persist: false,
+		} as QueryDefinition<{ junctions: ICXEmpireJunction[] }, ICX[]>,
+		GetAllEmpires: {
+			key: () => ["planningdata", "empire", "list"],
+			fetchFn: async () => {
+				const data = await callGetEmpireList();
+				planningStore.setEmpires(data);
+				return data;
+			},
+			autoRefetch: false,
+			persist: true,
+		} as QueryDefinition<void, IPlanEmpireElement[]>,
+		GetEmpirePlans: {
+			key: (params: { empireUuid: string }) => [
+				"planningdata",
+				"empire",
+				"plans",
+				params.empireUuid,
+			],
+			fetchFn: async (params: { empireUuid: string }) => {
+				const data = await callGetEmpirePlans(params.empireUuid);
 
-export const queryRepository = {
-	GetMaterials: {
-		key: () => ["gamedata", "materials"],
-		fetchFn: async () => {
-			const data: IMaterial[] = await callDataMaterials();
-			gameDataStore.setMaterials(data);
-			return data;
-		},
-		autoRefetch: true,
-		expireTime: 60_000 * config.GAME_DATA_STALE_MINUTES_MATERIALS,
-		persist: true,
-	} as QueryDefinition<void, IMaterial[]>,
-	GetExchanges: {
-		key: () => ["gamedata", "exchanges"],
-		fetchFn: async () => {
-			const data: IExchange[] = await callDataExchanges();
-			gameDataStore.setExchanges(data);
-			return data;
-		},
-		autoRefetch: true,
-		expireTime: 60_000 * config.GAME_DATA_STALE_MINUTES_EXCHANGES,
-		persist: true,
-	} as QueryDefinition<void, IExchange[]>,
-	GetRecipes: {
-		key: () => ["gamedata", "recipes"],
-		fetchFn: async () => {
-			const data: IRecipe[] = await callDataRecipes();
-			gameDataStore.setRecipes(data);
-			return data;
-		},
-		autoRefetch: true,
-		expireTime: 60_000 * config.GAME_DATA_STALE_MINUTES_RECIPES,
-		persist: true,
-	} as QueryDefinition<void, IRecipe[]>,
-	GetBuildings: {
-		key: () => ["gamedata", "buildings"],
-		fetchFn: async () => {
-			const data: IBuilding[] = await callDataBuildings();
-			gameDataStore.setBuildings(data);
-			return data;
-		},
-		autoRefetch: true,
-		expireTime: 60_000 * config.GAME_DATA_STALE_MINUTES_BUILDINGS,
-		persist: true,
-	} as QueryDefinition<void, IBuilding[]>,
-	GetPlanet: {
-		key: (params: { planetNaturalId: string }) => [
-			"gamedata",
-			"planet",
-			params.planetNaturalId,
-		],
-		fetchFn: async (params: { planetNaturalId: string }) => {
-			const data: IPlanet = await callDataPlanet(params.planetNaturalId);
-			gameDataStore.setPlanet(data);
-			return data;
-		},
-		expireTime: 60_000 * config.GAME_DATA_STALE_MINUTES_PLANETS,
-		autoRefetch: true,
-		persist: true,
-	} as QueryDefinition<{ planetNaturalId: string }, IPlanet>,
-	GetMultiplePlanets: {
-		key: (params: { planetNaturalIds: string[] }) => [
-			"gamedata",
-			"planet",
-			"multiple",
-			params.planetNaturalIds,
-		],
-		fetchFn: async (params: { planetNaturalIds: string[] }) => {
-			const data: IPlanet[] = await callDataMultiplePlanets(
-				params.planetNaturalIds
-			);
-			gameDataStore.setMultiplePlanets(data);
-			return data;
-		},
-		expireTime: 60_000 * config.GAME_DATA_STALE_MINUTES_PLANETS,
-		autoRefetch: true,
-		persist: true,
-	} as QueryDefinition<{ planetNaturalIds: string[] }, IPlanet[]>,
-	GetPlanetSearchSingle: {
-		key: (params: { searchId: string }) => [
-			"gamedata",
-			"planet",
-			"search",
-			params.searchId,
-		],
-		fetchFn: async (params: { searchId: string }) => {
-			return await callDataPlanetSearchSingle(params.searchId);
-		},
-		expireTime: 60_000 * config.GAME_DATA_STALE_MINUTES_PLANETS,
-		persist: true,
-		autoRefetch: false,
-	} as QueryDefinition<{ searchId: string }, IPlanet[]>,
-	PostPlanetSearch: {
-		key: (params: { searchData: IPlanetSearchAdvanced }) => [
-			"gamedata",
-			"planet",
-			"search",
-			params.searchData,
-		],
-		fetchFn: async (params: { searchData: IPlanetSearchAdvanced }) => {
-			return await callDataPlanetSearch(params.searchData);
-		},
-		expireTime: 60_000 * config.GAME_DATA_STALE_MINUTES_PLANETS,
-		persist: true,
-		autoRefetch: false,
-	} as QueryDefinition<{ searchData: IPlanetSearchAdvanced }, IPlanet[]>,
-	GetSharedPlan: {
-		key: (params: { sharedPlanUuid: string }) => [
-			"planningdata",
-			"shared",
-			params.sharedPlanUuid,
-		],
-		fetchFn: async (params: { sharedPlanUuid: string }) => {
-			return await callGetShared(params.sharedPlanUuid);
-		},
-		persist: true,
-		autoRefetch: false,
-		expireTime: 10_000,
-	} as QueryDefinition<{ sharedPlanUuid: string }, IPlanShare>,
-	GetAllShared: {
-		key: () => ["planningdata", "shared", "list"],
-		fetchFn: async () => {
-			const data = await callGetSharedList();
-			planningStore.setSharedList(data);
-			return data;
-		},
-		persist: true,
-		autoRefetch: true,
-		expireTime: 60_000 * 60,
-	} as QueryDefinition<void, IShared[]>,
-	DeleteSharedPlan: {
-		key: (params: { sharedUuid: string }) => [
-			"planningdata",
-			"shared",
-			"delete",
-			params.sharedUuid,
-		],
-		fetchFn: async (params: { sharedUuid: string }) => {
-			const data = await callDeleteSharing(params.sharedUuid);
-			queryStore.invalidateKey(["planningdata", "shared"], {
-				exact: false,
-				skipRefetch: true,
-			});
-			return data;
-		},
-		persist: false,
-		autoRefetch: false,
-	} as QueryDefinition<{ sharedUuid: string }, boolean>,
-	CreateSharedPlan: {
-		key: (params: { planUuid: string }) => [
-			"planningdata",
-			"shared",
-			"create",
-			params.planUuid,
-		],
-		fetchFn: async (params: { planUuid: string }) => {
-			queryStore.invalidateKey(["planningdata", "shared"], {
-				exact: false,
-				skipRefetch: true,
-			});
-			return await callCreateSharing(params.planUuid);
-		},
-		persist: false,
-		autoRefetch: false,
-	} as QueryDefinition<{ planUuid: string }, ISharedCreateResponse>,
-	CreateEmpire: {
-		key: () => ["planningdata", "empire", "create"],
-		fetchFn: async (params: { data: IEmpireCreatePayload }) => {
-			const data = await callCreateEmpire(params.data);
-			queryStore.invalidateKey(["planningdata", "empire"], {
-				exact: false,
-			});
-			return data;
-		},
-		autoRefetch: false,
-		persist: false,
-	} as QueryDefinition<{ data: IEmpireCreatePayload }, IPlanEmpire>,
-	DeleteEmpire: {
-		key: (params: { empireUuid: string }) => [
-			"planningdata",
-			"empire",
-			"delete",
-			params.empireUuid,
-		],
-		fetchFn: async (params: { empireUuid: string }) => {
-			const data = await callDeleteEmpire(params.empireUuid);
-			queryStore.invalidateKey(["planningdata", "empire"], {
-				exact: false,
-			});
-			return data;
-		},
-		autoRefetch: false,
-		persist: false,
-	} as QueryDefinition<{ empireUuid: string }, boolean>,
-	PatchEmpireCXJunctions: {
-		key: () => ["planningdata", "empire", "cx", "junctions"],
-		fetchFn: async (params: { junctions: ICXEmpireJunction[] }) => {
-			const data = await callUpdateCXJunctions(params.junctions);
-			queryStore.invalidateKey(["planningdata", "empire"], {
-				exact: false,
-			});
-			queryStore.invalidateKey(["planningdata", "cx"], {
-				exact: false,
-			});
-			return data;
-		},
-		autoRefetch: false,
-		persist: false,
-	} as QueryDefinition<{ junctions: ICXEmpireJunction[] }, ICX[]>,
-	GetAllEmpires: {
-		key: () => ["planningdata", "empire", "list"],
-		fetchFn: async () => {
-			const data = await callGetEmpireList();
-			planningStore.setEmpires(data);
-			return data;
-		},
-		autoRefetch: false,
-		persist: true,
-	} as QueryDefinition<void, IPlanEmpireElement[]>,
-	GetEmpirePlans: {
-		key: (params: { empireUuid: string }) => [
-			"planningdata",
-			"empire",
-			"plans",
-			params.empireUuid,
-		],
-		fetchFn: async (params: { empireUuid: string }) => {
-			const data = await callGetEmpirePlans(params.empireUuid);
+				planningStore.setPlans(data);
+				return data;
+			},
+			autoRefetch: false,
+			persist: true,
+		} as QueryDefinition<{ empireUuid: string }, IPlan[]>,
+		PatchEmpire: {
+			key: (params: { empireUuid: string }) => [
+				"planningdata",
+				"empire",
+				"patch",
+				params.empireUuid,
+			],
+			fetchFn: async (params: {
+				empireUuid: string;
+				data: IEmpirePatchPayload;
+			}) => {
+				const data = await callPatchEmpire(
+					params.empireUuid,
+					params.data
+				);
+				queryStore.invalidateKey(["planningdata", "empire"], {
+					exact: false,
+				});
+				return data;
+			},
+			autoRefetch: false,
+			persist: false,
+		} as QueryDefinition<
+			{ empireUuid: string; data: IEmpirePatchPayload },
+			IPlanEmpire
+		>,
+		PatchEmpirePlanJunctions: {
+			key: () => ["planningdata", "empire", "plan", "junctions"],
+			fetchFn: async (params: { junctions: IPlanEmpireJunction[] }) => {
+				const data = await callPatchEmpirePlanJunctions(
+					params.junctions
+				);
 
-			planningStore.setPlans(data);
-			return data;
-		},
-		autoRefetch: false,
-		persist: true,
-	} as QueryDefinition<{ empireUuid: string }, IPlan[]>,
-	PatchEmpire: {
-		key: (params: { empireUuid: string }) => [
-			"planningdata",
-			"empire",
-			"patch",
-			params.empireUuid,
-		],
-		fetchFn: async (params: {
-			empireUuid: string;
-			data: IEmpirePatchPayload;
-		}) => {
-			const data = await callPatchEmpire(params.empireUuid, params.data);
-			queryStore.invalidateKey(["planningdata", "empire"], {
-				exact: false,
-			});
-			return data;
-		},
-		autoRefetch: false,
-		persist: false,
-	} as QueryDefinition<
-		{ empireUuid: string; data: IEmpirePatchPayload },
-		IPlanEmpire
-	>,
-	PatchEmpirePlanJunctions: {
-		key: () => ["planningdata", "empire", "plan", "junctions"],
-		fetchFn: async (params: { junctions: IPlanEmpireJunction[] }) => {
-			const data = await callPatchEmpirePlanJunctions(params.junctions);
+				// invalidate empires + all plans as junctions might have changed
+				queryStore.invalidateKey(["planningdata", "empire"], {
+					exact: false,
+				});
+				queryStore.invalidateKey(["planningdata", "plan"], {
+					exact: false,
+				});
 
-			// invalidate empires + all plans as junctions might have changed
-			queryStore.invalidateKey(["planningdata", "empire"], {
-				exact: false,
-			});
-			queryStore.invalidateKey(["planningdata", "plan"], {
-				exact: false,
-			});
-
-			return data;
-		},
-		autoRefetch: false,
-		persist: false,
-	} as QueryDefinition<
-		{ junctions: IPlanEmpireJunction[] },
-		IPlanEmpireElement[]
-	>,
-	CreateCX: {
-		key: () => ["planningdata", "cx", "create"],
-		fetchFn: async (params: { cxName: string }) => {
-			const data = await callCreateCX(params.cxName);
-			queryStore.invalidateKey(["planningdata", "cx"], {
-				exact: false,
-			});
-			return data;
-		},
-		autoRefetch: false,
-		persist: false,
-	} as QueryDefinition<{ cxName: string }, ICX>,
-	DeleteCX: {
-		key: (params: { cxUuid: string }) => [
-			"planningdata",
-			"cx",
-			"delete",
-			params.cxUuid,
-		],
-		fetchFn: async (params: { cxUuid: string }) => {
-			const data = await callDeleteCX(params.cxUuid);
-			queryStore.invalidateKey(["planningdata", "cx"], {
-				exact: false,
-			});
-			return data;
-		},
-		autoRefetch: false,
-		persist: false,
-	} as QueryDefinition<{ cxUuid: string }, boolean>,
-	GetAllCX: {
-		key: () => ["planningdata", "cx"],
-		fetchFn: async () => {
-			const data = await callGetCXList();
-			planningStore.setCXs(data);
-			return data;
-		},
-		autoRefetch: false,
-		persist: true,
-	} as QueryDefinition<void, ICX[]>,
-	GetPlan: {
-		key: (params: { planUuid: string }) => [
-			"planningdata",
-			"plan",
-			params.planUuid,
-		],
-		fetchFn: async (params: { planUuid: string }) => {
-			const data = await callGetPlan(params.planUuid);
-			planningStore.setPlan(data);
-			return data;
-		},
-		autoRefetch: false,
-		persist: true,
-	} as QueryDefinition<{ planUuid: string }, IPlan>,
-	GetAllPlans: {
-		key: () => ["planningdata", "plan", "list"],
-		fetchFn: async () => {
-			const data = await callGetPlanlist();
-			planningStore.setPlans(data);
-			return data;
-		},
-		autoRefetch: false,
-		persist: true,
-	} as QueryDefinition<void, IPlan[]>,
-	ClonePlan: {
-		key: (params: { planUuid: string; cloneName: string }) => [
-			"planningdata",
-			"plan",
-			"clone",
-			params.planUuid,
-		],
-		fetchFn: async (params: { planUuid: string; cloneName: string }) => {
-			return await callClonePlan(params.planUuid, params.cloneName).then(
-				() => {
+				return data;
+			},
+			autoRefetch: false,
+			persist: false,
+		} as QueryDefinition<
+			{ junctions: IPlanEmpireJunction[] },
+			IPlanEmpireElement[]
+		>,
+		CreateCX: {
+			key: () => ["planningdata", "cx", "create"],
+			fetchFn: async (params: { cxName: string }) => {
+				const data = await callCreateCX(params.cxName);
+				queryStore.invalidateKey(["planningdata", "cx"], {
+					exact: false,
+				});
+				return data;
+			},
+			autoRefetch: false,
+			persist: false,
+		} as QueryDefinition<{ cxName: string }, ICX>,
+		DeleteCX: {
+			key: (params: { cxUuid: string }) => [
+				"planningdata",
+				"cx",
+				"delete",
+				params.cxUuid,
+			],
+			fetchFn: async (params: { cxUuid: string }) => {
+				const data = await callDeleteCX(params.cxUuid);
+				queryStore.invalidateKey(["planningdata", "cx"], {
+					exact: false,
+				});
+				return data;
+			},
+			autoRefetch: false,
+			persist: false,
+		} as QueryDefinition<{ cxUuid: string }, boolean>,
+		GetAllCX: {
+			key: () => ["planningdata", "cx"],
+			fetchFn: async () => {
+				const data = await callGetCXList();
+				planningStore.setCXs(data);
+				return data;
+			},
+			autoRefetch: false,
+			persist: true,
+		} as QueryDefinition<void, ICX[]>,
+		GetPlan: {
+			key: (params: { planUuid: string }) => [
+				"planningdata",
+				"plan",
+				params.planUuid,
+			],
+			fetchFn: async (params: { planUuid: string }) => {
+				const data = await callGetPlan(params.planUuid);
+				planningStore.setPlan(data);
+				return data;
+			},
+			autoRefetch: false,
+			persist: true,
+		} as QueryDefinition<{ planUuid: string }, IPlan>,
+		GetAllPlans: {
+			key: () => ["planningdata", "plan", "list"],
+			fetchFn: async () => {
+				const data = await callGetPlanlist();
+				planningStore.setPlans(data);
+				return data;
+			},
+			autoRefetch: false,
+			persist: true,
+		} as QueryDefinition<void, IPlan[]>,
+		ClonePlan: {
+			key: (params: { planUuid: string; cloneName: string }) => [
+				"planningdata",
+				"plan",
+				"clone",
+				params.planUuid,
+			],
+			fetchFn: async (params: {
+				planUuid: string;
+				cloneName: string;
+			}) => {
+				return await callClonePlan(
+					params.planUuid,
+					params.cloneName
+				).then(() => {
 					queryStore.invalidateKey(["planningdata", "empire"], {
 						exact: false,
 					});
 					queryStore.invalidateKey(["planningdata", "plan", "list"]);
-				}
-			);
-		},
-		autoRefetch: false,
-		persist: false,
-	} as QueryDefinition<
-		{ planUuid: string; cloneName: string },
-		IPlanCloneResponse
-	>,
-	DeletePlan: {
-		key: (params: { planUuid: string }) => [
-			"planningdata",
-			"plan",
-			"delete",
-			params.planUuid,
-		],
-		fetchFn: async (params: { planUuid: string }) => {
-			return await callDeletePlan(params.planUuid).then(() => {
+				});
+			},
+			autoRefetch: false,
+			persist: false,
+		} as QueryDefinition<
+			{ planUuid: string; cloneName: string },
+			IPlanCloneResponse
+		>,
+		DeletePlan: {
+			key: (params: { planUuid: string }) => [
+				"planningdata",
+				"plan",
+				"delete",
+				params.planUuid,
+			],
+			fetchFn: async (params: { planUuid: string }) => {
+				return await callDeletePlan(params.planUuid).then(() => {
+					queryStore.invalidateKey(["planningdata", "empire"], {
+						exact: false,
+					});
+					queryStore.invalidateKey(["planningdata", "plan", "list"]);
+					queryStore.invalidateKey([
+						"planningdata",
+						"plan",
+						params.planUuid,
+					]);
+					planningStore.deletePlan(params.planUuid);
+				});
+			},
+			autoRefetch: false,
+			persist: false,
+		} as QueryDefinition<{ planUuid: string }, boolean>,
+		CreatePlan: {
+			key: () => ["planningdata", "plan", "create"],
+			fetchFn: async (params: { data: IPlanCreateData }) => {
+				const data = await callCreatePlan(params.data);
+				queryStore.invalidateKey(["planningdata", "plan"], {
+					exact: false,
+				});
 				queryStore.invalidateKey(["planningdata", "empire"], {
 					exact: false,
 				});
-				queryStore.invalidateKey(["planningdata", "plan", "list"]);
-				queryStore.invalidateKey([
-					"planningdata",
-					"plan",
-					params.planUuid,
-				]);
-				planningStore.deletePlan(params.planUuid);
-			});
-		},
-		autoRefetch: false,
-		persist: false,
-	} as QueryDefinition<{ planUuid: string }, boolean>,
-	CreatePlan: {
-		key: () => ["planningdata", "plan", "create"],
-		fetchFn: async (params: { data: IPlanCreateData }) => {
-			const data = await callCreatePlan(params.data);
-			queryStore.invalidateKey(["planningdata", "plan"], {
-				exact: false,
-			});
-			queryStore.invalidateKey(["planningdata", "empire"], {
-				exact: false,
-			});
-			return data;
-		},
-		autoRefetch: false,
-		persist: false,
-	} as QueryDefinition<{ data: IPlanCreateData }, PlanSaveCreateResponseType>,
-	PatchPlan: {
-		key: (params: { planUuid: string }) => [
-			"planningdata",
-			"plan",
-			"patch",
-			params.planUuid,
-		],
-		fetchFn: async (params: { planUuid: string; data: IPlanSaveData }) => {
-			const data = await callSavePlan(params.planUuid, params.data);
-			queryStore.invalidateKey(["planningdata", "plan"], {
-				exact: false,
-			});
-			queryStore.invalidateKey(["planningdata", "empire"], {
-				exact: false,
-			});
-			return data;
-		},
-		autoRefetch: false,
-		persist: false,
-	} as QueryDefinition<
-		{ planUuid: string; data: IPlanSaveData },
-		PlanSaveCreateResponseType
-	>,
-	GetExplorationData: {
-		key: (params: {
-			exchangeTicker: string;
-			materialTicker: string;
-			payload: IExplorationRequestPayload;
-		}) => [
-			"gamedata",
-			"marketexploration",
-			params.exchangeTicker,
-			params.materialTicker,
-			params.payload.start,
-			params.payload.end,
-		],
-		fetchFn: async (params: {
-			exchangeTicker: string;
-			materialTicker: string;
-			payload: IExplorationRequestPayload;
-		}) => {
-			return await callExplorationData(
+				return data;
+			},
+			autoRefetch: false,
+			persist: false,
+		} as QueryDefinition<
+			{ data: IPlanCreateData },
+			PlanSaveCreateResponseType
+		>,
+		PatchPlan: {
+			key: (params: { planUuid: string }) => [
+				"planningdata",
+				"plan",
+				"patch",
+				params.planUuid,
+			],
+			fetchFn: async (params: {
+				planUuid: string;
+				data: IPlanSaveData;
+			}) => {
+				const data = await callSavePlan(params.planUuid, params.data);
+				queryStore.invalidateKey(["planningdata", "plan"], {
+					exact: false,
+				});
+				queryStore.invalidateKey(["planningdata", "empire"], {
+					exact: false,
+				});
+				return data;
+			},
+			autoRefetch: false,
+			persist: false,
+		} as QueryDefinition<
+			{ planUuid: string; data: IPlanSaveData },
+			PlanSaveCreateResponseType
+		>,
+		GetExplorationData: {
+			key: (params: {
+				exchangeTicker: string;
+				materialTicker: string;
+				payload: IExplorationRequestPayload;
+			}) => [
+				"gamedata",
+				"marketexploration",
 				params.exchangeTicker,
 				params.materialTicker,
-				params.payload
-			);
-		},
-		autoRefetch: false,
-		persist: true,
-		expireTime: 60_000 * 15, // 15 minutes,
-	} as QueryDefinition<
-		{
-			exchangeTicker: string;
-			materialTicker: string;
-			payload: IExplorationRequestPayload;
-		},
-		IExploration[]
-	>,
-	GetFIOStorage: {
-		key: () => ["gamedata", "fio", "storage"],
-		fetchFn: async () => {
-			return await callDataFIOStorage().then((data: IFIOStorage) => {
-				gameDataStore.setFIOStorageData(data);
-				return data;
-			});
-		},
-		autoRefetch: true,
-		persist: true,
-		expireTime: 60_000 * 15, // 15 minutes
-	} as QueryDefinition<void, IFIOStorage>,
-	GetFIOSites: {
-		key: () => ["gamedata", "fio", "sites"],
-		fetchFn: async () => {
-			return await callDataFIOSites().then((data: IFIOSites) => {
-				gameDataStore.setFIOSitesData(data);
-				return data;
-			});
-		},
-		autoRefetch: true,
-		persist: true,
-		expireTime: 60_000 * 15, // 15 minutes
-	} as QueryDefinition<void, IFIOSites>,
-};
+				params.payload.start,
+				params.payload.end,
+			],
+			fetchFn: async (params: {
+				exchangeTicker: string;
+				materialTicker: string;
+				payload: IExplorationRequestPayload;
+			}) => {
+				return await callExplorationData(
+					params.exchangeTicker,
+					params.materialTicker,
+					params.payload
+				);
+			},
+			autoRefetch: false,
+			persist: true,
+			expireTime: 60_000 * 15, // 15 minutes,
+		} as QueryDefinition<
+			{
+				exchangeTicker: string;
+				materialTicker: string;
+				payload: IExplorationRequestPayload;
+			},
+			IExploration[]
+		>,
+		GetFIOStorage: {
+			key: () => ["gamedata", "fio", "storage"],
+			fetchFn: async () => {
+				return await callDataFIOStorage().then((data: IFIOStorage) => {
+					gameDataStore.setFIOStorageData(data);
+					return data;
+				});
+			},
+			autoRefetch: true,
+			persist: true,
+			expireTime: 60_000 * 15, // 15 minutes
+		} as QueryDefinition<void, IFIOStorage>,
+		GetFIOSites: {
+			key: () => ["gamedata", "fio", "sites"],
+			fetchFn: async () => {
+				return await callDataFIOSites().then((data: IFIOSites) => {
+					gameDataStore.setFIOSitesData(data);
+					return data;
+				});
+			},
+			autoRefetch: true,
+			persist: true,
+			expireTime: 60_000 * 15, // 15 minutes
+		} as QueryDefinition<void, IFIOSites>,
+	};
+
+	function get(id: keyof QueryRepositoryType) {
+		if (queryRepository[id]) return queryRepository[id];
+
+		throw new Error(`'${id} is not present in query repository.`);
+	}
+
+	return {
+		get,
+		repository: queryRepository,
+	};
+}

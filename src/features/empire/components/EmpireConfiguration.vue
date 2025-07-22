@@ -2,7 +2,7 @@
 	import { PropType, ref, Ref, watch } from "vue";
 
 	import { useQuery } from "@/lib/query_cache/useQuery";
-	import { queryRepository } from "@/lib/query_cache/queryRepository";
+	import { useQueryRepository } from "@/lib/query_cache/queryRepository";
 
 	// Util
 	import { inertClone } from "@/util/data";
@@ -84,7 +84,7 @@
 		};
 
 		try {
-			await useQuery(queryRepository.PatchEmpire, {
+			await useQuery(useQueryRepository().repository.PatchEmpire, {
 				empireUuid: localData.value.uuid,
 				data: patchData,
 			}).execute();

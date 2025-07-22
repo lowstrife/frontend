@@ -1,7 +1,7 @@
 import { computed, reactive, ref, Ref, watch, watchEffect } from "vue";
 
 // Stores & Repository
-import { queryRepository } from "@/lib/query_cache/queryRepository";
+import { useQueryRepository } from "@/lib/query_cache/queryRepository";
 import { useQueryStore } from "@/lib/query_cache/queryStore";
 
 // Composables
@@ -58,9 +58,12 @@ export function usePlanningDataLoader(
 			name: "Shared Plan Configuration",
 			enabled: () => !!props.sharedPlanUuid,
 			load: () =>
-				queryStore.executeQuery(queryRepository.GetSharedPlan, {
-					sharedPlanUuid: props.sharedPlanUuid!,
-				}),
+				queryStore.executeQuery(
+					useQueryRepository().repository.GetSharedPlan,
+					{
+						sharedPlanUuid: props.sharedPlanUuid!,
+					}
+				),
 			onSuccess: (data: IPlanShare) => emits("data:shared:plan", data),
 		},
 		{
@@ -69,7 +72,7 @@ export function usePlanningDataLoader(
 			enabled: () => !!props.empireList,
 			load: () =>
 				queryStore.executeQuery(
-					queryRepository.GetAllEmpires,
+					useQueryRepository().repository.GetAllEmpires,
 					undefined
 				),
 			onSuccess: (data: IPlanEmpireElement[]) => {
@@ -92,9 +95,12 @@ export function usePlanningDataLoader(
 			name: "Plan Configuration",
 			enabled: () => !!props.planUuid,
 			load: () =>
-				queryStore.executeQuery(queryRepository.GetPlan, {
-					planUuid: props.planUuid!,
-				}),
+				queryStore.executeQuery(
+					useQueryRepository().repository.GetPlan,
+					{
+						planUuid: props.planUuid!,
+					}
+				),
 			onSuccess: (data: IPlan) => emits("data:plan", data),
 		},
 		{
@@ -102,7 +108,10 @@ export function usePlanningDataLoader(
 			name: "All Plan Configurations",
 			enabled: () => !!props.planList,
 			load: () =>
-				queryStore.executeQuery(queryRepository.GetAllPlans, undefined),
+				queryStore.executeQuery(
+					useQueryRepository().repository.GetAllPlans,
+					undefined
+				),
 			onSuccess: (data: IPlan[]) => emits("data:plan:list", data),
 		},
 		{
@@ -115,15 +124,20 @@ export function usePlanningDataLoader(
 				const id = props.sharedPlanUuid
 					? (
 							queryStore.peekQueryState(
-								queryRepository.GetSharedPlan.key({
-									sharedPlanUuid: props.sharedPlanUuid!,
-								})
+								useQueryRepository().repository.GetSharedPlan.key(
+									{
+										sharedPlanUuid: props.sharedPlanUuid!,
+									}
+								)
 							)!.data as IPlanShare
-						).baseplanner.planet_id
+					  ).baseplanner.planet_id
 					: props.planetNaturalId!;
-				return queryStore.executeQuery(queryRepository.GetPlanet, {
-					planetNaturalId: id,
-				});
+				return queryStore.executeQuery(
+					useQueryRepository().repository.GetPlanet,
+					{
+						planetNaturalId: id,
+					}
+				);
 			},
 			onSuccess: (data: IPlanet) => emits("data:planet", data),
 		},
@@ -132,7 +146,10 @@ export function usePlanningDataLoader(
 			name: "CX Configurations",
 			enabled: () => !!props.loadCX,
 			load: () =>
-				queryStore.executeQuery(queryRepository.GetAllCX, undefined),
+				queryStore.executeQuery(
+					useQueryRepository().repository.GetAllCX,
+					undefined
+				),
 			onSuccess: (d: ICX[]) => emits("data:cx", d),
 		},
 		{
@@ -141,7 +158,7 @@ export function usePlanningDataLoader(
 			enabled: () => !!props.loadShared,
 			load: () =>
 				queryStore.executeQuery(
-					queryRepository.GetAllShared,
+					useQueryRepository().repository.GetAllShared,
 					undefined
 				),
 			onSuccess: (data: IShared[]) => emits("data:shared", data),
@@ -151,9 +168,12 @@ export function usePlanningDataLoader(
 			name: "Empire Plans",
 			enabled: () => !!props.empireUuid,
 			load: () =>
-				queryStore.executeQuery(queryRepository.GetEmpirePlans, {
-					empireUuid: props.empireUuid!,
-				}),
+				queryStore.executeQuery(
+					useQueryRepository().repository.GetEmpirePlans,
+					{
+						empireUuid: props.empireUuid!,
+					}
+				),
 			onSuccess: (data: IPlan[]) => {
 				// emit empire data
 				emits("data:empire:plans", data);
@@ -292,13 +312,13 @@ export function usePlanningDataLoader(
 		const planDefinition = props.sharedPlanUuid
 			? data.sharedPlan.baseplanner
 			: props.planUuid
-				? data.planData
-				: data.planetData
-					? createBlankDefinition(
-							data.planetData.PlanetNaturalId,
-							data.planetData.COGCProgramActive
-						)
-					: undefined;
+			? data.planData
+			: data.planetData
+			? createBlankDefinition(
+					data.planetData.PlanetNaturalId,
+					data.planetData.COGCProgramActive
+			  )
+			: undefined;
 
 		// if there is a shared plan uuid, the plan editing is disabled
 		const disabled: boolean = props.sharedPlanUuid ? true : false;

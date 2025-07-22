@@ -2,7 +2,7 @@
 	import { computed, ComputedRef, PropType, ref, Ref, watch } from "vue";
 
 	// Composables
-	import { queryRepository } from "@/lib/query_cache/queryRepository";
+	import { useQueryRepository } from "@/lib/query_cache/queryRepository";
 	import { useQuery } from "@/lib/query_cache/useQuery";
 
 	// Types & Interfaces
@@ -65,14 +65,16 @@
 		if (compCanCreate.value) {
 			refIsCreating.value = true;
 
-			await useQuery(queryRepository.CreateCX, {
+			await useQuery(useQueryRepository().repository.CreateCX, {
 				cxName: refNewCXName.value!,
 			}).execute();
 
 			// forced reload of all CX
 			emit(
 				"update:cxList",
-				await useQuery(queryRepository.GetAllCX).execute()
+				await useQuery(
+					useQueryRepository().repository.GetAllCX
+				).execute()
 			);
 
 			refNewCXName.value = "";
@@ -97,7 +99,7 @@
 	async function deleteCX(cxUuid: string): Promise<void> {
 		refIsDeleting.value = cxUuid;
 		const deletionResult: boolean = await useQuery(
-			queryRepository.DeleteCX,
+			useQueryRepository().repository.DeleteCX,
 			{ cxUuid: cxUuid }
 		).execute();
 
@@ -105,7 +107,9 @@
 			// forced reload of all CX
 			emit(
 				"update:cxList",
-				await useQuery(queryRepository.GetAllCX).execute()
+				await useQuery(
+					useQueryRepository().repository.GetAllCX
+				).execute()
 			);
 		}
 

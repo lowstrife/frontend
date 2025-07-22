@@ -2,7 +2,7 @@ import { computed, ComputedRef } from "vue";
 
 // API
 import { useQuery } from "@/lib/query_cache/useQuery";
-import { queryRepository } from "@/lib/query_cache/queryRepository";
+import { useQueryRepository } from "@/lib/query_cache/queryRepository";
 
 // Stores
 import { usePlanningStore } from "@/stores/planningStore";
@@ -57,7 +57,7 @@ export function useSharing(planUuid: string) {
 	 * @returns {Promise<void>}
 	 */
 	async function refreshStore(): Promise<void> {
-		await useQuery(queryRepository.GetAllShared).execute();
+		await useQuery(useQueryRepository().repository.GetAllShared).execute();
 	}
 
 	/**
@@ -74,7 +74,7 @@ export function useSharing(planUuid: string) {
 			// call share deletion
 
 			console.log("delete", planningStore.shared[planUuid].shared_uuid);
-			await useQuery(queryRepository.DeleteSharedPlan, {
+			await useQuery(useQueryRepository().repository.DeleteSharedPlan, {
 				sharedUuid: planningStore.shared[planUuid].shared_uuid,
 			}).execute();
 			await refreshStore();
@@ -91,7 +91,7 @@ export function useSharing(planUuid: string) {
 	async function createSharing(): Promise<void> {
 		if (!isShared.value) {
 			// call sharing creation
-			await useQuery(queryRepository.CreateSharedPlan, {
+			await useQuery(useQueryRepository().repository.CreateSharedPlan, {
 				planUuid: planUuid,
 			}).execute();
 			await refreshStore();
