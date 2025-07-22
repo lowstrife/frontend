@@ -11,7 +11,7 @@
 	import { formatNumber } from "@/util/numbers";
 
 	// UI
-	import { NTable } from "naive-ui";
+	import { XNDataTable, XNDataTableColumn } from "@skit/x.naive-ui";
 
 	const props = defineProps({
 		materialIOData: {
@@ -46,67 +46,83 @@
 </script>
 
 <template>
-	<n-table striped>
-		<thead>
-			<tr>
-				<th class="!text-left">Ticker</th>
-				<th class="!text-center">Input</th>
-				<th class="!text-center">Output</th>
-				<th class="!text-center">Δ</th>
-				<th v-if="!localShowBasked" class="!text-end">$ / day</th>
-				<th v-if="localShowBasked" class="!text-center">Δ t</th>
-				<th v-if="localShowBasked" class="!text-center">Δ m³</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr
-				v-for="material in localMaterialIOData"
-				:key="`IO#${material.ticker}`"
-				class="child:text-center child:first:text-left">
-				<td>
-					<MaterialTile
-						:ticker="material.ticker"
-						:disable-drawer="false" />
-				</td>
-				<td :class="material.input === 0 ? '!text-white/20' : ''">
-					{{ formatNumber(material.input) }}
-				</td>
-				<td :class="material.output === 0 ? '!text-white/20' : ''">
-					{{ formatNumber(material.output) }}
-				</td>
-				<td
+	<XNDataTable :data="localMaterialIOData" striped>
+		<XNDataTableColumn key="ticker" title="Ticker" sorter="default">
+			<template #render-cell="{ rowData }">
+				<MaterialTile
+					:ticker="rowData.ticker"
+					:disable-drawer="false" />
+			</template>
+		</XNDataTableColumn>
+		<XNDataTableColumn key="input" title="Input" sorter="default">
+			<template #render-cell="{ rowData }">
+				<span :class="rowData.input === 0 ? 'text-white/20' : ''">
+					{{ formatNumber(rowData.input) }}
+				</span>
+			</template>
+		</XNDataTableColumn>
+		<XNDataTableColumn key="output" title="Output" sorter="default">
+			<template #render-cell="{ rowData }">
+				<span :class="rowData.output === 0 ? 'text-white/20' : ''">
+					{{ formatNumber(rowData.output) }}
+				</span>
+			</template>
+		</XNDataTableColumn>
+		<XNDataTableColumn key="delta" title="Δ" sorter="default">
+			<template #render-cell="{ rowData }">
+				<span
 					:class="
-						material.delta > 0 ? '!text-positive' : '!text-negative'
+						rowData.delta > 0 ? 'text-positive' : 'text-negative'
 					">
-					{{ formatNumber(material.delta) }}
-				</td>
-				<td
-					v-if="!localShowBasked"
-					class="!text-end"
+					{{ formatNumber(rowData.delta) }}
+				</span>
+			</template>
+		</XNDataTableColumn>
+		<XNDataTableColumn
+			v-if="!localShowBasked"
+			key="price"
+			title="$ / day"
+			sorter="default">
+			<template #render-cell="{ rowData }">
+				<span
 					:class="
-						material.price > 0 ? '!text-positive' : '!text-negative'
+						rowData.price > 0 ? 'text-positive' : 'text-negative'
 					">
-					{{ formatNumber(material.price) }}
-				</td>
-				<td
-					v-if="localShowBasked"
+					{{ formatNumber(rowData.price) }}
+				</span>
+			</template>
+		</XNDataTableColumn>
+		<XNDataTableColumn
+			v-if="localShowBasked"
+			key="totalWeight"
+			title="Δ t"
+			sorter="default">
+			<template #render-cell="{ rowData }">
+				<span
 					:class="
-						material.totalWeight > 0
-							? '!text-positive'
-							: '!text-negative'
+						rowData.totalWeight > 0
+							? 'text-positive'
+							: 'text-negative'
 					">
-					{{ formatNumber(material.totalWeight) }}
-				</td>
-				<td
-					v-if="localShowBasked"
+					{{ formatNumber(rowData.totalWeight) }}
+				</span>
+			</template>
+		</XNDataTableColumn>
+		<XNDataTableColumn
+			v-if="localShowBasked"
+			key="totalVolume"
+			title="Δ m³"
+			sorter="default">
+			<template #render-cell="{ rowData }">
+				<span
 					:class="
-						material.totalVolume > 0
-							? '!text-positive'
-							: '!text-negative'
+						rowData.totalVolume > 0
+							? 'text-positive'
+							: 'text-negative'
 					">
-					{{ formatNumber(material.totalVolume) }}
-				</td>
-			</tr>
-		</tbody>
-	</n-table>
+					{{ formatNumber(rowData.totalVolume) }}
+				</span>
+			</template>
+		</XNDataTableColumn>
+	</XNDataTable>
 </template>

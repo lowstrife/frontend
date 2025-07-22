@@ -147,7 +147,7 @@
 					<div v-if="amount" class="pr-1">
 						{{ formatNumber(amount) }}x
 					</div>
-					<div class="font-bold">{{ ticker }}</div>
+					<div class="font-bold text-nowrap">{{ ticker }}</div>
 				</div>
 				<template v-if="max">
 					<n-tooltip>
