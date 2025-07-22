@@ -1,12 +1,6 @@
-// API
-import {
-	callGetShared,
-	callCreatePlan,
-	callSavePlan,
-} from "@/features/api/planData.api";
+import { useQuery } from "@/lib/query_cache/useQuery";
+import { useQueryRepository } from "@/lib/query_cache/queryRepository";
 
-// Stores
-import { useGameDataStore } from "@/stores/gameDataStore";
 import { usePlanningStore } from "@/stores/planningStore";
 
 // Typees & Interfaces
@@ -16,120 +10,11 @@ import {
 	IPlanSaveCreateResponse,
 } from "@/features/planning_data/usePlan.types";
 
-import { PlanLoadError } from "@/features/planning_data/usePlan.errors";
-import {
-	IPlanet,
-	PLANET_COGCPROGRAM_TYPE,
-} from "@/features/api/gameData.types";
-import {
-	IPlan,
-	IPlanEmpireElement,
-	IPlanLoadData,
-	IPlanShare,
-	PLAN_COGCPROGRAM_TYPE,
-} from "@/stores/planningStore.types";
+import { PLANET_COGCPROGRAM_TYPE } from "@/features/api/gameData.types";
+import { IPlan, PLAN_COGCPROGRAM_TYPE } from "@/stores/planningStore.types";
 
 export function usePlan() {
-	const gameDataStore = useGameDataStore();
 	const planningStore = usePlanningStore();
-
-	/**
-	 * Loads a plan definition from given route parameters
-	 * for either a new plan, an existing plan or using data
-	 * from a shared plan uuid.
-	 *
-	 * @author jplacht
-	 *
-	 * @async
-	 * @param {IPlanRouteParams} routeParams Route Parameters
-	 * @returns {Promise<IPlan>} Plan Definition
-	 */
-	async function loadDefinitionFromRouteParams(
-		routeParams: IPlanRouteParams
-	): Promise<IPlanLoadData> {
-		// shared plan, only shared uuid given
-		if (routeParams.sharedPlanUuid) {
-			const planData: IPlanShare = await callGetShared(
-				routeParams.sharedPlanUuid
-			);
-
-			// ensure planet is loaded
-
-			const sharePlanetLoadResult: boolean =
-				await gameDataStore.performLoadPlanet(
-					planData.baseplanner.planet_id
-				);
-
-			if (!sharePlanetLoadResult) {
-				throw new PlanLoadError(
-					"PLANET_FAILURE",
-					"Error loading planet data."
-				);
-			}
-
-			return {
-				planData: planData.baseplanner,
-				empires: [],
-			};
-		}
-
-		// other routes must have the planets natural id in url
-		if (!routeParams.planetNaturalId) {
-			throw new PlanLoadError(
-				"MISSING_PLANET_ID",
-				"PlanetNaturalId is required to obtain plan data."
-			);
-		} else {
-			// Load Planet Data
-
-			let planet: IPlanet | undefined = undefined;
-
-			try {
-				planet = await gameDataStore.getPlanet(
-					routeParams.planetNaturalId
-				);
-			} catch {
-				throw new PlanLoadError(
-					"PLANET_FAILURE",
-					"Error loading planet data."
-				);
-			}
-
-			// Load Empire Data
-
-			const empireData: IPlanEmpireElement[] =
-				await planningStore.getAllEmpires();
-
-			// if no plan uuid is present, create a blank definition
-			if (!routeParams.planUuid) {
-				return {
-					planData: createBlankDefinition(
-						routeParams.planetNaturalId,
-						planet.COGCProgramActive
-					),
-					empires: empireData,
-				};
-			}
-
-			// plan uuid is present, use the existing plan data
-			try {
-				const planData: IPlan = await planningStore.getPlan(
-					routeParams.planUuid
-				);
-
-				return {
-					planData: planData,
-					empires: empireData,
-				};
-			} catch (err) {
-				console.error(err);
-				throw new PlanLoadError(
-					"API_FAILURE",
-					"Failed to load plan data from API"
-				);
-			}
-		}
-	}
 
 	/**
 	 * Checks if route parameters contain the uuid of a
@@ -277,11 +162,15 @@ export function usePlan() {
 		data: IPlanCreateData
 	): Promise<string | undefined> {
 		try {
-			const createdData: IPlanSaveCreateResponse =
-				await callCreatePlan(data);
+			const createdData: IPlanSaveCreateResponse = await useQuery(
+				useQueryRepository().repository.CreatePlan,
+				{ data: data }
+			).execute();
 
 			// trigger backend data load
-			planningStore.getPlan(createdData.uuid);
+			await useQuery(useQueryRepository().repository.GetPlan, {
+				planUuid: createdData.uuid,
+			});
 			return createdData.uuid;
 		} catch (err) {
 			console.error(`Error creating plan: ${err}`);
@@ -304,18 +193,21 @@ export function usePlan() {
 		data: IPlanCreateData
 	): Promise<string | undefined> {
 		try {
-			const savedData: IPlanSaveCreateResponse = await callSavePlan(
-				planUuid,
+			const savedData: IPlanSaveCreateResponse = await useQuery(
+				useQueryRepository().repository.PatchPlan,
 				{
-					uuid: planUuid,
-					...data,
+					planUuid: planUuid,
+					data: {
+						uuid: planUuid,
+						...data,
+					},
 				}
-			);
+			).execute();
 
 			if (savedData) {
-				// delete from currently stored version and fetch new
-				delete planningStore.plans[savedData.uuid];
-				planningStore.getPlan(savedData.uuid);
+				await useQuery(useQueryRepository().repository.GetPlan, {
+					planUuid: savedData.uuid,
+				}).execute();
 				return savedData.uuid;
 			}
 		} catch (err) {
@@ -367,7 +259,6 @@ export function usePlan() {
 	}
 
 	return {
-		loadDefinitionFromRouteParams,
 		isEditDisabled,
 		mapPlanetToPlanType,
 		createBlankDefinition,

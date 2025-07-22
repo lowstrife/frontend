@@ -132,7 +132,7 @@ export interface IPlanResult {
 }
 
 // Procomputational values
-export interface IPreBuildingInformation {
+interface IPreBuildingInformation {
 	ticker: string;
 	buildingData: IBuilding;
 	buildingRecipes: IRecipe[];

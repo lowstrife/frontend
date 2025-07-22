@@ -1,8 +1,9 @@
-import { describe, it, expect, beforeAll, vi } from "vitest";
+import { describe, it, expect, beforeAll, vi, beforeEach } from "vitest";
 import { createPinia, setActivePinia } from "pinia";
 
 // Stores
-import { useGameDataStore } from "@/stores/gameDataStore";
+import { usePlanningStore } from "@/stores/planningStore";
+import { useQueryStore } from "@/lib/query_cache/queryStore";
 
 // Composables
 import { usePlan } from "@/features/planning_data/usePlan";
@@ -11,6 +12,11 @@ import { usePlan } from "@/features/planning_data/usePlan";
 import shared from "@/tests/test_data/api_data_shared.json";
 import planet_single from "@/tests/test_data/api_data_planet_single.json";
 import empire_list from "@/tests/test_data/api_data_empire_list.json";
+import {
+	callCreatePlan,
+	callGetPlan,
+	callSavePlan,
+} from "@/features/api/planData.api";
 
 vi.mock("@/features/api/planData.api", async () => {
 	return {
@@ -18,6 +24,7 @@ vi.mock("@/features/api/planData.api", async () => {
 		callGetShared: vi.fn(),
 		callCreatePlan: vi.fn(),
 		callSavePlan: vi.fn(),
+		callGetPlan: vi.fn(),
 	};
 });
 
@@ -33,24 +40,9 @@ vi.mock("@/features/api/gameData.api", async () => {
 	};
 });
 
-import {
-	callCreatePlan,
-	callGetShared,
-	callSavePlan,
-} from "@/features/api/planData.api";
-import { usePlanningStore } from "@/stores/planningStore";
-
 describe("usePlan", async () => {
-	let gameDataStore: any;
-	let planningStore: any;
-
-	beforeAll(() => {
-		setActivePinia(createPinia());
-		gameDataStore = useGameDataStore();
-		planningStore = usePlanningStore();
-
-		vi.resetAllMocks();
-	});
+	setActivePinia(createPinia());
+	let planningStore = usePlanningStore();
 
 	it("has shared plan uuid", async () => {
 		const { isEditDisabled } = usePlan();
@@ -111,6 +103,8 @@ describe("usePlan", async () => {
 		it("success, uuid return", async () => {
 			const { saveExistingPlan } = usePlan();
 			vi.mocked(callSavePlan).mockResolvedValueOnce({ uuid: fakeUuid });
+			// @ts-expect-error mock data
+			vi.mocked(callGetPlan).mockResolvedValueOnce({ uuid: fakeUuid });
 
 			// @ts-expect-error mock data
 			const result = await saveExistingPlan({});
@@ -137,140 +131,6 @@ describe("usePlan", async () => {
 		expect(result).toStrictEqual({});
 	});
 
-	describe("loadDefinitionFromRouteParams", async () => {
-		it("load shared success", async () => {
-			const { loadDefinitionFromRouteParams } = usePlan();
-
-			gameDataStore.performLoadPlanet = vi.fn().mockResolvedValue(true);
-			// @ts-expect-error mock data
-			vi.mocked(callGetShared).mockResolvedValue(shared);
-
-			// @ts-expect-error mock data
-			const result = await loadDefinitionFromRouteParams({
-				sharedPlanUuid: "foo",
-			});
-		});
-
-		it("load shared failure", async () => {
-			const { loadDefinitionFromRouteParams } = usePlan();
-
-			gameDataStore.performLoadPlanet = vi.fn().mockResolvedValue(true);
-			vi.mocked(callGetShared).mockRejectedValueOnce(new Error());
-
-			await expect(
-				// @ts-expect-error mock data
-				loadDefinitionFromRouteParams({
-					sharedPlanUuid: "foo",
-				})
-			).rejects.toThrowError();
-		});
-
-		it("load planet failure", async () => {
-			const { loadDefinitionFromRouteParams } = usePlan();
-
-			gameDataStore.performLoadPlanet = vi.fn().mockResolvedValue(false);
-
-			await expect(
-				// @ts-expect-error mock data
-				loadDefinitionFromRouteParams({
-					sharedPlanUuid: "foo",
-				})
-			).rejects.toThrowError();
-		});
-
-		it("uuid, no planet uuid", async () => {
-			const { loadDefinitionFromRouteParams } = usePlan();
-
-			await expect(
-				// @ts-expect-error mock data
-				loadDefinitionFromRouteParams({
-					planUuid: "foo",
-				})
-			).rejects.toThrowError();
-		});
-
-		it("uuid, planet uuid invalid", async () => {
-			const { loadDefinitionFromRouteParams } = usePlan();
-
-			gameDataStore.getPlanet = vi.fn().mockResolvedValue(new Error());
-
-			await expect(
-				// @ts-expect-error mock data
-				loadDefinitionFromRouteParams({
-					planUuid: "foo",
-				})
-			).rejects.toThrowError();
-		});
-
-		it("uuid, planet failure", async () => {
-			const { loadDefinitionFromRouteParams } = usePlan();
-
-			gameDataStore.getPlanet = vi.fn().mockRejectedValue(new Error());
-
-			await expect(
-				// @ts-expect-error mock data
-				loadDefinitionFromRouteParams({
-					planUuid: "foo",
-					planetNaturalId: "moo",
-				})
-			).rejects.toThrowError();
-		});
-
-		it("uuid, planet ok", async () => {
-			const { loadDefinitionFromRouteParams } = usePlan();
-
-			gameDataStore.getPlanet = vi.fn();
-			planningStore.getAllEmpires = vi
-				.fn()
-				.mockResolvedValue(empire_list);
-			planningStore.getPlan = vi.fn();
-
-			// @ts-expect-error mock data
-			const result = await loadDefinitionFromRouteParams({
-				planUuid: "foo",
-				planetNaturalId: "KW-020c",
-			});
-
-			expect(result.planData).toBeUndefined();
-		});
-
-		it("uuid failure, planet ok", async () => {
-			const { loadDefinitionFromRouteParams } = usePlan();
-
-			gameDataStore.getPlanet = vi.fn();
-			planningStore.getAllEmpires = vi
-				.fn()
-				.mockResolvedValue(empire_list);
-			planningStore.getPlan = vi.fn().mockRejectedValue(new Error());
-
-			await expect(
-				// @ts-expect-error mock data
-				loadDefinitionFromRouteParams({
-					planUuid: "foo",
-					planetNaturalId: "KW-020c",
-				})
-			).rejects.toThrowError();
-		});
-
-		it("no uuid, planet ok", async () => {
-			const { loadDefinitionFromRouteParams } = usePlan();
-
-			gameDataStore.getPlanet = vi.fn().mockResolvedValue(planet_single);
-			planningStore.getAllEmpires = vi
-				.fn()
-				.mockResolvedValue(empire_list);
-			planningStore.getPlan = vi.fn();
-
-			// @ts-expect-error mock data
-			const result = await loadDefinitionFromRouteParams({
-				planUuid: undefined,
-				planetNaturalId: "KW-020c",
-			});
-
-			expect(result.planData.planet_id).toBe("KW-020c");
-		});
-	});
-
 	describe("getPlanNamePlanet", async () => {
 		it("unknown plan throws error", async () => {
 			const { getPlanNamePlanet } = usePlan();
@@ -279,6 +139,7 @@ describe("usePlan", async () => {
 		});
 
 		it("known plan returns planetId and planName", async () => {
+			// @ts-expect-error mock data
 			planningStore.plans["foo"] = {
 				planet_id: "1",
 				name: "2",
@@ -293,6 +154,7 @@ describe("usePlan", async () => {
 		});
 
 		it("known plan returns planetId and default planName", async () => {
+			// @ts-expect-error mock data
 			planningStore.plans["foo"] = {
 				planet_id: "1",
 			};

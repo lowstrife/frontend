@@ -1,8 +1,8 @@
 <script setup lang="ts">
 	import { PropType, ref, Ref, watch } from "vue";
 
-	// API
-	import { callPatchEmpire } from "@/features/api/empireData.api";
+	import { useQuery } from "@/lib/query_cache/useQuery";
+	import { useQueryRepository } from "@/lib/query_cache/queryRepository";
 
 	// Util
 	import { inertClone } from "@/util/data";
@@ -43,7 +43,8 @@
 
 	watch(
 		() => props.data,
-		(newData: IPlanEmpireElement) => (localData.value = inertClone(newData)),
+		(newData: IPlanEmpireElement) =>
+			(localData.value = inertClone(newData)),
 		{ deep: true }
 	);
 
@@ -83,7 +84,10 @@
 		};
 
 		try {
-			await callPatchEmpire(localData.value.uuid, patchData);
+			await useQuery(useQueryRepository().repository.PatchEmpire, {
+				empireUuid: localData.value.uuid,
+				data: patchData,
+			}).execute();
 			emit("reload:empires");
 		} catch (err) {
 			console.error("Error patching empire", err);
@@ -112,29 +116,28 @@
 		label-placement="left"
 		label-width="auto"
 		label-align="left"
-		size="small"
-	>
+		size="small">
 		<n-form-item label="Name">
 			<n-input v-model:value="localData.name" />
 		</n-form-item>
 		<n-form-item label="Faction">
-			<n-select v-model:value="localData.faction" :options="factionOptions" />
+			<n-select
+				v-model:value="localData.faction"
+				:options="factionOptions" />
 		</n-form-item>
 		<n-form-item label="Permits Total">
 			<n-input-number
 				v-model:value="localData.permits_total"
 				show-button
 				:min="2"
-				class="w-full"
-			/>
+				class="w-full" />
 		</n-form-item>
 		<n-form-item label="Permits Used">
 			<n-input-number
 				v-model:value="localData.permits_used"
 				show-button
 				:min="1"
-				class="w-full"
-			/>
+				class="w-full" />
 		</n-form-item>
 		<n-form-item label="Use FIO Storage?">
 			<n-checkbox v-model:checked="localData.use_fio_storage" />

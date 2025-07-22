@@ -10,7 +10,7 @@
 	import { useExchangeData } from "@/features/game_data/useExchangeData";
 
 	// Components
-	import GameDataWrapper from "@/features/wrapper/components/GameDataWrapper.vue";
+	import WrapperGameDataLoader from "@/features/wrapper/components/WrapperGameDataLoader.vue";
 	import MaterialDataChart from "@/features/market_exploration/components/MaterialDataChart.vue";
 
 	// UI
@@ -115,11 +115,11 @@
 </script>
 
 <template>
-	<GameDataWrapper
+	<WrapperGameDataLoader
 		load-materials
 		load-exchanges
 		minimal
-		@success="
+		@complete="
 			() => {
 				if (!disableDrawer) {
 					refExchangeOverview = getMaterialExchangeOverview(
@@ -381,5 +381,5 @@
 					:display-value="refChartValue" />
 			</n-drawer-content>
 		</n-drawer>
-	</GameDataWrapper>
+	</WrapperGameDataLoader>
 </template>

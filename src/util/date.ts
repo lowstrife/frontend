@@ -91,7 +91,7 @@ export function humanizeTimeMs(value: number): string {
  * @returns {string} Relative, humanized time
  */
 export function relativeFromDate(
-	value: Date | undefined,
+	value: Date | number | undefined,
 	isUTC: boolean = false
 ): string {
 	if (value === undefined) return "—";

@@ -53,7 +53,7 @@ export const ExchangeSchema: z.ZodType<IExchange> = z.object({
 export const ExchangePayloadSchema: z.ZodType<IExchange[]> =
 	z.array(ExchangeSchema);
 
-export const RecipeMaterialSchema: z.ZodType<IRecipeMaterial> = z.object({
+const RecipeMaterialSchema: z.ZodType<IRecipeMaterial> = z.object({
 	Ticker: z.string().min(1).max(3),
 	Amount: PositiveOrZeroNumber,
 });
@@ -69,22 +69,21 @@ export const RecipeSchema: z.ZodType<IRecipe> = z.object({
 
 export const RecipePayloadSchema: z.ZodType<IRecipe[]> = z.array(RecipeSchema);
 
-export const BuildingCostSchema: z.ZodType<IBuildingCost> = z.object({
+const BuildingCostSchema: z.ZodType<IBuildingCost> = z.object({
 	CommodityTicker: z.string().min(1).max(3),
 	Weight: PositiveOrZeroNumber,
 	Volume: PositiveOrZeroNumber,
 	Amount: PositiveOrZeroNumber,
 });
 
-export const BuildingHabitationSchema: z.ZodType<IBuildingHabitation> =
-	z.object({
-		Pioneer: PositiveOrZeroNumber,
-		Settler: PositiveOrZeroNumber,
-		Technician: PositiveOrZeroNumber,
-		Engineer: PositiveOrZeroNumber,
-		Scientist: PositiveOrZeroNumber,
-		Area: z.number().gt(0),
-	});
+const BuildingHabitationSchema: z.ZodType<IBuildingHabitation> = z.object({
+	Pioneer: PositiveOrZeroNumber,
+	Settler: PositiveOrZeroNumber,
+	Technician: PositiveOrZeroNumber,
+	Engineer: PositiveOrZeroNumber,
+	Scientist: PositiveOrZeroNumber,
+	Area: z.number().gt(0),
+});
 
 const BUILDING_TYPE_ZOD = z.enum(["INFRASTRUCTURE", "PLANETARY", "PRODUCTION"]);
 const EXPERTISE_TYPE_ZOD = z.enum([
@@ -211,7 +210,7 @@ export const PlanetMultipleRequestPayload: z.ZodType<string[]> = z.array(
 	z.string()
 );
 
-export const FIOStorageItemSchema: z.ZodType<IFIOStorageItem> = z.object({
+const FIOStorageItemSchema: z.ZodType<IFIOStorageItem> = z.object({
 	MaterialId: z.string(),
 	MaterialName: z.string(),
 	MaterialTicker: z.string(),
@@ -226,7 +225,7 @@ export const FIOStorageItemSchema: z.ZodType<IFIOStorageItem> = z.object({
 	TotalVolume: z.number(),
 });
 
-export const FIOStorageBaseSchema = z.object({
+const FIOStorageBaseSchema = z.object({
 	StorageId: z.string(),
 	AddressableId: z.string(),
 	Name: z.string().nullable(),
@@ -239,7 +238,7 @@ export const FIOStorageBaseSchema = z.object({
 	StorageItems: z.array(FIOStorageItemSchema),
 });
 
-export const FIOStoragePlanetSchema = FIOStorageBaseSchema.extend({
+const FIOStoragePlanetSchema = FIOStorageBaseSchema.extend({
 	PlanetId: z.string(),
 	PlanetIdentifier: z.string(),
 	PlanetName: z.string().optional(),
@@ -247,7 +246,7 @@ export const FIOStoragePlanetSchema = FIOStorageBaseSchema.extend({
 	VolumeLoad: z.number(),
 });
 
-export const FIOStorageWarehouseSchema = FIOStorageBaseSchema.extend({
+const FIOStorageWarehouseSchema = FIOStorageBaseSchema.extend({
 	LocationNaturalId: z.string(),
 	LocationName: z.string().nullable(),
 	WarehouseId: z.string().nullable(),
@@ -260,7 +259,7 @@ export const FIOStorageWarehouseSchema = FIOStorageBaseSchema.extend({
 	FeeCollectorCode: z.string().nullable(),
 });
 
-export const FIOStorageShipSchema = FIOStorageBaseSchema.extend({
+const FIOStorageShipSchema = FIOStorageBaseSchema.extend({
 	WeightLoad: z.number(),
 	VolumeLoad: z.number(),
 	Registration: z.string(),
@@ -272,7 +271,7 @@ export const FIOStorageSchema = z.object({
 	ships: z.record(z.string(), FIOStorageShipSchema),
 });
 
-export const FIOSitePlanetBuildingMaterialSchema: z.ZodType<IFIOSitePlanetBuildingMaterial> =
+const FIOSitePlanetBuildingMaterialSchema: z.ZodType<IFIOSitePlanetBuildingMaterial> =
 	z.object({
 		MaterialId: z.string(),
 		MaterialName: z.string(),
@@ -280,8 +279,8 @@ export const FIOSitePlanetBuildingMaterialSchema: z.ZodType<IFIOSitePlanetBuildi
 		MaterialAmount: PositiveOrZeroNumber,
 	});
 
-export const FIOSitePlanetBuildingSchema: z.ZodType<IFIOSitePlanetBuilding> =
-	z.object({
+const FIOSitePlanetBuildingSchema: z.ZodType<IFIOSitePlanetBuilding> = z.object(
+	{
 		SiteBuildingId: z.string(),
 		BuildingId: z.string(),
 		BuildingCreated: z.coerce.date(),
@@ -292,9 +291,10 @@ export const FIOSitePlanetBuildingSchema: z.ZodType<IFIOSitePlanetBuilding> =
 		ReclaimableMaterials: z.array(FIOSitePlanetBuildingMaterialSchema),
 		RepairMaterials: z.array(FIOSitePlanetBuildingMaterialSchema),
 		AgeDays: z.number().nullable(),
-	});
+	}
+);
 
-export const FIOSitePlanetSchema: z.ZodType<IFIOSitePlanet> = z.object({
+const FIOSitePlanetSchema: z.ZodType<IFIOSitePlanet> = z.object({
 	SiteId: z.string(),
 	PlanetId: z.string(),
 	PlanetIdentifier: z.string(),
@@ -307,7 +307,7 @@ export const FIOSitePlanetSchema: z.ZodType<IFIOSitePlanet> = z.object({
 	Buildings: z.array(FIOSitePlanetBuildingSchema),
 });
 
-export const FIOSiteShipRepairMaterialSchema: z.ZodType<IFIOSiteShipRepairMaterial> =
+const FIOSiteShipRepairMaterialSchema: z.ZodType<IFIOSiteShipRepairMaterial> =
 	z.object({
 		ShipRepairMaterialId: z.string(),
 		MaterialName: z.string(),
@@ -316,7 +316,7 @@ export const FIOSiteShipRepairMaterialSchema: z.ZodType<IFIOSiteShipRepairMateri
 		Amount: PositiveOrZeroNumber,
 	});
 
-export const FIOSiteShipAddressLineSchema: z.ZodType<IFIOSiteShipAddressLine> =
+const FIOSiteShipAddressLineSchema: z.ZodType<IFIOSiteShipAddressLine> =
 	z.object({
 		LineId: z.string(),
 		LineType: z.string(),
@@ -324,7 +324,7 @@ export const FIOSiteShipAddressLineSchema: z.ZodType<IFIOSiteShipAddressLine> =
 		Name: z.string(),
 	});
 
-export const FIOSiteShipSchema: z.ZodType<IFIOSiteShip> = z.object({
+const FIOSiteShipSchema: z.ZodType<IFIOSiteShip> = z.object({
 	ShipId: z.string(),
 	StoreId: z.string(),
 	StlFuelStoreId: z.string(),
@@ -368,15 +368,6 @@ export const PlanetSearchAdvancedPayloadSchema: z.ZodType<IPlanetSearchAdvanced>
 	});
 
 // Schema Types
-export type MaterialType = z.infer<typeof MaterialSchema>;
-export type MaterialPayloadType = z.infer<typeof MaterialPayloadSchema>;
-export type ExchangeType = z.infer<typeof ExchangeSchema>;
-export type ExchangePayloadType = z.infer<typeof ExchangePayloadSchema>;
-export type RecipeType = z.infer<typeof RecipeSchema>;
-export type RecipePayloadType = z.infer<typeof RecipePayloadSchema>;
-export type BuildingType = z.infer<typeof BuildingSchema>;
-export type BuildingPayloadType = z.infer<typeof BuildingPayloadSchema>;
-export type PlanetType = z.infer<typeof PlanetSchema>;
 export type PlanetPayloadType = z.infer<typeof PlanetSchema>;
 export type PlanetMultiplePayloadType = z.infer<typeof PlanetMultiplePayload>;
 export type PlanetMultipleRequestType = z.infer<

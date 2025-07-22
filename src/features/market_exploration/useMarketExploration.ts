@@ -1,5 +1,6 @@
-// Services
-import { apiService } from "@/lib/apiService";
+// Composables
+import { useQuery } from "@/lib/query_cache/useQuery";
+import { useQueryRepository } from "@/lib/query_cache/queryRepository";
 
 // Util
 import { formatDate } from "@/util/date";
@@ -10,40 +11,8 @@ import {
 	IExplorationRequestPayload,
 	IMaterialExplorationRecord,
 } from "@/features/market_exploration/marketExploration.types";
-import {
-	ExplorationPayloadSchema,
-	ExplorationPayloadType,
-	ExplorationRequestPayloadSchema,
-	ExplorationRequestPayloadType,
-} from "@/features/market_exploration/marketExploration.schemas";
 
 export function useMarketExploration() {
-	/**
-	 * Calls the market exploration endpoint to fetch data
-	 * @author jplacht
-	 *
-	 * @async
-	 * @param {string} exchange Exchange Code
-	 * @param {string} ticker Material Ticker
-	 * @param {IExplorationRequestPayload} payload Payload with start and end date
-	 * @returns {Promise<IExploration[]>} Exploration data
-	 */
-	async function callExplorationData(
-		exchange: string,
-		ticker: string,
-		payload: IExplorationRequestPayload
-	): Promise<IExploration[]> {
-		return apiService.post<
-			ExplorationRequestPayloadType,
-			ExplorationPayloadType
-		>(
-			`/data/market/${exchange}/${ticker}`,
-			payload,
-			ExplorationRequestPayloadSchema,
-			ExplorationPayloadSchema
-		);
-	}
-
 	/**
 	 * Requests last 7 days of exploration data for
 	 * AI1, CI1, IC1, NC1 for single material ticker
@@ -75,19 +44,21 @@ export function useMarketExploration() {
 
 		// fetch multiple exploration data
 		const fetchPromises: Promise<IExploration[]>[] = [
-			callExplorationData("AI1", ticker, fetchPayload).then(
-				(result: IExploration[]) => (data["AI1"] = result)
-			),
-			callExplorationData("CI1", ticker, fetchPayload).then(
-				(result: IExploration[]) => (data["CI1"] = result)
-			),
-			callExplorationData("IC1", ticker, fetchPayload).then(
-				(result: IExploration[]) => (data["IC1"] = result)
-			),
-			callExplorationData("NC1", ticker, fetchPayload).then(
-				(result: IExploration[]) => (data["NC1"] = result)
-			),
-		];
+			"AI1",
+			"CI1",
+			"IC1",
+			"NC1",
+		].map((exchangeTicker) =>
+			useQuery(useQueryRepository().repository.GetExplorationData, {
+				exchangeTicker: exchangeTicker,
+				materialTicker: ticker,
+				payload: fetchPayload,
+			})
+				.execute()
+				.then(
+					(result: IExploration[]) => (data[exchangeTicker] = result)
+				)
+		);
 
 		await Promise.all(fetchPromises);
 
@@ -95,7 +66,6 @@ export function useMarketExploration() {
 	}
 
 	return {
-		callExplorationData,
 		getMaterialExplorationData,
 	};
 }

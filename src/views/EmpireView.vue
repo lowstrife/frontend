@@ -14,10 +14,6 @@
 		title: "Empire | PRUNplanner",
 	});
 
-	// Stores
-	import { usePlanningStore } from "@/stores/planningStore";
-	const planningStore = usePlanningStore();
-
 	// Composables
 	import { usePlanCalculation } from "@/features/planning/usePlanCalculation";
 	import { useMaterialIOUtil } from "@/features/planning/util/materialIO.util";
@@ -27,10 +23,10 @@
 
 	// Components
 	import RenderingProgress from "@/layout/components/RenderingProgress.vue";
-	import EmpireDataWrapper from "@/features/wrapper/components/EmpireDataWrapper.vue";
+	import WrapperPlanningDataLoader from "@/features/wrapper/components/WrapperPlanningDataLoader.vue";
 
-	const AsyncGameDataWrapper = defineAsyncComponent(
-		() => import("@/features/wrapper/components/GameDataWrapper.vue")
+	const AsyncWrapperGameDataLoader = defineAsyncComponent(
+		() => import("@/features/wrapper/components/WrapperGameDataLoader.vue")
 	);
 	const AsyncEmpirePlanList = defineAsyncComponent(
 		() => import("@/features/empire/components/EmpirePlanList.vue")
@@ -56,6 +52,8 @@
 
 	// UI
 	import { NForm, NFormItem, NSelect } from "naive-ui";
+	import { useQuery } from "@/lib/query_cache/useQuery";
+	import { useQueryRepository } from "@/lib/query_cache/queryRepository";
 
 	const props = defineProps({
 		empireUuid: {
@@ -111,7 +109,9 @@
 	async function reloadEmpires(): Promise<void> {
 		try {
 			// make a forced call to also update store
-			refEmpireList.value = await planningStore.getAllEmpires(true);
+			refEmpireList.value = await useQuery(
+				useQueryRepository().repository.GetAllEmpires
+			).execute();
 		} catch (err) {
 			console.error("Error reloading empires", err);
 		}
@@ -220,26 +220,27 @@
 </script>
 
 <template>
-	<EmpireDataWrapper
-		:key="`EMPIREWRAPPER#${selectedEmpireUuid}`"
+	<WrapperPlanningDataLoader
+		:key="`WrapperPlanningDataLoader#${selectedEmpireUuid}`"
+		empire-list
 		:empire-uuid="selectedEmpireUuid"
+		@data:empire:plans="(value: IPlan[]) => (planData = value)"
 		@update:empire-uuid="(value: string) => (selectedEmpireUuid = value)"
-		@update:plan-list="(value: IPlan[]) => (planData = value)"
 		@update:cx-uuid="
 			(value: string | undefined) => (selectedCXUuid = value)
 		"
-		@update:empire-list="
+		@data:empire:list="
 			(value: IPlanEmpireElement[]) => (refEmpireList = value)
 		">
-		<template #default="{ empireList, planetList }">
-			<AsyncGameDataWrapper
+		<template #default="{ empireList, empirePlanetList }">
+			<AsyncWrapperGameDataLoader
 				:key="`GAMEDATAWRAPPER#${selectedEmpireUuid}`"
 				load-materials
 				load-exchanges
 				load-recipes
 				load-buildings
-				:load-multiple-planets="planetList"
-				@success="calculateEmpire">
+				:load-planet-multiple="empirePlanetList"
+				@complete="calculateEmpire">
 				<template v-if="isCalculating">
 					<div>Calculating</div>
 				</template>
@@ -383,7 +384,7 @@
 						</div>
 					</div>
 				</template>
-			</AsyncGameDataWrapper>
+			</AsyncWrapperGameDataLoader>
 		</template>
-	</EmpireDataWrapper>
+	</WrapperPlanningDataLoader>
 </template>

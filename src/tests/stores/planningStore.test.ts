@@ -1,46 +1,6 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import { createPinia, setActivePinia } from "pinia";
 
-// mocks
-vi.mock("@/features/api/planData.api", async () => {
-	return {
-		...(await vi.importActual("@/features/api/planData.api")),
-		callGetPlan: vi.fn(),
-		callGetPlanlist: vi.fn(),
-	};
-});
-
-vi.mock("@/features/api/sharingData.api", async () => {
-	return {
-		...(await vi.importActual("@/features/api/sharingData.api")),
-		callGetSharedList: vi.fn(),
-	};
-});
-
-vi.mock("@/features/api/cxData.api", async () => {
-	return {
-		...(await vi.importActual("@/features/api/cxData.api")),
-		callGetCXList: vi.fn(),
-	};
-});
-
-vi.mock("@/features/api/empireData.api", async () => {
-	return {
-		...(await vi.importActual("@/features/api/empireData.api")),
-		callGetEmpireList: vi.fn(),
-		callGetEmpirePlans: vi.fn(),
-	};
-});
-
-import { callGetPlan, callGetPlanlist } from "@/features/api/planData.api";
-
-import {
-	callGetEmpireList,
-	callGetEmpirePlans,
-} from "@/features/api/empireData.api";
-import { callGetCXList } from "@/features/api/cxData.api";
-import { callGetSharedList } from "@/features/api/sharingData.api";
-
 // stores
 import { usePlanningStore } from "@/stores/planningStore";
 
@@ -62,211 +22,118 @@ describe("Planning Store", async () => {
 		vi.resetAllMocks();
 	});
 
-	describe("getPlan", async () => {
-		it("plan uuid already fetched", async () => {
-			planningStore.plans[etherwindUuid] = plan_etherwind;
-
-			const result = await planningStore.getPlan(etherwindUuid);
-			expect(result.uuid).toBe(etherwindUuid);
+	describe("setters and getters", async () => {
+		it("setEmpires", async () => {
+			planningStore.setEmpires(empire_list);
+			expect(Object.keys(planningStore.empires).length).toBe(2);
 		});
 
-		it("fetch new plan, ok", async () => {
-			// @ts-expect-error mock data
-			vi.mocked(callGetPlan).mockResolvedValue(plan_etherwind);
-			const result = await planningStore.getPlan(etherwindUuid);
-			expect(result.uuid).toBe(etherwindUuid);
-			expect(callGetPlan).toBeCalledTimes(1);
-		});
-
-		it("fetch new plan, error", async () => {
-			vi.mocked(callGetPlan).mockRejectedValueOnce(new Error());
-
-			await expect(
-				planningStore.getPlan(etherwindUuid)
-			).rejects.toThrowError();
-		});
-	});
-
-	describe("getAllPlans", async () => {
-		it("fetch new plans, ok", async () => {
-			vi.mocked(callGetPlanlist).mockResolvedValue([
-				// @ts-expect-error mock data
-				plan_etherwind,
-			]);
-			const result = await planningStore.getAllPlans();
-			expect(result.length).toBe(1);
-			expect(callGetPlanlist).toBeCalledTimes(1);
-		});
-
-		it("fetch new plan, error", async () => {
-			vi.mocked(callGetPlanlist).mockRejectedValueOnce(new Error());
-
-			await expect(planningStore.getAllPlans).rejects.toThrowError();
-		});
-
-		it("fetch new plan, no plans found, 404", async () => {
-			vi.mocked(callGetPlanlist).mockRejectedValueOnce(
-				new Error("HTTP 404")
-			);
-
-			const result = await planningStore.getAllPlans();
-			expect(result.length).toBe(0);
-			expect(callGetPlanlist).toBeCalledTimes(1);
-		});
-	});
-
-	describe("getAllEmpires", async () => {
-		it("empires were loaded, return", async () => {
-			empire_list.forEach((e) => {
-				planningStore.empires[e.uuid] = e;
-			});
-
-			const result = await planningStore.getAllEmpires();
-
-			expect(result.length).toBe(empire_list.length);
-		});
-
-		it("no empires, try to fetch all with error", async () => {
-			planningStore.empires = {};
-
-			vi.mocked(callGetEmpireList).mockRejectedValueOnce(new Error());
-
-			await expect(planningStore.getAllEmpires()).rejects.toThrowError();
-		});
-
-		it("no empires, try to fetch all with success", async () => {
-			planningStore.empires = {};
-
-			vi.mocked(callGetEmpireList).mockResolvedValueOnce(empire_list);
-
-			const result = await planningStore.getAllEmpires();
-
-			expect(result.length).toBe(empire_list.length);
-		});
-	});
-
-	describe("getCX", async () => {
-		it("get valid cx", async () => {
-			cx_list.forEach((cx) => {
-				planningStore.cxs[cx.uuid] = cx;
-			});
-
-			const result = planningStore.getCX(cx_list[0].uuid);
-			expect(result).toStrictEqual(cx_list[0]);
-		});
-
-		it("get invalid cx, error", async () => {
-			expect(() => planningStore.getCX("meow")).toThrowError();
-		});
-	});
-
-	describe("getAllCX", async () => {
-		it("cxs were loaded, return", async () => {
-			cx_list.forEach((cx) => {
-				planningStore.cxs[cx.uuid] = cx;
-			});
-
-			const result = await planningStore.getAllCX();
-
-			expect(result.length).toBe(cx_list.length);
-		});
-
-		it("no cxs, try to fetch all with error", async () => {
-			planningStore.cxs = {};
-
-			vi.mocked(callGetCXList).mockRejectedValueOnce(new Error());
-
-			await expect(planningStore.getAllCX()).rejects.toThrowError();
-		});
-
-		it("no cxs, try to fetch all with success", async () => {
-			planningStore.cxs = {};
-
-			// @ts-expect-error mock data
-			vi.mocked(callGetCXList).mockResolvedValueOnce(cx_list);
-
-			const result = await planningStore.getAllCX();
-
-			expect(result.length).toBe(cx_list.length);
-		});
-	});
-
-	describe("getOrLoadEmpirePlans", async () => {
-		it("given planuuids, all already present", async () => {
-			planningStore.plans["foo"] = {};
-			planningStore.plans["moo"] = {};
-
-			const result = await planningStore.getOrLoadEmpirePlans("123", [
-				"foo",
-				"moo",
-			]);
-
-			expect(result).toStrictEqual([{}, {}]);
-		});
-
-		it("given plan uuids, load fresh", async () => {
-			planningStore.plans = {};
-
-			const mockResponse = [{ uuid: "foo" }, { uuid: "moo" }];
-
-			// @ts-expect-error mock data
-			vi.mocked(callGetEmpirePlans).mockResolvedValueOnce(mockResponse);
-
-			const result = await planningStore.getOrLoadEmpirePlans("123", [
-				"foo",
-				"moo",
-			]);
-			expect(result).toStrictEqual(mockResponse);
-		});
-	});
-
-	describe("getSharedList", async () => {
-		it("get valid shared", async () => {
-			const mockResponse = shared_list;
-
-			vi.mocked(callGetSharedList).mockResolvedValueOnce(mockResponse);
-
-			const result = await planningStore.getSharedList();
-			expect(result).toStrictEqual(shared_list);
-			expect(Object.keys(planningStore.shared).length).toBe(
-				shared_list.length
+		it("getAllEmpires", async () => {
+			planningStore.setEmpires(empire_list);
+			await expect(planningStore.getAllEmpires()).resolves.toStrictEqual(
+				empire_list
 			);
 		});
 
-		it("api error", async () => {
-			vi.mocked(callGetSharedList).mockRejectedValueOnce(new Error());
+		it("setPlan", async () => {
+			planningStore.setPlan(plan_etherwind);
+			const ewUuid: string = plan_etherwind.uuid;
+			expect(planningStore.plans[ewUuid]).toBeDefined();
+		});
 
-			await expect(planningStore.getSharedList()).rejects.toThrowError();
+		it("setPlan, no uuid", async () => {
+			expect(() => planningStore.setPlan({ name: "foo" })).toThrowError();
+		});
+
+		it("setPlans", async () => {
+			planningStore.setPlans([plan_etherwind, plan_etherwind]);
+			// same uuid, one entry
+			expect(Object.keys(planningStore.plans).length).toBe(1);
+		});
+
+		it("deletePlan", async () => {
+			planningStore.setPlan(plan_etherwind);
+			const ewUuid: string = plan_etherwind.uuid;
+			expect(planningStore.plans[ewUuid]).toBeDefined();
+			planningStore.deletePlan(ewUuid);
+			expect(planningStore.plans[ewUuid]).toBeUndefined();
+		});
+
+		it("setCXs", async () => {
+			planningStore.setCXs(cx_list);
+			expect(Object.keys(planningStore.cxs).length).toBe(6);
+		});
+
+		it("setCXs", async () => {
+			planningStore.setCXs(cx_list);
+			await expect(planningStore.getAllCX()).resolves.toStrictEqual(
+				cx_list
+			);
+		});
+
+		it("getCX", async () => {
+			planningStore.setCXs(cx_list);
+			expect(
+				planningStore.getCX("2a83a2ca-db0c-49d2-9c43-0db08c1675bb")
+			).toBeDefined();
+			expect(() => planningStore.getCX("foo")).toThrowError();
+		});
+
+		it("setSharedList", async () => {
+			planningStore.setSharedList(shared_list);
+			expect(Object.keys(planningStore.shared).length).toBe(2);
+		});
+
+		it("getSharedList", async () => {
+			planningStore.setSharedList(shared_list);
+			await expect(planningStore.getSharedList()).resolves.toStrictEqual(
+				shared_list
+			);
+		});
+
+		it("deleteShared", async () => {
+			planningStore.setSharedList(shared_list);
+			const sharedPlanUuid: string =
+				"0fa56f16-a1cc-496a-9a39-bb93f172b9f4";
+			planningStore.deleteShared(sharedPlanUuid);
+			expect(Object.keys(planningStore.shared).length).toBe(1);
+		});
+
+		describe("getPlan", async () => {
+			it("plan uuid already fetched", async () => {
+				planningStore.plans[etherwindUuid] = plan_etherwind;
+
+				const result = await planningStore.getPlan(etherwindUuid);
+				expect(result.uuid).toBe(etherwindUuid);
+			});
+
+			it("fetch non existing plan", async () => {
+				await expect(() =>
+					planningStore.getPlan("foo")
+				).rejects.toThrowError();
+			});
+		});
+
+		it("getAllPlans", async () => {
+			planningStore.plans["foo"] = plan_etherwind;
+			planningStore.plans["moo"] = plan_etherwind;
+
+			const data = await planningStore.getAllPlans();
+			expect(data).toStrictEqual([plan_etherwind, plan_etherwind]);
 		});
 	});
 
-	describe("resetter", async () => {
-		it("reset plans", async () => {
-			planningStore.plans["foo"] = "moo";
+	it("$reset", async () => {
+		planningStore.plans = true;
+		planningStore.empires = true;
+		planningStore.cxs = true;
+		planningStore.shared = true;
 
-			planningStore.resetPlans();
-			expect(Object.keys(planningStore.plans).length).toBe(0);
-		});
+		planningStore.$reset();
 
-		it("reset empires", async () => {
-			planningStore.empires["foo"] = "moo";
-
-			planningStore.resetEmpires();
-			expect(Object.keys(planningStore.empires).length).toBe(0);
-		});
-
-		it("reset cxs", async () => {
-			planningStore.cxs["foo"] = "moo";
-
-			planningStore.resetCXS();
-			expect(Object.keys(planningStore.cxs).length).toBe(0);
-		});
-
-		it("reset shared", async () => {
-			planningStore.shared["foo"] = "moo";
-
-			planningStore.resetShared();
-			expect(Object.keys(planningStore.shared).length).toBe(0);
-		});
+		expect(planningStore.plans).toStrictEqual({});
+		expect(planningStore.empires).toStrictEqual({});
+		expect(planningStore.cxs).toStrictEqual({});
+		expect(planningStore.shared).toStrictEqual({});
 	});
 });

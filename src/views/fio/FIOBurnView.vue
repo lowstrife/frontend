@@ -24,11 +24,11 @@
 	const { defaultEmpireUuid, burnDaysRed, burnDaysYellow } = usePreferences();
 
 	// Components
-	import EmpireDataWrapper from "@/features/wrapper/components/EmpireDataWrapper.vue";
+	import WrapperPlanningDataLoader from "@/features/wrapper/components/WrapperPlanningDataLoader.vue";
 	import HelpDrawer from "@/features/help/components/HelpDrawer.vue";
 
-	const AsyncGameDataWrapper = defineAsyncComponent(
-		() => import("@/features/wrapper/components/GameDataWrapper.vue")
+	const AsyncWrapperGameDataLoader = defineAsyncComponent(
+		() => import("@/features/wrapper/components/WrapperGameDataLoader.vue")
 	);
 	const AsyncFIOBurnPlanTable = defineAsyncComponent(
 		() => import("@/features/fio/components/FIOBurnPlanTable.vue")
@@ -92,26 +92,26 @@
 </script>
 
 <template>
-	<EmpireDataWrapper
-		:key="`EMPIREWRAPPER#${refSelectedEmpireUuid}`"
+	<WrapperPlanningDataLoader
+		:key="`WrapperPlanningDataLoader#${refSelectedEmpireUuid}`"
+		empire-list
 		:empire-uuid="refSelectedEmpireUuid"
-		@update:empire-uuid="(value: string) => (refSelectedEmpireUuid = value)"
-		@update:plan-list="(value: IPlan[]) => (refPlanData = value)"
 		@update:cx-uuid="
 			(value: string | undefined) => (refSelectedCXUuid = value)
 		"
-		@update:empire-list="
+		@data:empire:list="
 			(value: IPlanEmpireElement[]) => (refEmpireList = value)
-		">
-		<template #default="{ planetList }">
-			<AsyncGameDataWrapper
+		"
+		@data:empire:plans="(value: IPlan[]) => (refPlanData = value)">
+		<template #default="{ empirePlanetList }">
+			<AsyncWrapperGameDataLoader
 				:key="`GAMEDATAWRAPPER#${refSelectedEmpireUuid}`"
 				load-materials
 				load-exchanges
 				load-recipes
 				load-buildings
-				:load-multiple-planets="planetList"
-				@success="calculateEmpire">
+				:load-planet-multiple="empirePlanetList"
+				@complete="calculateEmpire">
 				<div class="min-h-screen flex flex-col">
 					<div
 						class="px-6 py-3 border-b border-white/10 flex flex-row justify-between">
@@ -192,7 +192,7 @@
 						</div>
 					</div>
 				</div>
-			</AsyncGameDataWrapper>
+			</AsyncWrapperGameDataLoader>
 		</template>
-	</EmpireDataWrapper>
+	</WrapperPlanningDataLoader>
 </template>

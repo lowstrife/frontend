@@ -8,7 +8,7 @@
 	});
 
 	// Components
-	import ManageDataWrapper from "@/features/wrapper/components/ManageDataWrapper.vue";
+	import WrapperPlanningDataLoader from "@/features/wrapper/components/WrapperPlanningDataLoader.vue";
 	import HelpDrawer from "@/features/help/components/HelpDrawer.vue";
 	const AsyncManagePlanEmpireAssignments = defineAsyncComponent(
 		() =>
@@ -36,10 +36,16 @@
 </script>
 
 <template>
-	<ManageDataWrapper
-		@update:empire-list="(empireData) => (empireList = empireData)"
-		@update:plan-list="(planData) => (planList = planData)"
-		@update:cx-list="(cxData) => (cxList = cxData)">
+	<WrapperPlanningDataLoader
+		empire-list
+		plan-list
+		load-c-x
+		load-shared
+		@data:cx="(value: ICX[]) => (cxList = value)"
+		@data:empire:list="
+			(value: IPlanEmpireElement[]) => (empireList = value)
+		"
+		@data:plan:list="(value: IPlan[]) => (planList = value)">
 		<div
 			class="px-6 py-3 border-b border-white/10 flex flex-row justify-between gap-x-3">
 			<h1 class="text-2xl font-bold my-auto">Management</h1>
@@ -69,5 +75,5 @@
 				@update:empire-list="(empireData) => (empireList = empireData)"
 				@update:plan-list="(planData) => (planList = planData)" />
 		</div>
-	</ManageDataWrapper>
+	</WrapperPlanningDataLoader>
 </template>

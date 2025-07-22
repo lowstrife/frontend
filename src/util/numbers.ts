@@ -1,4 +1,5 @@
 import numbro from "numbro";
+import { BOUNDARY_DESCRIPTOR } from "@/util/numbers.types";
 
 /**
  * Formats Number as String of 0,0.00

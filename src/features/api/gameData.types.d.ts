@@ -63,7 +63,7 @@ export type BUILDING_EXPERTISE_TYPE =
 	| "METALLURGY"
 	| "RESOURCE_EXTRACTION";
 
-export type BUILDING_TYPE = "INFRASTRUCTURE" | "PLANETARY" | "PRODUCTION";
+type BUILDING_TYPE = "INFRASTRUCTURE" | "PLANETARY" | "PRODUCTION";
 
 export interface IBuilding {
 	Name: string;
@@ -89,7 +89,7 @@ export interface IBuilding {
 }
 
 export type PLANET_RESOURCETYPE_TYPE = "MINERAL" | "GASEOUS" | "LIQUID";
-export type PLANET_DISTANCE_NAMES =
+type PLANET_DISTANCE_NAMES =
 	| "Moria Station"
 	| "Antares Station"
 	| "Benten Station"
@@ -139,7 +139,7 @@ export interface IPlanetCOGCProgram {
 	EndEpochMs: number;
 }
 
-export type PLANET_COGCPROGRAM_STATUS_TYPE = "ACTIVE" | "ON_STRIKE" | "PLANNED";
+type PLANET_COGCPROGRAM_STATUS_TYPE = "ACTIVE" | "ON_STRIKE" | "PLANNED";
 
 export interface IPlanet {
 	PlanetId: string;
@@ -183,7 +183,7 @@ export interface IFIOStorageItem {
 	TotalVolume: number;
 }
 
-export interface IFIOStorageBase {
+interface IFIOStorageBase {
 	StorageId: string;
 	AddressableId: string;
 	Name: string | null;

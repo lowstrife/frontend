@@ -1,15 +1,6 @@
 import { defineStore } from "pinia";
 import { ref, Ref } from "vue";
 
-// API
-import { callGetPlan, callGetPlanlist } from "@/features/api/planData.api";
-import { callGetSharedList } from "@/features/api/sharingData.api";
-import {
-	callGetEmpireList,
-	callGetEmpirePlans,
-} from "@/features/api/empireData.api";
-import { callGetCXList } from "@/features/api/cxData.api";
-
 // Util
 import { inertClone } from "@/util/data";
 
@@ -39,7 +30,10 @@ export const usePlanningStore = defineStore(
 		/** Key: Plan.uuid */
 		const shared: Ref<ISharedRecord> = ref({});
 
-		// state reset
+		/**
+		 * Resets all store variables to their initial values
+		 * @author jplacht
+		 */
 		function $reset(): void {
 			plans.value = {};
 			empires.value = {};
@@ -47,7 +41,91 @@ export const usePlanningStore = defineStore(
 			shared.value = {};
 		}
 
-		// computed getters
+		// setters
+
+		/**
+		 * Sets empires by their Uuid
+		 * @author jplacht
+		 *
+		 * @param {IPlanEmpireElement[]} empireList Empire Data
+		 */
+		function setEmpires(empireList: IPlanEmpireElement[]): void {
+			empires.value = {};
+			// store by Empire.uuid
+			empireList.forEach((e) => {
+				empires.value[e.uuid] = e;
+			});
+		}
+
+		/**
+		 * Sets plans by their UUID
+		 * @author jplacht
+		 *
+		 * @param {IPlan} data Plan Data
+		 */
+		function setPlan(data: IPlan): void {
+			if (!data.uuid)
+				throw new Error("Can't set plan data for undefined uuid.");
+
+			plans.value[data.uuid] = data;
+		}
+
+		/**
+		 * Sets multiple plans by their Uuid
+		 * @author jplacht
+		 *
+		 * @param {IPlan[]} data Plan Data List
+		 */
+		function setPlans(data: IPlan[]): void {
+			data.forEach((p) => setPlan(p));
+		}
+
+		/**
+		 * Deletes a plan by its Uuid
+		 * @author jplacht
+		 *
+		 * @param {string} planUuid Plan Uuid
+		 */
+		function deletePlan(planUuid: string): void {
+			delete plans.value[planUuid];
+		}
+
+		/**
+		 * Sets multiple CX by their Uuid
+		 * @author jplacht
+		 *
+		 * @param {ICX[]} data CX Data List
+		 */
+		function setCXs(data: ICX[]): void {
+			cxs.value = {};
+			// store by CX.uuid
+			data.forEach((c) => {
+				cxs.value[c.uuid] = c;
+			});
+		}
+
+		/**
+		 * Sets Shared Plans information by their Plan Uuid
+		 * @author jplacht
+		 *
+		 * @param {IShared[]} data Shared Data List
+		 */
+		function setSharedList(data: IShared[]): void {
+			shared.value = {};
+			data.forEach((s) => {
+				shared.value[s.plan_uuid] = s;
+			});
+		}
+
+		/**
+		 * Deletes a shared plan by its plan Uuid
+		 * @author jplacht
+		 *
+		 * @param {string} planUuid Plan Uuid
+		 */
+		function deleteShared(planUuid: string): void {
+			delete shared.value[planUuid];
+		}
 
 		/**
 		 * Get CX Preference information by CX Uuid
@@ -66,11 +144,8 @@ export const usePlanningStore = defineStore(
 			);
 		}
 
-		// functions
-
 		/**
-		 * Fetches a plan from store or backend depending if it was
-		 * already fetched previously.
+		 * Gets a plan by its Uuid
 		 *
 		 * @author jplacht
 		 *
@@ -84,17 +159,9 @@ export const usePlanningStore = defineStore(
 
 			if (findPlan) return inertClone(plans.value[planUuid]);
 
-			// load from backend
-			try {
-				const fetchedPlan: IPlan = await callGetPlan(planUuid);
-
-				plans.value[planUuid] = fetchedPlan;
-				return inertClone(plans.value[planUuid]);
-			} catch (error) {
-				// print and also throw error
-				console.error(error);
-				throw error;
-			}
+			throw new Error(
+				`No data: Plan '${planUuid}'. Ensure Plan uuid is valid and planning data has been loaded.`
+			);
 		}
 
 		/**
@@ -106,27 +173,7 @@ export const usePlanningStore = defineStore(
 		 * @returns {Promise<IPlan[]>} Plan Data List
 		 */
 		async function getAllPlans(): Promise<IPlan[]> {
-			try {
-				plans.value = {};
-				const fetchedPlans: IPlan[] = await callGetPlanlist();
-
-				fetchedPlans.forEach((plan) => {
-					plans.value[plan.uuid!] = plan;
-				});
-
-				return inertClone(Object.values(plans.value));
-			} catch (error) {
-				// there could be a 404 error, the user doesn't have plans yet
-				if (
-					error instanceof Error &&
-					error.message.includes("HTTP 404")
-				) {
-					return [];
-				}
-
-				console.error(error);
-				throw error;
-			}
+			return inertClone(Object.values(plans.value));
 		}
 
 		/**
@@ -138,85 +185,8 @@ export const usePlanningStore = defineStore(
 		 * @param {boolean} [force=false] Force Load from backend
 		 * @returns {Promise<IPlanEmpireElement[]>} Empire List
 		 */
-		async function getAllEmpires(
-			force: boolean = false
-		): Promise<IPlanEmpireElement[]> {
-			// try getting from already fetched first, if not forced
-			if (!force && Object.keys(empires.value).length > 0) {
-				return inertClone(Object.values(empires.value));
-			}
-
-			// load from backend
-			try {
-				const fetchedEmpireList: IPlanEmpireElement[] =
-					await callGetEmpireList();
-
-				// initially reset empires
-				empires.value = {};
-
-				// store by Empire.uuid
-				fetchedEmpireList.forEach((e) => {
-					empires.value[e.uuid] = e;
-				});
-
-				return inertClone(Object.values(empires.value));
-			} catch (error) {
-				console.error(error);
-				throw error;
-			}
-		}
-
-		/**
-		 * Gets all plans for given empire either from already stored data
-		 * or fetching missing ones from the backend api
-		 * @author jplacht
-		 *
-		 * @async
-		 * @param {string} empireUuid Empire Uuid
-		 * @param {string[]} [planUuids=[]] Array of Plan Uuids to fetch
-		 * @returns {Promise<IPlan[]>} Array of Plan Data
-		 */
-		async function getOrLoadEmpirePlans(
-			empireUuid: string,
-			planUuids: string[] = []
-		): Promise<IPlan[]> {
-			// if there is a an array of planUuids, check for existance of all plans
-			if (planUuids.length > 0) {
-				const plansInStore: string[] = Object.keys(plans.value);
-
-				const checker: boolean = planUuids.every((p) =>
-					plansInStore.includes(p)
-				);
-				if (checker) {
-					// all plans existing, return them
-					const planList: IPlan[] = [];
-					planUuids.map(async (uuid) => {
-						planList.push(await getPlan(uuid));
-					});
-
-					return planList;
-				}
-			}
-
-			// call endpoint to retrieve all plans for this empire
-			const loadedPlans: IPlan[] = await callGetEmpirePlans(empireUuid);
-
-			// store
-			loadedPlans.forEach((empirePlan) => {
-				plans.value[empirePlan.uuid!] = empirePlan;
-			});
-
-			// return all from store
-			const loadedPlanList: IPlan[] = [];
-			loadedPlans
-				.map((e) => e.uuid)
-				.forEach(async (planUuid) => {
-					if (planUuid) {
-						loadedPlanList.push(await getPlan(planUuid));
-					}
-				});
-
-			return loadedPlanList;
+		async function getAllEmpires(): Promise<IPlanEmpireElement[]> {
+			return inertClone(Object.values(empires.value));
 		}
 
 		/**
@@ -228,23 +198,7 @@ export const usePlanningStore = defineStore(
 		 * @async
 		 * @returns {Promise<ICX[]>} CX Preference Data Array
 		 */
-		async function getAllCX(force: boolean = false): Promise<ICX[]> {
-			// try getting from already fetched cx data first, if not forced
-			if (!force && Object.keys(cxs.value).length > 0) {
-				return inertClone(Object.values(cxs.value));
-			}
-
-			// load from backend
-			const fetchedCXList: ICX[] = await callGetCXList();
-
-			// reset existing cx data
-			cxs.value = {};
-
-			// store by CX.uuid
-			fetchedCXList.forEach((c) => {
-				cxs.value[c.uuid] = c;
-			});
-
+		async function getAllCX(): Promise<ICX[]> {
 			return inertClone(Object.values(cxs.value));
 		}
 
@@ -256,49 +210,7 @@ export const usePlanningStore = defineStore(
 		 * @returns {Promise<ISharedPlan[]>} Sharing Information List
 		 */
 		async function getSharedList(): Promise<ISharedPlan[]> {
-			const fetchedShared: IShared[] = await callGetSharedList();
-
-			// reset existing shared data
-			shared.value = {};
-
-			// store by Plan.uuid
-			fetchedShared.forEach((s) => {
-				shared.value[s.plan_uuid] = s;
-			});
-
 			return inertClone(Object.values(shared.value));
-		}
-
-		/**
-		 * Resets plans
-		 * @author jplacht
-		 */
-		function resetPlans(): void {
-			plans.value = {};
-		}
-
-		/**
-		 * Resets empires
-		 * @author jplacht
-		 */
-		function resetEmpires(): void {
-			empires.value = {};
-		}
-
-		/**
-		 * Resets exchange preferences
-		 * @author jplacht
-		 */
-		function resetCXS(): void {
-			cxs.value = {};
-		}
-
-		/**
-		 * Resets shared plans
-		 * @author jplacht
-		 */
-		function resetShared(): void {
-			shared.value = {};
 		}
 
 		return {
@@ -309,21 +221,21 @@ export const usePlanningStore = defineStore(
 			shared,
 			// reset
 			$reset,
-			// computed getters
+			// setters
+			setEmpires,
+			setPlan,
+			setPlans,
+			setCXs,
+			setSharedList,
+			deleteShared,
+			deletePlan,
 			// getters
 			getCX,
-			// functions
 			getPlan,
 			getAllEmpires,
 			getAllCX,
-			getOrLoadEmpirePlans,
 			getAllPlans,
 			getSharedList,
-			// resetter
-			resetPlans,
-			resetEmpires,
-			resetCXS,
-			resetShared,
 		};
 	},
 	{

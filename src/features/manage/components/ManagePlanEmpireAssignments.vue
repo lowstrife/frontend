@@ -1,17 +1,11 @@
 <script setup lang="ts">
 	import { computed, ComputedRef, PropType, ref, Ref, watch } from "vue";
 
-	// Stores
-	import { usePlanningStore } from "@/stores/planningStore";
-	const planningStore = usePlanningStore();
-
-	// API
-	import { callClonePlan, callDeletePlan } from "@/features/api/planData.api";
-	import { callPatchEmpirePlanJunctions } from "@/features/api/empireData.api";
-
 	// Composables
 	import { usePlanetData } from "@/features/game_data/usePlanetData";
 	const { getPlanetName } = usePlanetData();
+	import { useQuery } from "@/lib/query_cache/useQuery";
+	import { useQueryRepository } from "@/lib/query_cache/queryRepository";
 
 	// Util
 	import { inertClone } from "@/util/data";
@@ -169,27 +163,27 @@
 		}
 	);
 
+	async function updateEmitEmpiresPlans(): Promise<void> {
+		useQuery(useQueryRepository().repository.GetAllEmpires, undefined)
+			.execute()
+			.then((e: IPlanEmpireElement[]) => {
+				emit("update:empireList", e);
+			});
+
+		useQuery(useQueryRepository().repository.GetAllPlans, undefined)
+			.execute()
+			.then((p: IPlan[]) => emit("update:planList", p));
+	}
+
 	async function patchJunctions(): Promise<void> {
 		refIsPatching.value = true;
 
-		try {
-			// patch junctions, if success refresh data and emit
-			try {
-				await callPatchEmpirePlanJunctions(patchJunctionData.value);
-			} finally {
-				// forced reload of all Empires
-				emit(
-					"update:empireList",
-					await planningStore.getAllEmpires(true)
-				);
-				// reload of all Plans
-				emit("update:planList", await planningStore.getAllPlans());
-			}
-		} catch (err) {
-			console.log(err);
-		} finally {
-			refIsPatching.value = false;
-		}
+		useQuery(useQueryRepository().repository.PatchEmpirePlanJunctions, {
+			junctions: patchJunctionData.value,
+		})
+			.execute()
+			.then(() => updateEmitEmpiresPlans())
+			.finally(() => (refIsPatching.value = false));
 	}
 
 	async function clonePlan(
@@ -198,23 +192,15 @@
 	): Promise<void> {
 		refIsCloning.value = planUuid;
 
-		try {
-			try {
-				await callClonePlan(planUuid, `${planName} (Clone)`);
-			} finally {
-				// forced reload of all Empires
-				emit(
-					"update:empireList",
-					await planningStore.getAllEmpires(true)
-				);
-				// reload of all Plans
-				emit("update:planList", await planningStore.getAllPlans());
-			}
-		} catch (err) {
-			console.error(err);
-		} finally {
-			refIsCloning.value = undefined;
-		}
+		useQuery(useQueryRepository().repository.ClonePlan, {
+			planUuid: planUuid,
+			cloneName: `${planName} (Clone)`,
+		})
+			.execute()
+			.then(() => updateEmitEmpiresPlans())
+			.finally(() => {
+				refIsCloning.value = undefined;
+			});
 	}
 
 	function handleDeleteConfirm(planUuid: string): void {
@@ -231,22 +217,15 @@
 
 	async function deletePlan(planUuid: string): Promise<void> {
 		refIsDeleting.value = planUuid;
-		try {
-			const deletionStatus: boolean = await callDeletePlan(planUuid);
-			if (deletionStatus) {
-				// forced reload of all Empires
-				emit(
-					"update:empireList",
-					await planningStore.getAllEmpires(true)
-				);
-				// reload of all Plans
-				emit("update:planList", await planningStore.getAllPlans());
-			}
-		} catch (err) {
-			console.error(err);
-		} finally {
-			refIsDeleting.value = undefined;
-		}
+
+		useQuery(useQueryRepository().repository.DeletePlan, {
+			planUuid: planUuid,
+		})
+			.execute()
+			.then(() => updateEmitEmpiresPlans())
+			.finally(() => {
+				refIsDeleting.value = undefined;
+			});
 	}
 </script>
 
@@ -310,7 +289,9 @@
 							">
 							<template #icon><ContentCopySharp /></template>
 						</n-button>
-						<SharingButton :plan-uuid="rowData.planUuid" />
+						<SharingButton
+							:key="rowData.planUuid"
+							:plan-uuid="rowData.planUuid" />
 					</n-space>
 				</div>
 			</template>

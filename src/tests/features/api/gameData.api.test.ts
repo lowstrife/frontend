@@ -15,6 +15,7 @@ import {
 	callDataFIOSites,
 	callDataPlanetSearch,
 	callDataPlanetSearchSingle,
+	callExplorationData,
 } from "@/features/api/gameData.api";
 
 // test data
@@ -27,6 +28,7 @@ import planet_single from "@/tests/test_data/api_data_planet_single.json";
 import fio_sites from "@/tests/test_data/api_data_fio_sites.json";
 import fio_storage from "@/tests/test_data/api_data_fio_storage.json";
 import planet_search_results from "@/tests/test_data/api_data_planet_search.json";
+import exploration_7d_dw from "@/tests/test_data/api_data_exploration_7d_dw.json";
 
 // mock apiService client
 const mock = new AxiosMockAdapter(apiService.client);
@@ -169,5 +171,22 @@ describe("GameData API Calls", async () => {
 		expect(result.length).toBe(planet_search_results.length);
 
 		expect(spyApiServicePost).toHaveBeenCalled();
+	});
+
+	describe("callExplorationData", async () => {
+		it("Call API 4 times and create structured result", async () => {
+			const spyPostCalls = vi.spyOn(apiService, "post");
+
+			mock.onPost("/data/market/AI1/DW").reply(200, exploration_7d_dw);
+
+			const result = await callExplorationData("AI1", "DW", {
+				start: "2025-01-01",
+				end: "2025-01-07",
+			});
+
+			expect(spyPostCalls).toBeCalledTimes(1);
+
+			expect(result).toStrictEqual(exploration_7d_dw);
+		});
 	});
 });
