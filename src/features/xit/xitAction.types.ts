@@ -13,7 +13,7 @@ export interface IXITActionMaterialElement {
 	total: number;
 }
 
-export interface IXITJSONAction {
+interface IXITJSONAction {
 	type: "MTRA";
 	name: "TransferAction";
 	group: string;
@@ -21,11 +21,11 @@ export interface IXITJSONAction {
 	dest: string | "Configure on Execution";
 }
 
-export interface IXITJSONGlobal {
+interface IXITJSONGlobal {
 	name: string;
 }
 
-export interface IXITJSONGroup {
+interface IXITJSONGroup {
 	type: "Manual";
 	name: string;
 	materials: Record<string, number>;

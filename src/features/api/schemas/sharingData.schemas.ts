@@ -9,7 +9,7 @@ import {
 // Util
 import { PositiveOrZeroNumber } from "@/util/zodValidators";
 
-export const SharedSchema: z.ZodType<IShared> = z.object({
+const SharedSchema: z.ZodType<IShared> = z.object({
 	shared_uuid: z.string().uuid(),
 	plan_uuid: z.string().uuid(),
 	view_count: PositiveOrZeroNumber,

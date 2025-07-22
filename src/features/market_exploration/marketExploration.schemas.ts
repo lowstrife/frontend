@@ -4,7 +4,7 @@ import {
 	IExplorationRequestPayload,
 } from "@/features/market_exploration/marketExploration.types";
 
-export const ExplorationSchema: z.ZodType<IExploration> = z.object({
+const ExplorationSchema: z.ZodType<IExploration> = z.object({
 	Datetime: z.string().date(),
 	ExchangeCode: z.string().min(3).max(3),
 	Ticker: z.string().min(1).max(3),

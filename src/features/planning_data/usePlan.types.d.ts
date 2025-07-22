@@ -11,7 +11,7 @@ export interface IPlanRouteParams {
 	sharedPlanUuid: string | undefined;
 }
 
-export type LOAD_STATUS =
+type LOAD_STATUS =
 	| "LOADING"
 	| "DONE"
 	| "LOAD_FAILURE"

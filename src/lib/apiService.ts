@@ -10,7 +10,7 @@ import config from "@/lib/config";
  * @class ApiService
  * @typedef {ApiService}
  */
-export class ApiService {
+class ApiService {
 	// needs to be public for axios-mock-adapter
 	public readonly client: AxiosInstance;
 

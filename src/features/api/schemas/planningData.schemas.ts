@@ -162,7 +162,7 @@ export const PlanShareSchema: z.ZodType<IPlanShare> = z.object({
 	baseplanner: PlanSchema,
 });
 
-export const PlanEmpireElementSchema: z.ZodType<IPlanEmpireElement> =
+const PlanEmpireElementSchema: z.ZodType<IPlanEmpireElement> =
 	PlanEmpireSchema.extend({
 		baseplanners: z.array(
 			z.object({
@@ -181,7 +181,7 @@ export type PlanEmpireSchemaType = z.infer<typeof PlanEmpireSchema>;
 export type PlanEmpirePlanListType = z.infer<typeof PlanEmpirePlanListPayload>;
 export type PlanSchemaType = z.infer<typeof PlanSchema>;
 export type PlanShareSchemaType = z.infer<typeof PlanShareSchema>;
-export type PlanEmpireElementSchemaType = z.infer<
+type PlanEmpireElementSchemaType = z.infer<
 	typeof PlanEmpireElementSchema
 >;
 export type PlanEmpireElementPayloadType = z.infer<

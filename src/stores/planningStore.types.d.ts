@@ -66,7 +66,7 @@ export interface IPlanDataExpert {
 	amount: number;
 }
 
-export type PLAN_WORKFORCE_TYPE =
+type PLAN_WORKFORCE_TYPE =
 	| "pioneer"
 	| "settler"
 	| "technician"
@@ -132,12 +132,12 @@ export interface IPlanShare {
 	baseplanner: IPlan;
 }
 
-export interface IPlanLoadData {
+interface IPlanLoadData {
 	planData: IPlan;
 	empires: IPlanEmpireElement[];
 }
 
-export type CX_EXCHANGE_OPTION_TYPE =
+type CX_EXCHANGE_OPTION_TYPE =
 	| "AI1_BUY"
 	| "AI1_SELL"
 	| "AI1_AVG"
@@ -171,7 +171,7 @@ export type CX_EXCHANGE_OPTION_TYPE =
 	| "PP7D_UNIVERSE"
 	| "PP30D_UNIVERSE";
 
-export type CX_PREFERENCE_TYPE = "BUY" | "SELL" | "BOTH";
+type CX_PREFERENCE_TYPE = "BUY" | "SELL" | "BOTH";
 
 export interface ICXDataExchangeOption {
 	type: CX_PREFERENCE_TYPE;
