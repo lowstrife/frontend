@@ -30,7 +30,10 @@ export const usePlanningStore = defineStore(
 		/** Key: Plan.uuid */
 		const shared: Ref<ISharedRecord> = ref({});
 
-		// state reset
+		/**
+		 * Resets all store variables to their initial values
+		 * @author jplacht
+		 */
 		function $reset(): void {
 			plans.value = {};
 			empires.value = {};
@@ -39,6 +42,13 @@ export const usePlanningStore = defineStore(
 		}
 
 		// setters
+
+		/**
+		 * Sets empires by their Uuid
+		 * @author jplacht
+		 *
+		 * @param {IPlanEmpireElement[]} empireList Empire Data
+		 */
 		function setEmpires(empireList: IPlanEmpireElement[]): void {
 			empires.value = {};
 			// store by Empire.uuid
@@ -47,6 +57,12 @@ export const usePlanningStore = defineStore(
 			});
 		}
 
+		/**
+		 * Sets plans by their UUID
+		 * @author jplacht
+		 *
+		 * @param {IPlan} data Plan Data
+		 */
 		function setPlan(data: IPlan): void {
 			if (!data.uuid)
 				throw new Error("Can't set plan data for undefined uuid.");
@@ -54,14 +70,32 @@ export const usePlanningStore = defineStore(
 			plans.value[data.uuid] = data;
 		}
 
+		/**
+		 * Sets multiple plans by their Uuid
+		 * @author jplacht
+		 *
+		 * @param {IPlan[]} data Plan Data List
+		 */
 		function setPlans(data: IPlan[]): void {
 			data.forEach((p) => setPlan(p));
 		}
 
+		/**
+		 * Deletes a plan by its Uuid
+		 * @author jplacht
+		 *
+		 * @param {string} planUuid Plan Uuid
+		 */
 		function deletePlan(planUuid: string): void {
 			delete plans.value[planUuid];
 		}
 
+		/**
+		 * Sets multiple CX by their Uuid
+		 * @author jplacht
+		 *
+		 * @param {ICX[]} data CX Data List
+		 */
 		function setCXs(data: ICX[]): void {
 			cxs.value = {};
 			// store by CX.uuid
@@ -70,6 +104,12 @@ export const usePlanningStore = defineStore(
 			});
 		}
 
+		/**
+		 * Sets Shared Plans information by their Plan Uuid
+		 * @author jplacht
+		 *
+		 * @param {IShared[]} data Shared Data List
+		 */
 		function setSharedList(data: IShared[]): void {
 			shared.value = {};
 			data.forEach((s) => {
@@ -77,6 +117,12 @@ export const usePlanningStore = defineStore(
 			});
 		}
 
+		/**
+		 * Deletes a shared plan by its plan Uuid
+		 * @author jplacht
+		 *
+		 * @param {string} planUuid Plan Uuid
+		 */
 		function deleteShared(planUuid: string): void {
 			delete shared.value[planUuid];
 		}
@@ -99,8 +145,7 @@ export const usePlanningStore = defineStore(
 		}
 
 		/**
-		 * Fetches a plan from store or backend depending if it was
-		 * already fetched previously.
+		 * Gets a plan by its Uuid
 		 *
 		 * @author jplacht
 		 *

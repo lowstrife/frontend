@@ -57,6 +57,10 @@ export const useGameDataStore = defineStore(
 
 		// state reset
 
+		/**
+		 * Resets all store variables to their default
+		 * @author jplacht
+		 */
 		function $reset(): void {
 			materials.value = {};
 			exchanges.value = {};
@@ -69,6 +73,14 @@ export const useGameDataStore = defineStore(
 			fio_sites_ships.value = {};
 		}
 
+		/**
+		 * Gets a planet by its Natural Id
+		 * @author jplacht
+		 *
+		 * @async
+		 * @param {string} planetNaturalId Planet Natural ID (e.g. 'OT-580b')
+		 * @returns {Promise<IPlanet>} Planet
+		 */
 		async function getPlanet(planetNaturalId: string): Promise<IPlanet> {
 			const findPlanet: IPlanet | undefined =
 				planets.value[planetNaturalId];
@@ -80,6 +92,12 @@ export const useGameDataStore = defineStore(
 			);
 		}
 
+		/**
+		 * Sets material values by their Ticker
+		 * @author jplacht
+		 *
+		 * @param {IMaterial[]} data Material Data
+		 */
 		function setMaterials(data: IMaterial[]): void {
 			materials.value = {};
 			data.forEach((e) => {
@@ -87,6 +105,12 @@ export const useGameDataStore = defineStore(
 			});
 		}
 
+		/**
+		 * Sets exchange data by their Ticker
+		 * @author jplacht
+		 *
+		 * @param {IExchange[]} data Exchange Data
+		 */
 		function setExchanges(data: IExchange[]): void {
 			exchanges.value = {};
 			data.forEach((e) => {
@@ -94,6 +118,12 @@ export const useGameDataStore = defineStore(
 			});
 		}
 
+		/**
+		 * Sets recipes by their BuildingTicker as list per Building
+		 * @author jplacht
+		 *
+		 * @param {IRecipe[]} data Recipe Data
+		 */
 		function setRecipes(data: IRecipe[]): void {
 			recipes.value = {};
 			data.forEach((e) => {
@@ -105,6 +135,12 @@ export const useGameDataStore = defineStore(
 			});
 		}
 
+		/**
+		 * Sets buildings by their Ticker
+		 * @author jplacht
+		 *
+		 * @param {IBuilding[]} data Building Data
+		 */
 		function setBuildings(data: IBuilding[]): void {
 			buildings.value = {};
 			data.forEach((e) => {
@@ -112,14 +148,32 @@ export const useGameDataStore = defineStore(
 			});
 		}
 
+		/**
+		 * Sets Planets by their Natural Id
+		 * @author jplacht
+		 *
+		 * @param {IPlanet} data Planet Data
+		 */
 		function setPlanet(data: IPlanet): void {
 			planets.value[data.PlanetNaturalId] = data;
 		}
 
+		/**
+		 * Sets multiple planets each by their Natural Id
+		 * @author jplacht
+		 *
+		 * @param {IPlanet[]} data Planet Data
+		 */
 		function setMultiplePlanets(data: IPlanet[]): void {
 			data.forEach((e) => setPlanet(e));
 		}
 
+		/**
+		 * Sets FIO Sites data separated by Planet and Ship sites
+		 * @author jplacht
+		 *
+		 * @param {IFIOSites} data FIO Sites Data
+		 */
 		function setFIOSitesData(data: IFIOSites): void {
 			fio_sites_planets.value = {};
 
@@ -134,6 +188,12 @@ export const useGameDataStore = defineStore(
 			});
 		}
 
+		/**
+		 * Sets FIO Storage data separated by Planets, Warehouses and Ships
+		 * @author jplacht
+		 *
+		 * @param {IFIOStorage} data FIO Storage Data
+		 */
 		function setFIOStorageData(data: IFIOStorage): void {
 			fio_storage_planets.value = data.planets;
 			fio_storage_warehouses.value = data.warehouses;

@@ -10,6 +10,13 @@ export function useQuery<TParam, TData>(
 
 	const state = computed(() => queryStore.peekQueryState(fnDef.key(params)));
 
+	/**
+	 * Triggers the query execution
+	 * @author jplacht
+	 *
+	 * @async
+	 * @returns {Promise<TData>} Query Data
+	 */
 	async function execute(): Promise<TData> {
 		return await queryStore.executeQuery(fnDef, params);
 	}
