@@ -24,7 +24,7 @@ export const useQueryStore = defineStore("prunplanner_query_store", () => {
 	function peekQueryState<TParams, TData>(
 		key: JSONValue
 	): QueryState<TParams, TData> | undefined {
-		return isKnownAndFresh(key)
+		return isKnownAndFresh(key).value
 			? (cache.get(toCacheKey(key)) as QueryState<TParams, TData>)
 			: undefined;
 	}
