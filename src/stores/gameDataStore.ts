@@ -69,8 +69,6 @@ export const useGameDataStore = defineStore(
 			fio_sites_ships.value = {};
 		}
 
-		// getters
-
 		async function getPlanet(planetNaturalId: string): Promise<IPlanet> {
 			const findPlanet: IPlanet | undefined =
 				planets.value[planetNaturalId];
@@ -81,8 +79,6 @@ export const useGameDataStore = defineStore(
 				`Planet ${planetNaturalId} not available. Make sure to load its game data.`
 			);
 		}
-
-		// data loader functions
 
 		function setMaterials(data: IMaterial[]): void {
 			materials.value = {};

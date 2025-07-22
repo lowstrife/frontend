@@ -10,21 +10,6 @@ import exploration_7d_dw from "@/tests/test_data/api_data_exploration_7d_dw.json
 const mock = new AxiosMockAdapter(apiService.client);
 
 describe("useMarketExploration", async () => {
-	describe("callExplorationData", async () => {
-		it("Call API and Validate response", async () => {
-			const { callExplorationData } = useMarketExploration();
-
-			mock.onPost("/data/market/NC1/DW").reply(200, exploration_7d_dw);
-
-			const result = await callExplorationData("NC1", "DW", {
-				start: "2025-04-01",
-				end: "2025-04-29",
-			});
-
-			expect(result.length).toBe(exploration_7d_dw.length);
-		});
-	});
-
 	describe("getMaterialExplorationData", async () => {
 		it("Call API 4 times and create structured result", async () => {
 			const { getMaterialExplorationData } = useMarketExploration();

@@ -116,8 +116,6 @@ export const usePlanningStore = defineStore(
 			// try getting from already fetched data first
 			const findPlan: IPlan | undefined = plans.value[planUuid];
 
-			console.log(findPlan.baseplanner_data.buildings);
-
 			if (findPlan) return inertClone(plans.value[planUuid]);
 
 			throw new Error(
