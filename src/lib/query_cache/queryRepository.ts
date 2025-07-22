@@ -21,6 +21,7 @@ import {
 	callDataPlanetSearchSingle,
 	callDataRecipes,
 	callExplorationData,
+	callPlanetLastPOPR,
 } from "@/features/api/gameData.api";
 import {
 	callClonePlan,
@@ -62,6 +63,7 @@ import {
 	IMaterial,
 	IPlanet,
 	IPlanetSearchAdvanced,
+	IPopulationReport,
 	IRecipe,
 } from "@/features/api/gameData.types";
 
@@ -605,6 +607,21 @@ export function useQueryRepository() {
 			persist: true,
 			expireTime: 60_000 * 15, // 15 minutes
 		} as QueryDefinition<void, IFIOSites>,
+		GetPlanetLastPOPR: {
+			key: (params: { planetNaturalId: string }) => [
+				"gamedata",
+				"planet",
+				"popr",
+				"last",
+				params.planetNaturalId,
+			],
+			fetchFn: async (params: { planetNaturalId: string }) => {
+				return await callPlanetLastPOPR(params.planetNaturalId);
+			},
+			autoRefetch: false,
+			persist: true,
+			expireTime: 60_000 * config.GAME_DATA_STALE_MINUTES_PLANETS,
+		} as QueryDefinition<{ planetNaturalId: string }, IPopulationReport>,
 	};
 
 	function get(id: keyof QueryRepositoryType) {

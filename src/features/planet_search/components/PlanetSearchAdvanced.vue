@@ -131,15 +131,19 @@
 	async function doSearch() {
 		refIsLoading.value = true;
 
-		await useQuery(useQueryRepository().repository.PostPlanetSearch, {
-			searchData: searchPayload.value,
-		})
-			.execute()
-			.then((data: IPlanet[]) => {
-				emit("update:results", data);
-				emit("update:materials", inputMaterials.value);
+		try {
+			await useQuery(useQueryRepository().repository.PostPlanetSearch, {
+				searchData: searchPayload.value,
 			})
-			.finally(() => (refIsLoading.value = false));
+				.execute()
+				.then((data: IPlanet[]) => {
+					emit("update:results", data);
+					emit("update:materials", inputMaterials.value);
+				})
+				.finally(() => (refIsLoading.value = false));
+		} catch {
+			emit("update:results", []);
+		}
 	}
 </script>
 

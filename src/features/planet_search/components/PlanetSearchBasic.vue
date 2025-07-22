@@ -26,15 +26,19 @@
 	async function doSearch() {
 		if (canSearch.value) {
 			isLoading.value = true;
-			await useQuery(
-				useQueryRepository().repository.GetPlanetSearchSingle,
-				{
-					searchId: refSearchId.value!,
-				}
-			)
-				.execute()
-				.then((data: IPlanet[]) => emit("update:results", data))
-				.finally(() => (isLoading.value = false));
+			try {
+				await useQuery(
+					useQueryRepository().repository.GetPlanetSearchSingle,
+					{
+						searchId: refSearchId.value!,
+					}
+				)
+					.execute()
+					.then((data: IPlanet[]) => emit("update:results", data))
+					.finally(() => (isLoading.value = false));
+			} catch {
+				emit("update:results", []);
+			}
 		}
 	}
 </script>

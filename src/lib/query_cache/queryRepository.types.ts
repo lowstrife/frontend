@@ -7,6 +7,7 @@ import {
 	IMaterial,
 	IPlanet,
 	IPlanetSearchAdvanced,
+	IPopulationReport,
 	IRecipe,
 } from "@/features/api/gameData.types";
 
@@ -108,4 +109,8 @@ export type QueryRepositoryType = {
 	>;
 	GetFIOStorage: QueryDefinition<void, IFIOStorage>;
 	GetFIOSites: QueryDefinition<void, IFIOSites>;
+	GetPlanetLastPOPR: QueryDefinition<
+		{ planetNaturalId: string },
+		IPopulationReport
+	>;
 };

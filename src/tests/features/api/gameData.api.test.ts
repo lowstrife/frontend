@@ -16,6 +16,7 @@ import {
 	callDataPlanetSearch,
 	callDataPlanetSearchSingle,
 	callExplorationData,
+	callPlanetLastPOPR,
 } from "@/features/api/gameData.api";
 
 // test data
@@ -29,6 +30,7 @@ import fio_sites from "@/tests/test_data/api_data_fio_sites.json";
 import fio_storage from "@/tests/test_data/api_data_fio_storage.json";
 import planet_search_results from "@/tests/test_data/api_data_planet_search.json";
 import exploration_7d_dw from "@/tests/test_data/api_data_exploration_7d_dw.json";
+import latest_popr from "@/tests/test_data/api_data_popr_latest.json";
 
 // mock apiService client
 const mock = new AxiosMockAdapter(apiService.client);
@@ -188,5 +190,17 @@ describe("GameData API Calls", async () => {
 
 			expect(result).toStrictEqual(exploration_7d_dw);
 		});
+	});
+
+	it("callPlanetLastPOPR", async () => {
+		const spyApiServiceGet = vi.spyOn(apiService, "get");
+
+		mock.onGet("/data/planet/popi/OT-580b").reply(200, latest_popr);
+
+		const result = await callPlanetLastPOPR("OT-580b");
+
+		expect(result.FreeEngineer).toBe(latest_popr.FreeEngineer);
+
+		expect(spyApiServiceGet).toHaveBeenCalled();
 	});
 });
