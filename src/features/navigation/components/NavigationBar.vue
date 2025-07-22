@@ -1,5 +1,5 @@
 <script setup lang="ts">
-	import { computed, watch } from "vue";
+	import { computed, ComputedRef, watch } from "vue";
 
 	// Stores
 	import { useUserStore } from "@/stores/userStore";
@@ -73,7 +73,7 @@
 				?.timestamp ?? 0
 	);
 
-	const menuItems: IMenuSection[] = [
+	const menuItems: ComputedRef<IMenuSection[]> = computed(() => [
 		{
 			label: "Planning",
 			display: true,
@@ -233,7 +233,7 @@
 				},
 			],
 		},
-	];
+	]);
 </script>
 
 <template>
