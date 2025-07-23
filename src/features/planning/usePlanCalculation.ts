@@ -5,7 +5,10 @@ import { useGameDataStore } from "@/stores/gameDataStore";
 
 // Composables
 import { useBuildingData } from "@/features/game_data/useBuildingData";
-import { useBuildingCalculation } from "@/features/planning/calculations/buildingCalculations";
+import {
+	TOTALMSDAY,
+	useBuildingCalculation,
+} from "@/features/planning/calculations/buildingCalculations";
 import { useMaterialIOUtil } from "@/features/planning/util/materialIO.util";
 import { usePrice } from "@/features/cx/usePrice";
 
@@ -430,16 +433,18 @@ export function usePlanCalculation(
 						"SELL"
 					);
 					// input cost
-					const dailyCost: number = getMaterialIOTotalPrice(
-						br.Inputs.map((i) => {
-							return {
-								ticker: i.Ticker,
-								output: 0,
-								input: i.Amount,
-							};
-						}),
-						"SELL"
-					);
+					const dailyCost: number =
+						-1 *
+						getMaterialIOTotalPrice(
+							br.Inputs.map((i) => {
+								return {
+									ticker: i.Ticker,
+									output: 0,
+									input: i.Amount,
+								};
+							}),
+							"BUY"
+						);
 
 					/**
 					 * Daily Revenue of a recipe option:
@@ -450,9 +455,11 @@ export function usePlanCalculation(
 					 * 	- Building Daily Workforce Cost (lux1 + lux2)
 					 */
 
+					const maxDailyRuns: number = TOTALMSDAY / br.TimeMs;
+
 					const dailyRevenue: number =
-						dailyIncome -
-						dailyCost -
+						dailyIncome * maxDailyRuns -
+						dailyCost * maxDailyRuns -
 						constructionCost * -1 * (1 / 180) -
 						-1 * workforceDailyCost;
 
