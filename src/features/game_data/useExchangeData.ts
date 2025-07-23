@@ -63,10 +63,17 @@ export function useExchangeData() {
 			overview.Ask[type] = ticker.Ask ?? 0;
 			overview.Bid[type] = ticker.Bid ?? 0;
 			overview.Average[type] = ticker.PriceAverage;
-			overview.PP7D[type] = ticker.PriceAverage;
-			overview.PP30D[type] = ticker.PriceAverage;
 			overview.Supply[type] = ticker.Supply ?? 0;
 			overview.Demand[type] = ticker.Demand ?? 0;
+
+			const d7ticker = getExchangeTicker(
+				`${materialTicker}.PP7D_${type}`
+			);
+			const d30ticker = getExchangeTicker(
+				`${materialTicker}.PP30D_${type}`
+			);
+			overview.PP7D[type] = d7ticker.PriceAverage;
+			overview.PP30D[type] = d30ticker.PriceAverage;
 		});
 
 		return overview;

@@ -7,7 +7,7 @@ import {
 	IProductionBuilding,
 } from "@/features/planning/usePlanCalculation.types";
 
-const TOTALMSDAY: number = 24 * 60 * 60 * 1000;
+export const TOTALMSDAY: number = 24 * 60 * 60 * 1000;
 
 export function useBuildingCalculation() {
 	const { combineMaterialIOMinimal } = useMaterialIOUtil();
