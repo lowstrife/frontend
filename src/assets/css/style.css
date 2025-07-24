@@ -5,16 +5,16 @@
 @import "./materials.css";
 
 @theme {
-	--text-md: 12px;
-	--text-lg: 14px;
+	--text-md: 14px;
+	--text-lg: 16px;
 }
 
 body {
-	font-size: 12px;
+	font-size: 14px;
 }
 
 html {
-	font-size: 14px;
+	font-size: 16px;
 }
 
 ::-webkit-scrollbar {

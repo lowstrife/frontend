@@ -28,11 +28,15 @@
 
 <template>
 	<x-n-data-table :data="planListData" striped>
-		<x-n-data-table-column key="name" title="Plan" sorter="default">
+		<x-n-data-table-column
+			key="name"
+			title="Plan"
+			sorter="default"
+			max-width="40%">
 			<template #render-cell="{ rowData }">
 				<router-link
 					:to="`/plan/${rowData.planet}/${rowData.uuid}`"
-					class="text-link-primary font-bold hover:underline text-nowrap">
+					class="text-link-primary font-bold hover:underline">
 					{{ rowData.name }}
 				</router-link>
 			</template>

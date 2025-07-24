@@ -38,19 +38,19 @@ export const prunplannerTheme: GlobalThemeOverrides = {
 
 		// font sizes
 		titleFontWeight: "bold",
-		titleFontSizeMedium: "14px",
-		fontSizeMedium: "12px",
+		titleFontSizeMedium: "16px",
+		fontSizeMedium: "14px",
 		// paddings
 		paddingMedium: "5px 10px",
 	},
 	Form: {
 		labelTextColor: "rgba(255,255,255,0.8)",
-		labelFontSizeLeftSmall: "12px",
+		labelFontSizeLeftSmall: "14px",
 		labelPaddingHorizontal: "0 20px 0 0",
 		feedbackHeightSmall: "5px",
 	},
 	Input: {
-		fontSizeSmall: "12px",
+		fontSizeSmall: "14px",
 		textColor: "rgba(255,255,255,0.8)",
 		color: GRAY_DARK,
 		// border
@@ -73,8 +73,8 @@ export const prunplannerTheme: GlobalThemeOverrides = {
 	},
 	Button: {
 		fontWeight: "regular",
-		fontSizeTiny: "10px",
-		fontSizeSmall: "12px",
+		fontSizeTiny: "12px",
+		fontSizeSmall: "14px",
 
 		paddingTiny: "0 5px",
 		paddingSmall: "0 10px 0 10px",
@@ -145,7 +145,7 @@ export const prunplannerTheme: GlobalThemeOverrides = {
 	DataTable: {
 		thTextColor: "rgba(255,255,255,0.9)",
 		tdTextColor: "rgba(255,255,255,0.8)",
-		fontSizeMedium: "12px",
+		fontSizeMedium: "14px",
 		thFontWeight: "bold",
 		// colors
 		thColor: GRAY_DARK,
@@ -160,7 +160,7 @@ export const prunplannerTheme: GlobalThemeOverrides = {
 	Table: {
 		thTextColor: "rgba(255,255,255,0.9)",
 		tdTextColor: "rgba(255,255,255,0.8)",
-		fontSizeMedium: "12px",
+		fontSizeMedium: "14px",
 		thFontWeight: "bold",
 		// color
 		thColor: GRAY_DARK,
@@ -179,8 +179,8 @@ export const prunplannerTheme: GlobalThemeOverrides = {
 		peers: {
 			InternalSelection: {
 				color: GRAY_DARK,
-				fontSizeSmall: "12px",
-				fontSizeMedium: "12px",
+				fontSizeSmall: "14px",
+				fontSizeMedium: "14px",
 				textColor: "rgba(255,255,255,0.8)",
 				border: "0",
 				borderFocus: GRAY_DARK,
@@ -189,10 +189,10 @@ export const prunplannerTheme: GlobalThemeOverrides = {
 				colorActive: GRAY_DARK,
 			},
 			InternalSelectMenu: {
-				optionFontSizeSmall: "12px",
+				optionFontSizeSmall: "14px",
 				color: GRAY_DARK,
 				borderRadius: "0",
-				optionFontSizeMedium: "12px",
+				optionFontSizeMedium: "14px",
 				optionTextColor: "rgba(255,255,255,0.8)",
 			},
 		},
