@@ -44,6 +44,7 @@ import {
 	callCreateCX,
 	callDeleteCX,
 	callGetCXList,
+	callPatchCX,
 	callUpdateCXJunctions,
 } from "@/features/api/cxData.api";
 import {
@@ -74,6 +75,7 @@ import {
 } from "@/features/manage/manage.types";
 import {
 	ICX,
+	ICXData,
 	IPlan,
 	IPlanEmpire,
 	IPlanEmpireElement,
@@ -315,6 +317,23 @@ export function useQueryRepository() {
 			autoRefetch: false,
 			persist: false,
 		} as QueryDefinition<{ junctions: ICXEmpireJunction[] }, ICX[]>,
+		PatchCX: {
+			key: (params: { cxUuid: string }) => [
+				"planningdata",
+				"cx",
+				"patch",
+				params.cxUuid,
+			],
+			fetchFn: async (params: { cxUuid: string; data: ICXData }) => {
+				const data = await callPatchCX(params.cxUuid, params.data);
+				queryStore.invalidateKey(["planningdata", "cx"], {
+					exact: false,
+				});
+				return data;
+			},
+			autoRefetch: false,
+			persist: false,
+		} as QueryDefinition<{ cxUuid: string; data: ICXData }, ICXData>,
 		GetAllEmpires: {
 			key: () => ["planningdata", "empire", "list"],
 			fetchFn: async () => {

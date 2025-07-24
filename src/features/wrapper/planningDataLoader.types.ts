@@ -15,6 +15,7 @@ export type PlanningDataLoaderProps = {
 	readonly planetNaturalId?: string | undefined;
 	readonly planUuid?: string | undefined;
 	readonly loadCX?: boolean | undefined;
+	readonly cxUuid?: string | undefined;
 	readonly loadShared?: boolean | undefined;
 	readonly planList?: boolean | undefined;
 };
@@ -27,6 +28,7 @@ export type PlanningDataLoaderEmits = {
 	(e: "data:planet", data: IPlanet): void;
 	(e: "data:plan", data: IPlan): void;
 	(e: "data:plan:list", data: IPlan[]): void;
+	(e: "data:plan:list:planets", data: string[]): void;
 	(e: "data:cx", data: ICX[]): void;
 	(e: "data:shared", data: IShared[]): void;
 	(e: "update:cxUuid", data: string | undefined): void;
@@ -41,5 +43,5 @@ export type PlanningStepConfigsType = [
 	StepConfig<IPlanet>,
 	StepConfig<ICX[]>,
 	StepConfig<IShared[]>,
-	StepConfig<IPlan[]>,
+	StepConfig<IPlan[]>
 ];

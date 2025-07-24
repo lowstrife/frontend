@@ -137,7 +137,7 @@ export const usePlanningStore = defineStore(
 		function getCX(cxUuid: string): ICX {
 			const findCX = cxs.value[cxUuid];
 
-			if (findCX) return findCX;
+			if (findCX) return inertClone(findCX);
 
 			throw new Error(
 				`No data: CX '${cxUuid}'. Ensure CX uuid is valid and planning data has been loaded.`

@@ -164,7 +164,7 @@
 		<x-n-data-table-column key="name" title="Name">
 			<template #render-cell="{ rowData }">
 				<router-link
-					:to="`/cx/${rowData.uuid}`"
+					:to="`/exchanges/${rowData.uuid}`"
 					class="text-link-primary font-bold hover:underline">
 					{{ rowData.name }}
 				</router-link>

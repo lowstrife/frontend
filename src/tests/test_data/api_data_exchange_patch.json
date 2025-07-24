@@ -1,0 +1,34 @@
+{
+	"name": "34",
+	"cx_empire": [
+		{ "type": "BUY", "exchange": "NC1_AVG" },
+		{ "type": "SELL", "exchange": "PP7D_AI1" }
+	],
+	"ticker_empire": [{ "type": "BUY", "ticker": "C", "value": 333 }],
+	"cx_planets": [
+		{
+			"planet": "UV-796b",
+			"preferences": [
+				{ "type": "BUY", "exchange": "NC1_AVG" },
+				{ "type": "SELL", "exchange": "PP30D_UNIVERSE" }
+			]
+		}
+	],
+	"ticker_planets": [
+		{
+			"planet": "QJ-684b",
+			"preferences": [{ "type": "SELL", "ticker": "STL", "value": 500 }]
+		},
+		{
+			"planet": "UV-796b",
+			"preferences": [
+				{ "type": "BUY", "ticker": "C", "value": 333 },
+				{ "type": "SELL", "ticker": "C", "value": 123 }
+			]
+		},
+		{
+			"planet": "OT-580c",
+			"preferences": [{ "type": "BOTH", "ticker": "LSE", "value": 25 }]
+		}
+	]
+}

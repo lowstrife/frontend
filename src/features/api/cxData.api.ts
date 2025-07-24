@@ -16,7 +16,7 @@ import {
 } from "@/features/api/schemas/cxData.schemas";
 
 // Types & Interfaces
-import { ICX } from "@/stores/planningStore.types";
+import { ICX, ICXData } from "@/stores/planningStore.types";
 import { ICXEmpireJunction } from "@/features/manage/manage.types";
 
 /**
@@ -88,5 +88,27 @@ export async function callUpdateCXJunctions(
 		junctions,
 		CXEmpireJunctionSchemaPayload,
 		CXListPayloadSchema
+	);
+}
+
+/**
+ * Patches an existing CX with new data
+ * @author jplacht
+ *
+ * @export
+ * @async
+ * @param {string} cxUuid CX Uuid
+ * @param {ICXData} data CX Preference Data
+ * @returns {Promise<ICXData>} Updated CX Preference Data
+ */
+export async function callPatchCX(
+	cxUuid: string,
+	data: ICXData
+): Promise<ICXData> {
+	return apiService.patch<CXDataSchemaType, CXDataSchemaType>(
+		`/cx/${cxUuid}`,
+		data,
+		CXDataSchema,
+		CXDataSchema
 	);
 }

@@ -93,6 +93,16 @@ export const useGameDataStore = defineStore(
 		}
 
 		/**
+		 * Gets all stored material information
+		 * @author jplacht
+		 *
+		 * @returns {IMaterial[]} Material Data
+		 */
+		function getMaterials(): IMaterial[] {
+			return inertClone(Object.values(materials.value));
+		}
+
+		/**
 		 * Sets material values by their Ticker
 		 * @author jplacht
 		 *
@@ -225,6 +235,7 @@ export const useGameDataStore = defineStore(
 			setFIOStorageData,
 			// functions
 			getPlanet,
+			getMaterials,
 		};
 	},
 	{

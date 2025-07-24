@@ -99,7 +99,7 @@
 				{
 					label: "Exchanges",
 					display: true,
-					routerLink: "/none",
+					routerLink: "/exchanges",
 					icon: ShoppingBasketSharp,
 				},
 				// {

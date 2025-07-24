@@ -49,7 +49,7 @@ html {
 }
 
 #markdown ul {
-	@apply space-y-1  pl-5 list-disc list-outside;
+	@apply space-y-1 pl-5 pb-3 list-disc list-outside;
 }
 
 #markdown table {
