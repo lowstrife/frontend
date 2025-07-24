@@ -6,8 +6,10 @@ import { useQueryStore } from "@/lib/query_cache/queryStore";
 
 // Composables
 import { usePlan } from "@/features/planning_data/usePlan";
-// Composables
 import { useCXData } from "@/features/cx/useCXData";
+
+// Util
+import { inertClone } from "@/util/data";
 
 // Types & Interfaces
 import {
@@ -24,7 +26,6 @@ import {
 } from "@/stores/planningStore.types";
 import { IPlanet } from "@/features/api/gameData.types";
 import { IShared } from "@/features/api/sharingData.types";
-import { inertClone } from "@/util/data";
 
 export function usePlanningDataLoader(
 	props: PlanningDataLoaderProps,
@@ -111,7 +112,14 @@ export function usePlanningDataLoader(
 					useQueryRepository().repository.GetAllPlans,
 					undefined
 				),
-			onSuccess: (data: IPlan[]) => emits("data:plan:list", data),
+			onSuccess: (data: IPlan[]) => {
+				const planetList: string[] = Array.from(
+					new Set(data.map((e) => e.planet_id)).values()
+				);
+
+				emits("data:plan:list", data);
+				emits("data:plan:list:planets", planetList);
+			},
 		},
 		{
 			key: "planet",
@@ -149,7 +157,12 @@ export function usePlanningDataLoader(
 					useQueryRepository().repository.GetAllCX,
 					undefined
 				),
-			onSuccess: (d: ICX[]) => emits("data:cx", d),
+			onSuccess: (d: ICX[]) => {
+				emits("data:cx", d);
+				if (!props.cxUuid && d.length > 0) {
+					emits("update:cxUuid", d[0].uuid);
+				}
+			},
 		},
 		{
 			key: "sharedList",
@@ -177,7 +190,9 @@ export function usePlanningDataLoader(
 				// emit empire data
 				emits("data:empire:plans", data);
 				// emit potential empire cx uuid
-				emits("update:cxUuid", findEmpireCXUuid(props.empireUuid!));
+				if (!props.cxUuid) {
+					emits("update:cxUuid", findEmpireCXUuid(props.empireUuid!));
+				}
 			},
 		},
 	];

@@ -8,6 +8,7 @@ import { inertClone } from "@/util/data";
 // Interfaces & Types
 import { IPlanet } from "@/features/api/gameData.types";
 import { IMaterialIOMinimal } from "@/features/planning/usePlanCalculation.types";
+import { BOUNDARY_DESCRIPTOR } from "@/util/numbers.types";
 
 /**
  * Planetary type static boundaries

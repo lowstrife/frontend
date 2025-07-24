@@ -10,11 +10,14 @@ import {
 	callCreateCX,
 	callDeleteCX,
 	callGetCXList,
+	callPatchCX,
 	callUpdateCXJunctions,
 } from "@/features/api/cxData.api";
+import { ICXData } from "@/stores/planningStore.types";
 
 // test data
 import cx_list from "@/tests/test_data/api_data_cx_list.json";
+import cx_patch from "@/tests/test_data/api_data_exchange_patch.json";
 
 // mock apiService client
 const mock = new AxiosMockAdapter(apiService.client);
@@ -58,6 +61,17 @@ describe("CX Data API Calls", async () => {
 		mock.onPatch("/cx/junctions").reply(200, []);
 
 		expect(await callUpdateCXJunctions([])).toBeTruthy();
+		expect(spyApiServicePatch).toHaveBeenCalled();
+	});
+
+	it("callPatchCX", async () => {
+		const spyApiServicePatch = vi.spyOn(apiService, "patch");
+
+		const fakeUuid = "foo";
+
+		mock.onPatch(`/cx/${fakeUuid}`).reply(200, cx_patch as ICXData);
+
+		expect(await callPatchCX(fakeUuid, cx_patch as ICXData)).toBeTruthy();
 		expect(spyApiServicePatch).toHaveBeenCalled();
 	});
 });

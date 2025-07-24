@@ -4,6 +4,9 @@ import { computed, reactive, ref, Ref, watch, watchEffect } from "vue";
 import { useQueryRepository } from "@/lib/query_cache/queryRepository";
 import { useQueryStore } from "@/lib/query_cache/queryStore";
 
+// Util
+import { inertClone } from "@/util/data";
+
 // Types & Interfaces
 import {
 	GameDataLoaderEmits,
@@ -18,7 +21,6 @@ import {
 	IPlanet,
 	IRecipe,
 } from "@/features/api/gameData.types";
-import { inertClone } from "@/util/data";
 
 export function useGameDataLoader(
 	props: GameDataLoaderProps,

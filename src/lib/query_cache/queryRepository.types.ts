@@ -18,6 +18,7 @@ import {
 } from "@/features/manage/manage.types";
 import {
 	ICX,
+	ICXData,
 	IPlan,
 	IPlanEmpire,
 	IPlanEmpireElement,
@@ -71,6 +72,7 @@ export type QueryRepositoryType = {
 		{ junctions: ICXEmpireJunction[] },
 		ICX[]
 	>;
+	PatchCX: QueryDefinition<{ cxUuid: string; data: ICXData }, ICXData>;
 	GetAllEmpires: QueryDefinition<void, IPlanEmpireElement[]>;
 	GetEmpirePlans: QueryDefinition<{ empireUuid: string }, IPlan[]>;
 	PatchEmpire: QueryDefinition<
