@@ -3,15 +3,16 @@ import { useQueryRepository } from "@/lib/query_cache/queryRepository";
 
 import { usePlanningStore } from "@/stores/planningStore";
 
-// Typees & Interfaces
+// Types & Interfaces
 import {
 	IPlanCreateData,
+	IPlanPatchMaterialIOElement,
 	IPlanRouteParams,
 	IPlanSaveCreateResponse,
 } from "@/features/planning_data/usePlan.types";
-
 import { PLANET_COGCPROGRAM_TYPE } from "@/features/api/gameData.types";
 import { IPlan, PLAN_COGCPROGRAM_TYPE } from "@/stores/planningStore.types";
+import { IMaterialIO } from "@/features/planning/usePlanCalculation.types";
 
 export function usePlan() {
 	const planningStore = usePlanningStore();
@@ -217,6 +218,37 @@ export function usePlan() {
 	}
 
 	/**
+	 * Patch material i/o values for given plan and planet
+	 *
+	 * @author jplacht
+	 *
+	 * @async
+	 * @param {string} planUuid Plan Uuid
+	 * @param {string} planetNaturalId Planet Natural Id
+	 * @param {IMaterialIO[]} materialio Calculated Material IO
+	 * @returns {Promise<boolean>} Patch Result
+	 */
+	async function patchMaterialIO(
+		planUuid: string,
+		planetNaturalId: string,
+		materialio: IMaterialIO[]
+	): Promise<boolean> {
+		return await useQuery(useQueryRepository().repository.PatchMaterialIO, {
+			data: [
+				{
+					uuid: planUuid,
+					planet_id: planetNaturalId,
+					material_io: materialio.map((e) => ({
+						ticker: e.ticker,
+						input: e.input,
+						output: e.output,
+					})),
+				} as IPlanPatchMaterialIOElement,
+			],
+		}).execute();
+	}
+
+	/**
 	 * Reloading an existing plan is fetching the plan data from
 	 * planning store again. The planning view won't persist changes
 	 * to the stores data itself.
@@ -266,5 +298,6 @@ export function usePlan() {
 		saveExistingPlan,
 		reloadExistingPlan,
 		getPlanNamePlanet,
+		patchMaterialIO,
 	};
 }

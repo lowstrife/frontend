@@ -14,11 +14,13 @@ import {
 	callGetPlanlist,
 	callDeletePlan,
 	callClonePlan,
+	callPatchPlanMaterialIO,
 } from "@/features/api/planData.api";
 
 // test data
 import plan_etherwind from "@/tests/test_data/api_data_plan_etherwind.json";
 import shared from "@/tests/test_data/api_data_shared.json";
+import patch_materialio from "@/tests/test_data/api_data_plan_materialio_patch.json";
 
 // mock apiService client
 const mock = new AxiosMockAdapter(apiService.client);
@@ -127,5 +129,14 @@ describe("PlanData API Calls", async () => {
 
 		expect(await callDeletePlan("foo")).toBeTruthy();
 		expect(spyApiServiceDelete).toHaveBeenCalled();
+	});
+
+	it("callPatchPlanMaterialIO", async () => {
+		const spyApiServicePatch = vi.spyOn(apiService, "patch");
+
+		mock.onPatch("/baseplanner/materialio").reply(200, true);
+
+		expect(await callPatchPlanMaterialIO(patch_materialio)).toBeTruthy();
+		expect(spyApiServicePatch).toHaveBeenCalled();
 	});
 });

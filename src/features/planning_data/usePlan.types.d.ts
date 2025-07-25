@@ -31,3 +31,13 @@ export interface IPlanSaveData extends IPlanCreateData {
 export interface IPlanSaveCreateResponse {
 	uuid: string;
 }
+
+export interface IPlanPatchMaterialIOElement {
+	uuid: string;
+	planet_id: string;
+	material_io: {
+		ticker: string;
+		input: number;
+		output: number;
+	}[];
+}
