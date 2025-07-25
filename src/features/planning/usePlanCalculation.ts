@@ -508,11 +508,7 @@ export function usePlanCalculation(
 
 			const productionRevenue: number =
 				productionMaterialIOEnhanced.reduce(
-					(sum, element) =>
-						sum +
-						(element.delta < 0
-							? element.price * -1
-							: element.price),
+					(sum, element) => sum + element.price,
 					0
 				);
 
