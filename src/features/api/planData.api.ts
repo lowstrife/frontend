@@ -10,6 +10,9 @@ import {
 	PlanCreateDataSchema,
 	PlanCreateDataType,
 	PlanListPayload,
+	PlanPatchMaterialIOResponse,
+	PlanPatchMaterialIOSchema,
+	PlanPatchMaterialIOType,
 	PlanSaveCreateResponseSchema,
 	PlanSaveCreateResponseType,
 	PlanSaveDataSchema,
@@ -24,6 +27,7 @@ import {
 import { IPlan, IPlanShare } from "@/stores/planningStore.types";
 import {
 	IPlanCreateData,
+	IPlanPatchMaterialIOElement,
 	IPlanSaveData,
 } from "@/features/planning_data/usePlan.types";
 import { IPlanCloneResponse } from "@/features/manage/manage.types";
@@ -56,7 +60,10 @@ export async function callGetShared(
  * @returns {Promise<IPlan>} Plan Data
  */
 export async function callGetPlan(planUuid: string): Promise<IPlan> {
-	return apiService.get<PlanSchemaType>(`/baseplanner/${planUuid}`, PlanSchema);
+	return apiService.get<PlanSchemaType>(
+		`/baseplanner/${planUuid}`,
+		PlanSchema
+	);
 }
 
 /**
@@ -148,4 +155,15 @@ export async function callClonePlan(
  */
 export async function callDeletePlan(planUuid: string): Promise<boolean> {
 	return apiService.delete(`/baseplanner/${planUuid}`);
+}
+
+export async function callPatchPlanMaterialIO(
+	data: IPlanPatchMaterialIOElement[]
+): Promise<boolean> {
+	return apiService.patch<PlanPatchMaterialIOType, boolean>(
+		"/baseplanner/materialio",
+		data,
+		PlanPatchMaterialIOSchema,
+		PlanPatchMaterialIOResponse
+	);
 }

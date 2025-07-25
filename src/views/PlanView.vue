@@ -22,7 +22,12 @@
 	const { findEmpireCXUuid } = useCXData();
 	import { usePlanCalculation } from "@/features/planning/usePlanCalculation";
 	import { usePlan } from "@/features/planning_data/usePlan";
-	const { createNewPlan, saveExistingPlan, reloadExistingPlan } = usePlan();
+	const {
+		createNewPlan,
+		saveExistingPlan,
+		reloadExistingPlan,
+		patchMaterialIO,
+	} = usePlan();
 
 	// Util
 	import { formatNumber } from "@/util/numbers";
@@ -228,16 +233,28 @@
 		if (existing.value) {
 			await saveExistingPlan(refPlanData.value.uuid!, backendData.value);
 
+			await patchMaterialIO(
+				refPlanData.value.uuid!,
+				planetData.PlanetNaturalId,
+				result.value.materialio
+			);
+
 			// reset modified state
 			handleResetModified();
 
 			refIsSaving.value = false;
 		} else {
 			await createNewPlan(backendData.value).then(
-				(newUuid: string | undefined) => {
+				async (newUuid: string | undefined) => {
 					if (newUuid) {
 						refIsSaving.value = false;
 						refPlanData.value.uuid = newUuid;
+
+						await patchMaterialIO(
+							refPlanData.value.uuid!,
+							planetData.PlanetNaturalId,
+							result.value.materialio
+						);
 
 						// reset modified state
 						handleResetModified();

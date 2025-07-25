@@ -40,6 +40,7 @@ import {
 } from "@/features/empire/empire.types";
 import {
 	IPlanCreateData,
+	IPlanPatchMaterialIOElement,
 	IPlanSaveData,
 } from "@/features/planning_data/usePlan.types";
 import { PlanSaveCreateResponseType } from "@/features/api/schemas/planningData.schemas";
@@ -100,6 +101,10 @@ export type QueryRepositoryType = {
 	PatchPlan: QueryDefinition<
 		{ planUuid: string; data: IPlanSaveData },
 		PlanSaveCreateResponseType
+	>;
+	PatchMaterialIO: QueryDefinition<
+		{ data: IPlanPatchMaterialIOElement[] },
+		boolean
 	>;
 	GetExplorationData: QueryDefinition<
 		{

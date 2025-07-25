@@ -1,22 +1,20 @@
-import { describe, it, expect, beforeAll, vi, beforeEach } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 import { createPinia, setActivePinia } from "pinia";
 
 // Stores
 import { usePlanningStore } from "@/stores/planningStore";
-import { useQueryStore } from "@/lib/query_cache/queryStore";
 
 // Composables
 import { usePlan } from "@/features/planning_data/usePlan";
 
-// test data
-import shared from "@/tests/test_data/api_data_shared.json";
-import planet_single from "@/tests/test_data/api_data_planet_single.json";
-import empire_list from "@/tests/test_data/api_data_empire_list.json";
 import {
 	callCreatePlan,
 	callGetPlan,
 	callSavePlan,
+	callPatchPlanMaterialIO,
 } from "@/features/api/planData.api";
+import { apiService } from "@/lib/apiService";
+import { IMaterialIO } from "@/features/planning/usePlanCalculation.types";
 
 vi.mock("@/features/api/planData.api", async () => {
 	return {
@@ -25,6 +23,7 @@ vi.mock("@/features/api/planData.api", async () => {
 		callCreatePlan: vi.fn(),
 		callSavePlan: vi.fn(),
 		callGetPlan: vi.fn(),
+		callPatchPlanMaterialIO: vi.fn(),
 	};
 });
 
@@ -129,6 +128,59 @@ describe("usePlan", async () => {
 		const result = await reloadExistingPlan(fakeUuid);
 
 		expect(result).toStrictEqual({});
+	});
+
+	it("patchMaterialIO", async () => {
+		const { patchMaterialIO } = usePlan();
+		const fakeMaterialIO: IMaterialIO[] = [
+			{
+				ticker: "C",
+				input: 1,
+				output: 2,
+				price: 0,
+				delta: 0,
+				individualWeight: 0,
+				individualVolume: 0,
+				totalWeight: 0,
+				totalVolume: 0,
+			},
+			{
+				ticker: "FEO",
+				input: 0,
+				output: 100,
+				price: 0,
+				delta: 0,
+				individualWeight: 0,
+				individualVolume: 0,
+				totalWeight: 0,
+				totalVolume: 0,
+			},
+		];
+		vi.mocked(callPatchPlanMaterialIO).mockResolvedValueOnce(true);
+
+		const result = await patchMaterialIO("foo", "moo", fakeMaterialIO);
+
+		expect(callPatchPlanMaterialIO).toBeCalledTimes(1);
+		expect(callPatchPlanMaterialIO).toHaveBeenCalledWith([
+			{
+				material_io: [
+					{
+						input: 1,
+						output: 2,
+						ticker: "C",
+					},
+					{
+						input: 0,
+						output: 100,
+						ticker: "FEO",
+					},
+				],
+				planet_id: "moo",
+				uuid: "foo",
+			},
+		]);
+
+		expect(result).toBeTruthy();
 	});
 
 	describe("getPlanNamePlanet", async () => {

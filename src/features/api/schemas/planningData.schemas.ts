@@ -17,7 +17,10 @@ import {
 	IPlanEmpireElement,
 	IPlanShare,
 } from "@/stores/planningStore.types";
-import { IPlanSaveCreateResponse } from "@/features/planning_data/usePlan.types";
+import {
+	IPlanPatchMaterialIOElement,
+	IPlanSaveCreateResponse,
+} from "@/features/planning_data/usePlan.types";
 import {
 	IPlanClonePayload,
 	IPlanCloneResponse,
@@ -133,14 +136,14 @@ export const PlanEmpireSchema = z.object({
 	) as z.ZodType<z.infer<typeof PLAN_FACTION_TYPE_ZOD_ENUM>>,
 	permits_used: z.number().min(0),
 	permits_total: z.number().min(0),
-	uuid: z.string().uuid(),
+	uuid: z.uuid(),
 	name: z.string(),
 	use_fio_storage: z.boolean(),
 });
 
 export const PlanSchema: z.ZodType<IPlan> = z.object({
 	name: z.string(),
-	uuid: z.string().uuid(),
+	uuid: z.uuid(),
 	planet_id: z.string(),
 	faction: z.preprocess(
 		(val) => (typeof val === "string" ? val.toUpperCase() : val),
@@ -154,7 +157,7 @@ export const PlanSchema: z.ZodType<IPlan> = z.object({
 });
 
 export const PlanShareSchema: z.ZodType<IPlanShare> = z.object({
-	uuid: z.string().uuid(),
+	uuid: z.uuid(),
 	created_date: z.string().refine((val) => !isNaN(Date.parse(val)), {
 		message: "Invalid date string",
 	}),
@@ -167,7 +170,7 @@ const PlanEmpireElementSchema: z.ZodType<IPlanEmpireElement> =
 		baseplanners: z.array(
 			z.object({
 				name: z.string(),
-				uuid: z.string().uuid(),
+				uuid: z.uuid(),
 				planet_id: z.string(),
 			})
 		),
@@ -256,7 +259,7 @@ export const CXDataSchema: z.ZodType<ICXData> = z.object({
 });
 
 export const CXSchema: z.ZodType<ICX> = z.object({
-	uuid: z.string().uuid(),
+	uuid: z.uuid(),
 	name: z.string().nonempty(),
 	empires: PlanEmpireElementPayload,
 	cx_data: CXDataSchema,
@@ -283,16 +286,35 @@ export const PlanCreateDataSchema = z.object({
 	planet: PlanDataPlanetSchema,
 	infrastructure: z.array(PlanDataInfrastructureSchema),
 	buildings: z.array(PlanDataBuildingSchema),
-	empire_uuid: z.string().uuid().optional(),
+	empire_uuid: z.uuid().optional(),
 });
 
+const PlanPatchMaterialIOElement: z.ZodType<IPlanPatchMaterialIOElement> =
+	z.object({
+		uuid: z.uuidv4(),
+		planet_id: z.string(),
+		material_io: z.array(
+			z.object({
+				ticker: z.string().min(1).max(3),
+				input: z.number(),
+				output: z.number(),
+			})
+		),
+	});
+
+export const PlanPatchMaterialIOSchema: z.ZodType<
+	IPlanPatchMaterialIOElement[]
+> = z.array(PlanPatchMaterialIOElement);
+
+export const PlanPatchMaterialIOResponse = z.boolean();
+
 export const PlanSaveDataSchema = PlanCreateDataSchema.extend({
-	uuid: z.string().uuid(),
+	uuid: z.uuid(),
 });
 
 export const PlanSaveCreateResponseSchema: z.ZodType<IPlanSaveCreateResponse> =
 	z.object({
-		uuid: z.string().uuid(),
+		uuid: z.uuid(),
 	});
 
 export type PlanCreateDataType = z.infer<typeof PlanCreateDataSchema>;
@@ -315,3 +337,5 @@ export const PlanCloneResponseSchema: z.ZodType<IPlanCloneResponse> = z.object({
 
 export type PlanClonePayloadType = z.infer<typeof PlanClonePayloadSchema>;
 export type PlanCloneResponseType = z.infer<typeof PlanCloneResponseSchema>;
+
+export type PlanPatchMaterialIOType = z.infer<typeof PlanPatchMaterialIOSchema>;

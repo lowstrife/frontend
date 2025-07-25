@@ -30,6 +30,7 @@ import {
 	callGetPlan,
 	callGetPlanlist,
 	callGetShared,
+	callPatchPlanMaterialIO,
 	callSavePlan,
 } from "@/features/api/planData.api";
 import {
@@ -97,6 +98,7 @@ import {
 } from "@/features/empire/empire.types";
 import {
 	IPlanCreateData,
+	IPlanPatchMaterialIOElement,
 	IPlanSaveData,
 } from "@/features/planning_data/usePlan.types";
 import { PlanSaveCreateResponseType } from "@/features/api/schemas/planningData.schemas";
@@ -567,6 +569,16 @@ export function useQueryRepository() {
 			{ planUuid: string; data: IPlanSaveData },
 			PlanSaveCreateResponseType
 		>,
+		PatchMaterialIO: {
+			key: () => ["planningdata", "materialio", "patch"],
+			fetchFn: async (params: {
+				data: IPlanPatchMaterialIOElement[];
+			}) => {
+				return await callPatchPlanMaterialIO(params.data);
+			},
+			autoRefetch: false,
+			persist: false,
+		} as QueryDefinition<{ data: IPlanPatchMaterialIOElement[] }, boolean>,
 		GetExplorationData: {
 			key: (params: {
 				exchangeTicker: string;
