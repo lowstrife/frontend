@@ -39,7 +39,7 @@ export type ExchangeType =
 	| "PP7D_UNIVERSE"
 	| "PP30D_UNIVERSE";
 
-export type ICXPlanetMapItem = {
+type ICXPlanetMapItem = {
 	planet: string;
 	exchanges: ICXDataExchangeOption[];
 	ticker: ICXDataTickerOption[];
