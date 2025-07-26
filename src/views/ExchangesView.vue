@@ -74,11 +74,7 @@
 		[() => localCXUuid.value, () => localPlanetList.value],
 		([cxUuid, planetList]) => {
 			if (cxUuid) {
-				selectedCX.value = planningStore.getCX(cxUuid);
-				selectedName.value = selectedCX.value.name;
-
-				// save raw, in order to re-use on "reload" button
-				rawSelectedCX.value = planningStore.getCX(cxUuid);
+				initialize(cxUuid);
 				if (planetList.length > 0) {
 					generatePlanetMap(planetList);
 				}
@@ -86,6 +82,14 @@
 		},
 		{ immediate: true }
 	);
+
+	function initialize(cxUuid: string): void {
+		selectedCX.value = planningStore.getCX(cxUuid);
+		selectedName.value = selectedCX.value.name;
+
+		// save raw, in order to re-use on "reload" button
+		rawSelectedCX.value = planningStore.getCX(cxUuid);
+	}
 
 	function generatePlanetMap(planetList: string[]): void {
 		planetMap.value = planetList.reduce((acc, planet) => {
@@ -148,7 +152,10 @@
 						useQueryRepository().repository.GetAllCX
 					).execute();
 				})
-				.finally(() => (isPatching.value = false));
+				.finally(() => {
+					initialize(selectedCX.value!.uuid);
+					isPatching.value = false;
+				});
 		}
 	}
 
