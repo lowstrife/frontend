@@ -285,7 +285,7 @@ export interface IFIOSiteShip {
 	StlFuelStoreId: string;
 	FtlFuelStoreId: string;
 	Registration: string;
-	Name?: string;
+	Name?: string | null;
 	CommissioningTimeEpochMs: number;
 	Condition: number;
 	LastRepairEpochMs?: number | null;

@@ -331,7 +331,7 @@ const FIOSiteShipSchema: z.ZodType<IFIOSiteShip> = z.object({
 	StlFuelStoreId: z.string(),
 	FtlFuelStoreId: z.string(),
 	Registration: z.string(),
-	Name: z.string().optional(),
+	Name: z.string().optional().nullable(),
 	CommissioningTimeEpochMs: z.number(),
 	Condition: z.number(),
 	LastRepairEpochMs: z.number().nullable(),
