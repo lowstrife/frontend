@@ -36,6 +36,7 @@ class ApiService {
 	): Promise<Response> {
 		try {
 			const { data } = await this.client.get(path);
+
 			return responseSchema.parse(data);
 		} catch (e) {
 			throw this.normalizeError(e);
