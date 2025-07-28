@@ -27,6 +27,7 @@
 		"numbro": "^2.5.0",
 		"pinia": "^3.0.3",
 		"pinia-plugin-persistedstate": "^4.4.1",
+		"posthog-js": "^1.258.2",
 		"tailwindcss": "^4.1.11",
 		"vue": "^3.5.17",
 		"vue-router": "^4.5.1",

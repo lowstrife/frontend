@@ -13,21 +13,20 @@ class Config {
 		this.API_BASE_URL =
 			import.meta.env.VITE_API_BASE_URL || "https://api.prunplanner.org";
 		this.SHARE_BASE_URL =
-			import.meta.env.VITE_SHARE_BASE_URL || "https://prunplanner.org/shared";
+			import.meta.env.VITE_SHARE_BASE_URL ||
+			"https://prunplanner.org/shared";
 		this.APP_VERSION = import.meta.env.VITE_APP_VERSION || "undefined";
 
 		this.GAME_DATA_STALE_MINUTES_BUILDINGS =
-			parseInt(import.meta.env.VITE_GAME_DATA_STALE_MINUTES_BUILDINGS) ||
-			24 * 60;
+			import.meta.env.VITE_GAME_DATA_STALE_MINUTES_BUILDINGS || 24 * 60;
 		this.GAME_DATA_STALE_MINUTES_RECIPES =
-			parseInt(import.meta.env.VITE_GAME_DATA_STALE_MINUTES_RECIPES) || 24 * 60;
+			import.meta.env.VITE_GAME_DATA_STALE_MINUTES_RECIPES || 24 * 60;
 		this.GAME_DATA_STALE_MINUTES_MATERIALS =
-			parseInt(import.meta.env.VITE_GAME_DATA_STALE_MINUTES_MATERIALS) ||
-			24 * 60;
+			import.meta.env.VITE_GAME_DATA_STALE_MINUTES_MATERIALS || 24 * 60;
 		this.GAME_DATA_STALE_MINUTES_EXCHANGES =
-			parseInt(import.meta.env.VITE_GAME_DATA_STALE_MINUTES_EXCHANGES) || 30;
+			import.meta.env.VITE_GAME_DATA_STALE_MINUTES_EXCHANGES || 30;
 		this.GAME_DATA_STALE_MINUTES_PLANETS =
-			parseInt(import.meta.env.VITE_GAME_DATA_STALE_MINUTES_PLANETS) || 3 * 60;
+			import.meta.env.VITE_GAME_DATA_STALE_MINUTES_PLANETS || 3 * 60;
 	}
 }
 

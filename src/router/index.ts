@@ -8,6 +8,9 @@ import {
 // Stores
 import { useUserStore } from "@/stores/userStore";
 
+// Composables
+import { usePostHog } from "@/lib/usePostHog";
+
 const router = createRouter({
 	history: createWebHistory(),
 	routes: [
@@ -109,5 +112,8 @@ router.beforeEach((to, _, next: NavigationGuardNext) => {
 		next();
 	}
 });
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const { posthog } = usePostHog();
 
 export default router;

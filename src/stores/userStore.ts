@@ -144,6 +144,7 @@ export const useUserStore = defineStore(
 				);
 
 				setToken(tokenData.access_token, tokenData.refresh_token);
+
 				return true;
 			} catch (err) {
 				console.error(err);
