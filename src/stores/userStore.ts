@@ -13,6 +13,9 @@ import {
 import { useGameDataStore } from "@/stores/gameDataStore";
 import { usePlanningStore } from "@/stores/planningStore";
 
+// Composables
+import { usePostHog } from "@/lib/usePostHog";
+
 // Types & Interfaces
 import {
 	IUserProfile,
@@ -116,6 +119,10 @@ export const useUserStore = defineStore(
 			// reset user store
 			$reset();
 
+			// reset posthog users
+			const { posthog } = usePostHog();
+			posthog.reset();
+
 			// reset related stores
 			const gameDataStore = useGameDataStore();
 			gameDataStore.$reset();
@@ -188,6 +195,12 @@ export const useUserStore = defineStore(
 			if (isLoggedIn.value) {
 				try {
 					await callGetProfile().then((result: IUserProfile) => {
+						// identify users for posthog
+						const { posthog } = usePostHog();
+						posthog.identify(result.user_id.toString(), {
+							username: result.username,
+						});
+
 						profile.value = result;
 					});
 				} catch (error) {
