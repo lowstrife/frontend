@@ -27,6 +27,8 @@ axiosSetup();
 import HighChartsVue from "highcharts-vue";
 
 import * as Highcharts from "highcharts";
+import "highcharts/modules/stock";
+
 import { highchartsOptions } from "@/layout/highcartsOptions";
 
 Highcharts.setOptions(highchartsOptions);

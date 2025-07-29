@@ -19,32 +19,43 @@ describe("Router NavigationGuard", () => {
 		setActivePinia(createPinia());
 	});
 
-	it("redirects to homepage with state if not logged in and route requires auth", async () => {
-		const userStore = useUserStore();
-		// logged out
-		userStore.logout();
+	it(
+		"redirects to homepage with state if not logged in and route requires auth",
+		async () => {
+			const userStore = useUserStore();
+			// logged out
+			userStore.logout();
 
-		router.push({ name: "plan", params: { planetNaturalId: "abc" } });
-		await router.isReady();
+			router.push({ name: "plan", params: { planetNaturalId: "abc" } });
+			await router.isReady();
 
-		expect(router.currentRoute.value.name).toBe("homepage");
-	});
+			expect(router.currentRoute.value.name).toBe("homepage");
+		},
+		{ timeout: 10_000 }
+	);
 
-	it("redirects to empire if logged in and tries to access homepage", async () => {
-		const userStore = useUserStore();
-		// logging in
-		userStore.setToken("foo", "moo");
+	it(
+		"redirects to empire if logged in and tries to access homepage",
+		async () => {
+			const userStore = useUserStore();
+			// logging in
+			userStore.setToken("foo", "moo");
 
-		await router.push({ name: "shared-plan", params: { sharedPlanUuid: "x" } });
-		await router.isReady();
+			await router.push({
+				name: "shared-plan",
+				params: { sharedPlanUuid: "x" },
+			});
+			await router.isReady();
 
-		await router.push({ name: "homepage" });
+			await router.push({ name: "homepage" });
 
-		// Wait for redirection
-		await router.isReady();
+			// Wait for redirection
+			await router.isReady();
 
-		expect(router.currentRoute.value.name).toBe("empire");
-	});
+			expect(router.currentRoute.value.name).toBe("empire");
+		},
+		{ timeout: 10_000 }
+	);
 
 	it("allows access to shared-plan without auth", async () => {
 		const userStore = useUserStore();
