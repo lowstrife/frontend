@@ -57,7 +57,7 @@ const router = createRouter({
 			name: "none",
 			path: "/none",
 			meta: { requiresAuth: true },
-			component: import("@/views/EmpireView.vue"),
+			component: import("@/views/NoneView.vue"),
 		},
 		{
 			name: "plan",
@@ -90,6 +90,13 @@ const router = createRouter({
 			path: "/api",
 			meta: { requiresAuth: true },
 			component: () => import("@/lib/query_cache/QueryCacheView.vue"),
+		},
+		{
+			name: "market-exploration",
+			path: "/market-exploration",
+			meta: { requiresAuth: true },
+			component: () =>
+				import("@/views/market-data/MarketExplorationView.vue"),
 		},
 	],
 });
