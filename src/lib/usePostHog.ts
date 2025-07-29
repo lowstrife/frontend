@@ -6,7 +6,7 @@ export function usePostHog() {
 
 	if (posthogToken) {
 		posthog.init(posthogToken, {
-			api_host: "https://squirrel.prunplanner.org",
+			api_host: "https://squirrel.prunplanner.org/relay-DWJJ",
 			ui_host: "https://eu.posthog.com",
 			defaults: "2025-05-24",
 			person_profiles: "identified_only",
