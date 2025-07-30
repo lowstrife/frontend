@@ -207,4 +207,8 @@ export const prunplannerTheme: GlobalThemeOverrides = {
 	Tabs: {
 		colorSegment: BACKGROUND,
 	},
+	LoadingBar: {
+		colorError: ERROR,
+		colorLoading: "#c0e219",
+	},
 };
