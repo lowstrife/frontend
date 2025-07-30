@@ -1,15 +1,6 @@
 <script setup lang="ts">
 	import { defineAsyncComponent } from "vue";
 
-	// Theme
-	import {
-		NConfigProvider,
-		NModalProvider,
-		NDialogProvider,
-		darkTheme,
-	} from "naive-ui";
-	import { prunplannerTheme } from "@/layout/prunplannerNaiveUI";
-
 	// Components
 	const HomepageHeader = defineAsyncComponent(
 		() => import("@/features/homepage/components/HomepageHeader.vue")
@@ -25,37 +16,41 @@
 	import { useUserStore } from "@/stores/userStore";
 	const userStore = useUserStore();
 
-	// Unhead
-	import { useHead } from "@unhead/vue";
-	useHead({
-		title: "PRUNplanner",
+	// UI
+	import { useLoadingBar } from "naive-ui";
+
+	// Loading Bars
+	import router from "./router";
+	const loadingBar = useLoadingBar();
+
+	router.beforeEach((to, _, next) => {
+		if (to.name) loadingBar.start();
+		next();
+	});
+
+	router.afterEach((to) => {
+		if (to.name) loadingBar.finish();
 	});
 </script>
 
 <template>
-	<n-config-provider :theme="darkTheme" :theme-overrides="prunplannerTheme">
-		<n-modal-provider>
-			<n-dialog-provider>
-				<main class="flex h-view w-full !bg-black text-white/80">
-					<template v-if="userStore.isLoggedIn">
-						<NavigationBar />
-						<div class="flex flex-col flex-1 overflow-y-auto">
-							<div class="h-screen text-white/80">
-								<MobileToggle />
-								<RouterView />
-							</div>
-						</div>
-					</template>
-					<template v-else>
-						<div class="flex flex-col flex-1">
-							<div class="h-screen text-white/80">
-								<HomepageHeader />
-								<RouterView />
-							</div>
-						</div>
-					</template>
-				</main>
-			</n-dialog-provider>
-		</n-modal-provider>
-	</n-config-provider>
+	<main class="flex h-view w-full !bg-black text-white/80">
+		<template v-if="userStore.isLoggedIn">
+			<NavigationBar />
+			<div class="flex flex-col flex-1 overflow-y-auto">
+				<div class="h-screen text-white/80">
+					<MobileToggle />
+					<RouterView />
+				</div>
+			</div>
+		</template>
+		<template v-else>
+			<div class="flex flex-col flex-1">
+				<div class="h-screen text-white/80">
+					<HomepageHeader />
+					<RouterView />
+				</div>
+			</div>
+		</template>
+	</main>
 </template>
