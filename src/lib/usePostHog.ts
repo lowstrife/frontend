@@ -14,5 +14,11 @@ export function usePostHog() {
 		});
 	}
 
-	return { posthog };
+	function capture(eventName: string, props = {}) {
+		if (posthog.__loaded) {
+			posthog.capture(eventName, props);
+		}
+	}
+
+	return { posthog, capture };
 }
