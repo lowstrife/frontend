@@ -1,6 +1,7 @@
 import axios, { AxiosInstance, isAxiosError } from "axios";
 import { ZodError, ZodType } from "zod";
 import config from "@/lib/config";
+import { usePostHog } from "@/lib/usePostHog";
 
 /**
  * Service making calls to PRUNplanner backend
@@ -36,6 +37,8 @@ class ApiService {
 	): Promise<Response> {
 		try {
 			const { data } = await this.client.get(path);
+
+			usePostHog().capture("API:GET", { endpoint: path });
 
 			return responseSchema.parse(data);
 		} catch (e) {
@@ -74,6 +77,11 @@ class ApiService {
 
 			const { data } = await this.client.post(path, body, headers);
 
+			usePostHog().capture("API:POST", {
+				endpoint: path,
+				payload: payload,
+			});
+
 			return responseSchema.parse(data);
 		} catch (e) {
 			throw this.normalizeError(e);
@@ -104,6 +112,11 @@ class ApiService {
 			const body = requestSchema.parse(payload);
 
 			const { data } = await this.client.put(path, body);
+
+			usePostHog().capture("API:PUT", {
+				endpoint: path,
+				payload: payload,
+			});
 
 			return responseSchema.parse(data);
 		} catch (e) {
@@ -136,6 +149,11 @@ class ApiService {
 
 			const { data } = await this.client.patch(path, body);
 
+			usePostHog().capture("API:PATCH", {
+				endpoint: path,
+				payload: payload,
+			});
+
 			return responseSchema.parse(data);
 		} catch (e) {
 			throw this.normalizeError(e);
@@ -153,6 +171,8 @@ class ApiService {
 	 */
 	public async delete(path: string): Promise<boolean> {
 		try {
+			usePostHog().capture("API:DELETE", { endpoint: path });
+
 			return await this.client.delete(path);
 		} catch (e) {
 			throw this.normalizeError(e);
@@ -169,6 +189,7 @@ class ApiService {
 	 */
 	private normalizeError(err: unknown): Error {
 		if (err instanceof ZodError) {
+			usePostHog().capture("API:ERROR", { error: err });
 			return new Error(`Validation error: ${err.message}`);
 		} else if (isAxiosError(err)) {
 			const status = err.response?.status;
@@ -178,6 +199,7 @@ class ApiService {
 					? JSON.stringify(body)
 					: err.message;
 
+			usePostHog().capture("API:ERROR", { error: err });
 			return new Error(`HTTP ${status}: ${msg}`);
 		}
 
