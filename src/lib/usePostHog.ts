@@ -14,8 +14,17 @@ export function usePostHog() {
 		});
 	}
 
-	function capture(eventName: string, props = {}) {
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	function capture(eventName: string, props: any = {}) {
 		if (posthog.__loaded) {
+			// mark props
+			if (props.payload) {
+				if (props.payload.refresh_token)
+					props.payload.refresh_token = "***";
+				if (props.payload.access_token)
+					props.payload.access_token = "***";
+			}
+
 			posthog.capture(eventName, props);
 		}
 	}
