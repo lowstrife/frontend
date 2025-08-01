@@ -19,6 +19,7 @@ export function usePostHog() {
 		if (posthog.__loaded) {
 			// mark props
 			if (props.payload) {
+				if (props.payload.password) props.payload.password = "***";
 				if (props.payload.refresh_token)
 					props.payload.refresh_token = "***";
 				if (props.payload.access_token)
