@@ -17,7 +17,9 @@ interface IEmpireMaterialIOPlanet {
 	planetId: string;
 	planUuid: string;
 	planName: string;
-	value: number;
+	delta: number;
+	input: number;
+	output: number;
 	price: number;
 }
 

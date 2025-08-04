@@ -301,7 +301,9 @@
 								:to="`/plan/${p.planetId}/${p.planUuid}`"
 								class="hover:underline">
 								{{ getPlanetName(p.planetId) }}:
-								{{ formatNumber(p.value) }}
+								<strong>
+									{{ formatNumber(p.output) }}
+								</strong>
 							</router-link>
 						</template>
 						{{ p.planName }}
@@ -320,7 +322,9 @@
 								:to="`/plan/${p.planetId}/${p.planUuid}`"
 								class="hover:underline">
 								{{ getPlanetName(p.planetId) }}:
-								{{ formatNumber(p.value * -1) }}
+								<strong>
+									{{ formatNumber(p.input) }}
+								</strong>
 							</router-link>
 						</template>
 						{{ p.planName }}
