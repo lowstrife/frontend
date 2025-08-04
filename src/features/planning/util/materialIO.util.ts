@@ -109,7 +109,9 @@ export function useMaterialIOUtil() {
 					planetId: planInfo.planetId,
 					planUuid: planInfo.planUuid,
 					planName: planInfo.planName,
-					value: element.delta,
+					delta: element.delta,
+					input: element.input,
+					output: element.output,
 					price: element.price,
 				};
 
@@ -117,13 +119,15 @@ export function useMaterialIOUtil() {
 				 * Delta check, handle delta === 0 separately, as the planet is
 				 * full consuming all its producing, so it needs to be on both sides
 				 */
-				if (element.delta < 0) {
+				if (element.input > 0) {
 					// only consuming
 					combinedMap[element.ticker].inputPlanets.push(planetPart);
-				} else if (element.delta > 0) {
+				}
+				if (element.output > 0) {
 					// only producing
 					combinedMap[element.ticker].outputPlanets.push(planetPart);
-				} else if (element.delta === 0) {
+				}
+				if (element.delta === 0) {
 					// full consuming all its producing
 					combinedMap[element.ticker].inputPlanets.push(planetPart);
 					combinedMap[element.ticker].outputPlanets.push(planetPart);
@@ -147,10 +151,10 @@ export function useMaterialIOUtil() {
 				.filter((v) => v);
 
 			const flatValues: number[] = flatPlanets.map((pv) =>
-				Math.abs(pv.value)
+				Math.abs(pv.delta)
 			);
 			const flatPrices: number[] = flatPlanets.map((pv) =>
-				Math.abs(pv.price / pv.value)
+				Math.abs(pv.price / pv.delta)
 			);
 			const sumValue: number = flatValues.reduce((sum, c) => sum + c, 0);
 			const sumProduct: number = flatPrices.reduce(

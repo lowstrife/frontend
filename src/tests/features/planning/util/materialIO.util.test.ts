@@ -14,10 +14,7 @@ import { IMaterialIOMinimal } from "@/features/planning/usePlanCalculation.types
 
 // test data
 import materials from "@/tests/test_data/api_data_materials.json";
-import {
-	IEmpireMaterialIO,
-	IEmpirePlanMaterialIO,
-} from "@/features/empire/empire.types";
+import { IEmpirePlanMaterialIO } from "@/features/empire/empire.types";
 
 describe("Util: materialIO ", async () => {
 	let gameDataStore: any;
@@ -230,8 +227,8 @@ describe("Util: materialIO ", async () => {
 		expect(result[0].deltaPrice).toBe(-10);
 		expect(result[0].input).toBe(3);
 		expect(result[0].output).toBe(3);
-		expect(result[0].inputPlanets.length).toBe(2);
-		expect(result[0].outputPlanets.length).toBe(0);
+		expect(result[0].inputPlanets.length).toBe(1);
+		expect(result[0].outputPlanets.length).toBe(1);
 	});
 	it("combineEmpireMaterialIO", async () => {
 		const fakeInput: IEmpirePlanMaterialIO[] = [
@@ -266,7 +263,7 @@ describe("Util: materialIO ", async () => {
 		expect(result[0].deltaPrice).toBe(0);
 		expect(result[0].input).toBe(10);
 		expect(result[0].output).toBe(10);
-		expect(result[0].inputPlanets.length).toBe(1);
-		expect(result[0].outputPlanets.length).toBe(1);
+		expect(result[0].inputPlanets.length).toBe(2);
+		expect(result[0].outputPlanets.length).toBe(2);
 	});
 });
