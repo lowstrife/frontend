@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import { ref, reactive } from "vue";
-import { copyToClipboard, inertClone } from "@/util/data";
+import { copyToClipboard, inertClone, redact } from "@/util/data";
 
 describe("inertClone", () => {
 	it("clones plain object deeply", () => {
@@ -112,5 +112,36 @@ describe("copyToClipboard", async () => {
 
 		expect(mockWriteText).toHaveBeenCalledWith(testValue);
 		expect(mockWriteText).toHaveBeenCalledTimes(1);
+	});
+});
+
+describe("redact", async () => {
+	const keysToRedact: string[] = ["meow", "hello"];
+
+	it("primitives as-is", async () => {
+		const result = redact("foo", keysToRedact);
+		expect(result).toStrictEqual("foo");
+	});
+
+	it("array, handle parts", async () => {
+		const result = redact(["foo", { meow: "redact" }], keysToRedact);
+		expect(result).toStrictEqual(["foo", { meow: "***" }]);
+	});
+
+	it("nested", async () => {
+		const result = redact(
+			{ foo: { meow: "redact" }, whoop: { foo: { hello: "redact" } } },
+			keysToRedact
+		);
+		expect(result).toStrictEqual({
+			foo: {
+				meow: "***",
+			},
+			whoop: {
+				foo: {
+					hello: "***",
+				},
+			},
+		});
 	});
 });

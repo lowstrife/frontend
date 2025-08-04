@@ -1,8 +1,17 @@
-import posthog from "posthog-js";
+import posthog, { Properties } from "posthog-js";
+
+// Util
+import { redact } from "@/util/data";
 
 export function usePostHog() {
 	const posthogToken: string | undefined = import.meta.env.VITE_POSTHOG_TOKEN;
 	const posthogName: string | undefined = import.meta.env.VITE_POSTHOG_NAME;
+
+	const SENSITIVE_KEYS: string[] = [
+		"password",
+		"access_token",
+		"refresh_token",
+	];
 
 	if (posthogToken) {
 		posthog.init(posthogToken, {
@@ -14,17 +23,13 @@ export function usePostHog() {
 		});
 	}
 
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	function capture(eventName: string, props: any = {}) {
+	function capture<T extends Properties | null | undefined>(
+		eventName: string,
+		props: T
+	) {
 		if (posthog.__loaded) {
-			// mark props
-			if (props.payload) {
-				if (props.payload.password) props.payload.password = "***";
-				if (props.payload.refresh_token)
-					props.payload.refresh_token = "***";
-				if (props.payload.access_token)
-					props.payload.access_token = "***";
-			}
+			// redact props
+			if (props) props = redact(props, SENSITIVE_KEYS);
 
 			posthog.capture(eventName, props);
 		}
