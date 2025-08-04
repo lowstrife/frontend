@@ -20,6 +20,7 @@
 	const { getPlanet } = usePlanetData();
 	import { useCXData } from "@/features/cx/useCXData";
 	const { findEmpireCXUuid } = useCXData();
+	import { usePrice } from "@/features/cx/usePrice";
 	import { usePlanCalculation } from "@/features/planning/usePlanCalculation";
 	import { usePlan } from "@/features/planning_data/usePlan";
 	const {
@@ -122,6 +123,11 @@
 	const refMaterialIOShowBasked: Ref<boolean> = ref(false);
 	const refMaterialIOSplitted: Ref<boolean> = ref(false);
 
+	const { calculateInfrastructureCosts } = usePrice(
+		refCXUuid,
+		ref(planetData.PlanetNaturalId)
+	);
+
 	/**
 	 * Handle initial empire uuid assignment
 	 *
@@ -149,6 +155,7 @@
 		| "visitation-frequency"
 		| "repair-analysis"
 		| "popr"
+		| "optimize-habitation"
 		| null;
 	const refShowTool: Ref<toolOptions> = ref(null);
 
@@ -214,6 +221,30 @@
 						workforceData: result.value.workforce,
 					},
 					listeners: {},
+				};
+			case "optimize-habitation":
+				return {
+					component: defineAsyncComponent(
+						() =>
+							import(
+								"@/features/planning/components/tools/PlanOptimizeHabitation.vue"
+							)
+					),
+					props: {
+						workforceData: result.value.workforce,
+						habitationCost:
+							calculateInfrastructureCosts(planetData),
+					},
+					listeners: {
+						"update:habitation": (d: {
+							infrastructure: INFRASTRUCTURE_TYPE;
+							value: number;
+						}) =>
+							handleUpdateInfrastructure(
+								d.infrastructure,
+								d.value
+							),
+					},
 				};
 			default:
 				return null;
@@ -286,6 +317,7 @@
 
 	// Unhead
 	import { useHead } from "@unhead/vue";
+	import { INFRASTRUCTURE_TYPE } from "@/features/planning/usePlanCalculation.types";
 	useHead({
 		title: computed(() =>
 			planName.value
@@ -482,7 +514,10 @@
 						@click="openTool('repair-analysis')">
 						Repair Analysis
 					</n-button>
-					<n-button size="small" secondary disabled>
+					<n-button
+						size="small"
+						secondary
+						@click="openTool('optimize-habitation')">
 						Habitation Optimization
 					</n-button>
 				</div>

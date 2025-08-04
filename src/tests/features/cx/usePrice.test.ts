@@ -8,6 +8,8 @@ import { useGameDataStore } from "@/stores/gameDataStore";
 // test data
 import exchanges from "@/tests/test_data/api_data_exchanges.json";
 import cx_definition from "@/tests/test_data/api_data_cx_definition.json";
+import building_single from "@/tests/test_data/api_data_building_single_hbl.json";
+import planet_single from "@/tests/test_data/api_data_planet_etherwind.json";
 
 const fakeCXUuid: string = "2a83a2ca-db0c-49d2-9c43-0db08c1675bb";
 
@@ -31,6 +33,34 @@ describe("usePrice", async () => {
 		const cx: Ref<string | undefined> = ref(undefined);
 		usePrice(cx, ref(undefined));
 		cx.value = "foo";
+	});
+
+	describe("calculateInfrastructureCosts", () => {
+		it("should calculate infrastructure costs using mocked getMaterialIOTotalPrice", () => {
+			const mockPlanet = planet_single;
+
+			vi.mock("@/features/game_data/useBuildingData", () => ({
+				useBuildingData: () => ({
+					getBuilding: vi.fn().mockReturnValue(building_single),
+					getBuildingConstructionMaterials: vi.fn(() => [
+						{ ticker: "BBH", input: 1, output: 0 },
+					]),
+				}),
+			}));
+
+			const { calculateInfrastructureCosts, getPrice } = usePrice(
+				ref(undefined),
+				ref(undefined)
+			);
+
+			// @ts-expect-error mock planet data
+			const result = calculateInfrastructureCosts(mockPlanet);
+
+			// Each building ticker should have a cost of -100
+			Object.keys(result).forEach((r) => {
+				expect(result[r]).toBe(getPrice("BBH", "BUY"));
+			});
+		});
 	});
 
 	describe("getPrice", async () => {
@@ -108,13 +138,19 @@ describe("usePrice", async () => {
 
 	describe("getExchangeCodeKey", async () => {
 		it("Too many splits", async () => {
-			const { getExchangeCodeKey } = usePrice(ref(undefined), ref(undefined));
+			const { getExchangeCodeKey } = usePrice(
+				ref(undefined),
+				ref(undefined)
+			);
 
 			expect(() => getExchangeCodeKey("FOO_MOO_MEOW")).toThrowError();
 		});
 
 		it("UNIVERSE", async () => {
-			const { getExchangeCodeKey } = usePrice(ref(undefined), ref(undefined));
+			const { getExchangeCodeKey } = usePrice(
+				ref(undefined),
+				ref(undefined)
+			);
 
 			const result = getExchangeCodeKey("PP30D_UNIVERSE");
 
@@ -123,7 +159,10 @@ describe("usePrice", async () => {
 		});
 
 		it("PP7Ds", async () => {
-			const { getExchangeCodeKey } = usePrice(ref(undefined), ref(undefined));
+			const { getExchangeCodeKey } = usePrice(
+				ref(undefined),
+				ref(undefined)
+			);
 
 			const result = getExchangeCodeKey("PP7D_AI1");
 
@@ -132,7 +171,10 @@ describe("usePrice", async () => {
 		});
 
 		it("PP30Ds", async () => {
-			const { getExchangeCodeKey } = usePrice(ref(undefined), ref(undefined));
+			const { getExchangeCodeKey } = usePrice(
+				ref(undefined),
+				ref(undefined)
+			);
 
 			const result = getExchangeCodeKey("PP30D_AI1");
 
@@ -141,7 +183,10 @@ describe("usePrice", async () => {
 		});
 
 		it("CX BUY", async () => {
-			const { getExchangeCodeKey } = usePrice(ref(undefined), ref(undefined));
+			const { getExchangeCodeKey } = usePrice(
+				ref(undefined),
+				ref(undefined)
+			);
 
 			const result = getExchangeCodeKey("AI1_BUY");
 
@@ -150,7 +195,10 @@ describe("usePrice", async () => {
 		});
 
 		it("CX SELL", async () => {
-			const { getExchangeCodeKey } = usePrice(ref(undefined), ref(undefined));
+			const { getExchangeCodeKey } = usePrice(
+				ref(undefined),
+				ref(undefined)
+			);
 
 			const result = getExchangeCodeKey("AI1_SELL");
 
@@ -159,7 +207,10 @@ describe("usePrice", async () => {
 		});
 
 		it("CX AVG", async () => {
-			const { getExchangeCodeKey } = usePrice(ref(undefined), ref(undefined));
+			const { getExchangeCodeKey } = usePrice(
+				ref(undefined),
+				ref(undefined)
+			);
 
 			const result = getExchangeCodeKey("AI1_AVG");
 
@@ -168,7 +219,10 @@ describe("usePrice", async () => {
 		});
 
 		it("Invalid two part", async () => {
-			const { getExchangeCodeKey } = usePrice(ref(undefined), ref(undefined));
+			const { getExchangeCodeKey } = usePrice(
+				ref(undefined),
+				ref(undefined)
+			);
 
 			const result = getExchangeCodeKey("FOO_MOO");
 
