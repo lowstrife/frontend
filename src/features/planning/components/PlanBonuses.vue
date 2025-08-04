@@ -81,9 +81,8 @@
 		label-placement="left"
 		label-width="auto"
 		label-align="left"
-		size="small"
-	>
-		<n-form-item label="Corporation HQ">
+		size="small">
+		<n-form-item label="Corp. HQ">
 			<n-checkbox v-model:checked="localCorpHQ" />
 		</n-form-item>
 

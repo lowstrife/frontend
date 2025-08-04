@@ -58,7 +58,7 @@
 		{{ totalExperts }} experts assigned.
 	</div>
 	<div
-		class="grid grid-cols-1 lg:grid-cols-[auto_auto_auto] gap-3 child:my-auto child:text-nowrap">
+		class="grid grid-cols-1 lg:grid-cols-[auto_auto_auto] gap-3 child:my-auto">
 		<template v-for="expert in expertData" :key="expert.name">
 			<div>{{ capitalizeString(expert.name) }}</div>
 			<n-input-number
@@ -67,7 +67,7 @@
 				:min="0"
 				:max="5"
 				size="small"
-				class="w-full"
+				class="w-full min-w-[70px]"
 				:on-update:value="
 					(value: number | null) => {
 						if (value !== null) {
@@ -76,7 +76,7 @@
 					}
 				" />
 			<div
-				class="text-end"
+				class="text-end text-nowrap"
 				:class="expert.bonus === 0 ? 'text-white/50' : ''">
 				{{ formatNumber(expert.bonus * 100, 2) }} %
 			</div>
