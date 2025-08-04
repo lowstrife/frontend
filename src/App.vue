@@ -41,6 +41,12 @@
 				<div class="h-screen text-white/80">
 					<MobileToggle />
 					<RouterView />
+					<footer
+						class="sticky top-[100vh] text-white/50 text-[10px] text-end hover:cursor-pointer pr-3 py-1">
+						<router-link :to="'/imprint-tos'">
+							Imprint & Terms of Service
+						</router-link>
+					</footer>
 				</div>
 			</div>
 		</template>
@@ -49,6 +55,12 @@
 				<div class="h-screen text-white/80">
 					<HomepageHeader />
 					<RouterView />
+					<footer
+						class="sticky top-[100vh] text-white/50 text-[10px] text-end hover:cursor-pointer pr-3 py-1">
+						<router-link :to="'/imprint-tos'">
+							Imprint & Terms of Service
+						</router-link>
+					</footer>
 				</div>
 			</div>
 		</template>

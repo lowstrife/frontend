@@ -104,5 +104,14 @@
 				</n-button>
 			</n-form-item>
 		</n-form>
+
+		<div class="text-[10px] text-white/50 pt-1">
+			By using PRUNplanner you agree to the
+			<router-link
+				to="/imprint-tos"
+				class="hover:cursor-pointer underline">
+				Terms of Service.
+			</router-link>
+		</div>
 	</div>
 </template>
