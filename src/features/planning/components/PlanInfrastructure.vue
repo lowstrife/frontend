@@ -8,7 +8,7 @@
 	} from "@/features/planning/usePlanCalculation.types";
 
 	// UI
-	import { NForm, NFormItem, NInputNumber } from "naive-ui";
+	import { NInputNumber } from "naive-ui";
 
 	const props = defineProps({
 		disabled: {
@@ -58,27 +58,21 @@
 </script>
 
 <template>
-	<n-form
-		:disabled="disabled"
-		label-placement="left"
-		label-width="auto"
-		label-align="left"
-		size="small"
-	>
-		<div class="grid grid-cols-1 lg:grid-cols-2 gap-3">
-			<n-form-item v-for="inf in infrastructureOrder" :key="inf" :label="inf">
-				<n-input-number
-					v-model:value="localInfrastructureData[inf]"
-					class="w-full"
-					:on-update:value="
+	<div
+		class="grid grid-cols-1 lg:grid-cols-[auto_auto_auto_auto] gap-3 child:my-auto">
+		<template v-for="inf in infrastructureOrder" :key="inf">
+			<div>{{ inf }}</div>
+			<n-input-number
+				v-model:value="localInfrastructureData[inf]"
+				class="w-full min-w-[80px]"
+				size="small"
+				:on-update:value="
 						(value: number | null) => {
 							if (value !== null) {
 								emit('update:infrastructure', inf, value);
 							}
 						}
-					"
-				/>
-			</n-form-item>
-		</div>
-	</n-form>
+					" />
+		</template>
+	</div>
 </template>
