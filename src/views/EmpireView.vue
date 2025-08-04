@@ -24,10 +24,8 @@
 	// Components
 	import RenderingProgress from "@/layout/components/RenderingProgress.vue";
 	import WrapperPlanningDataLoader from "@/features/wrapper/components/WrapperPlanningDataLoader.vue";
+	import WrapperGameDataLoader from "@/features/wrapper/components/WrapperGameDataLoader.vue";
 
-	const AsyncWrapperGameDataLoader = defineAsyncComponent(
-		() => import("@/features/wrapper/components/WrapperGameDataLoader.vue")
-	);
 	const AsyncEmpirePlanList = defineAsyncComponent(
 		() => import("@/features/empire/components/EmpirePlanList.vue")
 	);
@@ -70,7 +68,7 @@
 	const refEmpireList: Ref<IPlanEmpireElement[]> = ref([]);
 
 	const calculatedPlans: Ref<Record<string, IPlanResult>> = ref({});
-	const isCalculating: Ref<boolean> = ref(false);
+	const isCalculating: Ref<boolean> = ref(true);
 	const planData: Ref<IPlan[]> = ref([]);
 
 	/**
@@ -87,14 +85,18 @@
 
 		// calculate all plans, pass in references as the
 		// empire might be updated
-		planData.value.forEach((plan) => {
-			calculatedPlans.value[plan.uuid!] = usePlanCalculation(
-				toRef(plan),
-				selectedEmpireUuid,
-				refEmpireList,
-				selectedCXUuid
-			).result.value;
-		});
+		try {
+			planData.value.forEach((plan) => {
+				calculatedPlans.value[plan.uuid!] = usePlanCalculation(
+					toRef(plan),
+					selectedEmpireUuid,
+					refEmpireList,
+					selectedCXUuid
+				).result.value;
+			});
+		} catch (error) {
+			console.error(error);
+		}
 
 		isCalculating.value = false;
 	}
@@ -233,12 +235,11 @@
 			(value: IPlanEmpireElement[]) => (refEmpireList = value)
 		">
 		<template #default="{ empireList, empirePlanetList }">
-			<AsyncWrapperGameDataLoader
-				:key="`GAMEDATAWRAPPER#${selectedEmpireUuid}`"
+			<WrapperGameDataLoader
 				load-materials
-				load-exchanges
-				load-recipes
 				load-buildings
+				load-recipes
+				load-exchanges
 				:load-planet-multiple="empirePlanetList"
 				@complete="calculateEmpire">
 				<template v-if="isCalculating">
@@ -384,7 +385,7 @@
 						</div>
 					</div>
 				</template>
-			</AsyncWrapperGameDataLoader>
+			</WrapperGameDataLoader>
 		</template>
 	</WrapperPlanningDataLoader>
 </template>
