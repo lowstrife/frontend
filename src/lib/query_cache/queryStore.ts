@@ -152,6 +152,7 @@ export const useQueryStore = defineStore("prunplanner_query_store", () => {
 			} catch (err) {
 				state.error =
 					err instanceof Error ? err : new Error(String(err));
+				state.timestamp = Date.now();
 
 				console.error(err);
 				throw state.error;
