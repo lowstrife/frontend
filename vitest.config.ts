@@ -23,6 +23,7 @@ export default defineConfig({
 			include: ["src/**"],
 			exclude: [
 				"src/layout/*",
+				"src/AppProvider.vue",
 				"src/App.vue",
 				"src/main.ts",
 				"src/views/*",
