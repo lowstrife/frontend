@@ -61,7 +61,7 @@
 							)
 							.then(() => {
 								isLoggingIn.value = false;
-								router.push("/empire");
+								router.push({ path: "/empire" });
 							});
 					}
 				} else {

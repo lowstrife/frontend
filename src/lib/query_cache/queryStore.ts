@@ -8,6 +8,11 @@ export const useQueryStore = defineStore("prunplanner_query_store", () => {
 	const cache = reactive(new Map<string, QueryState<unknown, unknown>>());
 	const inFlight = new Map<string, Promise<unknown>>();
 
+	function $reset(): void {
+		cache.clear();
+		inFlight.clear();
+	}
+
 	/**
 	 * Peaks a queries state readonly without ever creating it on call.
 	 * Will take into account existance as well as "fresh" state, will
@@ -321,6 +326,7 @@ export const useQueryStore = defineStore("prunplanner_query_store", () => {
 	startStatusWatcher();
 
 	return {
+		$reset,
 		cache,
 		peekQueryState,
 		executeQuery,

@@ -12,6 +12,7 @@ import {
 // Stores
 import { useGameDataStore } from "@/stores/gameDataStore";
 import { usePlanningStore } from "@/stores/planningStore";
+import { useQueryStore } from "@/lib/query_cache/queryStore";
 
 // Composables
 import { usePostHog } from "@/lib/usePostHog";
@@ -129,6 +130,9 @@ export const useUserStore = defineStore(
 
 			const planningStore = usePlanningStore();
 			planningStore.$reset();
+
+			const queryStore = useQueryStore();
+			queryStore.$reset();
 		}
 
 		/**
