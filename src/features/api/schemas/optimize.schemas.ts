@@ -18,7 +18,7 @@ export interface IOptimizeHabitationPayload {
 	cost_HB5: number;
 }
 
-export interface IOptimizeHabitationResponsePart {
+interface IOptimizeHabitationResponsePart {
 	HBB: number;
 	HBC: number;
 	HBM: number;
@@ -61,7 +61,7 @@ export const OptimizaHabitationPayloadSchema: z.ZodType<IOptimizeHabitationPaylo
 		cost_HB5: PositiveOrZeroNumber,
 	});
 
-export const OptimizeHabitationResponsePartSchema: z.ZodType<IOptimizeHabitationResponsePart> =
+const OptimizeHabitationResponsePartSchema: z.ZodType<IOptimizeHabitationResponsePart> =
 	z.object({
 		HBB: PositiveOrZeroNumber,
 		HBC: PositiveOrZeroNumber,
