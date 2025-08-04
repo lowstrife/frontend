@@ -166,9 +166,38 @@ export function useMarketExplorationChart(
 	function skipSameTrades(data: IExploration[]): IExploration[] {
 		let prevValue: number = Infinity;
 
+		let prevFirst: number = Infinity;
+		let prevMax: number = Infinity;
+		let prevMin: number = Infinity;
+		let prevLast: number = Infinity;
+
+		if (data.length > 0) {
+			prevFirst = data[0].price_first;
+			prevMax = data[0].price_max;
+			prevMin = data[0].price_min;
+			prevLast = data[0].price_last;
+		}
+
 		for (let i = 0; i < data.length; i++) {
+			// sanitize volume data
 			if (data[i].volume_max === prevValue) data[i].volume_max = 0;
 			else prevValue = data[i].volume_max;
+
+			// sanitize chart candles data
+			if (i > 0) {
+				if (data[i].price_first > 3 * prevFirst)
+					data[i].price_first = 3 * prevFirst;
+				else prevFirst = data[i].price_first;
+				if (data[i].price_max > 3 * prevMax)
+					data[i].price_max = 3 * prevMax;
+				else prevMax = data[i].price_max;
+				if (data[i].price_min > 3 * prevMin)
+					data[i].price_min = 3 * prevMin;
+				else prevMin = data[i].price_min;
+				if (data[i].price_last > 3 * prevLast)
+					data[i].price_last = 3 * prevLast;
+				else prevLast = data[i].price_last;
+			}
 		}
 
 		return data;
