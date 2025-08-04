@@ -102,6 +102,11 @@ import {
 	IPlanSaveData,
 } from "@/features/planning_data/usePlan.types";
 import { PlanSaveCreateResponseType } from "@/features/api/schemas/planningData.schemas";
+import {
+	IOptimizeHabitationPayload,
+	IOptimizeHabitationResponse,
+} from "@/features/api/schemas/optimize.schemas";
+import { callOptimizeHabitation } from "@/features/api/optimize.api";
 
 export function useQueryRepository() {
 	const queryStore = useQueryStore();
@@ -653,6 +658,23 @@ export function useQueryRepository() {
 			persist: true,
 			expireTime: 60_000 * config.GAME_DATA_STALE_MINUTES_PLANETS,
 		} as QueryDefinition<{ planetNaturalId: string }, IPopulationReport>,
+		OptimizeHabitation: {
+			key: (params: IOptimizeHabitationPayload) => [
+				"planningdata",
+				"optimize",
+				"habitation",
+				params,
+			],
+			fetchFn: async (params: IOptimizeHabitationPayload) => {
+				return await callOptimizeHabitation(params);
+			},
+			autoRefetch: false,
+			persist: true,
+			expireTime: 60_000 * config.GAME_DATA_STALE_MINUTES_PLANETS,
+		} as QueryDefinition<
+			IOptimizeHabitationPayload,
+			IOptimizeHabitationResponse
+		>,
 	};
 
 	function get(id: keyof QueryRepositoryType) {

@@ -44,6 +44,10 @@ import {
 	IPlanSaveData,
 } from "@/features/planning_data/usePlan.types";
 import { PlanSaveCreateResponseType } from "@/features/api/schemas/planningData.schemas";
+import {
+	IOptimizeHabitationPayload,
+	IOptimizeHabitationResponse,
+} from "@/features/api/schemas/optimize.schemas";
 
 export type QueryRepositoryType = {
 	GetMaterials: QueryDefinition<void, IMaterial[]>;
@@ -119,5 +123,9 @@ export type QueryRepositoryType = {
 	GetPlanetLastPOPR: QueryDefinition<
 		{ planetNaturalId: string },
 		IPopulationReport
+	>;
+	OptimizeHabitation: QueryDefinition<
+		IOptimizeHabitationPayload,
+		IOptimizeHabitationResponse
 	>;
 };

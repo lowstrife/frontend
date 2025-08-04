@@ -5,6 +5,7 @@ import { usePlanningStore } from "@/stores/planningStore";
 
 // Composables
 import { useExchangeData } from "@/features/game_data/useExchangeData";
+import { useBuildingData } from "@/features/game_data/useBuildingData";
 
 // Types & Interfaces
 import {
@@ -13,6 +14,9 @@ import {
 	IMaterialIOMinimal,
 } from "@/features/planning/usePlanCalculation.types";
 import { ICXData } from "@/stores/planningStore.types";
+import { infrastructureBuildingNames } from "@/features/planning/calculations/workforceCalculations";
+import { IPlanet } from "@/features/api/gameData.types";
+import { IInfrastructureCosts } from "@/features/cx/usePrice.types";
 
 /**
  * # Material Price & CX Preference Logic
@@ -47,6 +51,7 @@ export function usePrice(
 	const planningStore = usePlanningStore();
 
 	const { getExchangeTicker } = useExchangeData();
+	const { getBuilding, getBuildingConstructionMaterials } = useBuildingData();
 
 	/**
 	 * Composable internal caching:
@@ -268,6 +273,13 @@ export function usePrice(
 		return { exchangeCode, key };
 	}
 
+	/**
+	 * Enhances a minimal Material I/O with pricing information for its delta
+	 * @author jplacht
+	 *
+	 * @param {IMaterialIOMaterial[]} data Minimal Material I/O
+	 * @returns {IMaterialIO[]} Material I/O
+	 */
 	function enhanceMaterialIOMaterial(
 		data: IMaterialIOMaterial[]
 	): IMaterialIO[] {
@@ -288,10 +300,48 @@ export function usePrice(
 		return enhancedArray;
 	}
 
+	/**
+	 * Calculates all infrastructure buildings construction costs
+	 * @author jplacht
+	 *
+	 * @param {IPlanet} planet Planet Information
+	 * @returns {IInfrastructureCosts} Infrastructure Construction Costs
+	 */
+	function calculateInfrastructureCosts(
+		planet: IPlanet
+	): IInfrastructureCosts {
+		const results: IInfrastructureCosts = {
+			HB1: 0,
+			HB2: 0,
+			HB3: 0,
+			HB4: 0,
+			HB5: 0,
+			HBB: 0,
+			HBC: 0,
+			HBM: 0,
+			HBL: 0,
+			STO: 0,
+		};
+
+		infrastructureBuildingNames.map((buildingTicker) => {
+			results[buildingTicker] =
+				getMaterialIOTotalPrice(
+					getBuildingConstructionMaterials(
+						getBuilding(buildingTicker),
+						planet
+					),
+					"BUY"
+				) * -1;
+		});
+
+		return results;
+	}
+
 	return {
 		getPrice,
 		getMaterialIOTotalPrice,
 		getExchangeCodeKey,
 		enhanceMaterialIOMaterial,
+		calculateInfrastructureCosts,
 	};
 }
