@@ -54,10 +54,9 @@ const router = createRouter({
 			component: () => import("@/views/PlanetSearchView.vue"),
 		},
 		{
-			name: "none",
-			path: "/none",
-			meta: { requiresAuth: true },
-			component: import("@/views/NoneView.vue"),
+			name: "not-implemented",
+			path: "/not-implemented",
+			component: () => import("@/views/NotImplementedView.vue"),
 		},
 		{
 			name: "plan",

@@ -104,7 +104,7 @@
 				},
 				// {
 				// 	label: "Projects",
-				// 	routerLink: "/none",
+				// 	routerLink: "/not-implemented",
 				// 	icon: GroupWorkRound,
 				// },
 			],
@@ -114,7 +114,7 @@
 		// 	children: [
 		// 		{
 		// 			label: "Project Settings",
-		// 			routerLink: "/none",
+		// 			routerLink: "/not-implemented",
 		// 			icon: PermDataSettingSharp,
 		// 		},
 		// 	],
@@ -126,7 +126,7 @@
 				{
 					label: "Market Data",
 					display: true,
-					routerLink: "/none",
+					routerLink: "/not-implemented",
 					icon: CandlestickChartSharp,
 					children: [
 						{
@@ -137,43 +137,43 @@
 						{
 							label: "ROI Overview",
 							display: true,
-							routerLink: "/none",
+							routerLink: "/not-implemented",
 						},
 						{
 							label: "Resource ROI Overview",
 							display: true,
-							routerLink: "/none",
+							routerLink: "/not-implemented",
 						},
 					],
 				},
 				{
 					label: "HQ Upgrade Calculator",
 					display: true,
-					routerLink: "/none",
+					routerLink: "/not-implemented",
 					icon: ProductionQuantityLimitsSharp,
 				},
 				{
 					label: "Production Chains",
 					display: true,
-					routerLink: "/none",
+					routerLink: "/not-implemented",
 					icon: CompareSharp,
 				},
 				{
 					label: "Base Compare",
 					display: true,
-					routerLink: "/none",
+					routerLink: "/not-implemented",
 					icon: UpgradeSharp,
 				},
 				{
 					label: "Government",
 					display: true,
-					routerLink: "/none",
+					routerLink: "/not-implemented",
 					icon: StarsSharp,
 				},
 				{
 					label: "FIO",
 					display: userStore.hasFIO,
-					routerLink: "/none",
+					routerLink: "/not-implemented",
 					icon: ApiSharp,
 					children: [
 						{
@@ -184,7 +184,7 @@
 						{
 							label: "Storage",
 							display: userStore.hasFIO,
-							routerLink: "/none",
+							routerLink: "/not-implemented",
 						},
 						{
 							label: "Repair",
@@ -194,7 +194,7 @@
 						{
 							label: "Plan Import",
 							display: userStore.hasFIO,
-							routerLink: "/none",
+							routerLink: "/not-implemented",
 						},
 					],
 				},
@@ -219,7 +219,7 @@
 				{
 					label: "Help",
 					display: true,
-					routerLink: "/none",
+					routerLink: "/not-implemented",
 					icon: HelpOutlineSharp,
 				},
 				{
