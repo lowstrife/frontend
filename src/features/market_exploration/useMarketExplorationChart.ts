@@ -120,6 +120,13 @@ export function useMarketExplorationChart(
 		};
 	});
 
+	/**
+	 * Fetches market exploration data from the backend and stores it in the composable
+	 * @author jplacht
+	 *
+	 * @async
+	 * @returns {Promise<void>} Void, data stored in data property
+	 */
 	async function fetchData(): Promise<void> {
 		loading.value = true;
 		error.value = false;
@@ -135,7 +142,7 @@ export function useMarketExplorationChart(
 		})
 			.execute()
 			.then((result: IExploration[]) => {
-				data.value = result;
+				data.value = skipSameTrades(result);
 			})
 			.catch(() => {
 				error.value = true;
@@ -145,8 +152,31 @@ export function useMarketExplorationChart(
 			});
 	}
 
+	/**
+	 * Skips volume_max parameter if it is the same as previous day
+	 *
+	 * Decision to do so made after various discussions via discord.
+	 * FIO /exchanges/full data does not have 0 for non-trading days.
+	 *
+	 * @author jplacht
+	 *
+	 * @param {IExploration[]} data Exploration API Data
+	 * @returns {IExploration[]} Cleaned Up exploration data
+	 */
+	function skipSameTrades(data: IExploration[]): IExploration[] {
+		let prevValue: number = Infinity;
+
+		for (let i = 0; i < data.length; i++) {
+			if (data[i].volume_max === prevValue) data[i].volume_max = 0;
+			else prevValue = data[i].volume_max;
+		}
+
+		return data;
+	}
+
 	return {
 		fetchData,
+		skipSameTrades,
 		isLoading,
 		hasError,
 		// data
