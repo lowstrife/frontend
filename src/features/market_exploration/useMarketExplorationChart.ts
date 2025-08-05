@@ -142,7 +142,7 @@ export function useMarketExplorationChart(
 		})
 			.execute()
 			.then((result: IExploration[]) => {
-				data.value = skipSameTrades(result);
+				data.value = sanitizeData(result);
 			})
 			.catch(() => {
 				error.value = true;
@@ -163,19 +163,19 @@ export function useMarketExplorationChart(
 	 * @param {IExploration[]} data Exploration API Data
 	 * @returns {IExploration[]} Cleaned Up exploration data
 	 */
-	function skipSameTrades(data: IExploration[]): IExploration[] {
+	function sanitizeData(data: IExploration[]): IExploration[] {
 		let prevValue: number = Infinity;
 
-		let prevFirst: number = Infinity;
-		let prevMax: number = Infinity;
-		let prevMin: number = Infinity;
-		let prevLast: number = Infinity;
+		let prev_first: number = Infinity;
+		let prev_max: number = Infinity;
+		let prev_min: number = Infinity;
+		let prev_last: number = Infinity;
 
 		if (data.length > 0) {
-			prevFirst = data[0].price_first;
-			prevMax = data[0].price_max;
-			prevMin = data[0].price_min;
-			prevLast = data[0].price_last;
+			prev_first = data[0].price_first;
+			prev_max = data[0].price_max;
+			prev_min = data[0].price_min;
+			prev_last = data[0].price_last;
 		}
 
 		for (let i = 0; i < data.length; i++) {
@@ -184,19 +184,26 @@ export function useMarketExplorationChart(
 			else prevValue = data[i].volume_max;
 
 			// sanitize chart candles data
-			if (i > 0) {
-				if (data[i].price_first > 3 * prevFirst)
-					data[i].price_first = 3 * prevFirst;
-				else prevFirst = data[i].price_first;
-				if (data[i].price_max > 3 * prevMax)
-					data[i].price_max = 3 * prevMax;
-				else prevMax = data[i].price_max;
-				if (data[i].price_min > 3 * prevMin)
-					data[i].price_min = 3 * prevMin;
-				else prevMin = data[i].price_min;
-				if (data[i].price_last > 3 * prevLast)
-					data[i].price_last = 3 * prevLast;
-				else prevLast = data[i].price_last;
+			if (
+				i > 0 &&
+				(data[i].price_first > 3 * prev_first ||
+					data[i].price_max > 3 * prev_max ||
+					data[i].price_min > 3 * prev_min ||
+					data[i].price_last > 3 * prev_last)
+			) {
+				if (data[i].price_first > 3 * prev_first)
+					data[i].price_first = Math.round(3 * prev_first);
+				if (data[i].price_max > 3 * prev_max)
+					data[i].price_max = Math.round(3 * prev_max);
+				if (data[i].price_min > 3 * prev_min)
+					data[i].price_min = Math.round(3 * prev_min);
+				if (data[i].price_last > 3 * prev_last)
+					data[i].price_last = Math.round(3 * prev_last);
+			} else {
+				prev_first = data[i].price_first;
+				prev_max = data[i].price_max;
+				prev_min = data[i].price_min;
+				prev_last = data[i].price_last;
 			}
 		}
 
@@ -205,7 +212,7 @@ export function useMarketExplorationChart(
 
 	return {
 		fetchData,
-		skipSameTrades,
+		sanitizeData,
 		isLoading,
 		hasError,
 		// data

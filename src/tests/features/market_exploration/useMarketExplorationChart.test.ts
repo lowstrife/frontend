@@ -70,59 +70,128 @@ describe("useMarketExplorationChart", async () => {
 		expect(dataDelta.value[0].length).toBe(2);
 	});
 
-	it("skipSameTrades", async () => {
-		const testData: IExploration[] = [
-			{
-				Datetime: "2025-04-01",
-				ExchangeCode: "NC1",
-				Ticker: "DW",
-				price_first: 101.0,
-				price_last: 103.0,
-				price_average: 102.02,
-				price_min: 101.0,
-				price_max: 103.0,
-				volume_max: 100,
-				demand_average: 412121.83,
-				supply_average: 713185.9,
-				delta_supply_demand: 301064.0,
-			},
-			{
-				Datetime: "2025-04-01",
-				ExchangeCode: "NC1",
-				Ticker: "DW",
-				price_first: 101.0,
-				price_last: 103.0,
-				price_average: 102.02,
-				price_min: 101.0,
-				price_max: 103.0,
-				volume_max: 100,
-				demand_average: 412121.83,
-				supply_average: 713185.9,
-				delta_supply_demand: 301064.0,
-			},
-			{
-				Datetime: "2025-04-01",
-				ExchangeCode: "NC1",
-				Ticker: "DW",
-				price_first: 101.0,
-				price_last: 103.0,
-				price_average: 102.02,
-				price_min: 101.0,
-				price_max: 103.0,
-				volume_max: 20,
-				demand_average: 412121.83,
-				supply_average: 713185.9,
-				delta_supply_demand: 301064.0,
-			},
-		];
-		const { skipSameTrades } = useMarketExplorationChart(
-			exchangeTicker,
-			materialTicker
-		);
-		const result = skipSameTrades(testData);
+	describe("sanitizeData", () => {
+		it("returns empty array when input is empty", () => {
+			const { sanitizeData } = useMarketExplorationChart(
+				exchangeTicker,
+				materialTicker
+			);
+			expect(sanitizeData([])).toEqual([]);
+		});
 
-		expect(result[0].volume_max).toBe(100);
-		expect(result[1].volume_max).toBe(0);
-		expect(result[2].volume_max).toBe(20);
+		it.each([
+			{
+				name: "volume_max is same as previous",
+				input: [
+					{
+						volume_max: 100,
+						price_first: 1,
+						price_max: 1,
+						price_min: 1,
+						price_last: 1,
+					} as IExploration,
+					{
+						volume_max: 100,
+						price_first: 1,
+						price_max: 1,
+						price_min: 1,
+						price_last: 1,
+					} as IExploration,
+				],
+				expected: [
+					{
+						volume_max: 100,
+						price_first: 1,
+						price_max: 1,
+						price_min: 1,
+						price_last: 1,
+					},
+					{
+						volume_max: 0,
+						price_first: 1,
+						price_max: 1,
+						price_min: 1,
+						price_last: 1,
+					},
+				],
+			},
+			{
+				name: "price fields exceed 3x previous",
+				input: [
+					{
+						volume_max: 100,
+						price_first: 10,
+						price_max: 10,
+						price_min: 10,
+						price_last: 10,
+					} as IExploration,
+					{
+						volume_max: 200,
+						price_first: 40,
+						price_max: 50,
+						price_min: 31,
+						price_last: 35,
+					} as IExploration,
+				],
+				expected: [
+					{
+						volume_max: 100,
+						price_first: 10,
+						price_max: 10,
+						price_min: 10,
+						price_last: 10,
+					},
+					{
+						volume_max: 200,
+						price_first: 30,
+						price_max: 30,
+						price_min: 30,
+						price_last: 30,
+					},
+				],
+			},
+			{
+				name: "price fields within acceptable range",
+				input: [
+					{
+						volume_max: 100,
+						price_first: 10,
+						price_max: 10,
+						price_min: 10,
+						price_last: 10,
+					} as IExploration,
+					{
+						volume_max: 200,
+						price_first: 20,
+						price_max: 25,
+						price_min: 15,
+						price_last: 18,
+					} as IExploration,
+				],
+				expected: [
+					{
+						volume_max: 100,
+						price_first: 10,
+						price_max: 10,
+						price_min: 10,
+						price_last: 10,
+					},
+					{
+						volume_max: 200,
+						price_first: 20,
+						price_max: 25,
+						price_min: 15,
+						price_last: 18,
+					},
+				],
+			},
+		])("$name", ({ input, expected }) => {
+			const { sanitizeData } = useMarketExplorationChart(
+				exchangeTicker,
+				materialTicker
+			);
+			const result = sanitizeData([...input]);
+			expect(result).toEqual(expected);
+		});
 	});
 });
