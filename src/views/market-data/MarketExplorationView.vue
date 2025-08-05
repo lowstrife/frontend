@@ -93,7 +93,6 @@
 						:constructor-type="'stockChart'"
 						class="hc"
 						:options="chartOptions" />
-
 					<h2 class="text-xl py-2">Data</h2>
 					<XNDataTable
 						:data="dataChart"
