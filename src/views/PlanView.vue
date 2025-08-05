@@ -156,6 +156,7 @@
 		| "repair-analysis"
 		| "popr"
 		| "optimize-habitation"
+		| "supply-cart"
 		| null;
 	const refShowTool: Ref<toolOptions> = ref(null);
 
@@ -219,6 +220,22 @@
 					props: {
 						planetNaturalId: planetData.PlanetNaturalId,
 						workforceData: result.value.workforce,
+					},
+					listeners: {},
+				};
+			case "supply-cart":
+				return {
+					component: defineAsyncComponent(
+						() =>
+							import(
+								"@/features/planning/components/tools/PlanSupplyCart.vue"
+							)
+					),
+					props: {
+						planetNaturalId: planetData.PlanetNaturalId,
+						materialIO: result.value.materialio,
+						workforceMaterialIO: result.value.workforceMaterialIO,
+						productionMaterialIO: result.value.productionMaterialIO,
 					},
 					listeners: {},
 				};
@@ -505,7 +522,10 @@
 					<n-button size="small" secondary disabled>
 						Construction Cart
 					</n-button>
-					<n-button size="small" secondary disabled>
+					<n-button
+						size="small"
+						secondary
+						@click="openTool('supply-cart')">
 						Supply Cart
 					</n-button>
 					<n-button
