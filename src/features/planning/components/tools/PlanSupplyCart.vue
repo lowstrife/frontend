@@ -1,0 +1,370 @@
+<script setup lang="ts">
+	import {
+		computed,
+		ComputedRef,
+		PropType,
+		Ref,
+		ref,
+		watchEffect,
+	} from "vue";
+
+	// Components
+	import MaterialTile from "@/features/material_tile/components/MaterialTile.vue";
+	import XITTransferActionButton from "@/features/xit/components/XITTransferActionButton.vue";
+
+	// Composables
+	import { useFIOStorage } from "@/features/fio/useFIOStorage";
+
+	// Types & Interfaces
+	import { IMaterialIO } from "../../usePlanCalculation.types";
+
+	interface ISupplyCartElement extends IMaterialIO {
+		workforce: boolean;
+		production: boolean;
+		stockNeed: number;
+		stock: number;
+		needLeft: number;
+		needVolume: number;
+		needWeight: number;
+	}
+
+	type TYPE_FILTER = "all" | "workforce" | "production";
+
+	// Util
+	import { formatNumber, formatAmount, clamp } from "@/util/numbers";
+
+	// UI
+	import {
+		NButton,
+		NButtonGroup,
+		NInputNumber,
+		NSelect,
+		NIcon,
+	} from "naive-ui";
+	import {
+		XNDataTable,
+		XNDataTableColumn,
+		XNDataTableSummaryRow,
+		XNDataTableSummaryCell,
+	} from "@skit/x.naive-ui";
+	import {
+		CloseSharp,
+		CheckCircleOutlineSharp,
+		RemoveCircleOutlineSharp,
+	} from "@vicons/material";
+	import { IXITTransferMaterial } from "@/features/xit/xitAction.types";
+
+	const props = defineProps({
+		planetNaturalId: {
+			type: String,
+			required: true,
+		},
+		materialIO: {
+			type: Array as PropType<IMaterialIO[]>,
+			required: true,
+		},
+		workforceMaterialIO: {
+			type: Array as PropType<IMaterialIO[]>,
+			required: true,
+		},
+		productionMaterialIO: {
+			type: Array as PropType<IMaterialIO[]>,
+			required: true,
+		},
+	});
+
+	const { hasStorage, storageOptions, findStorageValueFromOptions } =
+		useFIOStorage();
+
+	const refStockRequirement: Ref<number> = ref(20);
+	const refSelectedStorage: Ref<string | undefined> = ref(
+		hasStorage.value
+			? storageOptions.value.filter(
+					(e) => e.value === `PLANET#${props.planetNaturalId}`
+			  )
+				? `PLANET#${props.planetNaturalId}`
+				: undefined
+			: undefined
+	);
+	const refTypeFilter: Ref<TYPE_FILTER> = ref("all");
+	const localMaterialIO: Ref<ISupplyCartElement[]> = ref([]);
+
+	watchEffect(() => {
+		createLocalMaterialIO();
+	});
+
+	function createLocalMaterialIO(): void {
+		localMaterialIO.value = [];
+
+		props.materialIO.forEach((m) => {
+			if (m.delta < 0) {
+				const stockNeed: number = Math.ceil(
+					Math.abs(m.delta) * refStockRequirement.value
+				);
+				const stock: number = findStorageValueFromOptions(
+					refSelectedStorage.value,
+					m.ticker
+				);
+				const needLeft: number = clamp(stockNeed - stock, 0, Infinity);
+
+				localMaterialIO.value.push({
+					...m,
+					workforce: !!props.workforceMaterialIO.find(
+						(e) => e.ticker === m.ticker
+					),
+					production: !!props.productionMaterialIO.find(
+						(e) => e.ticker === m.ticker
+					),
+					stockNeed,
+					stock,
+					needLeft,
+					needVolume: needLeft * m.individualVolume,
+					needWeight: needLeft * m.individualWeight,
+				});
+			}
+		});
+	}
+
+	const filteredMaterialIO = computed(() => {
+		if (refTypeFilter.value === "workforce")
+			return localMaterialIO.value.filter((e) => e.workforce);
+		else if (refTypeFilter.value === "production")
+			return localMaterialIO.value.filter((e) => e.production);
+		else return localMaterialIO.value;
+	});
+
+	const dailyCost: ComputedRef<number> = computed(() => {
+		return (
+			filteredMaterialIO.value.reduce(
+				(sum, current) => (sum = sum + current.price),
+				0
+			) * -1
+		);
+	});
+
+	const totalCost: ComputedRef<number> = computed(() => {
+		return filteredMaterialIO.value.reduce(
+			(sum, current) =>
+				(sum =
+					sum +
+					(Math.abs(current.price) / Math.abs(current.delta)) *
+						current.needLeft),
+			0
+		);
+	});
+
+	const totalVolume: ComputedRef<number> = computed(() => {
+		return filteredMaterialIO.value.reduce(
+			(sum, current) => (sum = sum + current.needVolume),
+			0
+		);
+	});
+	const totalWeight: ComputedRef<number> = computed(() => {
+		return filteredMaterialIO.value.reduce(
+			(sum, current) => (sum = sum + current.needWeight),
+			0
+		);
+	});
+
+	const xitTransferElements: ComputedRef<IXITTransferMaterial[]> = computed(
+		() =>
+			filteredMaterialIO.value.map((e) => ({
+				ticker: e.ticker,
+				value: e.needLeft,
+			}))
+	);
+
+	// close emit
+	const emit = defineEmits<{
+		(e: "close"): void;
+	}>();
+</script>
+
+<template>
+	<div class="pb-3 flex flex-row justify-between child:my-auto">
+		<h2 class="text-white/80 font-bold text-lg">Supply Cart</h2>
+		<n-button size="tiny" secondary @click="emit('close')">
+			<template #icon><CloseSharp /></template>
+		</n-button>
+	</div>
+	<div class="text-white/50 pb-3">
+		The Supply Cart provides updates on your plans needs combined with
+		existing inventory sourced from FIO. You have the flexibility to opt for
+		alternative storage locations to replenish your base. Tailor your
+		selection based on whether you wish to restock workforce and production
+		supplies or focus on a specific category, and specify the duration for
+		which the supplied stock should sustain.
+	</div>
+	<div
+		class="border border-b-0 rounded-[3px] border-white/20 p-3 flex flex-row justify-between">
+		<div>
+			<n-button-group size="small">
+				<n-button
+					:type="refTypeFilter === 'all' ? 'success' : 'default'"
+					@click="refTypeFilter = 'all'">
+					All
+				</n-button>
+				<n-button
+					:type="
+						refTypeFilter === 'workforce' ? 'success' : 'default'
+					"
+					@click="refTypeFilter = 'workforce'">
+					Workforce
+				</n-button>
+				<n-button
+					:type="
+						refTypeFilter === 'production' ? 'success' : 'default'
+					"
+					@click="refTypeFilter = 'production'">
+					Production
+				</n-button>
+			</n-button-group>
+		</div>
+		<div class="flex flex-row gap-x-3">
+			<div class="my-auto font-bold">Stock Duration (days)</div>
+			<n-input-number
+				v-model:value="refStockRequirement"
+				size="small"
+				show-button
+				:min="0"
+				class="!w-[100px]" />
+			<template v-if="hasStorage">
+				<div class="my-auto font-bold">Storage</div>
+				<n-select
+					v-model:value="refSelectedStorage"
+					size="small"
+					filterable
+					:options="storageOptions"
+					class="!w-[250px]" />
+			</template>
+			<XITTransferActionButton
+				:elements="xitTransferElements"
+				:drawer-width="400" />
+		</div>
+	</div>
+
+	<XNDataTable :data="filteredMaterialIO" striped>
+		<XNDataTableColumn key="ticker" title="Ticker" sorter="default">
+			<template #render-cell="{ rowData }">
+				<MaterialTile
+					:key="`SUPPLYCART#Material#${rowData.ticker}`"
+					:ticker="rowData.ticker" />
+			</template>
+		</XNDataTableColumn>
+		<XNDataTableColumn key="delta" title="Daily Need" sorter="default">
+			<template #render-cell="{ rowData }">
+				{{ formatNumber(rowData.delta * -1) }}
+			</template>
+		</XNDataTableColumn>
+		<XNDataTableColumn key="price" title="Daily Cost" sorter="default">
+			<template #render-cell="{ rowData }">
+				{{ formatNumber(rowData.price * -1) }}
+			</template>
+		</XNDataTableColumn>
+		<XNDataTableColumn
+			v-if="hasStorage"
+			key="stock"
+			title="Stock"
+			sorter="default">
+			<template #render-cell="{ rowData }">
+				{{ formatAmount(rowData.stock) }}
+			</template>
+		</XNDataTableColumn>
+		<XNDataTableColumn key="stockNeed" title="Full Need" sorter="default">
+			<template #render-cell="{ rowData }">
+				{{ formatAmount(rowData.stockNeed) }}
+			</template>
+		</XNDataTableColumn>
+		<XNDataTableColumn key="needLeft" title="Final Need" sorter="default">
+			<template #render-cell="{ rowData }">
+				{{ formatAmount(rowData.needLeft) }}
+			</template>
+		</XNDataTableColumn>
+		<XNDataTableColumn key="needVolume" title="m³" sorter="default">
+			<template #render-cell="{ rowData }">
+				{{ formatNumber(rowData.needVolume) }}
+			</template>
+		</XNDataTableColumn>
+		<XNDataTableColumn key="needWeight" title="t" sorter="default">
+			<template #render-cell="{ rowData }">
+				{{ formatNumber(rowData.needWeight) }}
+			</template>
+		</XNDataTableColumn>
+		<XNDataTableColumn key="workforce" title="Workforce" sorter="default">
+			<template #render-cell="{ rowData }">
+				<div class="text-center">
+					<n-icon
+						:class="
+							rowData.workforce
+								? 'text-positive'
+								: 'text-negative'
+						">
+						<CheckCircleOutlineSharp v-if="rowData.workforce" />
+						<RemoveCircleOutlineSharp v-else />
+					</n-icon>
+				</div>
+			</template>
+		</XNDataTableColumn>
+		<XNDataTableColumn key="producton" title="Production" sorter="default">
+			<template #render-cell="{ rowData }">
+				<div class="text-center">
+					<n-icon
+						:class="
+							rowData.production
+								? 'text-positive'
+								: 'text-negative'
+						">
+						<CheckCircleOutlineSharp v-if="rowData.production" />
+						<RemoveCircleOutlineSharp v-else />
+					</n-icon>
+				</div>
+			</template>
+		</XNDataTableColumn>
+		<template #summary>
+			<XNDataTableSummaryRow>
+				<XNDataTableSummaryCell
+					key="ticker"
+					:col-span="hasStorage ? 10 : 9">
+					<template #default>
+						<div class="flex flex-row justify-between">
+							<div
+								class="grid grid-cols-2 gap-x-3 gap-y-1 child:not-even:font-bold">
+								<div>Daily Cost</div>
+								<div>
+									{{ formatNumber(dailyCost) }}
+									<span class="pl-1 font-light text-white/50">
+										$
+									</span>
+								</div>
+								<div>Total Cost</div>
+								<div>
+									{{ formatNumber(totalCost) }}
+									<span class="pl-1 font-light text-white/50">
+										$
+									</span>
+								</div>
+							</div>
+							<div
+								class="grid grid-cols-2 gap-x-3 gap-y-1 child:text-end child:not-even:font-bold">
+								<div>Total Volume</div>
+								<div>
+									{{ formatNumber(totalVolume) }}
+									<span class="pl-1 font-light text-white/50">
+										m³
+									</span>
+								</div>
+								<div>Total Weight</div>
+								<div>
+									{{ formatNumber(totalWeight) }}
+									<span class="pl-1 font-light text-white/50">
+										t
+									</span>
+								</div>
+							</div>
+						</div>
+					</template>
+				</XNDataTableSummaryCell>
+			</XNDataTableSummaryRow>
+		</template>
+	</XNDataTable>
+</template>
