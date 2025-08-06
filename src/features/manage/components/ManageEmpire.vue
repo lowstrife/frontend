@@ -425,5 +425,11 @@
 				</div>
 			</template>
 		</x-n-data-table-column>
+		<template #empty>
+			<div class="flex flex-col gap-y-3">
+				<div class="text-center">No Empires available.</div>
+				<div class="text-center">Create your first Empire.</div>
+			</div>
+		</template>
 	</x-n-data-table>
 </template>

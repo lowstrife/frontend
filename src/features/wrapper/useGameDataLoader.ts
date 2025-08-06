@@ -138,6 +138,7 @@ export function useGameDataLoader(
 							s.cfg.onSuccess(shallowData);
 						})
 						.catch((e) => {
+							console.error(e);
 							s.error =
 								e instanceof Error ? e : new Error(String(e));
 						})

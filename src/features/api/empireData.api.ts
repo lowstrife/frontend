@@ -96,8 +96,6 @@ export async function callPatchEmpire(
 export async function callCreateEmpire(
 	data: IEmpireCreatePayload
 ): Promise<IPlanEmpire> {
-	console.log(data);
-
 	return apiService.put<EmpireCreatePayloadType, PlanEmpireSchemaType>(
 		"/empire/",
 		data,

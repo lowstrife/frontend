@@ -36,6 +36,10 @@
 		() => import("@/features/empire/components/EmpireConfiguration.vue")
 	);
 
+	const AsyncWrapperGenericError = defineAsyncComponent(
+		() => import("@/features/wrapper/components/WrapperGenericError.vue")
+	);
+
 	// Types & Interfaces
 	import { IPlan, IPlanEmpireElement } from "@/stores/planningStore.types";
 	import { IPlanResult } from "@/features/planning/usePlanCalculation.types";
@@ -219,6 +223,20 @@
 			);
 		}
 	);
+
+	/**
+	 * Holds computed empire options
+	 *
+	 * @author jplacht
+	 */
+	const empireOptions = computed(() =>
+		refEmpireList.value.map((e) => {
+			return {
+				label: e.name,
+				value: e.uuid,
+			};
+		})
+	);
 </script>
 
 <template>
@@ -234,7 +252,7 @@
 		@data:empire:list="
 			(value: IPlanEmpireElement[]) => (refEmpireList = value)
 		">
-		<template #default="{ empireList, empirePlanetList }">
+		<template #default="{ empirePlanetList }">
 			<WrapperGameDataLoader
 				load-materials
 				load-buildings
@@ -244,6 +262,11 @@
 				@complete="calculateEmpire">
 				<template v-if="isCalculating">
 					<div>Calculating</div>
+				</template>
+				<template v-else-if="refEmpireList.length === 0">
+					<AsyncWrapperGenericError
+						message-title="No Empires"
+						message-text="You don't have any empires. Head to Management to create your first." />
 				</template>
 				<template v-else>
 					<div class="min-h-screen flex flex-col">
@@ -269,14 +292,7 @@
 												v-model:value="
 													selectedEmpireUuid
 												"
-												:options="
-													empireList.map((e) => {
-														return {
-															label: e.name,
-															value: e.uuid,
-														};
-													})
-												"
+												:options="empireOptions"
 												@update-value="
 													(value: string) => {
 														selectedEmpireUuid =

@@ -326,5 +326,19 @@
 				</div>
 			</template>
 		</x-n-data-table-column>
+		<template #empty>
+			<div class="flex flex-col gap-y-3">
+				<div class="text-center">No Plans available.</div>
+				<div class="text-center">
+					Use
+					<router-link
+						to="/search"
+						class="text-link-primary hover:underline">
+						Planet Search</router-link
+					>
+					to create your first plan.
+				</div>
+			</div>
+		</template>
 	</x-n-data-table>
 </template>

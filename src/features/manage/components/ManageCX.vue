@@ -202,5 +202,13 @@
 				</div>
 			</template>
 		</x-n-data-table-column>
+		<template #empty>
+			<div class="flex flex-col gap-y-3">
+				<div class="text-center">No CX available.</div>
+				<div class="text-center">
+					Create your first Exchange Preference.
+				</div>
+			</div>
+		</template>
 	</x-n-data-table>
 </template>

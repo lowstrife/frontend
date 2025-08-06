@@ -1,5 +1,12 @@
 <script setup lang="ts">
-	import { computed, ComputedRef, ref, Ref, watch } from "vue";
+	import {
+		computed,
+		ComputedRef,
+		defineAsyncComponent,
+		ref,
+		Ref,
+		watch,
+	} from "vue";
 
 	// Stores
 	import { usePlanningStore } from "@/stores/planningStore";
@@ -15,6 +22,9 @@
 	import WrapperPlanningDataLoader from "@/features/wrapper/components/WrapperPlanningDataLoader.vue";
 	import WrapperGameDataLoader from "@/features/wrapper/components/WrapperGameDataLoader.vue";
 	import HelpDrawer from "@/features/help/components/HelpDrawer.vue";
+	const AsyncWrapperGenericError = defineAsyncComponent(
+		() => import("@/features/wrapper/components/WrapperGenericError.vue")
+	);
 
 	import CXExchangePreference from "@/features/exchanges/components/CXExchangePreference.vue";
 	import CXTickerPreference from "@/features/exchanges/components/CXTickerPreference.vue";
@@ -175,7 +185,12 @@
 		@data:cx="(data: ICX[]) => localCXs = data"
 		@data:plan:list:planets="(data: string[]) => localPlanetList = data">
 		<WrapperGameDataLoader load-exchanges load-materials>
-			<div class="min-h-screen flex flex-col">
+			<template v-if="!localCXUuid">
+				<AsyncWrapperGenericError
+					message-title="No Preferences"
+					message-text="You don't have exchange preferences. Head to Management and create your first." />
+			</template>
+			<div v-else class="min-h-screen flex flex-col">
 				<div
 					class="px-6 py-3 border-b border-white/10 flex flex-row justify-between gap-x-3">
 					<h1 class="text-2xl font-bold my-auto hover:cursor-pointer">
@@ -209,12 +224,7 @@
 						<HelpDrawer file-name="exchanges" />
 					</div>
 				</div>
-				<div v-if="!localCXUuid" class="px-6 pb-3 pt-4">
-					No Exchange Setting found. Head to Management and create
-					your first.
-				</div>
 				<div
-					v-else
 					:kex="`EXCHANGE#${localCXUuid}`"
 					class="flex-grow grid grid-cols-1 lg:grid-cols-[25%_auto] divide-x divide-white/10">
 					<div class="px-6 pb-3 pt-4 border-b border-white/10">

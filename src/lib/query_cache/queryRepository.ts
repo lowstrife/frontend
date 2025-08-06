@@ -183,11 +183,15 @@ export function useQueryRepository() {
 				params.planetNaturalIds,
 			],
 			fetchFn: async (params: { planetNaturalIds: string[] }) => {
-				const data: IPlanet[] = await callDataMultiplePlanets(
-					params.planetNaturalIds
-				);
-				gameDataStore.setMultiplePlanets(data);
-				return data;
+				try {
+					const data: IPlanet[] = await callDataMultiplePlanets(
+						params.planetNaturalIds
+					);
+					gameDataStore.setMultiplePlanets(data);
+					return data;
+				} catch {
+					return [];
+				}
 			},
 			expireTime: 60_000 * config.GAME_DATA_STALE_MINUTES_PLANETS,
 			autoRefetch: true,
@@ -359,10 +363,13 @@ export function useQueryRepository() {
 				params.empireUuid,
 			],
 			fetchFn: async (params: { empireUuid: string }) => {
-				const data = await callGetEmpirePlans(params.empireUuid);
-
-				planningStore.setPlans(data);
-				return data;
+				try {
+					const data = await callGetEmpirePlans(params.empireUuid);
+					planningStore.setPlans(data);
+					return data;
+				} catch {
+					return [];
+				}
 			},
 			autoRefetch: false,
 			persist: true,
@@ -472,9 +479,13 @@ export function useQueryRepository() {
 		GetAllPlans: {
 			key: () => ["planningdata", "plan", "list"],
 			fetchFn: async () => {
-				const data = await callGetPlanlist();
-				planningStore.setPlans(data);
-				return data;
+				try {
+					const data = await callGetPlanlist();
+					planningStore.setPlans(data);
+					return data;
+				} catch {
+					return [];
+				}
 			},
 			autoRefetch: false,
 			persist: true,
