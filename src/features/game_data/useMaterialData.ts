@@ -9,6 +9,8 @@ import { inertClone } from "@/util/data";
 // Interfaces & Types
 import { IMaterial } from "@/features/api/gameData.types";
 
+const cache = new Map<string, IMaterial>();
+
 export function useMaterialData() {
 	const gameDataStore = useGameDataStore();
 
@@ -20,11 +22,18 @@ export function useMaterialData() {
 	 * @returns {IMaterial} Material Data
 	 */
 	function getMaterial(ticker: string): IMaterial {
+		// check internal cache
+		if (cache.has(ticker)) return cache.get(ticker)!;
+
 		const findMaterial: IMaterial | undefined = toRaw(
 			gameDataStore.materials[ticker]
 		);
 
-		if (findMaterial) return inertClone(findMaterial);
+		if (findMaterial) {
+			const data = inertClone(findMaterial);
+			cache.set(ticker, data);
+			return data;
+		}
 
 		throw new Error(
 			`No data: Material '${ticker}'. Ensure ticker is valid and game data has been loaded.`

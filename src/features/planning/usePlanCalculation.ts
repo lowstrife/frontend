@@ -31,11 +31,13 @@ import { usePlanCalculationPreComputes } from "@/features/planning/usePlanCalcul
 import { IBuilding, IPlanet, IRecipe } from "@/features/api/gameData.types";
 import {
 	IAreaResult,
+	IBuildingConstruction,
 	IExpertRecord,
 	IInfrastructureRecord,
 	IMaterialIO,
 	IMaterialIOMaterial,
 	IMaterialIOMinimal,
+	INFRASTRUCTURE_TYPE,
 	IPlanResult,
 	IProductionBuilding,
 	IProductionBuildingRecipe,
@@ -117,15 +119,18 @@ export function usePlanCalculation(
 
 	// pre-computations
 
-	const { computedActiveEmpire, computedBuildingInformation } =
-		usePlanCalculationPreComputes(
-			buildings,
-			cxUuid,
-			empireUuid,
-			empireOptions,
-			planetNaturalId,
-			planetData
-		);
+	const {
+		computedActiveEmpire,
+		computedBuildingInformation,
+		infrastructureBuildingInformation,
+	} = usePlanCalculationPreComputes(
+		buildings,
+		cxUuid,
+		empireUuid,
+		empireOptions,
+		planetNaturalId,
+		planetData
+	);
 
 	// calculations
 
@@ -527,6 +532,33 @@ export function usePlanCalculation(
 		};
 	}
 
+	/**
+	 * Holds a computed array of all the plans buildings to be constructed
+	 * containing both production and infrastructure buildings
+	 *
+	 * @author jplacht
+	 *
+	 * @type {ComputedRef<IBuildingConstruction[]>} All building construction information
+	 */
+	const constructionMaterials: ComputedRef<IBuildingConstruction[]> =
+		computed(() => {
+			return [
+				...result.value.production.buildings.map((b) => ({
+					ticker: b.name,
+					materials: b.constructionMaterials,
+				})),
+				...infrastructureBuildingInformation.filter(
+					(i) =>
+						result.value.infrastructure[
+							i.ticker as INFRASTRUCTURE_TYPE
+						] &&
+						result.value.infrastructure[
+							i.ticker as INFRASTRUCTURE_TYPE
+						] > 0
+				),
+			];
+		});
+
 	// result composing
 
 	/**
@@ -658,6 +690,7 @@ export function usePlanCalculation(
 		backendData,
 		planEmpires,
 		planName,
+		constructionMaterials,
 		// precomputes
 		computedActiveEmpire,
 		// submodules

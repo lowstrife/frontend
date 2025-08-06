@@ -31,6 +31,7 @@
 	} = usePlan();
 
 	// Util
+	import { inertClone } from "@/util/data";
 	import { formatNumber } from "@/util/numbers";
 
 	// Components
@@ -79,7 +80,7 @@
 		},
 	});
 
-	const refPlanData: Ref<IPlan> = ref(props.planData);
+	const refPlanData: Ref<IPlan> = ref(inertClone(props.planData));
 	const refEmpireList: Ref<IPlanEmpireElement[] | undefined> = ref(
 		props.empireList
 	);
@@ -95,6 +96,7 @@
 		backendData,
 		computedActiveEmpire,
 		planEmpires,
+		constructionMaterials,
 		handleResetModified,
 		handleUpdateCorpHQ,
 		handleUpdateCOGC,
@@ -157,6 +159,7 @@
 		| "popr"
 		| "optimize-habitation"
 		| "supply-cart"
+		| "construction-cart"
 		| null;
 	const refShowTool: Ref<toolOptions> = ref(null);
 
@@ -263,6 +266,24 @@
 							),
 					},
 				};
+			case "construction-cart":
+				return {
+					component: defineAsyncComponent(
+						() =>
+							import(
+								"@/features/planning/components/tools/PlanConstructionCart.vue"
+							)
+					),
+					props: {
+						planetNaturalId: planetData.PlanetNaturalId,
+						cxUuid: refCXUuid.value,
+						constructionData: constructionMaterials.value,
+						productionBuildingData:
+							result.value.production.buildings,
+						infrastructureData: result.value.infrastructure,
+					},
+					listeners: {},
+				};
 			default:
 				return null;
 		}
@@ -335,6 +356,7 @@
 	// Unhead
 	import { useHead } from "@unhead/vue";
 	import { INFRASTRUCTURE_TYPE } from "@/features/planning/usePlanCalculation.types";
+
 	useHead({
 		title: computed(() =>
 			planName.value
@@ -507,9 +529,6 @@
 			</div>
 			<div class="border-b border-white/10 p-3">
 				<div class="flex grow justify-end gap-x-3 my-auto">
-					<n-button size="small" secondary disabled>
-						Empire Override
-					</n-button>
 					<n-button size="small" secondary @click="openTool('popr')">
 						POPR
 					</n-button>
@@ -519,7 +538,10 @@
 						@click="openTool('visitation-frequency')">
 						Visitation Frequency
 					</n-button>
-					<n-button size="small" secondary disabled>
+					<n-button
+						size="small"
+						secondary
+						@click="openTool('construction-cart')">
 						Construction Cart
 					</n-button>
 					<n-button

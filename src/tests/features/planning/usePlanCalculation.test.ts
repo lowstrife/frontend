@@ -8,6 +8,9 @@ import { useGameDataStore } from "@/stores/gameDataStore";
 // Composables
 import { usePlanCalculation } from "@/features/planning/usePlanCalculation";
 
+// Util
+import { inertClone } from "@/util/data";
+
 // test data
 import plan_etherwind from "@/tests/test_data/api_data_plan_etherwind.json";
 import planet_etherwind from "@/tests/test_data/api_data_planet_etherwind.json";
@@ -71,6 +74,36 @@ describe("usePlanCalculation", async () => {
 			areaUsed: 994,
 			permits: 3,
 		});
+	});
+
+	it("validate constructionMaterials", async () => {
+		const { constructionMaterials } = usePlanCalculation(
+			// @ts-expect-error mock data
+			ref(plan_etherwind),
+			ref(undefined),
+			ref(undefined),
+			ref(undefined)
+		);
+		expect(constructionMaterials.value).toBeDefined();
+		expect(constructionMaterials.value.length).toBe(8);
+	});
+
+	it("unknown recipe error", async () => {
+		const manipData = inertClone(plan_etherwind);
+		manipData.baseplanner_data.buildings[0].active_recipes[0] = {
+			recipeid: "foo",
+			amount: 1,
+		};
+
+		const { result } = usePlanCalculation(
+			// @ts-expect-error mock data
+			ref(manipData),
+			ref(undefined),
+			ref(undefined),
+			ref(undefined)
+		);
+
+		expect(() => result.value).toThrowError();
 	});
 
 	it("validate existing and saveable", async () => {

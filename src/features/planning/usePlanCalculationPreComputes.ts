@@ -11,10 +11,12 @@ import {
 	IPlanEmpireElement,
 } from "@/stores/planningStore.types";
 import {
+	IBuildingConstruction,
 	IMaterialIOMinimal,
 	IPreBuildingRecord,
 } from "@/features/planning/usePlanCalculation.types";
 import { IBuilding, IPlanet } from "@/features/api/gameData.types";
+import { infrastructureBuildingNames } from "@/features/planning/calculations/workforceCalculations";
 
 /**
  * # Precomputed References
@@ -84,8 +86,8 @@ export function usePlanCalculationPreComputes(
 	 *
 	 * @type {ComputedRef<string[]>} Array of Building Ticker
 	 */
-	const computedBuildingTicker: ComputedRef<string[]> = computed<string[]>(() =>
-		buildings.value.map((b) => b.name)
+	const computedBuildingTicker: ComputedRef<string[]> = computed<string[]>(
+		() => buildings.value.map((b) => b.name)
 	);
 
 	/**
@@ -116,7 +118,10 @@ export function usePlanCalculationPreComputes(
 				map[ticker] = {
 					ticker: ticker,
 					buildingData: buildingData,
-					buildingRecipes: getBuildingRecipes(ticker, planetData.Resources),
+					buildingRecipes: getBuildingRecipes(
+						ticker,
+						planetData.Resources
+					),
 					constructionMaterials: constructionMaterials,
 					constructionCost: getMaterialIOTotalPrice(
 						constructionMaterials,
@@ -129,9 +134,28 @@ export function usePlanCalculationPreComputes(
 			return map;
 		});
 
+	/**
+	 * Holds a record of all infrastructures construction materials
+	 * taking the planetary building requirements into account
+	 *
+	 * @author jplacht
+	 *
+	 * @type {IBuildingConstruction[]} Array of infrastructure
+	 * construction materials
+	 */
+	const infrastructureBuildingInformation: IBuildingConstruction[] =
+		infrastructureBuildingNames.map((inf) => ({
+			ticker: inf,
+			materials: getBuildingConstructionMaterials(
+				getBuilding(inf),
+				planetData
+			),
+		}));
+
 	return {
 		computedActiveEmpire,
 		computedBuildingTicker,
 		computedBuildingInformation,
+		infrastructureBuildingInformation,
 	};
 }
