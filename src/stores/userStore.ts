@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { computed, ComputedRef, Reactive, reactive, ref, Ref } from "vue";
-import _ from "lodash";
+import merge from "lodash/merge";
 
 // API
 import {
@@ -68,7 +68,7 @@ export const useUserStore = defineStore(
 		}
 
 		function getPlanPreference(planUuid: string): IPreferencePerPlan {
-			return _.merge(
+			return merge(
 				{},
 				preferenceDefaults.planDefaults,
 				preferences.planOverrides[planUuid] || {}

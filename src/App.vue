@@ -20,7 +20,7 @@
 	import { useLoadingBar } from "naive-ui";
 
 	// Loading Bars
-	import router from "./router";
+	import router from "@/router";
 	const loadingBar = useLoadingBar();
 
 	router.beforeEach((to, _, next) => {

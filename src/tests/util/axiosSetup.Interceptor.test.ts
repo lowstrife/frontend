@@ -44,6 +44,7 @@ describe("Axios Interceptor", () => {
 			access_token: fakeAccessToken,
 			refresh_token: fakeRefreshToken,
 		});
+		mockAxios.onGet("/user/profile").reply(200, {});
 
 		userStore.refreshToken = fakeInitialRefreshToken;
 
