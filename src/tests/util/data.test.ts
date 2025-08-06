@@ -1,9 +1,36 @@
-import { describe, it, expect, beforeEach, vi } from "vitest";
-import { ref, reactive, markRaw } from "vue";
-import { copyToClipboard, inertClone, redact } from "@/util/data";
+import {
+	describe,
+	it,
+	expect,
+	beforeEach,
+	vi,
+	beforeAll,
+	afterAll,
+} from "vitest";
+import { ref, reactive, isReactive } from "vue";
+import {
+	copyToClipboard,
+	inertClone as inertCloneDefault,
+	redact,
+} from "@/util/data";
 
-describe("inertClone", () => {
-	it("clones plain objects without reactivity", () => {
+describe("inertClone (structuredClone available)", () => {
+	const inertClone = inertCloneDefault;
+
+	it("returns primitives as-is", () => {
+		expect(inertClone(42)).toBe(42);
+		expect(inertClone("hello")).toBe("hello");
+		expect(inertClone(true)).toBe(true);
+		expect(inertClone(null)).toBe(null);
+		expect(inertClone(undefined)).toBe(undefined);
+	});
+
+	it("returns functions as-is without throwing", () => {
+		const fn = () => 123;
+		expect(inertClone(fn)).toBe(fn);
+	});
+
+	it("deep-clones plain objects", () => {
 		const obj = { a: 1, b: { c: 2 } };
 		const clone = inertClone(obj);
 		expect(clone).toEqual(obj);
@@ -11,59 +38,108 @@ describe("inertClone", () => {
 		expect(clone.b).not.toBe(obj.b);
 	});
 
-	it("clones arrays", () => {
-		const arr = [1, 2, 3];
+	it("deep-clones arrays", () => {
+		const arr = [{ x: 1 }, { y: 2 }];
 		const clone = inertClone(arr);
 		expect(clone).toEqual(arr);
 		expect(clone).not.toBe(arr);
+		expect(clone[0]).not.toBe(arr[0]);
 	});
 
-	it("clones reactive objects and strips reactivity", () => {
-		const reactiveObj = reactive({ foo: "bar" });
-		const clone = inertClone(reactiveObj);
-		expect(clone).toEqual({ foo: "bar" });
-		expect(clone).not.toBe(reactiveObj);
+	it("strips reactivity from reactive objects", () => {
+		const react = reactive({ foo: { bar: "baz" } });
+		const clone = inertClone(react);
+		expect(clone).toEqual({ foo: { bar: "baz" } });
+		expect(isReactive(clone)).toBe(false);
+		expect(clone.foo).not.toBe(react.foo);
 	});
 
-	it("clones ref values and unwraps them", () => {
-		const someRef = ref({ hello: "world" });
-		const clone = inertClone(someRef);
-		expect(clone).toEqual({ hello: "world" });
-		expect(clone).not.toBe(someRef.value);
+	it("unwraps and clones refs", () => {
+		const r = ref({ nested: [1, 2, 3] });
+		const clone = inertClone(r);
+		expect(clone).toEqual({ nested: [1, 2, 3] });
+		expect(clone).not.toBe(r.value);
+		// @ts-expect-error test data
+		expect(Array.isArray(clone.nested)).toBe(true);
 	});
 
-	it("returns primitives as-is", () => {
-		expect(inertClone(123)).toBe(123);
-		expect(inertClone("abc")).toBe("abc");
-		expect(inertClone(null)).toBe(null);
-		expect(inertClone(undefined)).toBe(undefined);
-		expect(inertClone(true)).toBe(true);
-	});
+	it("clones Date, Map, Set, ArrayBuffer, TypedArray correctly", () => {
+		const originalDate = new Date();
+		const originalMap = new Map([["a", 1]]);
+		const originalSet = new Set([1, 2, 3]);
+		const buf = new ArrayBuffer(8);
+		const ta = new Uint8Array([10, 20, 30]);
 
-	it("clones objects with nested structuredClone-safe types", () => {
-		const input = {
-			date: new Date(),
-			map: new Map([["a", 1]]),
-			set: new Set([1, 2, 3]),
-			buffer: new ArrayBuffer(8),
-		};
-
+		const input = { originalDate, originalMap, originalSet, buf, ta };
 		const clone = inertClone(input);
-		expect(clone).not.toBe(input);
-		expect(clone.date).not.toBe(input.date);
-		expect(clone.date.getTime()).toBe(input.date.getTime());
-		expect(clone.map instanceof Map).toBe(true);
-		expect(clone.set instanceof Set).toBe(true);
-		expect(clone.buffer).not.toBe(input.buffer);
+
+		// Date
+		expect(clone.originalDate).not.toBe(originalDate);
+		expect(clone.originalDate.getTime()).toBe(originalDate.getTime());
+
+		// Map
+		expect(clone.originalMap).toBeInstanceOf(Map);
+		expect(clone.originalMap).not.toBe(originalMap);
+		expect(Array.from(clone.originalMap.entries())).toEqual([["a", 1]]);
+
+		// Set
+		expect(clone.originalSet).toBeInstanceOf(Set);
+		expect(clone.originalSet).not.toBe(originalSet);
+		expect(Array.from(clone.originalSet)).toEqual([1, 2, 3]);
+
+		// ArrayBuffer
+		expect(clone.buf).not.toBe(buf);
+		expect(clone.buf.byteLength).toBe(buf.byteLength);
+
+		// TypedArray
+		expect(clone.ta).not.toBe(ta);
+		expect(Array.from(clone.ta)).toEqual([10, 20, 30]);
+	});
+});
+
+describe("inertClone fallback branch (no structuredClone)", () => {
+	let inertClone: typeof inertCloneDefault;
+	let originalStructuredClone: any;
+
+	beforeAll(async () => {
+		// remove structuredClone and reload module to hit fallback
+		originalStructuredClone = globalThis.structuredClone;
+		// @ts-ignore
+		delete globalThis.structuredClone;
+		vi.resetModules();
+		const mod = await import("@/util/data");
+		inertClone = mod.inertClone;
 	});
 
-	it("shallow clones objects if structuredClone is unavailable (manual test)", () => {
-		// This can only be tested properly by mocking structuredClone,
-		// which is difficult in environments that polyfill it.
-		// You can manually test fallback like this:
-		const markedRaw = markRaw({ x: 42 });
-		const clone = inertClone(markedRaw);
-		expect(clone).toEqual({ x: 42 });
+	afterAll(() => {
+		// restore structuredClone
+		globalThis.structuredClone = originalStructuredClone;
+	});
+
+	it("shallow-clones arrays via slice", () => {
+		const nested = { foo: "bar" };
+		const arr = [nested];
+		const clone = inertClone(arr);
+		expect(clone).toEqual(arr);
+		expect(clone).not.toBe(arr);
+		// shallow: nested reference is same
+		expect(clone[0]).toBe(nested);
+	});
+
+	it("shallow-clones objects via spread", () => {
+		const nested = { x: 1 };
+		const obj = { nested };
+		const clone = inertClone(obj);
+		expect(clone).toEqual(obj);
+		expect(clone).not.toBe(obj);
+		// shallow: nested reference is same
+		expect((clone as any).nested).toBe(nested);
+	});
+
+	it("returns primitives and functions as-is", () => {
+		expect(inertClone(7)).toBe(7);
+		const fn = () => 99;
+		expect(inertClone(fn)).toBe(fn);
 	});
 });
 
