@@ -142,3 +142,8 @@ interface IPreBuildingInformation {
 }
 
 export type IPreBuildingRecord = Record<string, IPreBuildingInformation>;
+
+export interface IBuildingConstruction {
+	ticker: string;
+	materials: IMaterialIOMinimal[];
+}

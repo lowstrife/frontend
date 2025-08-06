@@ -53,7 +53,7 @@ export const usePlanningStore = defineStore(
 			empires.value = {};
 			// store by Empire.uuid
 			empireList.forEach((e) => {
-				empires.value[e.uuid] = e;
+				empires.value[e.uuid] = inertClone(e);
 			});
 		}
 
@@ -100,7 +100,7 @@ export const usePlanningStore = defineStore(
 			cxs.value = {};
 			// store by CX.uuid
 			data.forEach((c) => {
-				cxs.value[c.uuid] = c;
+				cxs.value[c.uuid] = inertClone(c);
 			});
 		}
 
@@ -113,7 +113,7 @@ export const usePlanningStore = defineStore(
 		function setSharedList(data: IShared[]): void {
 			shared.value = {};
 			data.forEach((s) => {
-				shared.value[s.plan_uuid] = s;
+				shared.value[s.plan_uuid] = inertClone(s);
 			});
 		}
 
@@ -165,52 +165,25 @@ export const usePlanningStore = defineStore(
 		}
 
 		/**
-		 * Fetches all plans from the backend, stores them in this store
-		 * and then returns them as list
-		 * @author jplacht
-		 *
-		 * @async
-		 * @returns {Promise<IPlan[]>} Plan Data List
-		 */
-		async function getAllPlans(): Promise<IPlan[]> {
-			return inertClone(Object.values(plans.value));
-		}
-
-		/**
-		 * Gets all empires the user has either from previous fetch
-		 * or will load it again from the backend API
-		 * @author jplacht
-		 *
-		 * @async
-		 * @param {boolean} [force=false] Force Load from backend
-		 * @returns {Promise<IPlanEmpireElement[]>} Empire List
-		 */
-		async function getAllEmpires(): Promise<IPlanEmpireElement[]> {
-			return inertClone(Object.values(empires.value));
-		}
-
-		/**
 		 * Gets all exchange preferences either from store or directly from
 		 * the backend API if they were not fetched already
 		 *
 		 * @author jplacht
 		 *
-		 * @async
-		 * @returns {Promise<ICX[]>} CX Preference Data Array
+		 * @returns {ICX[]} CX Preference Data Array
 		 */
-		async function getAllCX(): Promise<ICX[]> {
-			return inertClone(Object.values(cxs.value));
+		function getAllCX(): ICX[] {
+			return Object.values(cxs.value);
 		}
 
 		/**
 		 * Gets all sharing information from backend
 		 * @author jplacht
 		 *
-		 * @async
-		 * @returns {Promise<ISharedPlan[]>} Sharing Information List
+		 * @returns {ISharedPlan[]} Sharing Information List
 		 */
-		async function getSharedList(): Promise<ISharedPlan[]> {
-			return inertClone(Object.values(shared.value));
+		function getSharedList(): ISharedPlan[] {
+			return Object.values(shared.value);
 		}
 
 		return {
@@ -232,9 +205,7 @@ export const usePlanningStore = defineStore(
 			// getters
 			getCX,
 			getPlan,
-			getAllEmpires,
 			getAllCX,
-			getAllPlans,
 			getSharedList,
 		};
 	},

@@ -1,21 +1,70 @@
 import { toRaw, isRef } from "vue";
 
-export function inertClone<T>(value: T): T {
-	const raw = toRaw(isRef(value) ? value.value : value);
+/**
+ * Deep-clones a ref/reactive value into a completely inert (non-proxy) copy.
+ *
+ * - Uses native structuredClone when available (fastest, handles Map/Set/Date/etc).
+ * - Falls back to shallow slice/object-spread for arrays/objects if structuredClone is missing.
+ * - Immediately returns primitives & nulls without overhead.
+ *
+ * @author jplacht
+ *
+ * @type {<T>(value: T) => T}
+ */
+export const inertClone = (() => {
+	const canStructuredClone = typeof structuredClone === "function";
 
-	try {
-		return structuredClone(raw) as T;
-	} catch {
+	// Fallback for non-structuredClone environments:
+	function fallbackClone<T>(raw: T): T {
 		if (Array.isArray(raw)) {
 			return raw.slice() as T;
 		}
-		if (typeof raw === "object" && raw !== null) {
+		// You can tighten this check to only plain objects if you like:
+		if (raw !== null && typeof raw === "object") {
 			return { ...raw } as T;
 		}
-
 		return raw as T;
 	}
-}
+
+	if (canStructuredClone) {
+		// Fast branch: always structuredClone
+		// structuredClone deep-copies EVERYTHING natively
+		return function <T>(value: T): T {
+			const unwrapped = isRef(value) ? value.value : value;
+			const raw = toRaw(unwrapped) as unknown;
+
+			// fallback, as functions can't be cloned
+			if (
+				raw === null ||
+				typeof raw !== "object" ||
+				typeof raw === "function"
+			) {
+				return raw as T;
+			}
+
+			return structuredClone(raw) as T;
+		};
+	} else {
+		// Slower branch: primitives/arrays/objects only
+		return function <T>(value: T): T {
+			// Unwrap
+			const unwrapped = isRef(value) ? value.value : value;
+			// toRaw: drop proxy
+			const raw = toRaw(unwrapped) as unknown;
+
+			// Primitives & null → return immediately
+			if (
+				raw === null ||
+				(typeof raw !== "object" && typeof raw !== "function")
+			) {
+				return raw as T;
+			}
+
+			// Fallback clone
+			return fallbackClone<T>(raw as T);
+		};
+	}
+})();
 
 /**
  * Copies string value to users clipboard

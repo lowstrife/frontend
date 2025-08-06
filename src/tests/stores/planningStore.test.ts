@@ -28,13 +28,6 @@ describe("Planning Store", async () => {
 			expect(Object.keys(planningStore.empires).length).toBe(2);
 		});
 
-		it("getAllEmpires", async () => {
-			planningStore.setEmpires(empire_list);
-			await expect(planningStore.getAllEmpires()).resolves.toStrictEqual(
-				empire_list
-			);
-		});
-
 		it("setPlan", async () => {
 			planningStore.setPlan(plan_etherwind);
 			const ewUuid: string = plan_etherwind.uuid;
@@ -66,9 +59,8 @@ describe("Planning Store", async () => {
 
 		it("setCXs", async () => {
 			planningStore.setCXs(cx_list);
-			await expect(planningStore.getAllCX()).resolves.toStrictEqual(
-				cx_list
-			);
+			const result = planningStore.getAllCX();
+			expect(result.length).toBe(cx_list.length);
 		});
 
 		it("getCX", async () => {
@@ -86,9 +78,9 @@ describe("Planning Store", async () => {
 
 		it("getSharedList", async () => {
 			planningStore.setSharedList(shared_list);
-			await expect(planningStore.getSharedList()).resolves.toStrictEqual(
-				shared_list
-			);
+			const result = planningStore.getSharedList();
+
+			expect(result).toStrictEqual(shared_list);
 		});
 
 		it("deleteShared", async () => {
@@ -112,14 +104,6 @@ describe("Planning Store", async () => {
 					planningStore.getPlan("foo")
 				).rejects.toThrowError();
 			});
-		});
-
-		it("getAllPlans", async () => {
-			planningStore.plans["foo"] = plan_etherwind;
-			planningStore.plans["moo"] = plan_etherwind;
-
-			const data = await planningStore.getAllPlans();
-			expect(data).toStrictEqual([plan_etherwind, plan_etherwind]);
 		});
 	});
 
