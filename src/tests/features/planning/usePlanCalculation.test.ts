@@ -85,7 +85,7 @@ describe("usePlanCalculation", async () => {
 			ref(undefined)
 		);
 		expect(constructionMaterials.value).toBeDefined();
-		expect(constructionMaterials.value.length).toBe(8);
+		expect(constructionMaterials.value.length).toBe(9);
 	});
 
 	it("unknown recipe error", async () => {

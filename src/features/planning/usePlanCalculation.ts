@@ -549,12 +549,13 @@ export function usePlanCalculation(
 				})),
 				...infrastructureBuildingInformation.filter(
 					(i) =>
-						result.value.infrastructure[
+						(result.value.infrastructure[
 							i.ticker as INFRASTRUCTURE_TYPE
 						] &&
-						result.value.infrastructure[
-							i.ticker as INFRASTRUCTURE_TYPE
-						] > 0
+							result.value.infrastructure[
+								i.ticker as INFRASTRUCTURE_TYPE
+							] > 0) ||
+						i.ticker === "CM"
 				),
 			];
 		});

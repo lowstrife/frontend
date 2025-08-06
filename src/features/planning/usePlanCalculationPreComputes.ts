@@ -143,14 +143,16 @@ export function usePlanCalculationPreComputes(
 	 * @type {IBuildingConstruction[]} Array of infrastructure
 	 * construction materials
 	 */
-	const infrastructureBuildingInformation: IBuildingConstruction[] =
-		infrastructureBuildingNames.map((inf) => ({
-			ticker: inf,
-			materials: getBuildingConstructionMaterials(
-				getBuilding(inf),
-				planetData
-			),
-		}));
+	const infrastructureBuildingInformation: IBuildingConstruction[] = [
+		"CM",
+		...infrastructureBuildingNames,
+	].map((inf) => ({
+		ticker: inf,
+		materials: getBuildingConstructionMaterials(
+			getBuilding(inf),
+			planetData
+		),
+	}));
 
 	return {
 		computedActiveEmpire,

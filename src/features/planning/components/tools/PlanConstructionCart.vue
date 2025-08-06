@@ -81,7 +81,7 @@
 	});
 
 	const buildingTicker = computed(() =>
-		props.constructionData.map((b) => b.ticker)
+		props.constructionData.map((b) => b.ticker).sort()
 	);
 
 	const totalMaterials = computed(() => {
@@ -105,7 +105,15 @@
 				props.productionBuildingData.find((pf) => pf.name === bticker)
 					?.amount ??
 				props.infrastructureData[bticker as INFRASTRUCTURE_TYPE] ??
-				0;
+				undefined;
+
+			// handle core module separately
+			if (
+				bticker === "CM" &&
+				localBuildingAmount.value["CM"] === undefined
+			) {
+				localBuildingAmount.value["CM"] = 1;
+			}
 
 			const thisMats = props.constructionData.find(
 				(e) => e.ticker === bticker
