@@ -79,7 +79,24 @@
 			</template>
 		</x-n-data-table-column>
 		<template #empty>
-			<div class="text-center">No Plans in Empire.</div>
+			<div class="flex flex-col gap-y-3">
+				<div class="text-center">No Plans in Empire.</div>
+				<div class="text-center">
+					Assign existing plans in
+					<router-link
+						to="/manage"
+						class="text-link-primary hover:underline">
+						Management</router-link
+					>
+					or use
+					<router-link
+						to="/search"
+						class="text-link-primary hover:underline">
+						Planet Search</router-link
+					>
+					to create one.
+				</div>
+			</div>
 		</template>
 		<template #summary>
 			<x-n-data-table-summary-row>

@@ -99,7 +99,7 @@ export const useGameDataStore = defineStore(
 		 * @returns {IMaterial[]} Material Data
 		 */
 		function getMaterials(): IMaterial[] {
-			return inertClone(Object.values(materials.value));
+			return Object.values(materials.value).map((e) => inertClone(e));
 		}
 
 		/**
