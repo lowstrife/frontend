@@ -44,6 +44,11 @@ describe("Axios Interceptor", () => {
 			access_token: fakeAccessToken,
 			refresh_token: fakeRefreshToken,
 		});
+
+		/*
+		 * mocking the profile response is required, as the setToken
+		 * triggers an async-running refreshprofile function
+		 */
 		mockAxios.onGet("/user/profile").reply(200, {});
 
 		userStore.refreshToken = fakeInitialRefreshToken;
