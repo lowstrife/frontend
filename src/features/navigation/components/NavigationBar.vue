@@ -149,7 +149,7 @@
 				{
 					label: "HQ Upgrade Calculator",
 					display: true,
-					routerLink: "/not-implemented",
+					routerLink: "/hq-upgrade-calculator",
 					icon: ProductionQuantityLimitsSharp,
 				},
 				{

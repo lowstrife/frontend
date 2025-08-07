@@ -2,7 +2,16 @@ import { computed, ComputedRef } from "vue";
 
 // Stores
 import { useGameDataStore } from "@/stores/gameDataStore";
+
+// Types & Interfaces
 import { SelectGroupOption, SelectOption } from "naive-ui";
+import {
+	IFIOStorageItem,
+	IFIOStoragePlanet,
+	IFIOStorageShip,
+	IFIOStorageWarehouse,
+} from "@/features/api/gameData.types";
+import { IFIOFindMaterialResult } from "@/features/fio/useFIOStorage.types";
 
 export function useFIOStorage() {
 	const gameDataStore = useGameDataStore();
@@ -132,9 +141,61 @@ export function useFIOStorage() {
 		return value;
 	}
 
+	/**
+	 * Checks for given Material ticker in all storage options (planet, warehouse, ship)
+	 * and gets the total amount of available materials as well as an array of locations
+	 *
+	 * @author jplacht
+	 *
+	 * @param {string} ticker Ticker to search
+	 * @returns {IFIOFindMaterialResult} Search Results
+	 */
+	function findMaterial(ticker: string): IFIOFindMaterialResult {
+		const amountAndLocations: IFIOFindMaterialResult = {
+			amount: 0,
+			locations: [],
+		};
+
+		const sources = [
+			{
+				data: gameDataStore.fio_storage_planets,
+				type: "PLANET",
+				getName: (item: IFIOStoragePlanet) => item.PlanetIdentifier,
+			},
+			{
+				data: gameDataStore.fio_storage_warehouses,
+				type: "WAR",
+				getName: (item: IFIOStorageWarehouse) => item.LocationNaturalId,
+			},
+			{
+				data: gameDataStore.fio_storage_ships,
+				type: "SHIP",
+				getName: (item: IFIOStorageShip) => item.Registration,
+			},
+		];
+
+		sources.forEach(({ data, type, getName }) => {
+			Object.values(data).forEach((location) => {
+				location.StorageItems.forEach((item: IFIOStorageItem) => {
+					if (item.MaterialTicker === ticker) {
+						amountAndLocations.amount += item.MaterialAmount;
+						amountAndLocations.locations.push({
+							type,
+							name: getName(location),
+							amount: item.MaterialAmount,
+						});
+					}
+				});
+			});
+		});
+
+		return amountAndLocations;
+	}
+
 	return {
 		hasStorage,
 		storageOptions,
 		findStorageValueFromOptions,
+		findMaterial,
 	};
 }

@@ -85,11 +85,7 @@ export function usePrice(
 
 		try {
 			// if any cx information is undefined, we return the PP30D_Universe PriceAverage
-			if (
-				!cxUuid.value ||
-				cxUuid.value === undefined ||
-				planetNaturalId.value === undefined
-			) {
+			if (!cxUuid.value || cxUuid.value === undefined) {
 				const price = getExchangeTicker(
 					`${materialTicker}.PP30D_UNIVERSE`
 				).PriceAverage;

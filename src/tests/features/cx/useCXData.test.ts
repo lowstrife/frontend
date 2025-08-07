@@ -35,10 +35,43 @@ describe("useCXData", async () => {
 		});
 
 		it("valid cx uuid", async () => {
-			planningStore.cxs["foo"] = { uuid: "foo", empires: [{ uuid: "moo" }] };
+			planningStore.cxs["foo"] = {
+				uuid: "foo",
+				empires: [{ uuid: "moo" }],
+			};
 			const { findEmpireCXUuid } = useCXData();
 
 			expect(findEmpireCXUuid("moo")).toBe("foo");
+		});
+	});
+
+	describe("getPreferenceOptions", async () => {
+		it("without none", async () => {
+			planningStore.cxs["foo"] = {
+				uuid: "foo",
+				empires: [],
+			};
+			planningStore.cxs["moo"] = {
+				uuid: "moo",
+				empires: [],
+			};
+			const { getPreferenceOptions } = useCXData();
+
+			expect(getPreferenceOptions().length).toBe(2);
+		});
+
+		it("with none", async () => {
+			planningStore.cxs["foo"] = {
+				uuid: "foo",
+				empires: [],
+			};
+			planningStore.cxs["moo"] = {
+				uuid: "moo",
+				empires: [],
+			};
+			const { getPreferenceOptions } = useCXData();
+
+			expect(getPreferenceOptions(true).length).toBe(3);
 		});
 	});
 });

@@ -75,4 +75,19 @@ describe("useFIOStorage", async () => {
 		expect(storageOptions.value[2].children).toBeDefined();
 		expect(storageOptions.value[3].children).toBeDefined();
 	});
+
+	it("findMaterial", async () => {
+		const gameDataStore = useGameDataStore();
+		// @ts-expect-error test data
+		gameDataStore.setFIOStorageData(fio_storage);
+
+		const { findMaterial } = useFIOStorage();
+
+		const first = findMaterial("RAT");
+		expect(first.amount).toBe(67042);
+		expect(first.locations.length).toBe(18);
+		const second = findMaterial("FOO");
+		expect(second.amount).toBe(0);
+		expect(second.locations.length).toBe(0);
+	});
 });
