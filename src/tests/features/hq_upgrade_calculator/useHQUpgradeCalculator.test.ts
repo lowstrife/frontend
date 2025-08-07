@@ -6,7 +6,6 @@ import { useHQUpgradeCalculator } from "@/features/hq_upgrade_calculator/useHQUp
 
 // stores
 import { useGameDataStore } from "@/stores/gameDataStore";
-import { usePlanningStore } from "@/stores/planningStore";
 
 // test data
 import materials from "@/tests/test_data/api_data_materials.json";

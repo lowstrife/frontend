@@ -1,4 +1,4 @@
-export interface IHQLevelData {
+interface IHQLevelData {
 	ticker: string;
 	amount: number;
 }
