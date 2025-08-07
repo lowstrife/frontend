@@ -95,7 +95,14 @@ const router = createRouter({
 			path: "/market-exploration",
 			meta: { requiresAuth: true },
 			component: () =>
-				import("@/views/market-data/MarketExplorationView.vue"),
+				import("@/views/tools/market-data/MarketExplorationView.vue"),
+		},
+		{
+			name: "hq-upgrade-calculator",
+			path: "/hq-upgrade-calculator",
+			meta: { requiresAuth: true },
+			component: () =>
+				import("@/views/tools/HQUpgradeCalculatorView.vue"),
 		},
 		{
 			name: "imprint-tos",

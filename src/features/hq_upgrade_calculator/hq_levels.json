@@ -1,0 +1,1645 @@
+{
+	"1": [],
+	"2": [
+		{
+			"ticker": "BBH",
+			"amount": 6
+		},
+		{
+			"ticker": "BDE",
+			"amount": 4
+		},
+		{
+			"ticker": "BSE",
+			"amount": 4
+		},
+		{
+			"ticker": "BTA",
+			"amount": 2
+		},
+		{
+			"ticker": "MCG",
+			"amount": 12
+		},
+		{
+			"ticker": "TRU",
+			"amount": 4
+		}
+	],
+	"3": [
+		{
+			"ticker": "BBH",
+			"amount": 16
+		},
+		{
+			"ticker": "BDE",
+			"amount": 12
+		},
+		{
+			"ticker": "BSE",
+			"amount": 12
+		},
+		{
+			"ticker": "BTA",
+			"amount": 6
+		},
+		{
+			"ticker": "MCG",
+			"amount": 36
+		},
+		{
+			"ticker": "TRU",
+			"amount": 12
+		},
+		{
+			"ticker": "OFF",
+			"amount": 20
+		}
+	],
+	"4": [
+		{
+			"ticker": "BBH",
+			"amount": 24
+		},
+		{
+			"ticker": "BDE",
+			"amount": 16
+		},
+		{
+			"ticker": "BSE",
+			"amount": 16
+		},
+		{
+			"ticker": "BTA",
+			"amount": 8
+		},
+		{
+			"ticker": "MCG",
+			"amount": 48
+		},
+		{
+			"ticker": "MFK",
+			"amount": 8
+		},
+		{
+			"ticker": "TRU",
+			"amount": 16
+		},
+		{
+			"ticker": "UTS",
+			"amount": 4
+		}
+	],
+	"5": [
+		{
+			"ticker": "OFF",
+			"amount": 40
+		},
+		{
+			"ticker": "SUN",
+			"amount": 20
+		},
+		{
+			"ticker": "UTS",
+			"amount": 8
+		},
+		{
+			"ticker": "MFK",
+			"amount": 16
+		}
+	],
+	"6": [
+		{
+			"ticker": "LBH",
+			"amount": 6
+		},
+		{
+			"ticker": "LDE",
+			"amount": 4
+		},
+		{
+			"ticker": "LSE",
+			"amount": 4
+		},
+		{
+			"ticker": "LTA",
+			"amount": 2
+		},
+		{
+			"ticker": "MCG",
+			"amount": 24
+		},
+		{
+			"ticker": "TRU",
+			"amount": 12
+		},
+		{
+			"ticker": "POW",
+			"amount": 10
+		}
+	],
+	"7": [
+		{
+			"ticker": "LBH",
+			"amount": 12
+		},
+		{
+			"ticker": "LDE",
+			"amount": 8
+		},
+		{
+			"ticker": "LSE",
+			"amount": 8
+		},
+		{
+			"ticker": "LTA",
+			"amount": 4
+		},
+		{
+			"ticker": "MCG",
+			"amount": 36
+		},
+		{
+			"ticker": "TRU",
+			"amount": 16
+		},
+		{
+			"ticker": "SP",
+			"amount": 10
+		}
+	],
+	"8": [
+		{
+			"ticker": "LBH",
+			"amount": 16
+		},
+		{
+			"ticker": "LDE",
+			"amount": 12
+		},
+		{
+			"ticker": "LSE",
+			"amount": 12
+		},
+		{
+			"ticker": "LTA",
+			"amount": 6
+		},
+		{
+			"ticker": "MCG",
+			"amount": 48
+		},
+		{
+			"ticker": "TRU",
+			"amount": 20
+		},
+		{
+			"ticker": "OFF",
+			"amount": 60
+		},
+		{
+			"ticker": "SP",
+			"amount": 2
+		}
+	],
+	"9": [
+		{
+			"ticker": "LBH",
+			"amount": 24
+		},
+		{
+			"ticker": "LDE",
+			"amount": 16
+		},
+		{
+			"ticker": "LSE",
+			"amount": 16
+		},
+		{
+			"ticker": "LTA",
+			"amount": 8
+		},
+		{
+			"ticker": "MCG",
+			"amount": 60
+		},
+		{
+			"ticker": "TRU",
+			"amount": 24
+		},
+		{
+			"ticker": "SP",
+			"amount": 10
+		},
+		{
+			"ticker": "POW",
+			"amount": 10
+		}
+	],
+	"10": [
+		{
+			"ticker": "OFF",
+			"amount": 100
+		},
+		{
+			"ticker": "SP",
+			"amount": 14
+		},
+		{
+			"ticker": "POW",
+			"amount": 10
+		}
+	],
+	"11": [
+		{
+			"ticker": "RBH",
+			"amount": 6
+		},
+		{
+			"ticker": "RDE",
+			"amount": 4
+		},
+		{
+			"ticker": "RSE",
+			"amount": 4
+		},
+		{
+			"ticker": "RTA",
+			"amount": 2
+		},
+		{
+			"ticker": "MCG",
+			"amount": 48
+		},
+		{
+			"ticker": "TRU",
+			"amount": 20
+		},
+		{
+			"ticker": "AAR",
+			"amount": 4
+		}
+	],
+	"12": [
+		{
+			"ticker": "RBH",
+			"amount": 12
+		},
+		{
+			"ticker": "RDE",
+			"amount": 8
+		},
+		{
+			"ticker": "RSE",
+			"amount": 8
+		},
+		{
+			"ticker": "RTA",
+			"amount": 4
+		},
+		{
+			"ticker": "MCG",
+			"amount": 60
+		},
+		{
+			"ticker": "TRU",
+			"amount": 24
+		},
+		{
+			"ticker": "BWS",
+			"amount": 2
+		}
+	],
+	"13": [
+		{
+			"ticker": "OFF",
+			"amount": 200
+		},
+		{
+			"ticker": "BWS",
+			"amount": 1
+		},
+		{
+			"ticker": "BMF",
+			"amount": 1
+		},
+		{
+			"ticker": "AAR",
+			"amount": 1
+		}
+	],
+	"14": [
+		{
+			"ticker": "RBH",
+			"amount": 16
+		},
+		{
+			"ticker": "RDE",
+			"amount": 12
+		},
+		{
+			"ticker": "RSE",
+			"amount": 12
+		},
+		{
+			"ticker": "RTA",
+			"amount": 6
+		},
+		{
+			"ticker": "MCG",
+			"amount": 100
+		},
+		{
+			"ticker": "TRU",
+			"amount": 28
+		},
+		{
+			"ticker": "BWS",
+			"amount": 2
+		},
+		{
+			"ticker": "AAR",
+			"amount": 2
+		}
+	],
+	"15": [
+		{
+			"ticker": "RBH",
+			"amount": 24
+		},
+		{
+			"ticker": "RDE",
+			"amount": 16
+		},
+		{
+			"ticker": "RSE",
+			"amount": 16
+		},
+		{
+			"ticker": "RTA",
+			"amount": 8
+		},
+		{
+			"ticker": "MCG",
+			"amount": 150
+		},
+		{
+			"ticker": "TRU",
+			"amount": 32
+		},
+		{
+			"ticker": "BWS",
+			"amount": 2
+		},
+		{
+			"ticker": "BMF",
+			"amount": 2
+		}
+	],
+	"16": [
+		{
+			"ticker": "OFF",
+			"amount": 300
+		},
+		{
+			"ticker": "LOG",
+			"amount": 1
+		}
+	],
+	"17": [
+		{
+			"ticker": "ABH",
+			"amount": 12
+		},
+		{
+			"ticker": "ADE",
+			"amount": 8
+		},
+		{
+			"ticker": "ASE",
+			"amount": 8
+		},
+		{
+			"ticker": "ATA",
+			"amount": 4
+		},
+		{
+			"ticker": "MCG",
+			"amount": 200
+		},
+		{
+			"ticker": "TRU",
+			"amount": 40
+		},
+		{
+			"ticker": "COM",
+			"amount": 1
+		}
+	],
+	"18": [
+		{
+			"ticker": "ADS",
+			"amount": 1
+		},
+		{
+			"ticker": "OFF",
+			"amount": 400
+		}
+	],
+	"19": [
+		{
+			"ticker": "ABH",
+			"amount": 24
+		},
+		{
+			"ticker": "ADE",
+			"amount": 16
+		},
+		{
+			"ticker": "ADS",
+			"amount": 1
+		},
+		{
+			"ticker": "ASE",
+			"amount": 16
+		},
+		{
+			"ticker": "ATA",
+			"amount": 8
+		},
+		{
+			"ticker": "COM",
+			"amount": 1
+		},
+		{
+			"ticker": "LOG",
+			"amount": 1
+		},
+		{
+			"ticker": "MCG",
+			"amount": 500
+		},
+		{
+			"ticker": "TRU",
+			"amount": 80
+		}
+	],
+	"20": [
+		{
+			"ticker": "ADS",
+			"amount": 1
+		},
+		{
+			"ticker": "COM",
+			"amount": 1
+		},
+		{
+			"ticker": "LOG",
+			"amount": 1
+		},
+		{
+			"ticker": "OFF",
+			"amount": 500
+		}
+	],
+	"21": [
+		{
+			"ticker": "ABH",
+			"amount": 51
+		},
+		{
+			"ticker": "ADE",
+			"amount": 34
+		},
+		{
+			"ticker": "ADS",
+			"amount": 2
+		},
+		{
+			"ticker": "ASE",
+			"amount": 34
+		},
+		{
+			"ticker": "ATA",
+			"amount": 17
+		},
+		{
+			"ticker": "COM",
+			"amount": 2
+		},
+		{
+			"ticker": "LOG",
+			"amount": 2
+		},
+		{
+			"ticker": "MCG",
+			"amount": 214
+		},
+		{
+			"ticker": "TRU",
+			"amount": 85
+		}
+	],
+	"22": [
+		{
+			"ticker": "ABH",
+			"amount": 79
+		},
+		{
+			"ticker": "ADE",
+			"amount": 53
+		},
+		{
+			"ticker": "ADS",
+			"amount": 2
+		},
+		{
+			"ticker": "ASE",
+			"amount": 53
+		},
+		{
+			"ticker": "ATA",
+			"amount": 26
+		},
+		{
+			"ticker": "COM",
+			"amount": 2
+		},
+		{
+			"ticker": "LOG",
+			"amount": 2
+		},
+		{
+			"ticker": "MCG",
+			"amount": 331
+		},
+		{
+			"ticker": "TRU",
+			"amount": 132
+		}
+	],
+	"23": [
+		{
+			"ticker": "ABH",
+			"amount": 108
+		},
+		{
+			"ticker": "ADE",
+			"amount": 72
+		},
+		{
+			"ticker": "ADS",
+			"amount": 3
+		},
+		{
+			"ticker": "ASE",
+			"amount": 72
+		},
+		{
+			"ticker": "ATA",
+			"amount": 36
+		},
+		{
+			"ticker": "COM",
+			"amount": 3
+		},
+		{
+			"ticker": "LOG",
+			"amount": 3
+		},
+		{
+			"ticker": "MCG",
+			"amount": 451
+		},
+		{
+			"ticker": "TRU",
+			"amount": 180
+		}
+	],
+	"24": [
+		{
+			"ticker": "ABH",
+			"amount": 137
+		},
+		{
+			"ticker": "ADE",
+			"amount": 91
+		},
+		{
+			"ticker": "ADS",
+			"amount": 3
+		},
+		{
+			"ticker": "ASE",
+			"amount": 91
+		},
+		{
+			"ticker": "ATA",
+			"amount": 45
+		},
+		{
+			"ticker": "COM",
+			"amount": 3
+		},
+		{
+			"ticker": "LOG",
+			"amount": 3
+		},
+		{
+			"ticker": "MCG",
+			"amount": 574
+		},
+		{
+			"ticker": "TRU",
+			"amount": 229
+		}
+	],
+	"25": [
+		{
+			"ticker": "ABH",
+			"amount": 168
+		},
+		{
+			"ticker": "ADE",
+			"amount": 112
+		},
+		{
+			"ticker": "ADS",
+			"amount": 3
+		},
+		{
+			"ticker": "ASE",
+			"amount": 112
+		},
+		{
+			"ticker": "ATA",
+			"amount": 56
+		},
+		{
+			"ticker": "COM",
+			"amount": 3
+		},
+		{
+			"ticker": "LOG",
+			"amount": 3
+		},
+		{
+			"ticker": "MCG",
+			"amount": 700
+		},
+		{
+			"ticker": "TRU",
+			"amount": 280
+		}
+	],
+	"26": [
+		{
+			"ticker": "ABH",
+			"amount": 199
+		},
+		{
+			"ticker": "ADE",
+			"amount": 132
+		},
+		{
+			"ticker": "ADS",
+			"amount": 3
+		},
+		{
+			"ticker": "ASE",
+			"amount": 132
+		},
+		{
+			"ticker": "ATA",
+			"amount": 66
+		},
+		{
+			"ticker": "COM",
+			"amount": 3
+		},
+		{
+			"ticker": "LOG",
+			"amount": 3
+		},
+		{
+			"ticker": "MCG",
+			"amount": 829
+		},
+		{
+			"ticker": "TRU",
+			"amount": 331
+		}
+	],
+	"27": [
+		{
+			"ticker": "ABH",
+			"amount": 231
+		},
+		{
+			"ticker": "ADE",
+			"amount": 154
+		},
+		{
+			"ticker": "ADS",
+			"amount": 3
+		},
+		{
+			"ticker": "ASE",
+			"amount": 154
+		},
+		{
+			"ticker": "ATA",
+			"amount": 77
+		},
+		{
+			"ticker": "COM",
+			"amount": 3
+		},
+		{
+			"ticker": "LOG",
+			"amount": 3
+		},
+		{
+			"ticker": "MCG",
+			"amount": 963
+		},
+		{
+			"ticker": "TRU",
+			"amount": 385
+		}
+	],
+	"28": [
+		{
+			"ticker": "ABH",
+			"amount": 264
+		},
+		{
+			"ticker": "ADE",
+			"amount": 176
+		},
+		{
+			"ticker": "ADS",
+			"amount": 3
+		},
+		{
+			"ticker": "ASE",
+			"amount": 176
+		},
+		{
+			"ticker": "ATA",
+			"amount": 88
+		},
+		{
+			"ticker": "COM",
+			"amount": 3
+		},
+		{
+			"ticker": "LOG",
+			"amount": 3
+		},
+		{
+			"ticker": "MCG",
+			"amount": 1103
+		},
+		{
+			"ticker": "TRU",
+			"amount": 441
+		}
+	],
+	"29": [
+		{
+			"ticker": "ABH",
+			"amount": 299
+		},
+		{
+			"ticker": "ADE",
+			"amount": 199
+		},
+		{
+			"ticker": "ADS",
+			"amount": 3
+		},
+		{
+			"ticker": "ASE",
+			"amount": 199
+		},
+		{
+			"ticker": "ATA",
+			"amount": 99
+		},
+		{
+			"ticker": "COM",
+			"amount": 3
+		},
+		{
+			"ticker": "LOG",
+			"amount": 3
+		},
+		{
+			"ticker": "MCG",
+			"amount": 1248
+		},
+		{
+			"ticker": "TRU",
+			"amount": 499
+		}
+	],
+	"30": [
+		{
+			"ticker": "ABH",
+			"amount": 336
+		},
+		{
+			"ticker": "ADE",
+			"amount": 224
+		},
+		{
+			"ticker": "ADS",
+			"amount": 4
+		},
+		{
+			"ticker": "ASE",
+			"amount": 224
+		},
+		{
+			"ticker": "ATA",
+			"amount": 112
+		},
+		{
+			"ticker": "COM",
+			"amount": 4
+		},
+		{
+			"ticker": "LOG",
+			"amount": 4
+		},
+		{
+			"ticker": "MCG",
+			"amount": 1400
+		},
+		{
+			"ticker": "TRU",
+			"amount": 560
+		}
+	],
+	"31": [
+		{
+			"ticker": "ABH",
+			"amount": 374
+		},
+		{
+			"ticker": "ADE",
+			"amount": 249
+		},
+		{
+			"ticker": "ADS",
+			"amount": 4
+		},
+		{
+			"ticker": "ASE",
+			"amount": 249
+		},
+		{
+			"ticker": "ATA",
+			"amount": 124
+		},
+		{
+			"ticker": "COM",
+			"amount": 4
+		},
+		{
+			"ticker": "LOG",
+			"amount": 4
+		},
+		{
+			"ticker": "MCG",
+			"amount": 1559
+		},
+		{
+			"ticker": "TRU",
+			"amount": 623
+		}
+	],
+	"32": [
+		{
+			"ticker": "ABH",
+			"amount": 414
+		},
+		{
+			"ticker": "ADE",
+			"amount": 276
+		},
+		{
+			"ticker": "ADS",
+			"amount": 4
+		},
+		{
+			"ticker": "ASE",
+			"amount": 276
+		},
+		{
+			"ticker": "ATA",
+			"amount": 138
+		},
+		{
+			"ticker": "COM",
+			"amount": 4
+		},
+		{
+			"ticker": "LOG",
+			"amount": 4
+		},
+		{
+			"ticker": "MCG",
+			"amount": 1727
+		},
+		{
+			"ticker": "TRU",
+			"amount": 691
+		}
+	],
+	"33": [
+		{
+			"ticker": "ABH",
+			"amount": 457
+		},
+		{
+			"ticker": "ADE",
+			"amount": 305
+		},
+		{
+			"ticker": "ADS",
+			"amount": 4
+		},
+		{
+			"ticker": "ASE",
+			"amount": 305
+		},
+		{
+			"ticker": "ATA",
+			"amount": 152
+		},
+		{
+			"ticker": "COM",
+			"amount": 4
+		},
+		{
+			"ticker": "LOG",
+			"amount": 4
+		},
+		{
+			"ticker": "MCG",
+			"amount": 1906
+		},
+		{
+			"ticker": "TRU",
+			"amount": 732
+		}
+	],
+	"34": [
+		{
+			"ticker": "ABH",
+			"amount": 503
+		},
+		{
+			"ticker": "ADE",
+			"amount": 335
+		},
+		{
+			"ticker": "ADS",
+			"amount": 4
+		},
+		{
+			"ticker": "ASE",
+			"amount": 335
+		},
+		{
+			"ticker": "ATA",
+			"amount": 167
+		},
+		{
+			"ticker": "COM",
+			"amount": 4
+		},
+		{
+			"ticker": "LOG",
+			"amount": 4
+		},
+		{
+			"ticker": "MCG",
+			"amount": 2096
+		},
+		{
+			"ticker": "TRU",
+			"amount": 838
+		}
+	],
+	"35": [
+		{
+			"ticker": "ABH",
+			"amount": 552
+		},
+		{
+			"ticker": "ADE",
+			"amount": 368
+		},
+		{
+			"ticker": "ADS",
+			"amount": 4
+		},
+		{
+			"ticker": "ASE",
+			"amount": 368
+		},
+		{
+			"ticker": "ATA",
+			"amount": 184
+		},
+		{
+			"ticker": "COM",
+			"amount": 4
+		},
+		{
+			"ticker": "LOG",
+			"amount": 4
+		},
+		{
+			"ticker": "MCG",
+			"amount": 2300
+		},
+		{
+			"ticker": "TRU",
+			"amount": 920
+		}
+	],
+	"36": [
+		{
+			"ticker": "ABH",
+			"amount": 604
+		},
+		{
+			"ticker": "ADE",
+			"amount": 403
+		},
+		{
+			"ticker": "ADS",
+			"amount": 4
+		},
+		{
+			"ticker": "ASE",
+			"amount": 403
+		},
+		{
+			"ticker": "ATA",
+			"amount": 201
+		},
+		{
+			"ticker": "COM",
+			"amount": 4
+		},
+		{
+			"ticker": "LOG",
+			"amount": 4
+		},
+		{
+			"ticker": "MCG",
+			"amount": 2518
+		},
+		{
+			"ticker": "TRU",
+			"amount": 1007
+		}
+	],
+	"37": [
+		{
+			"ticker": "ABH",
+			"amount": 661
+		},
+		{
+			"ticker": "ADE",
+			"amount": 440
+		},
+		{
+			"ticker": "ADS",
+			"amount": 4
+		},
+		{
+			"ticker": "ASE",
+			"amount": 440
+		},
+		{
+			"ticker": "ATA",
+			"amount": 220
+		},
+		{
+			"ticker": "COM",
+			"amount": 4
+		},
+		{
+			"ticker": "LOG",
+			"amount": 4
+		},
+		{
+			"ticker": "MCG",
+			"amount": 2755
+		},
+		{
+			"ticker": "TRU",
+			"amount": 1102
+		}
+	],
+	"38": [
+		{
+			"ticker": "ABH",
+			"amount": 790
+		},
+		{
+			"ticker": "ADE",
+			"amount": 526
+		},
+		{
+			"ticker": "ADS",
+			"amount": 5
+		},
+		{
+			"ticker": "ASE",
+			"amount": 526
+		},
+		{
+			"ticker": "ATA",
+			"amount": 263
+		},
+		{
+			"ticker": "COM",
+			"amount": 5
+		},
+		{
+			"ticker": "LOG",
+			"amount": 5
+		},
+		{
+			"ticker": "MCG",
+			"amount": 3292
+		},
+		{
+			"ticker": "TRU",
+			"amount": 1317
+		}
+	],
+	"39": [
+		{
+			"ticker": "ABH",
+			"amount": 864
+		},
+		{
+			"ticker": "ADE",
+			"amount": 576
+		},
+		{
+			"ticker": "ADS",
+			"amount": 5
+		},
+		{
+			"ticker": "ASE",
+			"amount": 576
+		},
+		{
+			"ticker": "ATA",
+			"amount": 288
+		},
+		{
+			"ticker": "COM",
+			"amount": 5
+		},
+		{
+			"ticker": "LOG",
+			"amount": 5
+		},
+		{
+			"ticker": "MCG",
+			"amount": 3600
+		},
+		{
+			"ticker": "TRU",
+			"amount": 1440
+		}
+	],
+	"40": [
+		{
+			"ticker": "ABH",
+			"amount": 945
+		},
+		{
+			"ticker": "ADE",
+			"amount": 630
+		},
+		{
+			"ticker": "ADS",
+			"amount": 5
+		},
+		{
+			"ticker": "ASE",
+			"amount": 630
+		},
+		{
+			"ticker": "ATA",
+			"amount": 315
+		},
+		{
+			"ticker": "COM",
+			"amount": 5
+		},
+		{
+			"ticker": "LOG",
+			"amount": 5
+		},
+		{
+			"ticker": "MCG",
+			"amount": 3957
+		},
+		{
+			"ticker": "TRU",
+			"amount": 1575
+		}
+	],
+	"41": [
+		{
+			"ticker": "ABH",
+			"amount": 1034
+		},
+		{
+			"ticker": "ADE",
+			"amount": 689
+		},
+		{
+			"ticker": "ADS",
+			"amount": 5
+		},
+		{
+			"ticker": "ASE",
+			"amount": 689
+		},
+		{
+			"ticker": "ATA",
+			"amount": 344
+		},
+		{
+			"ticker": "COM",
+			"amount": 5
+		},
+		{
+			"ticker": "LOG",
+			"amount": 5
+		},
+		{
+			"ticker": "MCG",
+			"amount": 4311
+		},
+		{
+			"ticker": "TRU",
+			"amount": 1724
+		}
+	],
+	"42": [
+		{
+			"ticker": "ABH",
+			"amount": 1134
+		},
+		{
+			"ticker": "ADE",
+			"amount": 756
+		},
+		{
+			"ticker": "ADS",
+			"amount": 5
+		},
+		{
+			"ticker": "ASE",
+			"amount": 756
+		},
+		{
+			"ticker": "ATA",
+			"amount": 378
+		},
+		{
+			"ticker": "COM",
+			"amount": 5
+		},
+		{
+			"ticker": "LOG",
+			"amount": 5
+		},
+		{
+			"ticker": "MCG",
+			"amount": 4725
+		},
+		{
+			"ticker": "TRU",
+			"amount": 1890
+		}
+	],
+	"43": [
+		{
+			"ticker": "ABH",
+			"amount": 1244
+		},
+		{
+			"ticker": "ADE",
+			"amount": 829
+		},
+		{
+			"ticker": "ADS",
+			"amount": 5
+		},
+		{
+			"ticker": "ASE",
+			"amount": 829
+		},
+		{
+			"ticker": "ATA",
+			"amount": 414
+		},
+		{
+			"ticker": "COM",
+			"amount": 5
+		},
+		{
+			"ticker": "LOG",
+			"amount": 5
+		},
+		{
+			"ticker": "MCG",
+			"amount": 5185
+		},
+		{
+			"ticker": "TRU",
+			"amount": 2074
+		}
+	],
+	"44": [
+		{
+			"ticker": "ABH",
+			"amount": 1368
+		},
+		{
+			"ticker": "ADE",
+			"amount": 912
+		},
+		{
+			"ticker": "ADS",
+			"amount": 6
+		},
+		{
+			"ticker": "ASE",
+			"amount": 912
+		},
+		{
+			"ticker": "ATA",
+			"amount": 456
+		},
+		{
+			"ticker": "COM",
+			"amount": 6
+		},
+		{
+			"ticker": "LOG",
+			"amount": 6
+		},
+		{
+			"ticker": "MCG",
+			"amount": 5700
+		},
+		{
+			"ticker": "TRU",
+			"amount": 2280
+		}
+	],
+	"45": [
+		{
+			"ticker": "ABH",
+			"amount": 1506
+		},
+		{
+			"ticker": "ADE",
+			"amount": 1004
+		},
+		{
+			"ticker": "ADS",
+			"amount": 6
+		},
+		{
+			"ticker": "ASE",
+			"amount": 1004
+		},
+		{
+			"ticker": "ATA",
+			"amount": 502
+		},
+		{
+			"ticker": "COM",
+			"amount": 6
+		},
+		{
+			"ticker": "LOG",
+			"amount": 6
+		},
+		{
+			"ticker": "MCG",
+			"amount": 6275
+		},
+		{
+			"ticker": "TRU",
+			"amount": 2510
+		}
+	],
+	"46": [
+		{
+			"ticker": "ABH",
+			"amount": 1661
+		},
+		{
+			"ticker": "ADE",
+			"amount": 1107
+		},
+		{
+			"ticker": "ADS",
+			"amount": 6
+		},
+		{
+			"ticker": "ASE",
+			"amount": 1107
+		},
+		{
+			"ticker": "ATA",
+			"amount": 533
+		},
+		{
+			"ticker": "COM",
+			"amount": 6
+		},
+		{
+			"ticker": "LOG",
+			"amount": 6
+		},
+		{
+			"ticker": "MCG",
+			"amount": 6922
+		},
+		{
+			"ticker": "TRU",
+			"amount": 2768
+		}
+	],
+	"47": [
+		{
+			"ticker": "ABH",
+			"amount": 1836
+		},
+		{
+			"ticker": "ADE",
+			"amount": 1224
+		},
+		{
+			"ticker": "ADS",
+			"amount": 6
+		},
+		{
+			"ticker": "ASE",
+			"amount": 1224
+		},
+		{
+			"ticker": "ATA",
+			"amount": 612
+		},
+		{
+			"ticker": "COM",
+			"amount": 6
+		},
+		{
+			"ticker": "LOG",
+			"amount": 6
+		},
+		{
+			"ticker": "MCG",
+			"amount": 7650
+		},
+		{
+			"ticker": "TRU",
+			"amount": 3060
+		}
+	],
+	"48": [
+		{
+			"ticker": "ABH",
+			"amount": 2033
+		},
+		{
+			"ticker": "ADE",
+			"amount": 1355
+		},
+		{
+			"ticker": "ADS",
+			"amount": 6
+		},
+		{
+			"ticker": "ASE",
+			"amount": 1355
+		},
+		{
+			"ticker": "ATA",
+			"amount": 677
+		},
+		{
+			"ticker": "COM",
+			"amount": 6
+		},
+		{
+			"ticker": "LOG",
+			"amount": 6
+		},
+		{
+			"ticker": "MCG",
+			"amount": 8471
+		},
+		{
+			"ticker": "TRU",
+			"amount": 3388
+		}
+	],
+	"49": [
+		{
+			"ticker": "ABH",
+			"amount": 2256
+		},
+		{
+			"ticker": "ADE",
+			"amount": 1504
+		},
+		{
+			"ticker": "ADS",
+			"amount": 6
+		},
+		{
+			"ticker": "ASE",
+			"amount": 1504
+		},
+		{
+			"ticker": "ATA",
+			"amount": 752
+		},
+		{
+			"ticker": "COM",
+			"amount": 6
+		},
+		{
+			"ticker": "LOG",
+			"amount": 6
+		},
+		{
+			"ticker": "MCG",
+			"amount": 9400
+		},
+		{
+			"ticker": "TRU",
+			"amount": 3760
+		}
+	],
+	"50": [
+		{
+			"ticker": "ABH",
+			"amount": 2508
+		},
+		{
+			"ticker": "ADE",
+			"amount": 1672
+		},
+		{
+			"ticker": "ADS",
+			"amount": 6
+		},
+		{
+			"ticker": "ASE",
+			"amount": 1672
+		},
+		{
+			"ticker": "ATA",
+			"amount": 836
+		},
+		{
+			"ticker": "COM",
+			"amount": 6
+		},
+		{
+			"ticker": "LOG",
+			"amount": 6
+		},
+		{
+			"ticker": "MCG",
+			"amount": 10451
+		},
+		{
+			"ticker": "TRU",
+			"amount": 4180
+		}
+	]
+}

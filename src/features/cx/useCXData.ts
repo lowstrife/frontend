@@ -1,8 +1,19 @@
 import { usePlanningStore } from "@/stores/planningStore";
 
+// Types & Interfaces
+import { SelectMixedOption } from "naive-ui/es/select/src/interface";
+
 export function useCXData() {
 	const planningStore = usePlanningStore();
 
+	/**
+	 * Finds corresponding Empire Uuid for given CXUuid
+	 *
+	 * @author jplacht
+	 *
+	 * @param {(string | undefined)} empireUuid Empire Uuid
+	 * @returns {(string | undefined)} CX Uuid or undefined if not assigned
+	 */
 	function findEmpireCXUuid(
 		empireUuid: string | undefined
 	): string | undefined {
@@ -17,7 +28,34 @@ export function useCXData() {
 		return cx ? cx.uuid : undefined;
 	}
 
+	/**
+	 * Gets a selects option for available CX Preferences
+	 *
+	 * @author jplacht
+	 *
+	 * @param {boolean} [includeNone=false] Should include a undefined
+	 * @returns {SelectMixedOption[]} Select Options
+	 */
+	function getPreferenceOptions(
+		includeNone: boolean = false
+	): SelectMixedOption[] {
+		const options: SelectMixedOption[] = [];
+
+		// usePrice has a PP30D Universe default, if no cxuuid is given
+		if (includeNone) {
+			options.push({ label: "None - PP30D Universe", value: undefined });
+		}
+
+		// add actual cx options from planning store
+		planningStore.getAllCX().forEach((cx) => {
+			options.push({ label: cx.name, value: cx.uuid });
+		});
+
+		return options;
+	}
+
 	return {
 		findEmpireCXUuid,
+		getPreferenceOptions,
 	};
 }
