@@ -1,5 +1,5 @@
 <script setup lang="ts">
-	import { PropType, ref, Ref, watch } from "vue";
+	import { computed, PropType, WritableComputedRef } from "vue";
 
 	// Types & Interfaces
 	import { IAreaResult } from "@/features/planning/usePlanCalculation.types";
@@ -23,19 +23,9 @@
 	}>();
 
 	// Local State
-	const localPermits: Ref<number> = ref(props.areaData.permits);
-
-	// Prop Watcher
-	watch(
-		() => props.areaData.permits,
-		(newPermits: number) => {
-			localPermits.value = newPermits;
-		}
-	);
-
-	// Local Watcher & Emit
-	watch(localPermits, (newPermits: number) => {
-		emit("update:permits", newPermits);
+	const localPermits: WritableComputedRef<number> = computed({
+		get: () => props.areaData.permits,
+		set: (value: number) => emit("update:permits", value),
 	});
 </script>
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-	import { PropType, ref, Ref, watch } from "vue";
+	import { computed, ComputedRef, PropType, ref, Ref } from "vue";
 
 	// Composables
 	import { useBuildingData } from "@/features/game_data/useBuildingData";
@@ -55,27 +55,14 @@
 	}>();
 
 	// Local State
-	const localProductionData: Ref<IProductionResult> = ref(
-		props.productionData
+	const localProductionData: ComputedRef<IProductionResult> = computed(
+		() => props.productionData
 	);
 	const localSelectedBuilding: Ref<string | undefined> = ref(undefined);
-	const localCOGC: Ref<PLAN_COGCPROGRAM_TYPE> = ref("---");
+	const localCOGC: ComputedRef<PLAN_COGCPROGRAM_TYPE> = computed(
+		() => props.cogc
+	);
 	const localMatchCOGC: Ref<boolean> = ref(false);
-
-	// Prop Watcher
-	watch(
-		() => props.productionData,
-		(newData: IProductionResult) => {
-			localProductionData.value = newData;
-		},
-		{ deep: true }
-	);
-	watch(
-		() => props.cogc,
-		(newValue: PLAN_COGCPROGRAM_TYPE) => {
-			localCOGC.value = newValue;
-		}
-	);
 
 	const { getProductionBuildingOptions } = useBuildingData();
 </script>

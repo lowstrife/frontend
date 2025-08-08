@@ -1,5 +1,5 @@
 <script setup lang="ts">
-	import { PropType, ref, Ref, watch } from "vue";
+	import { computed, PropType, WritableComputedRef } from "vue";
 
 	// Types & Interfaces
 	import { PLAN_COGCPROGRAM_TYPE } from "@/stores/planningStore.types";
@@ -29,31 +29,14 @@
 	}>();
 
 	// Local State
-	const localCorpHQ: Ref<boolean> = ref(props.corphq);
-	const localCOGC: Ref<PLAN_COGCPROGRAM_TYPE> = ref(props.cogc);
-
-	// Prop Watcher
-	watch(
-		() => props.corphq,
-		(newValue: boolean) => {
-			localCorpHQ.value = newValue;
-		}
-	);
-
-	watch(
-		() => props.cogc,
-		(newValue: PLAN_COGCPROGRAM_TYPE) => {
-			localCOGC.value = newValue;
-		}
-	);
-
-	// Local Watcher & Emit
-	watch(localCorpHQ, (newValue: boolean) => {
-		emit("update:corphq", newValue);
+	const localCorpHQ: WritableComputedRef<boolean> = computed({
+		get: () => props.corphq,
+		set: (value: boolean) => emit("update:corphq", value),
 	});
 
-	watch(localCOGC, (newValue: PLAN_COGCPROGRAM_TYPE) => {
-		emit("update:cogc", newValue);
+	const localCOGC: WritableComputedRef<PLAN_COGCPROGRAM_TYPE> = computed({
+		get: () => props.cogc,
+		set: (value: PLAN_COGCPROGRAM_TYPE) => emit("update:cogc", value),
 	});
 
 	const cogcOptions: SelectMixedOption[] = [

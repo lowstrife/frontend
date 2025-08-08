@@ -1,5 +1,5 @@
 <script setup lang="ts">
-	import { PropType, ref, Ref, watch } from "vue";
+	import { computed, ComputedRef, PropType, WritableComputedRef } from "vue";
 
 	// Types & Interfaces
 	import { IPlanEmpire } from "@/stores/planningStore.types";
@@ -67,36 +67,20 @@
 	}>();
 
 	// Local State
-	const localPlanName: Ref<string | undefined> = ref(props.planName);
-	const localEmpireOptions: Ref<IPlanEmpire[] | undefined> = ref(
-		props.empireOptions
-	);
-	const localActiveEmpireUuid: Ref<string | undefined> = ref(
-		props.activeEmpire?.uuid
-	);
+	const localPlanName: WritableComputedRef<string | undefined> = computed({
+		get: () => props.planName,
+		set: (value: string | undefined) =>
+			value ? emit("update:plan-name", value) : {},
+	});
 
-	const empireSelectOptions: Ref<SelectMixedOption[]> = ref(
+	const localActiveEmpireUuid: WritableComputedRef<string | undefined> =
+		computed({
+			get: () => props.activeEmpire?.uuid,
+			set: (value: string) => emit("update:active-empire", value),
+		});
+
+	const empireSelectOptions: ComputedRef<SelectMixedOption[]> = computed(() =>
 		createEmpireOptions(props.empireOptions)
-	);
-
-	// Prop Watcher
-	watch(
-		() => props.planName,
-		(newName: string | undefined) => (localPlanName.value = newName)
-	);
-	watch(
-		() => props.empireOptions,
-		(newOptions: IPlanEmpire[] | undefined) => {
-			if (newOptions) {
-				localEmpireOptions.value = newOptions;
-				empireSelectOptions.value = createEmpireOptions(newOptions);
-			}
-		}
-	);
-	watch(
-		() => props.activeEmpire,
-		(newActiveEmpire: IPlanEmpire | undefined) =>
-			(localActiveEmpireUuid.value = newActiveEmpire?.uuid)
 	);
 </script>
 
@@ -108,20 +92,12 @@
 		label-align="left"
 		size="small">
 		<n-form-item label="Name">
-			<n-input
-				v-model:value="localPlanName"
-				placeholder="Plan Name"
-				:on-update:value="
-					(value: string) => emit('update:plan-name', value)
-				" />
+			<n-input v-model:value="localPlanName" placeholder="Plan Name" />
 		</n-form-item>
 		<n-form-item label="Empire">
 			<n-select
 				v-model:value="localActiveEmpireUuid"
-				:options="empireSelectOptions"
-				:on-update:value="
-					(value: string) => emit('update:active-empire', value)
-				" />
+				:options="empireSelectOptions" />
 		</n-form-item>
 	</n-form>
 </template>

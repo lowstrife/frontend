@@ -1,5 +1,12 @@
 <script setup lang="ts">
-	import { PropType, ref, Ref, watch } from "vue";
+	import {
+		computed,
+		ComputedRef,
+		PropType,
+		ref,
+		Ref,
+		WritableComputedRef,
+	} from "vue";
 
 	// Types & Interfaces
 	import {
@@ -48,40 +55,21 @@
 	}>();
 
 	// Local State
-	const localRecipeData: Ref<IProductionBuildingRecipe> = ref(
-		props.recipeData
+	const localRecipeOptions: ComputedRef<IRecipeBuildingOption[]> = computed(
+		() => props.recipeOptions
 	);
-	const localRecipeOptions: Ref<IRecipeBuildingOption[]> = ref(
-		props.recipeOptions
+	const localRecipeIndex: ComputedRef<number> = computed(() =>
+		props.recipeIndex.valueOf()
 	);
 
-	const localRecipeAmount: Ref<number> = ref(props.recipeData.amount);
-	const localRecipeIndex: Ref<number> = ref(props.recipeIndex.valueOf());
-
+	const localRecipeData: ComputedRef<IProductionBuildingRecipe> = computed(
+		() => props.recipeData
+	);
+	const localRecipeAmount: WritableComputedRef<number> = computed({
+		get: () => props.recipeData.amount,
+		set: () => {},
+	});
 	const refShowRecipeOptions: Ref<boolean> = ref(false);
-
-	// Prop Watcher
-	watch(
-		() => props.recipeData,
-		(newData: IProductionBuildingRecipe) => {
-			localRecipeData.value = newData;
-			localRecipeAmount.value = newData.amount;
-		},
-		{ deep: true }
-	);
-	watch(
-		() => props.recipeOptions,
-		(newData: IRecipeBuildingOption[]) => {
-			localRecipeOptions.value = newData;
-		},
-		{ deep: true }
-	);
-	watch(
-		() => props.recipeIndex,
-		(newIndex: number) => {
-			localRecipeIndex.value = newIndex;
-		}
-	);
 </script>
 
 <template>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-	import { PropType, ref, Ref, watch } from "vue";
+	import { computed, ComputedRef, PropType } from "vue";
 
 	// Composables
 	import { usePlanetSearchResults } from "../usePlanetSearchResults";
@@ -33,39 +33,22 @@
 	});
 
 	// Local State
-	const localResults: Ref<IPlanetSearchResult[]> = ref(
-		usePlanetSearchResults(props.results, props.searchMaterials).results
-			.value
-	);
-	const localCheckDistances: Ref<string | null> = ref(
-		usePlanetSearchResults(props.results, props.searchMaterials)
-			.hasCheckDistance.value
-	);
-	const localSearchMaterials: Ref<string[]> = ref(props.searchMaterials);
-
-	watch(
-		() => props.results,
-		(newResults: IPlanet[]) => {
-			localResults.value = usePlanetSearchResults(
-				newResults,
-				localSearchMaterials.value
-			).results.value;
-			localCheckDistances.value = usePlanetSearchResults(
-				props.results,
-				localSearchMaterials.value
-			).hasCheckDistance.value;
-		}
+	const localSearchMaterials: ComputedRef<string[]> = computed(
+		() => props.searchMaterials
 	);
 
-	watch(
-		() => props.searchMaterials,
-		(newResults: string[]) => {
-			localSearchMaterials.value = newResults;
-			localResults.value = usePlanetSearchResults(
-				props.results,
-				newResults
-			).results.value;
-		}
+	const planetSearch: ComputedRef<{
+		results: ComputedRef<IPlanetSearchResult[]>;
+		hasCheckDistance: ComputedRef<string | null>;
+	}> = computed(() =>
+		usePlanetSearchResults(props.results, localSearchMaterials.value)
+	);
+
+	const localResults: ComputedRef<IPlanetSearchResult[]> = computed(
+		() => planetSearch.value.results.value
+	);
+	const localCheckDistances: ComputedRef<string | null> = computed(
+		() => planetSearch.value.hasCheckDistance.value
 	);
 </script>
 

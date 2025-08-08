@@ -1,5 +1,5 @@
 <script setup lang="ts">
-	import { PropType, ref, Ref, watch } from "vue";
+	import { computed, ComputedRef, PropType } from "vue";
 
 	// Types & Interfaces
 	import {
@@ -30,18 +30,8 @@
 	}>();
 
 	// Local State
-	const localInfrastructureData: Ref<IInfrastructureRecord> = ref(
-		props.infrastructureData
-	);
-
-	// Prop Watcher
-	watch(
-		() => props.infrastructureData,
-		(newData: IInfrastructureRecord) => {
-			localInfrastructureData.value = newData;
-		},
-		{ deep: true }
-	);
+	const localInfrastructureData: ComputedRef<IInfrastructureRecord> =
+		computed(() => props.infrastructureData);
 
 	const infrastructureOrder: INFRASTRUCTURE_TYPE[] = [
 		"HB1",
