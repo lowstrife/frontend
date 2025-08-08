@@ -1,5 +1,5 @@
 <script setup lang="ts">
-	import { PropType, ref, Ref, watch } from "vue";
+	import { computed, ComputedRef, PropType } from "vue";
 
 	// Utils
 	import { capitalizeString } from "@/util/text";
@@ -36,15 +36,8 @@
 	}>();
 
 	// Local State
-	const localWorkforceData: Ref<IWorkforceRecord> = ref(props.workforceData);
-
-	// Prop Watcher
-	watch(
-		() => props.workforceData,
-		(newData: IWorkforceRecord) => {
-			localWorkforceData.value = newData;
-		},
-		{ deep: true }
+	const localWorkforceData: ComputedRef<IWorkforceRecord> = computed(
+		() => props.workforceData
 	);
 </script>
 
@@ -63,7 +56,9 @@
 		</thead>
 		<tbody>
 			<tr v-for="workforce in localWorkforceData" :key="workforce.name">
-				<td class="font-bold">{{ capitalizeString(workforce.name) }}</td>
+				<td class="font-bold">
+					{{ capitalizeString(workforce.name) }}
+				</td>
 				<td :class="workforce.required === 0 ? '!text-white/50' : ''">
 					{{ formatAmount(workforce.required) }}
 				</td>
@@ -80,9 +75,14 @@
 						size="tiny"
 						type="success"
 						@click="
-							() => emit('update:lux', workforce.name, 'lux1', !workforce.lux1)
-						"
-					>
+							() =>
+								emit(
+									'update:lux',
+									workforce.name,
+									'lux1',
+									!workforce.lux1
+								)
+						">
 						<template #icon>
 							<CheckSharp />
 						</template>
@@ -93,9 +93,14 @@
 						size="tiny"
 						type="error"
 						@click="
-							() => emit('update:lux', workforce.name, 'lux1', !workforce.lux1)
-						"
-					>
+							() =>
+								emit(
+									'update:lux',
+									workforce.name,
+									'lux1',
+									!workforce.lux1
+								)
+						">
 						<template #icon>
 							<RadioButtonUncheckedSharp />
 						</template>
@@ -108,9 +113,14 @@
 						size="tiny"
 						type="success"
 						@click="
-							() => emit('update:lux', workforce.name, 'lux2', !workforce.lux2)
-						"
-					>
+							() =>
+								emit(
+									'update:lux',
+									workforce.name,
+									'lux2',
+									!workforce.lux2
+								)
+						">
 						<template #icon>
 							<CheckSharp />
 						</template>
@@ -121,9 +131,14 @@
 						size="tiny"
 						type="error"
 						@click="
-							() => emit('update:lux', workforce.name, 'lux2', !workforce.lux2)
-						"
-					>
+							() =>
+								emit(
+									'update:lux',
+									workforce.name,
+									'lux2',
+									!workforce.lux2
+								)
+						">
 						<template #icon>
 							<RadioButtonUncheckedSharp />
 						</template>

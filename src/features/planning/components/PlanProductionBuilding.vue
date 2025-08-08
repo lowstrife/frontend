@@ -1,5 +1,5 @@
 <script setup lang="ts">
-	import { PropType, ref, Ref, watch } from "vue";
+	import { computed, ComputedRef, PropType } from "vue";
 
 	// Types & Interfaces
 	import { IProductionBuilding } from "@/features/planning/usePlanCalculation.types";
@@ -53,15 +53,8 @@
 	}>();
 
 	// Local State
-	const localBuildingData: Ref<IProductionBuilding> = ref(props.buildingData);
-
-	// Prop Watcher
-	watch(
-		() => props.buildingData,
-		(newData: IProductionBuilding) => {
-			localBuildingData.value = newData;
-		},
-		{ deep: true }
+	const localBuildingData: ComputedRef<IProductionBuilding> = computed(
+		() => props.buildingData
 	);
 </script>
 

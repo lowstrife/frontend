@@ -55,29 +55,15 @@
 	});
 
 	// Local Data & Watcher
-	const localEmpires: Ref<IPlanEmpireElement[]> = ref(
+	const localEmpires: ComputedRef<IPlanEmpireElement[]> = computed(() =>
 		inertClone(props.empires)
 	);
-	const localCX: Ref<ICX[]> = ref(inertClone(props.cx));
+	const localCX: ComputedRef<ICX[]> = computed(() => inertClone(props.cx));
 
-	watch(
-		() => props.empires,
-		(newData: IPlanEmpireElement[]) => {
-			localEmpires.value = inertClone(newData);
-			generateCXOptions();
-			generateEmpireCXMap();
-		},
-		{ deep: true }
-	);
-	watch(
-		() => props.cx,
-		(newData: ICX[]) => {
-			localCX.value = inertClone(newData);
-			generateCXOptions();
-			generateEmpireCXMap();
-		},
-		{ deep: true }
-	);
+	watch([() => props.empires, () => props.cx], () => {
+		generateCXOptions();
+		generateEmpireCXMap();
+	});
 
 	const emit = defineEmits<{
 		(e: "update:cxList", value: ICX[]): void;
@@ -404,6 +390,7 @@
 			<template #render-cell="{ rowData }">
 				<div class="max-w-[200px]">
 					<n-select
+						:key="`${rowData.uuid}#${refEmpireCXMap[rowData.uuid]}`"
 						v-model:value="refEmpireCXMap[rowData.uuid]"
 						size="small"
 						:options="refCXOptions"

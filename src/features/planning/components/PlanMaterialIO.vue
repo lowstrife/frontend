@@ -1,5 +1,5 @@
 <script setup lang="ts">
-	import { PropType, ref, Ref, watch } from "vue";
+	import { computed, ComputedRef, PropType } from "vue";
 
 	// Components
 	import MaterialTile from "@/features/material_tile/components/MaterialTile.vue";
@@ -25,23 +25,11 @@
 	});
 
 	// Local State
-	const localMaterialIOData: Ref<IMaterialIO[]> = ref(props.materialIOData);
-	const localShowBasked: Ref<boolean> = ref(props.showBasked);
-
-	// Prop Watcher
-	watch(
-		() => props.materialIOData,
-		(newData: IMaterialIO[]) => {
-			localMaterialIOData.value = newData;
-		},
-		{ deep: true }
+	const localMaterialIOData: ComputedRef<IMaterialIO[]> = computed(
+		() => props.materialIOData
 	);
-
-	watch(
-		() => props.showBasked,
-		(newState: boolean) => {
-			localShowBasked.value = newState;
-		}
+	const localShowBasked: ComputedRef<boolean> = computed(
+		() => props.showBasked
 	);
 </script>
 

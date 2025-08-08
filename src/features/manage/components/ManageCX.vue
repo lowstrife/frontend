@@ -1,5 +1,5 @@
 <script setup lang="ts">
-	import { computed, ComputedRef, PropType, ref, Ref, watch } from "vue";
+	import { computed, ComputedRef, PropType, ref, Ref } from "vue";
 
 	// Composables
 	import { useQueryRepository } from "@/lib/query_cache/queryRepository";
@@ -31,16 +31,8 @@
 		},
 	});
 
-	// Local Data & Watcher
-	const localCX: Ref<ICX[]> = ref(inertClone(props.cx));
-
-	watch(
-		() => props.cx,
-		(newData: ICX[]) => {
-			localCX.value = inertClone(newData);
-		},
-		{ deep: true }
-	);
+	// Local Data
+	const localCX: ComputedRef<ICX[]> = computed(() => inertClone(props.cx));
 
 	const refShowCreateCX: Ref<boolean> = ref(false);
 	const refIsCreating: Ref<boolean> = ref(false);

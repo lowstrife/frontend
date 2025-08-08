@@ -1,5 +1,5 @@
 <script setup lang="ts">
-	import { nextTick, PropType, ref, Ref, watch } from "vue";
+	import { computed, ComputedRef, nextTick, PropType, ref, Ref } from "vue";
 
 	// Composables
 	import { useBurnXITAction } from "@/features/xit/useBurnXITAction";
@@ -83,12 +83,8 @@
 	}
 
 	// Local State & Watcher
-	const localElements: Ref<IXITActionElement[]> = ref(props.elements);
-
-	watch(
-		() => props.elements,
-		(newElements: IXITActionElement[]) =>
-			(localElements.value = newElements)
+	const localElements: ComputedRef<IXITActionElement[]> = computed(
+		() => props.elements
 	);
 
 	const refHideInfinite: Ref<boolean> = ref(false);
@@ -221,7 +217,10 @@
 							<span
 								:class="
 									getBurnDisplayClass(e.burn).value != ''
-										? `${getBurnDisplayClass(e.burn).value} px-2 py-[3px]`
+										? `${
+												getBurnDisplayClass(e.burn)
+													.value
+										  } px-2 py-[3px]`
 										: ''
 								">
 								{{ formatNumber(e.burn) }}

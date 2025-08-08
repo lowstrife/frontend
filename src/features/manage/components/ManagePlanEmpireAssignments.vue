@@ -1,5 +1,13 @@
 <script setup lang="ts">
-	import { computed, ComputedRef, PropType, ref, Ref, watch } from "vue";
+	import {
+		computed,
+		ComputedRef,
+		PropType,
+		ref,
+		Ref,
+		watch,
+		WritableComputedRef,
+	} from "vue";
 
 	// Composables
 	import { usePlanetData } from "@/features/game_data/usePlanetData";
@@ -47,28 +55,17 @@
 	});
 
 	// Local Data & Watcher
-	const localEmpires: Ref<IPlanEmpireElement[]> = ref(
-		inertClone(props.empires)
-	);
-	const localPlans: Ref<IPlan[]> = ref(inertClone(props.plans));
-
-	watch(
-		() => props.empires,
-		(newData: IPlanEmpireElement[]) => {
-			localEmpires.value = inertClone(newData);
-			generateMatrix();
-		},
-		{ deep: true }
+	const localEmpires: WritableComputedRef<IPlanEmpireElement[]> = computed({
+		get: () => inertClone(props.empires),
+		set: (value: IPlanEmpireElement[]) => emit("update:empireList", value),
+	});
+	const localPlans: ComputedRef<IPlan[]> = computed(() =>
+		inertClone(props.plans)
 	);
 
-	watch(
-		() => props.plans,
-		(newData: IPlan[]) => {
-			localPlans.value = inertClone(newData);
-			generateMatrix();
-		},
-		{ deep: true }
-	);
+	watch([() => props.empires, () => props.plans], () => {
+		generateMatrix();
+	});
 
 	const emit = defineEmits<{
 		(e: "update:empireList", value: IPlanEmpireElement[]): void;

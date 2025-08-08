@@ -1,5 +1,5 @@
 <script setup lang="ts">
-	import { ref, Ref, watch } from "vue";
+	import { computed, WritableComputedRef } from "vue";
 
 	// Composables
 	import { useCXData } from "@/features/cx/useCXData";
@@ -27,15 +27,13 @@
 		(e: "update:cxuuid", value: string | undefined): void;
 	}>();
 
-	const localCXUuid: Ref<string | undefined> = ref(props.cxUuid);
+	const localCXUuid: WritableComputedRef<string | undefined> = computed({
+		get: () => props.cxUuid,
+		set: (value: string | undefined) => emit("update:cxuuid", value),
+	});
 
 	const preferenceOptions: SelectMixedOption[] =
 		useCXData().getPreferenceOptions(true);
-
-	watch(
-		() => props.cxUuid,
-		(newValue: string | undefined) => (localCXUuid.value = newValue)
-	);
 </script>
 
 <template>
@@ -44,6 +42,5 @@
 		:options="preferenceOptions"
 		clearable
 		filterable
-		:class="selectClass"
-		@update-value="(value: string | undefined) => emit('update:cxuuid', value)" />
+		:class="selectClass" />
 </template>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-	import { nextTick, PropType, ref, Ref, watch } from "vue";
+	import { nextTick, PropType, ref, Ref } from "vue";
 
 	// Composables
 	import { useXITAction } from "@/features/xit/useXITAction";
@@ -32,7 +32,7 @@
 		NSelect,
 	} from "naive-ui";
 
-	const props = defineProps({
+	defineProps({
 		elements: {
 			type: Array as PropType<IXITTransferMaterial[]>,
 			required: true,
@@ -76,15 +76,6 @@
 			nextTick().then(() => (showDrawer.value = true));
 		}
 	}
-
-	// Local State & Watcher
-	const localElements: Ref<IXITTransferMaterial[]> = ref(props.elements);
-
-	watch(
-		() => props.elements,
-		(newElements: IXITTransferMaterial[]) =>
-			(localElements.value = newElements)
-	);
 </script>
 
 <template>

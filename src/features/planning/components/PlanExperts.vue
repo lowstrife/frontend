@@ -1,5 +1,5 @@
 <script setup lang="ts">
-	import { computed, PropType, ref, Ref, watch } from "vue";
+	import { computed, ComputedRef, PropType } from "vue";
 
 	// Types & Interfaces
 	import {
@@ -30,15 +30,8 @@
 	}>();
 
 	// Local State
-	const localExpertData: Ref<IExpertRecord> = ref(props.expertData);
-
-	// Prop Watcher
-	watch(
-		() => props.expertData,
-		(newData: IExpertRecord) => {
-			localExpertData.value = newData;
-		},
-		{ deep: true }
+	const localExpertData: ComputedRef<IExpertRecord> = computed(
+		() => props.expertData
 	);
 
 	const totalExperts = computed(() => {
