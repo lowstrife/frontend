@@ -14,6 +14,7 @@ import router from "@/router";
 
 // app + uses
 const app = createApp(AppProvider);
+app.config.performance = true;
 
 app.use(router);
 app.use(pinia);
