@@ -165,10 +165,13 @@ export const prunplannerTheme: GlobalThemeOverrides = {
 		// color
 		thColor: GRAY_DARK,
 		thColorModal: GRAY_DARK,
+		thColorPopover: GRAY_DARK,
 		tdColorStriped: GRAY_DARK,
 		tdColorStripedModal: GRAY_DARK,
+		tdColorStripedPopover: GRAY_DARK,
 		tdColor: "rgba(255,255,255,0.02)",
 		tdColorModal: "rgba(255,255,255,0.02)",
+		tdColorPopover: "rgba(255,255,255,0.02)",
 		// padding
 		thPaddingMedium: "5px 10px",
 		tdPaddingMedium: "5px 10px",

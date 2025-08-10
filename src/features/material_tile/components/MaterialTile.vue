@@ -3,7 +3,7 @@
 		Allowing the drawer to render is quite the performance-hit
 		due to many HTML elements being created.
 	*/
-	import { computed, ComputedRef, ref, Ref } from "vue";
+	import { computed, ComputedRef, onMounted, ref, Ref } from "vue";
 
 	// Composables
 	import { useMaterialData } from "@/features/game_data/useMaterialData";
@@ -11,6 +11,7 @@
 
 	// Components
 	import MaterialDataChart from "@/features/market_exploration/components/MaterialDataChart.vue";
+	import MaterialCXOverviewTable from "@/features/cx/components/MaterialCXOverviewTable.vue";
 
 	// UI
 	import {
@@ -50,15 +51,19 @@
 			required: false,
 			default: undefined,
 		},
+		enablePopover: {
+			type: Boolean,
+			required: false,
+			default: true,
+		},
 	});
 
 	const { getMaterial } = useMaterialData();
-	const { exchangeTypesArray, getMaterialExchangeOverview } =
-		useExchangeData();
+	const { getMaterialExchangeOverview } = useExchangeData();
 
 	const refShowDrawer: Ref<boolean> = ref(false);
-	const refExchangeOverview: IMaterialExchangeOverview =
-		getMaterialExchangeOverview(props.ticker);
+	const refExchangeOverview: Ref<IMaterialExchangeOverview | undefined> =
+		ref(undefined);
 
 	const refChartValue: Ref<string> = ref("volume_max");
 	const refChartValueOptions: Ref<SelectMixedOption[]> = ref([
@@ -111,6 +116,16 @@
 
 		return style;
 	});
+
+	onMounted(() => {
+		try {
+			refExchangeOverview.value = getMaterialExchangeOverview(
+				props.ticker
+			);
+		} catch {
+			refExchangeOverview.value = undefined;
+		}
+	});
 </script>
 
 <template>
@@ -118,7 +133,7 @@
 		<div
 			class="flex flex-row child:my-auto w-full"
 			:class="
-				!disableDrawer
+				!disableDrawer || enablePopover
 					? `Material-${ticker} hover:cursor-pointer`
 					: `Material-${ticker}`
 			"
@@ -129,12 +144,25 @@
 					}
 				}
 			">
-			<div class="py-[1px] px-2 flex flex-row">
-				<div v-if="amount" class="pr-1">
-					{{ formatNumber(amount) }}x
-				</div>
-				<div class="font-bold text-nowrap">{{ ticker }}</div>
-			</div>
+			<n-tooltip
+				:disabled="
+					refExchangeOverview === undefined || !enablePopover
+						? true
+						: false
+				">
+				<template #trigger>
+					<div class="py-[1px] px-2 flex flex-row">
+						<div v-if="amount" class="pr-1">
+							{{ formatNumber(amount) }}x
+						</div>
+						<div class="font-bold text-nowrap">{{ ticker }}</div>
+					</div>
+				</template>
+				<MaterialCXOverviewTable
+					v-if="refExchangeOverview"
+					:ticker="ticker"
+					:overview-data="refExchangeOverview" />
+			</n-tooltip>
 			<template v-if="max">
 				<n-tooltip>
 					<template #trigger>
@@ -207,139 +235,10 @@
 				</div>
 			</div>
 			<h3 class="font-bold text-lg py-5">Markets</h3>
-			<n-table striped>
-				<thead>
-					<tr>
-						<th />
-						<th>AI1</th>
-						<th>CI1</th>
-						<th>IC1</th>
-						<th>NC1</th>
-					</tr>
-				</thead>
-				<tbody
-					v-if="refExchangeOverview"
-					class="child:child:first:font-bold">
-					<tr>
-						<td>Ask</td>
-						<td v-for="cx in exchangeTypesArray" :key="`Ask#${cx}`">
-							{{
-								formatNumber(
-									refExchangeOverview.Ask[cx],
-									2,
-									true
-								)
-							}}
-						</td>
-					</tr>
-					<tr>
-						<td>Bid</td>
-						<td v-for="cx in exchangeTypesArray" :key="`Bid#${cx}`">
-							{{
-								formatNumber(
-									refExchangeOverview.Bid[cx],
-									2,
-									true
-								)
-							}}
-						</td>
-					</tr>
-					<tr>
-						<td>Average</td>
-						<td
-							v-for="cx in exchangeTypesArray"
-							:key="`Average#${cx}`">
-							{{
-								formatNumber(
-									refExchangeOverview.Average[cx],
-									2,
-									true
-								)
-							}}
-						</td>
-					</tr>
-					<tr>
-						<td>PP7D</td>
-						<td
-							v-for="cx in exchangeTypesArray"
-							:key="`PP7D#${cx}`">
-							{{
-								formatNumber(
-									refExchangeOverview.PP7D[cx],
-									2,
-									true
-								)
-							}}
-						</td>
-					</tr>
-					<tr>
-						<td>PP30D</td>
-						<td
-							v-for="cx in exchangeTypesArray"
-							:key="`PP30D#${cx}`">
-							{{
-								formatNumber(
-									refExchangeOverview.PP30D[cx],
-									2,
-									true
-								)
-							}}
-						</td>
-					</tr>
-					<tr>
-						<td>7D Universe</td>
-						<td colspan="4" class="text-center">
-							{{
-								formatNumber(
-									refExchangeOverview.Universe7D,
-									2,
-									true
-								)
-							}}
-						</td>
-					</tr>
-					<tr>
-						<td>30D Universe</td>
-						<td colspan="4" class="text-center">
-							{{
-								formatNumber(
-									refExchangeOverview.Universe30D,
-									2,
-									true
-								)
-							}}
-						</td>
-					</tr>
-					<tr>
-						<td>Supply</td>
-						<td
-							v-for="cx in exchangeTypesArray"
-							:key="`Supply#${cx}`">
-							{{
-								formatNumber(
-									refExchangeOverview.Supply[cx],
-									2,
-									true
-								)
-							}}
-						</td>
-					</tr>
-					<tr>
-						<td>Demand</td>
-						<td
-							v-for="cx in exchangeTypesArray"
-							:key="`Demand#${cx}`">
-							{{
-								formatNumber(
-									refExchangeOverview.Demand[cx],
-									2,
-									true
-								)
-							}}
-						</td>
-					</tr>
-				</tbody>
-			</n-table>
+			<MaterialCXOverviewTable
+				v-if="refExchangeOverview"
+				:ticker="ticker"
+				:overview-data="refExchangeOverview" />
 
 			<div class="flex py-5">
 				<div class="my-auto grow">
