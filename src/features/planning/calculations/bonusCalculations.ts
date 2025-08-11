@@ -74,7 +74,7 @@ export function useBonusCalculation() {
 			ELECTRONICS: 0.05,
 		},
 		BENTEN: {
-			MANUFACTURING: 0.5,
+			MANUFACTURING: 0.05,
 		},
 		HORTUS: {
 			AGRICULTURE: 0.03,
