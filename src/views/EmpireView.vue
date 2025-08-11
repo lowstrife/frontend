@@ -25,6 +25,7 @@
 	import RenderingProgress from "@/layout/components/RenderingProgress.vue";
 	import WrapperPlanningDataLoader from "@/features/wrapper/components/WrapperPlanningDataLoader.vue";
 	import WrapperGameDataLoader from "@/features/wrapper/components/WrapperGameDataLoader.vue";
+	import HelpDrawer from "@/features/help/components/HelpDrawer.vue";
 
 	const AsyncEmpirePlanList = defineAsyncComponent(
 		() => import("@/features/empire/components/EmpirePlanList.vue")
@@ -275,6 +276,7 @@
 							<h1 class="text-2xl font-bold my-auto">
 								{{ empireName }}
 							</h1>
+							<HelpDrawer file-name="empire" />
 						</div>
 
 						<div

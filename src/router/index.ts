@@ -109,6 +109,11 @@ const router = createRouter({
 			path: "/imprint-tos",
 			component: () => import("@/views/ImprintToSView.vue"),
 		},
+		{
+			name: "help",
+			path: "/help",
+			component: () => import("@/views/HelpView.vue"),
+		},
 	],
 });
 

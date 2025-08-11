@@ -6,6 +6,7 @@
 
 	// Components
 	import WrapperGameDataLoader from "@/features/wrapper/components/WrapperGameDataLoader.vue";
+	import HelpDrawer from "@/features/help/components/HelpDrawer.vue";
 
 	// Composables
 	import { useMarketExplorationChart } from "@/features/market_exploration/useMarketExplorationChart";
@@ -76,6 +77,7 @@
 							@click="fetchData">
 							Explore
 						</n-button>
+						<HelpDrawer file-name="tools_market_exploration" />
 					</div>
 				</div>
 			</div>

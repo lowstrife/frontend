@@ -191,11 +191,11 @@
 							display: userStore.hasFIO,
 							routerLink: "/fio/repair",
 						},
-						{
-							label: "Plan Import",
-							display: userStore.hasFIO,
-							routerLink: "/not-implemented",
-						},
+						// {
+						// 	label: "Plan Import",
+						// 	display: userStore.hasFIO,
+						// 	routerLink: "/not-implemented",
+						// },
 					],
 				},
 			],
@@ -217,9 +217,9 @@
 					icon: PersonSharp,
 				},
 				{
-					label: "Help",
+					label: "Help & Changelog",
 					display: true,
-					routerLink: "/not-implemented",
+					routerLink: "/help",
 					icon: HelpOutlineSharp,
 				},
 				{
