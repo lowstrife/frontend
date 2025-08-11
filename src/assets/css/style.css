@@ -80,6 +80,10 @@ html {
 	@apply pb-3 text-white/20;
 }
 
+#markdown a {
+	@apply text-link-primary hover:underline;
+}
+
 /** HIGHCHARTS **/
 
 .highcharts-point-up {
