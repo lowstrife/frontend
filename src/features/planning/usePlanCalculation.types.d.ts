@@ -70,12 +70,42 @@ export interface IRecipeBuildingOption extends IRecipe {
 	roi: number;
 }
 
+interface ICOGMMaterialCost {
+	ticker: string;
+	amount: number;
+	costUnit: number;
+	costTotal: number;
+}
+
+interface ICOGMMaterialReturn {
+	ticker: string;
+	amount: number;
+	costSplit: number;
+	costTotal: number;
+}
+
+export interface IProductionBuildingRecipeCOGM {
+	visible: boolean;
+	runtime: number;
+	runtimeShare: number;
+	efficiency: number;
+	degradation: number;
+	degradationShare: number;
+	workforceCost: number;
+	workforceCostTotal: number;
+	inputCost: ICOGMMaterialCost[];
+	inputTotal: number;
+	outputCOGM: ICOGMMaterialReturn[];
+	totalCost: number;
+}
+
 export interface IProductionBuildingRecipe {
 	recipeId: string;
 	amount: number;
 	recipe: IRecipeBuildingOption;
 	dailyShare: number;
 	time: number;
+	cogm: IProductionBuildingRecipeCOGM | undefined;
 }
 
 export interface IProductionBuilding {

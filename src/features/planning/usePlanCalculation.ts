@@ -32,6 +32,8 @@ import { IBuilding, IPlanet, IRecipe } from "@/features/api/gameData.types";
 import {
 	IAreaResult,
 	IBuildingConstruction,
+	ICOGMMaterialCost,
+	ICOGMMaterialReturn,
 	IExpertRecord,
 	IInfrastructureRecord,
 	IMaterialIO,
@@ -41,6 +43,7 @@ import {
 	IPlanResult,
 	IProductionBuilding,
 	IProductionBuildingRecipe,
+	IProductionBuildingRecipeCOGM,
 	IProductionResult,
 	IRecipeBuildingOption,
 	IWorkforceElement,
@@ -101,10 +104,8 @@ export function usePlanCalculation(
 		useBonusCalculation();
 	const { calculateSatisfaction, calculateWorkforceConsumption } =
 		useWorkforceCalculation();
-	const { getMaterialIOTotalPrice, enhanceMaterialIOMaterial } = usePrice(
-		cxUuid,
-		planetNaturalId
-	);
+	const { getPrice, getMaterialIOTotalPrice, enhanceMaterialIOMaterial } =
+		usePrice(cxUuid, planetNaturalId);
 	const { calculateMaterialIO } = useBuildingCalculation();
 
 	// computations
@@ -391,6 +392,7 @@ export function usePlanCalculation(
 					// time adjusted to efficiency and amount
 					time: (recipeInfo.TimeMs * r.amount) / totalEfficiency,
 					recipe: { ...recipeInfo, dailyRevenue: 0, roi: 0 },
+					cogm: undefined,
 				});
 			});
 
@@ -489,6 +491,78 @@ export function usePlanCalculation(
 					};
 				}
 			);
+
+			/*
+			 * COGM
+			 *
+			 * Calculates each active recipes cost of goods manufactured, taking into account
+			 * the active recipes share of a full daily runtime cycle with the following logics:
+			 *
+			 * degradation: share of full daily building degradation
+			 * workforce: share of buildings daily workforce cost
+			 * input cost: buy prices for the required input materials
+			 *
+			 * total cost: degradation share + workforce share + input total
+			 *
+			 * cogm: per output material
+			 * 	- either consuming the full cost
+			 * 	- or just its material output / all output
+			 */
+
+			activeRecipes.forEach((ar) => {
+				const runtimeShare: number = ar.time / TOTALMSDAY;
+				const degradation: number = (constructionCost * -1) / 180;
+				const degradationShare: number = degradation * runtimeShare;
+				const workforceCostTotal: number = workforceDailyCost * -1;
+				const workforceCost: number = workforceCostTotal * runtimeShare;
+
+				const inputCost: ICOGMMaterialCost[] = ar.recipe.Inputs.map(
+					(inputMat) => ({
+						ticker: inputMat.Ticker,
+						amount: inputMat.Amount,
+						costUnit: getPrice(inputMat.Ticker, "BUY"),
+						costTotal:
+							getPrice(inputMat.Ticker, "BUY") * inputMat.Amount,
+					})
+				).sort((a, b) => (a.ticker > b.ticker ? 1 : -1));
+
+				const inputTotal: number = inputCost.reduce(
+					(sum, current) => (sum += current.costTotal),
+					0
+				);
+
+				const totalCost: number =
+					degradationShare + workforceCost + inputTotal;
+
+				const sumOutputs: number = ar.recipe.Outputs.reduce(
+					(sum, current) => (sum += current.Amount),
+					0
+				);
+
+				const outputCOGM: ICOGMMaterialReturn[] = ar.recipe.Outputs.map(
+					(outputMat) => ({
+						ticker: outputMat.Ticker,
+						amount: outputMat.Amount,
+						costSplit: totalCost / sumOutputs,
+						costTotal: totalCost / outputMat.Amount,
+					})
+				).sort((a, b) => (a.ticker > b.ticker ? 1 : -1));
+
+				ar.cogm = {
+					visible: cxUuid.value !== undefined,
+					runtime: ar.time,
+					runtimeShare,
+					efficiency: totalEfficiency,
+					degradation,
+					degradationShare,
+					workforceCost,
+					workforceCostTotal,
+					inputCost,
+					inputTotal,
+					outputCOGM,
+					totalCost,
+				} as IProductionBuildingRecipeCOGM;
+			});
 
 			const building: IProductionBuilding = {
 				name: b.name,

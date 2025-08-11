@@ -20,9 +20,10 @@
 
 	// Components
 	import MaterialTile from "@/features/material_tile/components/MaterialTile.vue";
+	import PlanCOGM from "@/features/planning/components/tools/PlanCOGM.vue";
 
 	// UI
-	import { NInputNumber, NButton, NTable } from "naive-ui";
+	import { NModal, NInputNumber, NButton, NTable } from "naive-ui";
 	import { ClearSharp, AnalyticsOutlined } from "@vicons/material";
 
 	const props = defineProps({
@@ -70,9 +71,20 @@
 		set: () => {},
 	});
 	const refShowRecipeOptions: Ref<boolean> = ref(false);
+	const refShowCOGM: Ref<boolean> = ref(false);
 </script>
 
 <template>
+	<n-modal
+		:key="`COGM#RECIPE#${recipeData.recipe.BuildingTicker}#${localRecipeIndex}`"
+		v-model:show="refShowCOGM"
+		preset="card"
+		title="Cost Of Goods Manufactured"
+		class="max-w-[600px]">
+		<PlanCOGM
+			v-if="localRecipeData.cogm"
+			:cogm-data="localRecipeData.cogm" />
+	</n-modal>
 	<div>
 		<n-input-number
 			v-model:value="localRecipeAmount"
@@ -98,7 +110,7 @@
 			"
 			class="border border-pp-border my-3 p-3 flex flex-row justify-between child:my-auto hover:cursor-pointer"
 			@click="refShowRecipeOptions = true">
-			<div class="flex gap-x-1">
+			<div class="flex flex-col gap-1">
 				<MaterialTile
 					v-for="material in localRecipeData.recipe.Outputs"
 					:key="`${localRecipeData.recipe.BuildingTicker}#${material.Ticker}`"
@@ -214,7 +226,12 @@
 		</div>
 
 		<div class="mb-3 flex flex-row justify-between child:my-auto">
-			<n-button size="tiny">
+			<n-button
+				size="tiny"
+				:disabled="
+					localRecipeData.cogm && !localRecipeData.cogm.visible
+				"
+				@click="() => (refShowCOGM = true)">
 				<template #icon><AnalyticsOutlined /> </template>
 			</n-button>
 			<n-button
