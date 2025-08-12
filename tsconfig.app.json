@@ -1,35 +1,36 @@
 {
-  "include": [
-    "src/**/*",
-    "src/classes/**/*",
-    "src/**/*.vue",
-    "src/vite-env.d.ts",
-    "src/**/*.json",
-  ],
-  "exclude": [
-    "src/**/__tests__/*",
-    ".dist/**/*",
-  ],
-  "compilerOptions": {
-    "target": "ESNext",
-    "module": "ESNext",
-    "ignoreDeprecations": "5.0",
-    "resolveJsonModule": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "composite": true,
-    "lib": [
-      "ESNext",
-      "DOM",
-    ],
-    "strict": true,
-    "moduleResolution": "node",
-    "outDir": "./dist",
-    "baseUrl": ".",
-    "paths": {
-      "@/*": [
-        "./src/*"
-      ]
-    }
-  }
+	"include": [
+		"src/**/*",
+		"src/classes/**/*",
+		"src/**/*.vue",
+		"src/vite-env.d.ts",
+		"src/**/*.json",
+	],
+	"exclude": [
+		"src/tests/**/*",
+		".dist/**/*",
+	],
+	"compilerOptions": {
+		"target": "ESNext",
+		"module": "ESNext",
+		"skipLibCheck": true,
+		"ignoreDeprecations": "5.0",
+		"resolveJsonModule": true,
+		"esModuleInterop": true,
+		"allowSyntheticDefaultImports": true,
+		"composite": true,
+		"lib": [
+			"ESNext",
+			"DOM",
+		],
+		"strict": true,
+		"moduleResolution": "node",
+		"outDir": "./dist",
+		"baseUrl": ".",
+		"paths": {
+			"@/*": [
+				"./src/*"
+			]
+		}
+	}
 }
