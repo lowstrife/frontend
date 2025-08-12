@@ -11,9 +11,6 @@
 	import FIORepairPlanet from "@/features/fio/components/FIORepairPlanet.vue";
 	import FIORepairShip from "@/features/fio/components/FIORepairShip.vue";
 
-	// Util
-	import { relativeFromDate } from "@/util/date";
-
 	const gameDataStore = useGameDataStore();
 
 	const { planetRepairTable, shipRepairTable } = useFIORepair(
@@ -27,12 +24,6 @@
 		<div
 			class="px-6 py-3 border-b border-white/10 flex flex-row justify-between">
 			<h1 class="text-2xl font-bold my-auto">FIO Repair</h1>
-			<div class="my-auto">
-				Last Sites Data Refresh from Backend:
-				<strong>
-					{{ relativeFromDate(gameDataStore.lastRefreshedFIOSites) }}
-				</strong>
-			</div>
 		</div>
 
 		<div
