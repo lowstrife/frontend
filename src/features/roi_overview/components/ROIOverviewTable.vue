@@ -211,51 +211,33 @@
 			<XNDataTableColumn
 				key="buildingTicker"
 				title="Building"
-				sorter="default"
-				width="100">
+				sorter="default">
 				<template #render-cell="{ rowData }">
 					<span class="font-bold">{{ rowData.buildingTicker }}</span>
 				</template>
 			</XNDataTableColumn>
 			<XNDataTableColumn key="optimalSetup" title="Optimal Setup">
-				<template #title>
-					<span class="text-nowrap">Optimal Setup</span>
-				</template>
 				<template #render-cell="{ rowData }">
 					{{ formatOptimal(rowData.optimalSetup) }}
 				</template>
 			</XNDataTableColumn>
-			<XNDataTableColumn
-				key="recipeOutputs"
-				title="Recipe Output"
-				width="150">
-				<template #title>
-					<span class="text-nowrap">Recipe Output</span>
-				</template>
+			<XNDataTableColumn key="recipeOutputs" title="Recipe Output">
 				<template #render-cell="{ rowData }">
-					<div
-						v-for="output in rowData.recipeOutputs"
-						:key="`${rowData.buildingTicker}#output#${output.Ticker}`"
-						class="inline-grid p-[1px]">
+					<div class="flex flex-row flex-wrap gap-1">
 						<MaterialTile
+							v-for="output in rowData.recipeOutputs"
+							:key="`${rowData.buildingTicker}#output#${output.Ticker}`"
 							:ticker="output.Ticker"
 							:amount="output.Amount" />
 					</div>
 				</template>
 			</XNDataTableColumn>
-			<XNDataTableColumn
-				key="recipeInputs"
-				title="Recipe Input"
-				width="300">
-				<template #title>
-					<span class="text-nowrap">Recipe Input</span>
-				</template>
+			<XNDataTableColumn key="recipeInputs" title="Recipe Input">
 				<template #render-cell="{ rowData }">
-					<div
-						v-for="output in rowData.recipeInputs"
-						:key="`${rowData.buildingTicker}#input#${output.Ticker}`"
-						class="inline-grid p-[1px]">
+					<div class="flex flex-row flex-wrap gap-1">
 						<MaterialTile
+							v-for="output in rowData.recipeInputs"
+							:key="`${rowData.buildingTicker}#input#${output.Ticker}`"
 							:ticker="output.Ticker"
 							:amount="output.Amount" />
 					</div>
@@ -278,7 +260,7 @@
 				title="Plan Cost"
 				sorter="default">
 				<template #title>
-					<div class="text-end text-nowrap">Plan Cost</div>
+					<div class="text-end">Plan Cost</div>
 				</template>
 				<template #render-cell="{ rowData }">
 					<div class="text-end">
@@ -292,7 +274,7 @@
 				title="Output Profit"
 				sorter="default">
 				<template #title>
-					<div class="text-end text-nowrap">Output Profit</div>
+					<div class="text-end">Output Profit</div>
 				</template>
 				<template #render-cell="{ rowData }">
 					<div
@@ -312,7 +294,7 @@
 				title="Daily Profit"
 				sorter="default">
 				<template #title>
-					<div class="text-end text-nowrap">Daily Profit</div>
+					<div class="text-end">Daily Profit</div>
 				</template>
 				<template #render-cell="{ rowData }">
 					<div
@@ -330,7 +312,7 @@
 
 			<XNDataTableColumn key="planROI" title="Plan ROI" sorter="default">
 				<template #title>
-					<div class="text-end text-nowrap">Plan ROI</div>
+					<div class="text-end">Plan ROI</div>
 				</template>
 				<template #render-cell="{ rowData }">
 					<div
