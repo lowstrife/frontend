@@ -84,6 +84,12 @@ html {
 	@apply text-link-primary hover:underline;
 }
 
+/** NAIVE UI Fixes **/
+
+.n-data-table-th__title {
+	@apply text-nowrap;
+}
+
 /** HIGHCHARTS **/
 
 .highcharts-point-up {

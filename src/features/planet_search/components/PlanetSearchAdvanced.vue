@@ -156,7 +156,7 @@
 		</n-button>
 	</div>
 
-	<div class="grid grid-cols-1 lg:grid-cols-[40%_auto] gap-x-6">
+	<div class="grid grid-cols-1 xl:grid-cols-[40%_auto] gap-x-6">
 		<div>
 			<n-form
 				label-placement="left"

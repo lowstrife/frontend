@@ -42,7 +42,7 @@
 			title="Repair Materials"
 			sorter="default">
 			<template #render-cell="{ rowData }">
-				<div class="flex gap-x-1">
+				<div class="flex flex-row flex-wrap gap-1 child:text-nowrap">
 					<MaterialTile
 						v-for="material in rowData.repairMaterials"
 						:key="material.ticker"

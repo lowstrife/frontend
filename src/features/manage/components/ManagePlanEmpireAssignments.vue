@@ -31,7 +31,7 @@
 	import SharingButton from "@/features/sharing/components/SharingButton.vue";
 
 	// UI
-	import { useDialog, NCheckbox, NSpace, NButton, NIcon } from "naive-ui";
+	import { useDialog, NCheckbox, NButton, NIcon } from "naive-ui";
 	const dialog = useDialog();
 	import { XNDataTable, XNDataTableColumn } from "@skit/x.naive-ui";
 	import {
@@ -227,7 +227,7 @@
 </script>
 
 <template>
-	<div class="flex justify-between">
+	<div class="flex flex-row flex-wrap gap-3 justify-between">
 		<h2 class="text-xl font-bold my-auto">Plan ↔ Empire Assignments</h2>
 		<div class="flex gap-x-3">
 			<n-button
@@ -269,27 +269,23 @@
 
 		<x-n-data-table-column key="options" title="Configuration">
 			<template #render-cell="{ rowData }">
-				<div class="max-w-[150px]">
-					<n-space>
-						<n-button
-							size="tiny"
-							type="error"
-							:loading="refIsDeleting === rowData.planUuid"
-							@click="handleDeleteConfirm(rowData.planUuid)">
-							<template #icon><ClearSharp /></template>
-						</n-button>
-						<n-button
-							size="tiny"
-							:loading="refIsCloning === rowData.planUuid"
-							@click="
-								clonePlan(rowData.planUuid, rowData.planName)
-							">
-							<template #icon><ContentCopySharp /></template>
-						</n-button>
-						<SharingButton
-							:key="rowData.planUuid"
-							:plan-uuid="rowData.planUuid" />
-					</n-space>
+				<div class="flex flex-row flex-wrap gap-1">
+					<n-button
+						size="tiny"
+						type="error"
+						:loading="refIsDeleting === rowData.planUuid"
+						@click="handleDeleteConfirm(rowData.planUuid)">
+						<template #icon><ClearSharp /></template>
+					</n-button>
+					<n-button
+						size="tiny"
+						:loading="refIsCloning === rowData.planUuid"
+						@click="clonePlan(rowData.planUuid, rowData.planName)">
+						<template #icon><ContentCopySharp /></template>
+					</n-button>
+					<SharingButton
+						:key="rowData.planUuid"
+						:plan-uuid="rowData.planUuid" />
 				</div>
 			</template>
 		</x-n-data-table-column>

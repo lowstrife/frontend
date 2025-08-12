@@ -220,7 +220,7 @@
 				</n-button>
 			</n-button-group>
 		</div>
-		<div class="flex flex-row gap-x-3">
+		<div class="flex flex-row flex-wrap gap-3">
 			<div class="my-auto font-bold">Stock Duration (days)</div>
 			<n-input-number
 				v-model:value="refStockRequirement"

@@ -110,7 +110,7 @@
 </script>
 
 <template>
-	<div class="flex justify-between">
+	<div class="flex flex-row flex-wrap gap-3 justify-between">
 		<h2 class="text-xl font-bold my-auto">CX Configuration</h2>
 		<n-button size="small" @click="refShowCreateCX = !refShowCreateCX">
 			<template #icon><PlusSharp /></template>
