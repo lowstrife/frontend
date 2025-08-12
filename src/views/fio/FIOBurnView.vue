@@ -14,9 +14,6 @@
 		title: "Burn | PRUNplanner",
 	});
 
-	// Stores
-	import { useGameDataStore } from "@/stores/gameDataStore";
-
 	// Composables
 	import { useFIOBurn } from "@/features/fio/useFIOBurn";
 	import { usePlanCalculation } from "@/features/planning/usePlanCalculation";
@@ -37,9 +34,6 @@
 		() => import("@/features/fio/components/FIOBurnTable.vue")
 	);
 
-	// Util
-	import { relativeFromDate } from "@/util/date";
-
 	// Types & Interfaces
 	import { IPlan, IPlanEmpireElement } from "@/stores/planningStore.types";
 	import { IPlanResult } from "@/features/planning/usePlanCalculation.types";
@@ -50,8 +44,6 @@
 
 	// UI
 	import { NSelect, NForm, NFormItem, NInputNumber } from "naive-ui";
-
-	const gameDataStore = useGameDataStore();
 
 	const refIsCalculating: Ref<boolean> = ref(false);
 	const refSelectedEmpireUuid: Ref<string | undefined> =
@@ -117,16 +109,6 @@
 						class="px-6 py-3 border-b border-white/10 flex flex-row justify-between">
 						<h1 class="text-2xl font-bold my-auto">FIO Burn</h1>
 						<div class="flex flex-row gap-x-3">
-							<div class="my-auto">
-								Last Storage Data Refresh from Backend:
-								<strong>
-									{{
-										relativeFromDate(
-											gameDataStore.lastRefreshedFIOStorage
-										)
-									}}
-								</strong>
-							</div>
 							<HelpDrawer file-name="fio_burn" />
 						</div>
 					</div>
