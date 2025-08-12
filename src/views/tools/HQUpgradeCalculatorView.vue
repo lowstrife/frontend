@@ -1,5 +1,10 @@
 <script setup lang="ts">
 	import { Ref, ref } from "vue";
+	import { useHead } from "@unhead/vue";
+
+	useHead({
+		title: "HQ Upgrade Calculator | PRUNplanner",
+	});
 
 	// Composables
 	import { useHQUpgradeCalculator } from "@/features/hq_upgrade_calculator/useHQUpgradeCalculator";
@@ -155,8 +160,6 @@
 				</div>
 
 				<div class="px-6 py-3">
-					<br />
-					<br />
 					<XNDataTable :data="materialData" striped>
 						<XNDataTableColumn
 							key="ticker"

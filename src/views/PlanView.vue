@@ -44,6 +44,7 @@
 	import PlanProduction from "@/features/planning/components/PlanProduction.vue";
 	import PlanMaterialIO from "@/features/planning/components/PlanMaterialIO.vue";
 	import PlanConfiguration from "@/features/planning/components/PlanConfiguration.vue";
+	import PlanOverview from "@/features/planning/components/PlanOverview.vue";
 	import HelpDrawer from "@/features/help/components/HelpDrawer.vue";
 	const ShareButton = defineAsyncComponent(
 		() => import("@/features/sharing/components/SharingButton.vue")
@@ -97,6 +98,8 @@
 		computedActiveEmpire,
 		planEmpires,
 		constructionMaterials,
+		visitationData,
+		overviewData,
 		handleResetModified,
 		handleUpdateCorpHQ,
 		handleUpdateCOGC,
@@ -604,7 +607,9 @@
 							<h2 class="text-white/80 font-bold text-lg pb-3">
 								Overview
 							</h2>
-							foo
+							<PlanOverview
+								:visitation-data="visitationData"
+								:overview-data="overviewData" />
 						</div>
 					</div>
 					<div class="pt-6">

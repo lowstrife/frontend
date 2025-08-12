@@ -1,3 +1,8 @@
+# 2028-08-12
+
+- Implement ROI Overview for production buildings and their recipes [#129](https://github.com/PRUNplanner/frontend/issues/129), enhance COGM with total profits and visitation frequency calculations
+- Add style for material `HBC`
+
 # 2025-08-11
 
 - Add Help & Changelog page, listing most recent changes

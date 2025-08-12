@@ -1,0 +1,350 @@
+<script setup lang="ts">
+	import {
+		ComputedRef,
+		PropType,
+		Ref,
+		computed,
+		nextTick,
+		onMounted,
+		ref,
+		watch,
+	} from "vue";
+
+	// Composables
+	import { useROIOverview } from "@/features/roi_overview/useROIOverview";
+
+	// Util
+	import { formatNumber } from "@/util/numbers";
+	import { capitalizeString } from "@/util/text";
+
+	// Components
+	import MaterialTile from "@/features/material_tile/components/MaterialTile.vue";
+	import COGMButton from "@/features/roi_overview/components/COGMButton.vue";
+
+	// Types & Interfaces
+	import { IPlan } from "@/stores/planningStore.types";
+	import { IROIResult } from "@/features/roi_overview/useROIOverview.types";
+	import { SelectMixedOption } from "naive-ui/es/select/src/interface";
+
+	// UI
+	import { NSpin, NSelect, NCheckbox } from "naive-ui";
+	import { XNDataTable, XNDataTableColumn } from "@skit/x.naive-ui";
+
+	const props = defineProps({
+		planDefinition: {
+			type: Object as PropType<IPlan>,
+			required: true,
+		},
+		cxUuid: {
+			type: String,
+			required: false,
+			default: undefined,
+		},
+	});
+
+	const definition: ComputedRef<IPlan> = computed(() => props.planDefinition);
+	const cx: ComputedRef<string | undefined> = computed(() => props.cxUuid);
+
+	const result: Ref<IROIResult[]> = ref([]);
+	const isCalculating: Ref<boolean> = ref(true);
+
+	const filterBuilding: Ref<string | null> = ref(null);
+	const filterCOGC: Ref<string | null> = ref(null);
+	const filterInputMaterial: Ref<string | null> = ref(null);
+	const filterOutputMaterial: Ref<string | null> = ref(null);
+	const filterPostiveROI: Ref<boolean> = ref(false);
+
+	const { calculate, formatOptimal } = useROIOverview(definition, cx);
+
+	const filteredResult: ComputedRef<IROIResult[]> = computed(() => {
+		let filtered = result.value;
+
+		if (filterBuilding.value !== null)
+			filtered = filtered.filter(
+				(f) => f.buildingTicker === filterBuilding.value
+			);
+
+		if (filterCOGC.value !== null)
+			filtered = filtered.filter((f) => f.cogc === filterCOGC.value);
+
+		if (filterInputMaterial.value !== null)
+			filtered = filtered.filter((f) =>
+				f.recipeInputs
+					.map((e) => e.Ticker)
+					.includes(filterInputMaterial.value!)
+			);
+
+		if (filterOutputMaterial.value !== null)
+			filtered = filtered.filter((f) =>
+				f.recipeOutputs
+					.map((e) => e.Ticker)
+					.includes(filterOutputMaterial.value!)
+			);
+
+		if (filterPostiveROI.value)
+			filtered = filtered.filter((f) => f.planROI >= 0);
+
+		return filtered;
+	});
+
+	const filterOptionBuilding: ComputedRef<SelectMixedOption[]> = computed(
+		() =>
+			Array.from(new Set(result.value.map((e) => e.buildingTicker)))
+				.sort((a, b) => (a > b ? 1 : -1))
+				.map((e) => ({ label: e, value: e }))
+	);
+
+	const filterOptionCOGC: ComputedRef<SelectMixedOption[]> = computed(() =>
+		Array.from(new Set(result.value.map((e) => e.cogc)))
+			.sort()
+			.map((e) => ({ label: capitalizeString(e), value: e }))
+	);
+
+	const filterOptionInputMaterial: ComputedRef<SelectMixedOption[]> =
+		computed(() =>
+			Array.from(
+				new Set(
+					result.value
+						.map((e) => e.recipeInputs.map((e) => e.Ticker))
+						.flat()
+				)
+			)
+				.sort()
+				.map((e) => ({ label: e, value: e }))
+		);
+
+	const filterOptionOutputMaterial: ComputedRef<SelectMixedOption[]> =
+		computed(() =>
+			Array.from(
+				new Set(
+					result.value
+						.map((e) => e.recipeOutputs.map((e) => e.Ticker))
+						.flat()
+				)
+			)
+				.sort()
+				.map((e) => ({ label: e, value: e }))
+		);
+
+	async function get() {
+		isCalculating.value = true;
+		result.value = [];
+
+		await nextTick(); // finish render
+		setTimeout(() => {
+			calculate()
+				.then((d) => (result.value = d))
+				.finally(() => (isCalculating.value = false));
+		}, 0); // defer to next event loop
+	}
+
+	// watch for cx change, must retrigger calculation
+	watch(
+		() => props.cxUuid,
+		async () => {
+			get();
+		}
+	);
+
+	// trigger initial calculation on load
+	onMounted(async () => {
+		get();
+	});
+</script>
+
+<template>
+	<div v-if="isCalculating">
+		<div class="text-center py-3">
+			<n-spin />
+			<div>Calculating ROI</div>
+		</div>
+	</div>
+	<div v-else>
+		<div
+			class="border border-b-0 rounded-[3px] border-white/20 p-3 flex flex-row gap-3 flex-wrap">
+			<div class="my-auto font-bold pr-3">Filter</div>
+			<div class="flex flex-row gap-x-3 child:my-auto">
+				<div>Building</div>
+				<n-select
+					v-model:value="filterBuilding"
+					:options="filterOptionBuilding"
+					size="small"
+					filterable
+					clearable />
+			</div>
+			<div class="flex flex-row gap-x-3 child:my-auto">
+				<div>COGC</div>
+				<n-select
+					v-model:value="filterCOGC"
+					:options="filterOptionCOGC"
+					size="small"
+					filterable
+					clearable />
+			</div>
+			<div class="flex flex-row gap-x-3 child:my-auto">
+				<div>Output</div>
+				<n-select
+					v-model:value="filterOutputMaterial"
+					:options="filterOptionOutputMaterial"
+					size="small"
+					filterable
+					clearable />
+			</div>
+			<div class="flex flex-row gap-x-3 child:my-auto">
+				<div>Input</div>
+				<n-select
+					v-model:value="filterInputMaterial"
+					:options="filterOptionInputMaterial"
+					size="small"
+					filterable
+					clearable />
+			</div>
+			<div class="flex flex-row gap-x-3 child:my-auto">
+				<div class="text-nowrap">Positive ROI</div>
+				<n-checkbox v-model:checked="filterPostiveROI" />
+			</div>
+		</div>
+		<XNDataTable
+			:data="filteredResult"
+			striped
+			:pagination="{ pageSize: 50 }">
+			<XNDataTableColumn
+				key="buildingTicker"
+				title="Building"
+				sorter="default"
+				width="100">
+				<template #render-cell="{ rowData }">
+					<span class="font-bold">{{ rowData.buildingTicker }}</span>
+				</template>
+			</XNDataTableColumn>
+			<XNDataTableColumn key="optimalSetup" title="Optimal Setup">
+				<template #title>
+					<span class="text-nowrap">Optimal Setup</span>
+				</template>
+				<template #render-cell="{ rowData }">
+					{{ formatOptimal(rowData.optimalSetup) }}
+				</template>
+			</XNDataTableColumn>
+			<XNDataTableColumn
+				key="recipeOutputs"
+				title="Recipe Output"
+				width="150">
+				<template #title>
+					<span class="text-nowrap">Recipe Output</span>
+				</template>
+				<template #render-cell="{ rowData }">
+					<div
+						v-for="output in rowData.recipeOutputs"
+						:key="`${rowData.buildingTicker}#output#${output.Ticker}`"
+						class="inline-grid p-[1px]">
+						<MaterialTile
+							:ticker="output.Ticker"
+							:amount="output.Amount" />
+					</div>
+				</template>
+			</XNDataTableColumn>
+			<XNDataTableColumn
+				key="recipeInputs"
+				title="Recipe Input"
+				width="300">
+				<template #title>
+					<span class="text-nowrap">Recipe Input</span>
+				</template>
+				<template #render-cell="{ rowData }">
+					<div
+						v-for="output in rowData.recipeInputs"
+						:key="`${rowData.buildingTicker}#input#${output.Ticker}`"
+						class="inline-grid p-[1px]">
+						<MaterialTile
+							:ticker="output.Ticker"
+							:amount="output.Amount" />
+					</div>
+				</template>
+			</XNDataTableColumn>
+			<XNDataTableColumn key="cogc" title="COGC">
+				<template #render-cell="{ rowData }">
+					<span class="text-nowrap">
+						{{ capitalizeString(rowData.cogc) }}
+					</span>
+				</template>
+			</XNDataTableColumn>
+			<XNDataTableColumn key="cogm" title="COGM">
+				<template #render-cell="{ rowData }">
+					<COGMButton :cogm-data="rowData.cogm" />
+				</template>
+			</XNDataTableColumn>
+			<XNDataTableColumn
+				key="planCost"
+				title="Plan Cost"
+				sorter="default">
+				<template #title>
+					<div class="text-end text-nowrap">Plan Cost</div>
+				</template>
+				<template #render-cell="{ rowData }">
+					<div class="text-end">
+						{{ formatNumber(rowData.planCost) }}
+						<span class="pl-1 font-light text-white/50"> $ </span>
+					</div>
+				</template>
+			</XNDataTableColumn>
+			<XNDataTableColumn
+				key="outputProfit"
+				title="Output Profit"
+				sorter="default">
+				<template #title>
+					<div class="text-end text-nowrap">Output Profit</div>
+				</template>
+				<template #render-cell="{ rowData }">
+					<div
+						class="text-end"
+						:class="
+							rowData.outputProfit > 0
+								? 'text-positive'
+								: 'text-negative'
+						">
+						{{ formatNumber(rowData.outputProfit) }}
+						<span class="pl-1 font-light text-white/50"> $ </span>
+					</div>
+				</template>
+			</XNDataTableColumn>
+			<XNDataTableColumn
+				key="dailyProfit"
+				title="Daily Profit"
+				sorter="default">
+				<template #title>
+					<div class="text-end text-nowrap">Daily Profit</div>
+				</template>
+				<template #render-cell="{ rowData }">
+					<div
+						class="text-end"
+						:class="
+							rowData.dailyProfit > 0
+								? 'text-positive'
+								: 'text-negative'
+						">
+						{{ formatNumber(rowData.dailyProfit) }}
+						<span class="pl-1 font-light text-white/50"> $ </span>
+					</div>
+				</template>
+			</XNDataTableColumn>
+
+			<XNDataTableColumn key="planROI" title="Plan ROI" sorter="default">
+				<template #title>
+					<div class="text-end text-nowrap">Plan ROI</div>
+				</template>
+				<template #render-cell="{ rowData }">
+					<div
+						class="text-end"
+						:class="
+							rowData.planROI > 0
+								? 'text-positive'
+								: 'text-negative'
+						">
+						{{ formatNumber(rowData.planROI) }}
+						<span class="pl-1 font-light text-white/50"> d </span>
+					</div>
+				</template>
+			</XNDataTableColumn>
+		</XNDataTable>
+	</div>
+</template>

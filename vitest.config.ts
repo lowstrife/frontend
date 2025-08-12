@@ -33,6 +33,7 @@ export default defineConfig({
 				"**/queryRepository.ts",
 				"**/QueryCacheView.vue",
 				"src/features/wrapper/**",
+				"src/util/axiosSetup.ts",
 			],
 			reportOnFailure: true,
 		},

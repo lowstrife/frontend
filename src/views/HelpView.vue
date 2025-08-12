@@ -1,5 +1,10 @@
 <script setup lang="ts">
 	import { onMounted, Ref, ref } from "vue";
+	import { useHead } from "@unhead/vue";
+
+	useHead({
+		title: "Help | PRUNplanner",
+	});
 
 	import { VueShowdown } from "vue-showdown";
 
