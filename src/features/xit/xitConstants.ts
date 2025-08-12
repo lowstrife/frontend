@@ -11,7 +11,7 @@ export const XITSTATIONWAREHOUSES: { label: string; value: string }[] = [
 	{ label: "Moria Station", value: "Moria Station Warehouse" },
 ];
 
-export const XITSTATIONWAREHOUSESTOCX = {
+export const XITSTATIONWAREHOUSESTOCX: { [key: string]: string | null } = {
 	"Configure on Execution": null,
 	"Antares Station Warehouse": "AI1",
 	"Arclight Station Warehouse": "CI2",
@@ -19,4 +19,4 @@ export const XITSTATIONWAREHOUSESTOCX = {
 	"Hortus Station Warehouse": "IC1",
 	"Hubur Station Warehouse": "NC2",
 	"Moria Station Warehouse": "NC1",
-}
+};
