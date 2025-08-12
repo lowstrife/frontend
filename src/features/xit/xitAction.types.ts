@@ -13,7 +13,7 @@ export interface IXITActionMaterialElement {
 	total: number;
 }
 
-export interface IXITJSONActionCXBuy {
+interface IXITJSONActionCXBuy {
 	type: "CX Buy";
 	name: "BuyItems";
 	exchange: string;
@@ -23,7 +23,7 @@ export interface IXITJSONActionCXBuy {
 	group: string;
 }
 
-export interface IXITJSONActionMTRA {
+interface IXITJSONActionMTRA {
 	type: "MTRA";
 	name: "TransferAction";
 	group: string;
