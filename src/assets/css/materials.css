@@ -1528,6 +1528,11 @@
     background: rgb(154, 84, 0);
     background: linear-gradient(325deg, rgb(154, 84, 0) 0%, rgb(178, 109, 25) 50%, rgb(154, 84, 0) 100%);
 }
+.Material-HCB {
+    color: rgb(255, 211, 127);
+    background: rgb(154, 84, 0);
+    background: linear-gradient(325deg, rgb(154, 84, 0) 0%, rgb(178, 109, 25) 50%, rgb(154, 84, 0) 100%);
+}
 .Material-NA {
     color: rgb(188, 173, 159);
     background: rgb(61, 46, 32);

@@ -97,6 +97,8 @@ export interface IProductionBuildingRecipeCOGM {
 	inputTotal: number;
 	outputCOGM: ICOGMMaterialReturn[];
 	totalCost: number;
+	outputRevenue: number;
+	totalProfit: number;
 }
 
 export interface IProductionBuildingRecipe {
@@ -176,4 +178,24 @@ export type IPreBuildingRecord = Record<string, IPreBuildingInformation>;
 export interface IBuildingConstruction {
 	ticker: string;
 	materials: IMaterialIOMinimal[];
+	amount: number;
+}
+
+export interface IVisitationData {
+	storageFilled: number;
+	dailyWeightImport: number;
+	dailyWeightExport: number;
+	dailyVolumeImport: number;
+	dailyVolumeExport: number;
+	dailyWeight: number;
+	dailyVolume: number;
+}
+
+export interface IOverviewData {
+	dailyCost: number;
+	dailyProfit: number;
+	totalConstructionCost: number;
+	dailyDegradationCost: number;
+	profit: number;
+	roi: number;
 }

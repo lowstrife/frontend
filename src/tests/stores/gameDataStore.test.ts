@@ -57,7 +57,7 @@ describe("GameData Store", async () => {
 		describe("setters", async () => {
 			it("setMaterials", async () => {
 				gameDataStore.setMaterials(materials);
-				expect(Object.keys(gameDataStore.materials).length).toBe(344);
+				expect(Object.keys(gameDataStore.materials).length).toBe(345);
 			});
 			it("setExchanges", async () => {
 				gameDataStore.setExchanges(exchanges);
