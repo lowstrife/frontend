@@ -3,6 +3,8 @@ import { computed, ComputedRef } from "vue";
 // Types & Interfaces
 import { IXITJSON, IXITTransferMaterial } from "@/features/xit/xitAction.types";
 
+import { XITSTATIONWAREHOUSESTOCX } from "@/features/xit/xitConstants";
+
 export function useXITAction() {
 	/**
 	 * Generates a XIT Transfer action with given materials and options
@@ -23,25 +25,38 @@ export function useXITAction() {
 			name?: string;
 			origin?: string;
 			destination?: string;
+			buy?: boolean;
 		}
 	): ComputedRef<string> {
+		const actions = [];
+		if (options && options.buy && options.origin && XITSTATIONWAREHOUSESTOCX[options.origin]) {
+			const cx = XITSTATIONWAREHOUSESTOCX[options.origin];
+			actions.push({
+				"group": "A1",
+				"exchange": cx,
+				"priceLimits": {},
+				"buyPartial": false,
+				"useCXInv": true,
+				"name": "BuyItems",
+				"type": "CX Buy"
+			});
+		}
+		actions.push({
+			type: "MTRA",
+			name: "TransferAction",
+			group: "A1",
+			origin:
+				options && options.origin
+					? options.origin
+					: "Configure on Execution",
+			dest:
+				options && options.destination
+					? options.destination
+					: "Configure on Execution",
+		});
 		return computed(() => {
 			const actionFormat: IXITJSON = {
-				actions: [
-					{
-						type: "MTRA",
-						name: "TransferAction",
-						group: "A1",
-						origin:
-							options && options.origin
-								? options.origin
-								: "Configure on Execution",
-						dest:
-							options && options.destination
-								? options.destination
-								: "Configure on Execution",
-					},
-				],
+				actions,
 				global: {
 					name:
 						options && options.name

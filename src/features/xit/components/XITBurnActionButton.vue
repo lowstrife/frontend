@@ -74,6 +74,7 @@
 	// Drawer Display
 	const loadDrawer: Ref<boolean> = ref(false);
 	const showDrawer: Ref<boolean> = ref(false);
+	const xitBuyFromCX = ref(true);
 
 	function show(): void {
 		if (!showDrawer.value) {
@@ -127,7 +128,14 @@
 								:min="0"
 								show-button />
 						</n-form-item>
-
+						<n-form-item label="Buy Items From CX">
+							<n-checkbox
+								v-model:checked="xitBuyFromCX"
+								:disabled="burnOrigin === 'Configure on Execution'" />
+							<p v-if="burnOrigin === 'Configure on Execution'" class="p-3">
+								Requires origin warehouse to purchase
+							</p>
+						</n-form-item>
 						<n-form-item label="Hide Infinite">
 							<n-checkbox v-model:checked="refHideInfinite" />
 						</n-form-item>
@@ -151,7 +159,11 @@
 											value: m.total,
 										};
 									}),
-								{ name: 'Burn Supply', origin: burnOrigin }
+								{
+									name: 'Burn Supply',
+									origin: burnOrigin,
+									buy: xitBuyFromCX,
+								},
 							).value
 						"
 						size="small"
@@ -174,7 +186,11 @@
 												value: m.total,
 											};
 										}),
-									{ name: 'Burn Supply', origin: burnOrigin }
+									{
+										name: 'Burn Supply',
+										origin: burnOrigin,
+										buy: xitBuyFromCX,
+									},
 								).value
 							)
 						">

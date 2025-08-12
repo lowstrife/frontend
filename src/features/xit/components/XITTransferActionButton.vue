@@ -23,6 +23,7 @@
 	// UI
 	import {
 		NButton,
+		NCheckbox,
 		NDrawer,
 		NDrawerContent,
 		NTable,
@@ -69,6 +70,7 @@
 	// Drawer Display
 	const loadDrawer: Ref<boolean> = ref(false);
 	const showDrawer: Ref<boolean> = ref(false);
+	const xitBuyFromCX: Ref<boolean> = ref(true);
 
 	function show(): void {
 		if (!showDrawer.value) {
@@ -97,12 +99,24 @@
 						v-model:value="burnOrigin"
 						:options="XITSTATIONWAREHOUSES" />
 				</n-form-item>
+				<n-form-item label="Buy Items From CX">
+					<n-checkbox
+						v-model:checked="xitBuyFromCX"
+						:disabled="burnOrigin === 'Configure on Execution'" />
+
+					<p
+						v-if="burnOrigin === 'Configure on Execution'"
+						class="p-3">
+						Requires origin warehouse to purchase
+					</p>
+				</n-form-item>
 				<n-form-item label="JSON">
 					<n-input
 						v-model:value="
 							transferJSON(elements, {
 								name: 'Supply',
 								origin: burnOrigin,
+								buy: xitBuyFromCX,
 							}).value
 						"
 						size="small"
@@ -115,6 +129,7 @@
 								transferJSON(elements, {
 									name: 'Supply',
 									origin: burnOrigin,
+									buy: xitBuyFromCX,
 								}).value
 							)
 						">
