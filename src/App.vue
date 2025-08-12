@@ -34,7 +34,7 @@
 </script>
 
 <template>
-	<main class="flex h-view w-full !bg-black text-white/80">
+	<main class="flex h-view w-full bg-[rgb(3,7,7)] text-white/80">
 		<template v-if="userStore.isLoggedIn">
 			<NavigationBar />
 			<div class="flex flex-col flex-1 overflow-y-auto">

@@ -167,7 +167,7 @@
 			label-width="auto"
 			label-align="left"
 			size="small">
-			<div class="flex flex-row gap-x-6">
+			<div class="flex flex-row gap-6 flex-wrap">
 				<div>
 					<n-form-item label="Display">
 						<n-button-group>
@@ -254,6 +254,7 @@
 		<x-n-data-table-column key="delta" title="Delta" sorter="default">
 			<template #render-cell="{ rowData }">
 				<span
+					class="text-nowrap"
 					:class="
 						rowData.delta >= 0 ? 'text-positive' : 'text-negative'
 					">
@@ -263,7 +264,9 @@
 		</x-n-data-table-column>
 		<x-n-data-table-column key="output" title="Production" sorter="default">
 			<template #render-cell="{ rowData }">
-				<span :class="rowData.output <= 0 ? 'text-white/50' : ''">
+				<span
+					class="text-nowrap"
+					:class="rowData.output <= 0 ? 'text-white/50' : ''">
 					{{ formatNumber(rowData.output) }}
 				</span>
 			</template>
@@ -281,6 +284,7 @@
 			sorter="default">
 			<template #render-cell="{ rowData }">
 				<span
+					class="text-nowrap"
 					:class="
 						rowData.deltaPrice >= 0
 							? 'text-positive'

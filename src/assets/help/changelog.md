@@ -4,6 +4,7 @@
 - Add style for material `HBC`
 - Add type checking capability with `tsc` and `tsc:watch` commands using `vue-tsc` [#146](https://github.com/PRUNplanner/frontend/issues/146)
 - Fixed an issue where deselecting materials on XIT Burn did not properly affect the calculated total weight and volume [#150](https://github.com/PRUNplanner/frontend/issues/150)
+- Small color adjustments and row-wrapping
 
 # 2025-08-11
 

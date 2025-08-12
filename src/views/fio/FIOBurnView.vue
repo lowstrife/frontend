@@ -116,54 +116,61 @@
 					<div
 						class="flex-grow grid grid-cols-1 xl:grid-cols-[40%_auto] gap-3 divide-x divide-white/10 child:px-6 child:py-3">
 						<div>
-							<h2 class="text-white/80 font-bold text-lg pb-3">
-								Empire
-							</h2>
+							<div class="grid grid-cols-1 xl:grid-cols-2 gap-3">
+								<div>
+									<h2
+										class="text-white/80 font-bold text-lg pb-3">
+										Empire
+									</h2>
 
-							<n-select
-								v-model:value="refSelectedEmpireUuid"
-								:options="
-									refEmpireList.map((e) => {
-										return {
-											label: e.name,
-											value: e.uuid,
-										};
-									})
-								"
-								size="small"
-								@update-value="
+									<n-select
+										v-model:value="refSelectedEmpireUuid"
+										:options="
+											refEmpireList.map((e) => {
+												return {
+													label: e.name,
+													value: e.uuid,
+												};
+											})
+										"
+										size="small"
+										@update-value="
 									(value: string) => {
 										refSelectedEmpireUuid = value;
 										defaultEmpireUuid = value;
 									}
 								" />
+								</div>
+								<div>
+									<h2
+										class="text-white/80 font-bold text-lg pb-3">
+										Burn Thresholds
+									</h2>
 
-							<h2 class="text-white/80 font-bold text-lg py-3">
-								Burn Thresholds
-							</h2>
+									<n-form
+										label-placement="left"
+										label-width="auto"
+										label-align="left"
+										size="small">
+										<n-form-item label="Red">
+											<n-input-number
+												v-model:value="burnDaysRed"
+												show-button
+												:min="1"
+												class="w-full max-w-[400px]" />
+										</n-form-item>
+										<n-form-item label="Yellow">
+											<n-input-number
+												v-model:value="burnDaysYellow"
+												show-button
+												:min="1"
+												class="w-full max-w-[400px]" />
+										</n-form-item>
+									</n-form>
+								</div>
+							</div>
 
-							<n-form
-								label-placement="left"
-								label-width="auto"
-								label-align="left"
-								size="small">
-								<n-form-item label="Red">
-									<n-input-number
-										v-model:value="burnDaysRed"
-										show-button
-										:min="1"
-										class="w-1/2 max-w-[400px]" />
-								</n-form-item>
-								<n-form-item label="Yellow">
-									<n-input-number
-										v-model:value="burnDaysYellow"
-										show-button
-										:min="1"
-										class="w-1/2 max-w-[400px]" />
-								</n-form-item>
-							</n-form>
-
-							<h2 class="text-white/80 font-bold text-lg py-3">
+							<h2 class="text-white/80 font-bold text-lg pb-3">
 								Plan Burn Overview
 							</h2>
 

@@ -30,7 +30,7 @@
 		<div class="flex flex-row justify-between pb-3">
 			<h2 class="text-2xl">Query Cache</h2>
 		</div>
-		<n-table>
+		<n-table striped>
 			<thead>
 				<tr>
 					<th>Key</th>
