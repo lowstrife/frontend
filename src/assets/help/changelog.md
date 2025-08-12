@@ -2,6 +2,7 @@
 
 - Implement ROI Overview for production buildings and their recipes [#129](https://github.com/PRUNplanner/frontend/issues/129), enhance COGM with total profits and visitation frequency calculations
 - Add style for material `HBC`
+- Add type checking capability with `tsc` and `tsc:watch` commands using `vue-tsc` [#146](https://github.com/PRUNplanner/frontend/issues/146)
 
 # 2025-08-11
 
