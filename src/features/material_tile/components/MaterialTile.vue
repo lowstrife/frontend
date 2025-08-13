@@ -90,6 +90,14 @@
 		return getMaterial(props.ticker);
 	});
 
+	const categoryCssClass: ComputedRef<string> = computed(() => {
+		const sanitizedName = material.value.CategoryName
+			.replaceAll(' ', '-')
+			.replaceAll('(', '')
+			.replaceAll(')', '');
+		return `material-category-${sanitizedName}`;
+	});
+
 	const indicatorPercentage: ComputedRef<number> = computed(() => {
 		if (props.amount && props.max) {
 			return (props.amount / props.max) * 100;
@@ -136,12 +144,11 @@
 <template>
 	<div class="inline-block">
 		<div
-			class="flex flex-row child:my-auto w-full"
-			:class="
-				!disableDrawer || enablePopover
-					? `Material-${ticker} hover:cursor-pointer`
-					: `Material-${ticker}`
-			"
+			class="flex flex-row child:my-auto w-full material-tile"
+			:class="[
+				categoryCssClass,
+				{ 'hover:cursor-pointer': !disableDrawer || enablePopover }
+			]"
 			@click="
 				() => {
 					if (!disableDrawer) {
@@ -156,7 +163,9 @@
 						: false
 				">
 				<template #trigger>
-					<div class="py-[1px] px-2 flex flex-row">
+					<div
+						class="flex flex-row w-full justify-center"
+						:class="{ 'px-2': !!amount }">
 						<div v-if="amount" class="pr-1">
 							{{ formatNumber(amount) }}x
 						</div>
