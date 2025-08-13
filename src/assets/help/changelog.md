@@ -3,6 +3,7 @@
 - Fixed an issue where production building recipe selection did not take into account the buildings efficiency on revenue / day and roi metrics (by `lilbit-prun`)
 - Add "Buy From CX" option for XIT Actions for FIO Burn (by `lilbit-prun`)
 - Implement Resource ROI Overview [#130](https://github.com/PRUNplanner/frontend/issues/130)
+- Fix a bug where plan changes would automatically retrigger habitation optimization calls to the backend [#157](https://github.com/PRUNplanner/frontend/issues/157)
 
 # 2025-08-12
 
