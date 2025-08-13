@@ -327,8 +327,8 @@
 					<router-link
 						to="/search"
 						class="text-link-primary hover:underline">
-						Planet Search</router-link
-					>
+						Planet Search
+					</router-link>
 					to create your first plan.
 				</div>
 			</div>

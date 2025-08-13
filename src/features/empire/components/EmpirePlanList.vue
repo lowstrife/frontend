@@ -86,14 +86,14 @@
 					<router-link
 						to="/manage"
 						class="text-link-primary hover:underline">
-						Management</router-link
-					>
+						Management
+					</router-link>
 					or use
 					<router-link
 						to="/search"
 						class="text-link-primary hover:underline">
-						Planet Search</router-link
-					>
+						Planet Search
+					</router-link>
 					to create one.
 				</div>
 			</div>
