@@ -6,6 +6,7 @@ export interface IPreferencePerPlan {
 export interface IPreference {
 	defaultEmpireUuid: string | undefined;
 	defaultCXUuid: string | undefined;
+	defaultBuyItemsFromCX: boolean;
 	burnDaysRed: number;
 	burnDaysYellow: number;
 	burnResupplyDays: number;
