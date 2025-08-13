@@ -7,7 +7,7 @@
 </script>
 
 <template>
-	<WrapperPlanningDataLoader empire-list plan-list>
+	<WrapperPlanningDataLoader empire-list plan-list load-c-x>
 		<template #default>
 			<div class="min-h-screen flex flex-col">
 				<div

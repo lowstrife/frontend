@@ -19,8 +19,6 @@
 		const loader = markdownFiles[path];
 		if (!loader) throw new Error(`Markdown file "changelog" not found.`);
 
-		console.log(markdownFiles);
-
 		return await loader();
 	}
 

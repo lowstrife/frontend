@@ -10,6 +10,7 @@ import { IPreferenceDefault } from "@/features/preferences/userPreferences.types
  */
 export const preferenceDefaults: IPreferenceDefault = {
 	defaultEmpireUuid: undefined,
+	defaultCXUuid: undefined,
 	burnDaysRed: 5,
 	burnDaysYellow: 10,
 	burnResupplyDays: 20,
