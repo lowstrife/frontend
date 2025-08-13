@@ -13,6 +13,9 @@
 	// Types & Interfaces
 	import { SelectMixedOption } from "naive-ui/es/select/src/interface";
 
+	// Components
+	import CXPreferenceSelector from "@/features/exchanges/components/CXPreferenceSelector.vue";
+
 	// UI
 	import { NTable, NForm, NFormItem, NSelect, NInputNumber } from "naive-ui";
 
@@ -26,7 +29,7 @@
 		planSettingsOverview,
 		cleanPlanPreferences,
 	} = usePreferences();
-	let { defaultEmpireUuid } = usePreferences();
+	let { defaultEmpireUuid, defaultCXUuid } = usePreferences();
 
 	const empireOptions: Ref<SelectMixedOption[]> = ref(
 		Object.values(planningStore.empires).map((e) => {
@@ -82,6 +85,11 @@
 						}
 					}
 				" />
+		</n-form-item>
+		<n-form-item label="Default CX">
+			<CXPreferenceSelector
+				:cx-uuid="defaultCXUuid"
+				:add-undefined-c-x="false" />
 		</n-form-item>
 		<h4 class="font-bold pb-3">FIO Burn</h4>
 		<n-form-item label="Red Threshold">

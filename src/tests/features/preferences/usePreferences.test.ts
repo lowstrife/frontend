@@ -35,6 +35,47 @@ describe("usePreferences", async () => {
 		});
 	});
 
+	describe("defaultCXUuid", async () => {
+		it("get", async () => {
+			const { defaultCXUuid } = usePreferences();
+			expect(defaultCXUuid.value).toBe(preferenceDefaults.defaultCXUuid);
+		});
+
+		it("set", async () => {
+			const { defaultCXUuid } = usePreferences();
+			defaultCXUuid.value = "test";
+			expect(defaultCXUuid.value).toBe("test");
+		});
+	});
+
+	describe("burnOrigin", async () => {
+		it("get", async () => {
+			const { burnOrigin } = usePreferences();
+			expect(burnOrigin.value).toBe(preferenceDefaults.burnOrigin);
+		});
+
+		it("set", async () => {
+			const { burnOrigin } = usePreferences();
+			burnOrigin.value = "test";
+			expect(burnOrigin.value).toBe("test");
+		});
+	});
+
+	describe("burnResupplyDays", async () => {
+		it("get", async () => {
+			const { burnResupplyDays } = usePreferences();
+			expect(burnResupplyDays.value).toBe(
+				preferenceDefaults.burnResupplyDays
+			);
+		});
+
+		it("set", async () => {
+			const { burnResupplyDays } = usePreferences();
+			burnResupplyDays.value = 1;
+			expect(burnResupplyDays.value).toBe(1);
+		});
+	});
+
 	describe("burnDaysRed", async () => {
 		it("get", async () => {
 			const { burnDaysRed } = usePreferences();

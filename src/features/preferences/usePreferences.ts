@@ -41,6 +41,21 @@ export function usePreferences() {
 	});
 
 	/**
+	 * Writable computed for the users default CX UUID
+	 *
+	 * @author jplacht
+	 *
+	 * @type {WritableComputedRef<string | undefined, string | undefined>}
+	 */
+	const defaultCXUuid: WritableComputedRef<
+		string | undefined,
+		string | undefined
+	> = computed<string | undefined>({
+		get: () => userStore.preferences.defaultCXUuid,
+		set: (v) => userStore.setPreference("defaultCXUuid", v),
+	});
+
+	/**
 	 * Writable computed for the users RED alert on burn views
 	 *
 	 * @author jplacht
@@ -208,6 +223,7 @@ export function usePreferences() {
 
 	return {
 		// preferences
+		defaultCXUuid,
 		defaultEmpireUuid,
 		burnDaysRed,
 		burnDaysYellow,
