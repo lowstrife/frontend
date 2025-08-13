@@ -119,6 +119,12 @@ const router = createRouter({
 			path: "/roi-overview",
 			component: () => import("@/views/tools/ROIOverviewView.vue"),
 		},
+		{
+			name: "resource-roi-overview",
+			path: "/resource-roi-overview",
+			component: () =>
+				import("@/views/tools/ResourceROIOverviewView.vue"),
+		},
 	],
 });
 
