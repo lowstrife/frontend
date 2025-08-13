@@ -27,6 +27,7 @@
 	import { capitalizeString } from "@/util/text";
 
 	// Interfaces & Types
+	import { IMaterial } from "@/features/api/gameData.types";
 	import { IMaterialExchangeOverview } from "@/features/game_data/useMaterialData.types";
 	import { SelectMixedOption } from "naive-ui/es/select/src/interface";
 
@@ -84,6 +85,10 @@
 			value: "price_max",
 		},
 	]);
+
+	const material: ComputedRef<IMaterial> = computed(() => {
+		return getMaterial(props.ticker);
+	});
 
 	const indicatorPercentage: ComputedRef<number> = computed(() => {
 		if (props.amount && props.max) {
@@ -215,20 +220,16 @@
 						class="w-full grid grid-cols-[25%_auto] child:odd:font-bold">
 						<div>Category</div>
 						<div>
-							{{
-								capitalizeString(
-									getMaterial(ticker).CategoryName
-								)
-							}}
+							{{ capitalizeString(material.CategoryName) }}
 						</div>
 						<div>Weight</div>
 						<div>
-							{{ formatNumber(getMaterial(ticker).Weight, 4) }}
+							{{ formatNumber(material.Weight, 4) }}
 							t
 						</div>
 						<div>Volume</div>
 						<div>
-							{{ formatNumber(getMaterial(ticker).Volume, 4) }}
+							{{ formatNumber(material.Volume, 4) }}
 							m³
 						</div>
 					</div>
