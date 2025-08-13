@@ -44,6 +44,7 @@
 	import PlanProduction from "@/features/planning/components/PlanProduction.vue";
 	import PlanMaterialIO from "@/features/planning/components/PlanMaterialIO.vue";
 	import PlanConfiguration from "@/features/planning/components/PlanConfiguration.vue";
+	import PlanOverview from "@/features/planning/components/PlanOverview.vue";
 	import HelpDrawer from "@/features/help/components/HelpDrawer.vue";
 	const ShareButton = defineAsyncComponent(
 		() => import("@/features/sharing/components/SharingButton.vue")
@@ -97,6 +98,8 @@
 		computedActiveEmpire,
 		planEmpires,
 		constructionMaterials,
+		visitationData,
+		overviewData,
 		handleResetModified,
 		handleUpdateCorpHQ,
 		handleUpdateCOGC,
@@ -381,7 +384,7 @@
 <template>
 	<div
 		class="h-view grid grid-cols-1 gap-y-6"
-		:class="refVisualShowConfiguration ? 'lg:grid-cols-[300px_auto]' : ''">
+		:class="refVisualShowConfiguration ? 'xl:grid-cols-[300px_auto]' : ''">
 		<div
 			class="border-r border-white/10"
 			:class="!refVisualShowConfiguration ? 'hidden' : 'visible'">
@@ -467,10 +470,11 @@
 							<AutoAwesomeMosaicOutlined v-else />
 						</n-icon>
 					</div>
-					<div class="flex flex-grow justify-between">
-						<div class="flex">
+					<div class="flex flex-grow flex-wrap gap-3 justify-between">
+						<div class="flex flex-row flex-wrap gap-1">
 							<div class="my-auto pr-3 font-bold">Resources</div>
-							<div class="my-auto pr-3 flex gap-x-1">
+							<div
+								class="my-auto pr-3 flex flex-row flex-wrap gap-1">
 								<n-tooltip
 									v-for="resource in planetData.Resources"
 									:key="`PLANET#RESOURCE#${resource.MaterialTicker}`"
@@ -494,7 +498,7 @@
 								</n-tooltip>
 							</div>
 						</div>
-						<div class="flex gap-x-3">
+						<div class="flex flex-row flex-wrap gap-3">
 							<n-button
 								v-if="saveable"
 								:loading="refIsSaving"
@@ -587,7 +591,7 @@
 					</template>
 				</Suspense>
 			</div>
-			<div class="p-6 grid grid-cols-1 lg:grid-cols-[auto_450px] gap-6">
+			<div class="p-6 grid grid-cols-1 2xl:grid-cols-[auto_450px] gap-6">
 				<div>
 					<div
 						class="grid grid-cols-1 2xl:grid-cols-[60%_auto] gap-6">
@@ -604,7 +608,9 @@
 							<h2 class="text-white/80 font-bold text-lg pb-3">
 								Overview
 							</h2>
-							foo
+							<PlanOverview
+								:visitation-data="visitationData"
+								:overview-data="overviewData" />
 						</div>
 					</div>
 					<div class="pt-6">

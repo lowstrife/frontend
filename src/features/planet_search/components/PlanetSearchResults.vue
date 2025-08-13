@@ -98,19 +98,20 @@
 				multiple: 1,
 			}">
 			<template #render-cell="{ rowData }">
-				<MaterialTile
-					:ticker="rowData.searchResources[sm].ticker"
-					:amount="rowData.searchResources[sm].dailyExtraction"
-					:max="rowData.searchResources[sm].maxExtraction" />
+				<div class="child:text-nowrap">
+					<MaterialTile
+						:ticker="rowData.searchResources[sm].ticker"
+						:amount="rowData.searchResources[sm].dailyExtraction"
+						:max="rowData.searchResources[sm].maxExtraction" />
+				</div>
 			</template>
 		</XNDataTableColumn>
 		<XNDataTableColumn key="additionalResources" title="Resources">
 			<template #render-cell="{ rowData }">
-				<div
-					v-for="am in rowData.additionalResources"
-					:key="am.ticker"
-					class="inline pr-1">
+				<div class="flex flex-row flex-wrap gap-1 child:text-nowrap">
 					<MaterialTile
+						v-for="am in rowData.additionalResources"
+						:key="am.ticker"
 						:ticker="am.ticker"
 						:amount="am.dailyExtraction"
 						:max="am.maxExtraction" />
@@ -138,7 +139,7 @@
 		</XNDataTableColumn>
 		<XNDataTableColumn key="environment" title="Environment">
 			<template #render-cell="{ rowData }">
-				<div class="flex flex-row gap-x-1">
+				<div class="flex flex-row flex-wrap gap-1">
 					<n-tooltip v-if="rowData.environmentSurface.length !== 0">
 						<template #trigger>
 							<div>

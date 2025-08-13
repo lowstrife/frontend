@@ -76,6 +76,31 @@ describe("usePlanCalculation", async () => {
 		});
 	});
 
+	it("validate overviewData", async () => {
+		const { overviewData } = usePlanCalculation(
+			// @ts-expect-error mock data
+			ref(plan_etherwind),
+			ref(undefined),
+			ref(undefined),
+			ref(undefined)
+		);
+
+		expect(overviewData.value.dailyCost).toBe(38364.71626045736);
+		expect(overviewData.value.roi).toBe(25.909127634141438);
+	});
+
+	it("validate visitationData", async () => {
+		const { visitationData } = usePlanCalculation(
+			// @ts-expect-error mock data
+			ref(plan_etherwind),
+			ref(undefined),
+			ref(undefined),
+			ref(undefined)
+		);
+
+		expect(visitationData.value.storageFilled).toBe(22.342256698594255);
+	});
+
 	it("validate constructionMaterials", async () => {
 		const { constructionMaterials } = usePlanCalculation(
 			// @ts-expect-error mock data

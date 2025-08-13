@@ -1,5 +1,10 @@
 <script setup lang="ts">
 	import { onMounted, Ref, ref } from "vue";
+	import { useHead } from "@unhead/vue";
+
+	useHead({
+		title: "Help | PRUNplanner",
+	});
 
 	import { VueShowdown } from "vue-showdown";
 
@@ -22,6 +27,8 @@
 	const markdownContent: Ref<string> = ref("");
 
 	onMounted(async () => (markdownContent.value = await loadMarkdown()));
+
+	import { NButton } from "naive-ui";
 </script>
 
 <template>
@@ -36,6 +43,20 @@
 			<div>
 				<h2 class="text-xl font-bold pb-3">Help</h2>
 				To be written...
+				<div class="flex flex-col gap-3 w-[100px]">
+					<n-button>default</n-button>
+					<n-button type="primary">primary</n-button>
+					<n-button type="info">info</n-button>
+					<n-button type="success">success</n-button>
+					<n-button type="warning">warning</n-button>
+					<n-button type="error">error</n-button>
+					<n-button secondary>default</n-button>
+					<n-button type="primary" secondary>primary</n-button>
+					<n-button type="info" secondary>info</n-button>
+					<n-button type="success" secondary>success</n-button>
+					<n-button type="warning" secondary>warning</n-button>
+					<n-button type="error" secondary>error</n-button>
+				</div>
 			</div>
 			<div>
 				<h2 class="text-xl font-bold pb-3">Changelog</h2>

@@ -56,8 +56,8 @@ export function useBurnXITAction(
 						total: override
 							? override
 							: Math.ceil(totalNeed) > 0
-								? Math.ceil(totalNeed)
-								: 0,
+							? Math.ceil(totalNeed)
+							: 0,
 					});
 				}
 			});
@@ -84,14 +84,14 @@ export function useBurnXITAction(
 		let totalWeight: number = 0;
 		let totalVolume: number = 0;
 
-		materialTable.value.forEach((material) => {
-			if (material.total !== Infinity) {
+		materialTable.value
+			.filter((f) => f.total !== Infinity && f.active)
+			.forEach((material) => {
 				const mat: IMaterial = getMaterial(material.ticker);
 
 				totalWeight += mat.Weight * material.total;
 				totalVolume += mat.Volume * material.total;
-			}
-		});
+			});
 
 		return {
 			totalWeight,

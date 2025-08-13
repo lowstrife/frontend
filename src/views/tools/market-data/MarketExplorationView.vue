@@ -1,5 +1,10 @@
 <script setup lang="ts">
 	import { Ref, ref } from "vue";
+	import { useHead } from "@unhead/vue";
+
+	useHead({
+		title: "Market Exploration | PRUNplanner",
+	});
 
 	// Stores
 	import { useGameDataStore } from "@/stores/gameDataStore";

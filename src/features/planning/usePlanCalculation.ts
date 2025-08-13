@@ -40,12 +40,14 @@ import {
 	IMaterialIOMaterial,
 	IMaterialIOMinimal,
 	INFRASTRUCTURE_TYPE,
+	IOverviewData,
 	IPlanResult,
 	IProductionBuilding,
 	IProductionBuildingRecipe,
 	IProductionBuildingRecipeCOGM,
 	IProductionResult,
 	IRecipeBuildingOption,
+	IVisitationData,
 	IWorkforceElement,
 	IWorkforceRecord,
 	WORKFORCE_TYPE,
@@ -531,6 +533,13 @@ export function usePlanCalculation(
 					0
 				);
 
+				const outputRevenue: number = ar.recipe.Outputs.reduce(
+					(sum, current) =>
+						(sum +=
+							getPrice(current.Ticker, "SELL") * current.Amount),
+					0
+				);
+
 				const totalCost: number =
 					degradationShare + workforceCost + inputTotal;
 
@@ -538,6 +547,8 @@ export function usePlanCalculation(
 					(sum, current) => (sum += current.Amount),
 					0
 				);
+
+				const totalProfit: number = outputRevenue - totalCost;
 
 				const outputCOGM: ICOGMMaterialReturn[] = ar.recipe.Outputs.map(
 					(outputMat) => ({
@@ -561,6 +572,8 @@ export function usePlanCalculation(
 					inputTotal,
 					outputCOGM,
 					totalCost,
+					outputRevenue,
+					totalProfit,
 				} as IProductionBuildingRecipeCOGM;
 			});
 
@@ -616,12 +629,8 @@ export function usePlanCalculation(
 	 */
 	const constructionMaterials: ComputedRef<IBuildingConstruction[]> =
 		computed(() => {
-			return [
-				...result.value.production.buildings.map((b) => ({
-					ticker: b.name,
-					materials: b.constructionMaterials,
-				})),
-				...infrastructureBuildingInformation.filter(
+			const inf: IBuildingConstruction[] =
+				infrastructureBuildingInformation.filter(
 					(i) =>
 						(result.value.infrastructure[
 							i.ticker as INFRASTRUCTURE_TYPE
@@ -630,7 +639,26 @@ export function usePlanCalculation(
 								i.ticker as INFRASTRUCTURE_TYPE
 							] > 0) ||
 						i.ticker === "CM"
-				),
+				);
+
+			// Adjust map to add infrastructure building amounts
+			inf.map(
+				(i) =>
+					(i.amount =
+						i.ticker === "CM"
+							? 1
+							: result.value.infrastructure[
+									i.ticker as INFRASTRUCTURE_TYPE
+							  ])
+			);
+
+			return [
+				...result.value.production.buildings.map((b) => ({
+					ticker: b.name,
+					materials: b.constructionMaterials,
+					amount: b.amount,
+				})),
+				...inf,
 			];
 		});
 
@@ -734,6 +762,107 @@ export function usePlanCalculation(
 	});
 
 	/**
+	 * Calculates the plans overview cost data
+	 * @author jplacht
+	 *
+	 * @type {ComputedRef<IOverviewData>}
+	 */
+	const overviewData: ComputedRef<IOverviewData> = computed(() => {
+		const dailyCost: number = result.value.materialio.reduce(
+			(sum, current) => (sum += current.delta < 0 ? current.price : 0),
+			0
+		);
+		const dailyProfit: number = result.value.materialio.reduce(
+			(sum, current) => (sum += current.delta > 0 ? current.price : 0),
+			0
+		);
+
+		// degradation
+		const totalProductionConstructionCost: number =
+			result.value.production.buildings.reduce(
+				(sum, current) =>
+					(sum += current.constructionCost * current.amount),
+				0
+			);
+
+		const dailyDegradationCost: number =
+			totalProductionConstructionCost / 180;
+
+		const totalConstructionCost: number =
+			constructionMaterials.value.reduce(
+				(sum, current) =>
+					(sum +=
+						current.amount *
+						current.materials.reduce(
+							(infSum, infCurrent) =>
+								(infSum +=
+									getPrice(infCurrent.ticker, "BUY") *
+									infCurrent.input),
+							0
+						)),
+				0
+			);
+
+		const profit: number =
+			dailyProfit - -1 * dailyDegradationCost - -1 * dailyCost;
+
+		return {
+			dailyCost: dailyCost * -1,
+			dailyProfit: dailyProfit * 1,
+			totalConstructionCost,
+			dailyDegradationCost: dailyDegradationCost * -1,
+			profit,
+			roi: totalConstructionCost / profit,
+		};
+	});
+
+	/**
+	 * Calculates a plans visitation data
+	 * @author jplacht
+	 *
+	 * @type {ComputedRef<IVisitationData>}
+	 */
+	const visitationData: ComputedRef<IVisitationData> = computed(() => {
+		const totalStorage: number =
+			1500 + 5000 * result.value.infrastructure.STO;
+
+		const dailyWeightImport: number = result.value.materialio.reduce(
+			(sum, e) => sum + (e.delta < 0 ? e.totalWeight * -1 : 0),
+			0
+		);
+		const dailyWeightExport: number = result.value.materialio.reduce(
+			(sum, e) => sum + (e.delta > 0 ? e.totalWeight : 0),
+			0
+		);
+		const dailyVolumeImport: number = result.value.materialio.reduce(
+			(sum, e) => sum + (e.delta < 0 ? e.totalVolume * -1 : 0),
+			0
+		);
+		const dailyVolumeExport: number = result.value.materialio.reduce(
+			(sum, e) => sum + (e.delta > 0 ? e.totalVolume : 0),
+			0
+		);
+		const dailyWeightTotal: number = dailyWeightImport + dailyWeightExport;
+		const dailyVolumeTotal: number = dailyVolumeImport + dailyVolumeExport;
+
+		return {
+			storageFilled: Math.max(
+				Math.min(
+					totalStorage / dailyWeightTotal,
+					totalStorage / dailyVolumeTotal
+				),
+				0
+			),
+			dailyWeightImport: dailyWeightImport,
+			dailyWeightExport: dailyWeightExport,
+			dailyVolumeImport: dailyVolumeImport,
+			dailyVolumeExport: dailyVolumeExport,
+			dailyWeight: dailyWeightTotal,
+			dailyVolume: dailyVolumeTotal,
+		};
+	});
+
+	/**
 	 * Prepares plans data to conform to the Patch or Put payload
 	 * @author jplacht
 	 *
@@ -766,6 +895,8 @@ export function usePlanCalculation(
 		planEmpires,
 		planName,
 		constructionMaterials,
+		visitationData,
+		overviewData,
 		// precomputes
 		computedActiveEmpire,
 		// submodules

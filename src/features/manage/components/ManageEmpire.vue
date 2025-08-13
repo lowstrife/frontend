@@ -271,21 +271,21 @@
 </script>
 
 <template>
-	<div class="flex justify-between">
+	<div class="flex flex-row flex-wrap gap-3 justify-between">
 		<h2 class="text-xl font-bold my-auto">Empire Configuration</h2>
 		<div class="flex gap-x-3">
-			<n-button
-				size="small"
-				@click="refShowCreateEmpire = !refShowCreateEmpire">
-				<template #icon><PlusSharp /></template>
-				New Empire
-			</n-button>
 			<n-button
 				size="small"
 				:loading="refIsUpdatingJunctions"
 				@click="updateCXJunctions">
 				<template #icon><SaveSharp /></template>
 				Update CX Assignments
+			</n-button>
+			<n-button
+				size="small"
+				@click="refShowCreateEmpire = !refShowCreateEmpire">
+				<template #icon><PlusSharp /></template>
+				New Empire
 			</n-button>
 		</div>
 	</div>

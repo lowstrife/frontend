@@ -137,7 +137,7 @@
 						{
 							label: "ROI Overview",
 							display: true,
-							routerLink: "/not-implemented",
+							routerLink: "/roi-overview",
 						},
 						{
 							label: "Resource ROI Overview",

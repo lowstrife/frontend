@@ -111,10 +111,17 @@
 					<span class="pl-1 font-light text-white/50"> $ </span>
 				</td>
 			</tr>
-			<tr>
+			<tr class="child:!border-t-2">
 				<td class="!border-r">Total Cost</td>
 				<td colspan="3" class="font-bold">
 					{{ formatNumber(data.totalCost) }}
+					<span class="pl-1 font-light text-white/50"> $ </span>
+				</td>
+			</tr>
+			<tr class="child:!border-b-2">
+				<td class="!border-r">Recipe Profit</td>
+				<td colspan="3" class="font-bold">
+					{{ formatNumber(data.totalProfit) }}
 					<span class="pl-1 font-light text-white/50"> $ </span>
 				</td>
 			</tr>

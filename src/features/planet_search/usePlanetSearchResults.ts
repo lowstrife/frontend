@@ -19,6 +19,7 @@ import {
 	IPlanetSearchResult,
 	IPlanetSearchResultResource,
 } from "@/features/planet_search/usePlanetSearchResults.types";
+import { BOUNDARY_DESCRIPTOR } from "@/util/numbers.types";
 
 export function usePlanetSearchResults(
 	searchData: IPlanet[],

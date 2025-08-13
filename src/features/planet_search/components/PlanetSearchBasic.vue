@@ -44,7 +44,7 @@
 </script>
 
 <template>
-	<div class="flex flex-row justify-between">
+	<div class="flex flex-row flex-wrap gap-3 justify-between">
 		<h2 class="text-lg font-bold my-auto">Plan Name or ID</h2>
 		<n-button
 			size="small"

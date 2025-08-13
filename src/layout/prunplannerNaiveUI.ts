@@ -18,7 +18,6 @@ export const prunplannerTheme: GlobalThemeOverrides = {
 		inputColor: DARK_BLUE,
 		inputColorDisabled: BASE,
 		baseColor: BLACK,
-		// borderColor: "#404040",
 		fontFamily: "Roboto, Helvetica, Arial, sans-serif",
 		fontFamilyMono: "Roboto, serif",
 		hoverColor: "#222222",
@@ -84,8 +83,10 @@ export const prunplannerTheme: GlobalThemeOverrides = {
 		iconSizeSmall: "16px",
 		iconMarginSmall: "3px",
 
-		// color
+		// primary
 		color: BUTTON_BG,
+
+		// color
 		colorFocus: BUTTON_BG,
 		colorHover: HOVER,
 		colorPressed: HOVER,
@@ -148,14 +149,14 @@ export const prunplannerTheme: GlobalThemeOverrides = {
 		fontSizeMedium: "14px",
 		thFontWeight: "bold",
 		// colors
-		thColor: GRAY_DARK,
-		tdColorStriped: GRAY_DARK,
+		thColor: BLACK,
+		tdColorStriped: "rgb(3,5,10)",
 		tdColor: "rgba(255,255,255,0.02)",
 		// padding
 		thPaddingMedium: "5px 10px",
 		tdPaddingMedium: "5px 10px",
 		tdColorSorting: "rgba(255,255,255,0)",
-		tdColorHover: "rgba(255,255,255,0)",
+		tdColorHover: "rgba(255,255,255,0.03)",
 	},
 	Table: {
 		thTextColor: "rgba(255,255,255,0.9)",
@@ -163,13 +164,14 @@ export const prunplannerTheme: GlobalThemeOverrides = {
 		fontSizeMedium: "14px",
 		thFontWeight: "bold",
 		// color
-		thColor: GRAY_DARK,
+		thColor: BLACK,
+		tdColorStriped: "rgb(3,5,10)",
+		tdColor: "rgba(255,255,255,0.02)",
+		tdColorHover: "rgba(255,255,255,0.03)",
 		thColorModal: GRAY_DARK,
 		thColorPopover: GRAY_DARK,
-		tdColorStriped: GRAY_DARK,
 		tdColorStripedModal: GRAY_DARK,
 		tdColorStripedPopover: GRAY_DARK,
-		tdColor: "rgba(255,255,255,0.02)",
 		tdColorModal: "rgba(255,255,255,0.02)",
 		tdColorPopover: "rgba(255,255,255,0.02)",
 		// padding
@@ -199,6 +201,9 @@ export const prunplannerTheme: GlobalThemeOverrides = {
 				optionTextColor: "rgba(255,255,255,0.8)",
 			},
 		},
+	},
+	Drawer: {
+		color: GRAY_DARK,
 	},
 	Modal: {
 		color: BACKGROUND,

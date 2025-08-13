@@ -152,6 +152,7 @@ export function usePlanCalculationPreComputes(
 			getBuilding(inf),
 			planetData
 		),
+		amount: 1,
 	}));
 
 	return {
