@@ -1,5 +1,13 @@
 <script setup lang="ts">
-	import { computed, ComputedRef, PropType, Ref, ref, watch } from "vue";
+	import {
+		computed,
+		ComputedRef,
+		onMounted,
+		PropType,
+		Ref,
+		ref,
+		watch,
+	} from "vue";
 
 	// Composables
 	import { useQuery } from "@/lib/query_cache/useQuery";
@@ -72,6 +80,15 @@
 		}
 	);
 
+	const payloadChanged: Ref<boolean> = ref(false);
+
+	watch(
+		() => optimizePayload.value,
+		() => {
+			payloadChanged.value = true;
+		}
+	);
+
 	const habitationBuildings: string[] = [
 		"HB1",
 		"HB2",
@@ -109,24 +126,29 @@
 				console.error(error);
 				hasError.value = true;
 			})
-			.finally(() => (isLoading.value = false));
+			.finally(() => {
+				payloadChanged.value = false;
+				isLoading.value = false;
+			});
 	}
 
-	watch(
-		() => optimizePayload.value,
-		(newPayload) => {
-			fetchData(newPayload);
-		},
-		{ immediate: true }
-	);
+	onMounted(() => fetchData(optimizePayload.value));
 </script>
 
 <template>
 	<div class="pb-3 flex flex-row justify-between child:my-auto">
 		<h2 class="text-white/80 font-bold text-lg">Optimize Habitation</h2>
-		<n-button size="tiny" secondary @click="emit('close')">
-			<template #icon><CloseSharp /></template>
-		</n-button>
+		<div class="flex flex-row gap-3 child:!my-auto">
+			<n-button
+				size="small"
+				:disabled="!payloadChanged"
+				@click="fetchData(optimizePayload)">
+				Recalculate
+			</n-button>
+			<n-button size="tiny" secondary @click="emit('close')">
+				<template #icon><CloseSharp /></template>
+			</n-button>
+		</div>
 	</div>
 	<div>
 		<div v-if="totalWorkforce === 0" class="text-center pb-3 text-negative">
