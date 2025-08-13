@@ -1,8 +1,9 @@
 # 2025-08-13
 
+- Fixed an issue where production building recipe selection did not take into account the buildings efficiency on revenue / day and roi metrics (by `lilbit-prun`)
 - Add "Buy From CX" option for XIT Actions for FIO Burn (by `lilbit-prun`)
 
-# 2028-08-12
+# 2025-08-12
 
 - Implement ROI Overview for production buildings and their recipes [#129](https://github.com/PRUNplanner/frontend/issues/129), enhance COGM with total profits and visitation frequency calculations
 - Add style for material `HBC`

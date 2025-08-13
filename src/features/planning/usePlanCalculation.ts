@@ -464,7 +464,7 @@ export function usePlanCalculation(
 					 * 	- Building Daily Workforce Cost (lux1 + lux2)
 					 */
 
-					const maxDailyRuns: number = TOTALMSDAY / br.TimeMs;
+					const maxDailyRuns: number = TOTALMSDAY / (br.TimeMs / totalEfficiency);
 
 					const dailyRevenue: number =
 						dailyIncome * maxDailyRuns -
