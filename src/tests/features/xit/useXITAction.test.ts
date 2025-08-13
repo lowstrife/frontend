@@ -41,4 +41,29 @@ describe("useXITAction", async () => {
 		expect(result.value).toContain("moo origin");
 		expect(result.value).toContain("meow destination");
 	});
+
+	it("transferJSON, with options and buy", async () => {
+		const result = transferJSON(
+			[
+				{
+					ticker: "ALO",
+					value: 1,
+				},
+			],
+			{
+				name: "foo",
+				origin: "Antares Station Warehouse",
+				destination: "Configure on Execution",
+				buy: true,
+			}
+		);
+
+		expect(result.value).toContain("foo");
+		expect(result.value).toContain("Antares Station Warehouse");
+		expect(result.value).toContain("Configure on Execution");
+		expect(result.value).toContain("priceLimits");
+		expect(result.value).toContain("buyPartial");
+		expect(result.value).toContain("useCXInv");
+		expect(result.value).toContain("BuyItems");
+	});
 });

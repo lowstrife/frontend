@@ -1,6 +1,7 @@
 # 2025-08-13
 
 - Fixed an issue where production building recipe selection did not take into account the buildings efficiency on revenue / day and roi metrics (by `lilbit-prun`)
+- Add "Buy From CX" option for XIT Actions for FIO Burn (by `lilbit-prun`)
 
 # 2025-08-12
 

@@ -67,13 +67,14 @@
 		drawerWidth: {
 			type: Number,
 			required: false,
-			default: 650,
+			default: 700,
 		},
 	});
 
 	// Drawer Display
 	const loadDrawer: Ref<boolean> = ref(false);
 	const showDrawer: Ref<boolean> = ref(false);
+	const xitBuyFromCX = ref(true);
 
 	function show(): void {
 		if (!showDrawer.value) {
@@ -127,14 +128,25 @@
 								:min="0"
 								show-button />
 						</n-form-item>
-
+						<n-form-item label="Buy From CX">
+							<p
+								v-if="burnOrigin === 'Configure on Execution'"
+								class="text-xs text-negative">
+								Only warehouse origin allows purchasing.
+							</p>
+							<n-checkbox
+								v-else
+								v-model:checked="xitBuyFromCX"
+								:disabled="
+									burnOrigin === 'Configure on Execution'
+								" />
+						</n-form-item>
 						<n-form-item label="Hide Infinite">
 							<n-checkbox v-model:checked="refHideInfinite" />
 						</n-form-item>
 					</n-form>
 				</div>
 				<div class="flex flex-row gap-x-3 pb-3">
-					<div class="text-nowrap">JSON</div>
 					<n-input
 						v-model:value="
 							transferJSON(
@@ -151,7 +163,11 @@
 											value: m.total,
 										};
 									}),
-								{ name: 'Burn Supply', origin: burnOrigin }
+								{
+									name: 'Burn Supply',
+									origin: burnOrigin,
+									buy: xitBuyFromCX,
+								}
 							).value
 						"
 						size="small"
@@ -174,7 +190,11 @@
 												value: m.total,
 											};
 										}),
-									{ name: 'Burn Supply', origin: burnOrigin }
+									{
+										name: 'Burn Supply',
+										origin: burnOrigin,
+										buy: xitBuyFromCX,
+									}
 								).value
 							)
 						">

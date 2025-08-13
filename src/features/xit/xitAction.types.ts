@@ -13,7 +13,17 @@ export interface IXITActionMaterialElement {
 	total: number;
 }
 
-interface IXITJSONAction {
+interface IXITJSONActionCXBuy {
+	type: "CX Buy";
+	name: "BuyItems";
+	exchange: string;
+	priceLimits: Record<string, number>;
+	buyPartial: boolean;
+	useCXInv: boolean;
+	group: string;
+}
+
+interface IXITJSONActionMTRA {
 	type: "MTRA";
 	name: "TransferAction";
 	group: string;
@@ -31,8 +41,10 @@ interface IXITJSONGroup {
 	materials: Record<string, number>;
 }
 
+export type XITACTIONTYPE = IXITJSONActionMTRA | IXITJSONActionCXBuy;
+
 export interface IXITJSON {
-	actions: IXITJSONAction[];
+	actions: XITACTIONTYPE[];
 	global: IXITJSONGlobal;
 	groups: IXITJSONGroup[];
 }
