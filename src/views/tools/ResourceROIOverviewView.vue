@@ -95,7 +95,9 @@
 				</div>
 
 				<div class="px-6 py-3">
-					<div v-if="!refInitialized">Select a Resource</div>
+					<div v-if="!refInitialized" class="text-center py-3">
+						Select a Resource and press "Search & Calculate"
+					</div>
 					<div v-else-if="refIsLoading" class="text-center py-3">
 						<n-spin />
 						<div>Getting Planets and Calculating Resource ROI</div>
