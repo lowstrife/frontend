@@ -1,3 +1,7 @@
+# 2025-08-13
+
+- Add "Buy From CX" option for XIT Actions for FIO Burn (by `lilbit-prun`)
+
 # 2028-08-12
 
 - Implement ROI Overview for production buildings and their recipes [#129](https://github.com/PRUNplanner/frontend/issues/129), enhance COGM with total profits and visitation frequency calculations
