@@ -1,3 +1,7 @@
+# 2025-08-13
+
+- Add "Buy From CX" option for XIT Actions for FIO Burn (by `lilbit-prun`)
+
 # 2025-08-11
 
 - Add Help & Changelog page, listing most recent changes
