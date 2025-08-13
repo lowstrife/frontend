@@ -175,16 +175,70 @@
 		});
 	}
 
+	/*
+	 * NOTE: This is somewhat hacky to prevent a loaded tool component to re-render on prop change.
+	 * As most of the props depend on calculation data they're anyway changing with every change
+	 * to the plan. v-memo does not work as it would prevent all tool components from only being
+	 * rendered once and not receiving a prop update afterwards.
+	 * Splitting the component from its actual data, does work and allows any logic or re-execution
+	 * solely being handled in the loaded child component that holds the tool. However, two computed
+	 * properties are needed instead of one.
+	 */
+
+	const compViewToolComponent = computed(() => {
+		switch (refShowTool.value) {
+			case "visitation-frequency":
+				return defineAsyncComponent(
+					() =>
+						import(
+							"@/features/planning/components/tools/PlanVisitationFrequency.vue"
+						)
+				);
+			case "repair-analysis":
+				return defineAsyncComponent(
+					() =>
+						import(
+							"@/features/planning/components/tools/PlanRepairAnalysis.vue"
+						)
+				);
+
+			case "popr":
+				return defineAsyncComponent(
+					() =>
+						import(
+							"@/features/planning/components/tools/PlanPOPR.vue"
+						)
+				);
+			case "supply-cart":
+				return defineAsyncComponent(
+					() =>
+						import(
+							"@/features/planning/components/tools/PlanSupplyCart.vue"
+						)
+				);
+			case "optimize-habitation":
+				return defineAsyncComponent(
+					() =>
+						import(
+							"@/features/planning/components/tools/PlanOptimizeHabitation.vue"
+						)
+				);
+			case "construction-cart":
+				return defineAsyncComponent(
+					() =>
+						import(
+							"@/features/planning/components/tools/PlanConstructionCart.vue"
+						)
+				);
+			default:
+				return null;
+		}
+	});
+
 	const compViewToolMeta = computed(() => {
 		switch (refShowTool.value) {
 			case "visitation-frequency":
 				return {
-					component: defineAsyncComponent(
-						() =>
-							import(
-								"@/features/planning/components/tools/PlanVisitationFrequency.vue"
-							)
-					),
 					props: {
 						stoAmount: result.value.infrastructure["STO"],
 						materialIO: result.value.materialio,
@@ -195,12 +249,6 @@
 				};
 			case "repair-analysis":
 				return {
-					component: defineAsyncComponent(
-						() =>
-							import(
-								"@/features/planning/components/tools/PlanRepairAnalysis.vue"
-							)
-					),
 					props: {
 						data: result.value.production.buildings.map((b) => {
 							return {
@@ -217,12 +265,6 @@
 				};
 			case "popr":
 				return {
-					component: defineAsyncComponent(
-						() =>
-							import(
-								"@/features/planning/components/tools/PlanPOPR.vue"
-							)
-					),
 					props: {
 						planetNaturalId: planetData.PlanetNaturalId,
 						workforceData: result.value.workforce,
@@ -231,12 +273,6 @@
 				};
 			case "supply-cart":
 				return {
-					component: defineAsyncComponent(
-						() =>
-							import(
-								"@/features/planning/components/tools/PlanSupplyCart.vue"
-							)
-					),
 					props: {
 						planetNaturalId: planetData.PlanetNaturalId,
 						materialIO: result.value.materialio,
@@ -247,12 +283,6 @@
 				};
 			case "optimize-habitation":
 				return {
-					component: defineAsyncComponent(
-						() =>
-							import(
-								"@/features/planning/components/tools/PlanOptimizeHabitation.vue"
-							)
-					),
 					props: {
 						workforceData: result.value.workforce,
 						habitationCost:
@@ -271,12 +301,6 @@
 				};
 			case "construction-cart":
 				return {
-					component: defineAsyncComponent(
-						() =>
-							import(
-								"@/features/planning/components/tools/PlanConstructionCart.vue"
-							)
-					),
 					props: {
 						planetNaturalId: planetData.PlanetNaturalId,
 						cxUuid: refCXUuid.value,
@@ -578,8 +602,7 @@
 				<Suspense v-if="refShowTool && compViewToolMeta">
 					<template #default>
 						<component
-							:is="compViewToolMeta.component"
-							:key="`${refShowTool}`"
+							:is="compViewToolComponent"
 							v-bind="compViewToolMeta.props"
 							v-on="compViewToolMeta.listeners"
 							@close="() => (refShowTool = null)" />
