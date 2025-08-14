@@ -1,3 +1,7 @@
+# 2025-08-17
+
+- Improve Material Tiles with fixed width/height, text and gradient colors mirroring prun/rprun and text shadow (by `Razenpok`) [#163](https://github.com/PRUNplanner/frontend/pull/163)
+
 # 2025-08-13
 
 - Fixed an issue where production building recipe selection did not take into account the buildings efficiency on revenue / day and roi metrics (by `lilbit-prun`)
