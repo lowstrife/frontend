@@ -8,12 +8,12 @@
 	import MaterialTile from "@/features/material_tile/components/MaterialTile.vue";
 	import COGMButton from "@/features/roi_overview/components/COGMButton.vue";
 	import PlanetPOPRButton from "@/features/government/components/PlanetPOPRButton.vue";
+	import ResourceROITableFilters from "@/features/resource_roi_overview/components/ResourceROITableFilters.vue";
 
 	// Types & Interfaces
 	import { IResourceROIResult } from "@/features/resource_roi_overview/useResourceROIOverview.types";
 
 	// UI
-	import { NSelect, NCheckbox } from "naive-ui";
 	import { XNDataTable, XNDataTableColumn } from "@skit/x.naive-ui";
 	import { SelectMixedOption } from "naive-ui/es/select/src/interface";
 
@@ -66,40 +66,13 @@
 </script>
 
 <template>
-	<div
-		class="border border-b-0 rounded-[3px] border-white/20 p-3 flex flex-row gap-3 flex-wrap justify-between">
-		<div class="flex flex-row flex-wrap gap-3 child:my-auto">
-			<div class="font-bold pr-3">Filter</div>
-			<div class="flex flex-row gap-3 child:my-auto">
-				<div>Planet</div>
-				<n-select
-					v-model:value="filterPlanet"
-					:options="filterOptionPlanet"
-					size="small"
-					filterable
-					clearable />
-			</div>
-			<div class="flex flex-row gap-3 child:my-auto">
-				<div>Building</div>
-				<n-select
-					v-model:value="filterBuilding"
-					:options="filterOptionBuilding"
-					size="small"
-					filterable
-					clearable />
-			</div>
-			<div class="flex flex-row gap-3 child:my-auto">
-				<div class="text-nowrap">Positive ROI</div>
-				<n-checkbox v-model:checked="filterPostiveROI" />
-			</div>
-		</div>
-		<div class="flex flex-row flex-wrap gap-3 pr-3">
-			<div class="my-auto font-bold">Searched Material</div>
-			<div>
-				<MaterialTile :ticker="searchedMaterial" />
-			</div>
-		</div>
-	</div>
+	<ResourceROITableFilters
+		v-model:filter-planet="filterPlanet"
+		v-model:filter-building="filterBuilding"
+		v-model:filter-positive-r-o-i="filterPostiveROI"
+		:planet-options="filterOptionPlanet"
+		:building-options="filterOptionBuilding"
+		:searched-material="searchedMaterial" />
 	<XNDataTable :data="localResult" striped :pagination="{ pageSize: 50 }">
 		<XNDataTableColumn key="planetName" title="Planet" sorter="default">
 			<template #render-cell="{ rowData }">

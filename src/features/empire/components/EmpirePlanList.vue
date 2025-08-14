@@ -1,6 +1,5 @@
 <script setup lang="ts">
 	import { PropType } from "vue";
-	import { IEmpirePlanListData } from "../empire.types";
 
 	// Composables
 	import { usePlanetData } from "@/features/game_data/usePlanetData";
@@ -8,7 +7,10 @@
 
 	// Util
 	import { formatNumber } from "@/util/numbers";
-	import { capitalizeString } from "@/util/text";
+
+	// Types & Interfaces
+	import { IEmpirePlanListData } from "@/features/empire/empire.types";
+	import { PLAN_COGCPROGRAM_TYPE } from "@/stores/planningStore.types";
 
 	// UI
 	import {
@@ -24,46 +26,64 @@
 			required: true,
 		},
 	});
+
+	const SHORTPROGRAMTYPES: { [key in PLAN_COGCPROGRAM_TYPE]: string } = {
+		"---": "",
+		AGRICULTURE: "AGRI",
+		CHEMISTRY: "CHEM",
+		CONSTRUCTION: "CONST",
+		ELECTRONICS: "ELEC",
+		FOOD_INDUSTRIES: "FOOD",
+		FUEL_REFINING: "FUEL",
+		MANUFACTURING: "MFG",
+		METALLURGY: "METAL",
+		RESOURCE_EXTRACTION: "RES",
+		PIONEERS: "PIO",
+		SETTLERS: "SET",
+		TECHNICIANS: "TECH",
+		ENGINEERS: "ENG",
+		SCIENTISTS: "SCI",
+	};
 </script>
 
 <template>
-	<x-n-data-table :data="planListData" striped>
-		<x-n-data-table-column
-			key="name"
-			title="Plan"
-			sorter="default"
-			max-width="40%">
+	<XNDataTable :data="planListData" striped>
+		<XNDataTableColumn key="name" title="Plan" sorter="default">
 			<template #render-cell="{ rowData }">
-				<router-link
-					:to="`/plan/${rowData.planet}/${rowData.uuid}`"
-					class="text-link-primary font-bold hover:underline">
-					{{ rowData.name }}
-				</router-link>
+				<div class="w-[150px] text-wrap">
+					<router-link
+						:to="`/plan/${rowData.planet}/${rowData.uuid}`"
+						class="text-link-primary font-bold hover:underline">
+						{{ rowData.name }}
+					</router-link>
+				</div>
 			</template>
-		</x-n-data-table-column>
-		<x-n-data-table-column key="planet" title="Planet" sorter="default">
+		</XNDataTableColumn>
+		<XNDataTableColumn key="planet" title="Planet" sorter="default">
 			<template #render-cell="{ rowData }">
-				<div class="text-nowrap">
+				<div class="w-[150px] test-wrap">
 					{{ getPlanetName(rowData.planet) }}
 				</div>
 			</template>
-		</x-n-data-table-column>
-		<x-n-data-table-column key="cogc" title="COGC" sorter="default">
+		</XNDataTableColumn>
+		<XNDataTableColumn key="cogc" title="COGC" sorter="default">
 			<template #render-cell="{ rowData }">
 				<div class="text-nowrap">
-					{{ capitalizeString(rowData.cogc) }}
+					{{
+						SHORTPROGRAMTYPES[rowData.cogc as PLAN_COGCPROGRAM_TYPE]
+					}}
 				</div>
 			</template>
-		</x-n-data-table-column>
-		<x-n-data-table-column key="permits" title="Permits" sorter="default">
+		</XNDataTableColumn>
+		<XNDataTableColumn key="permits" title="Permits" sorter="default">
 			<template #title>
-				<div class="text-nowrap">Permits</div>
+				<div class="text-nowrap">#</div>
 			</template>
 			<template #render-cell="{ rowData }">
 				<div class="text-center">{{ rowData.permits }}</div>
 			</template>
-		</x-n-data-table-column>
-		<x-n-data-table-column key="profit" title="Profit" sorter="default">
+		</XNDataTableColumn>
+		<XNDataTableColumn key="profit" title="Profit" sorter="default">
 			<template #render-cell="{ rowData }">
 				<div class="text-nowrap text-end">
 					<span
@@ -77,7 +97,7 @@
 					<span class="pl-1 font-light text-white/50">$</span>
 				</div>
 			</template>
-		</x-n-data-table-column>
+		</XNDataTableColumn>
 		<template #empty>
 			<div class="flex flex-col gap-y-3">
 				<div class="text-center">No Plans in Empire.</div>
@@ -99,8 +119,8 @@
 			</div>
 		</template>
 		<template #summary>
-			<x-n-data-table-summary-row>
-				<x-n-data-table-summary-cell key="name" :col-span="5">
+			<XNDataTableSummaryRow>
+				<XNDataTableSummaryCell key="name" :col-span="5">
 					<template #default>
 						<strong class="text-white/80">
 							Total permits planned:
@@ -112,8 +132,8 @@
 							}}
 						</strong>
 					</template>
-				</x-n-data-table-summary-cell>
-			</x-n-data-table-summary-row>
+				</XNDataTableSummaryCell>
+			</XNDataTableSummaryRow>
 		</template>
-	</x-n-data-table>
+	</XNDataTable>
 </template>

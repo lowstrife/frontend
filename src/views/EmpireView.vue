@@ -27,6 +27,9 @@
 	import WrapperGameDataLoader from "@/features/wrapper/components/WrapperGameDataLoader.vue";
 	import HelpDrawer from "@/features/help/components/HelpDrawer.vue";
 
+	const AsyncEmpireCostOverview = defineAsyncComponent(
+		() => import("@/features/empire/components/EmpireCostOverview.vue")
+	);
 	const AsyncEmpirePlanList = defineAsyncComponent(
 		() => import("@/features/empire/components/EmpirePlanList.vue")
 	);
@@ -49,9 +52,6 @@
 		IEmpirePlanListData,
 		IEmpirePlanMaterialIO,
 	} from "@/features/empire/empire.types";
-
-	// Util
-	import { formatNumber } from "@/util/numbers";
 
 	// UI
 	import { NForm, NFormItem, NSelect } from "naive-ui";
@@ -307,65 +307,8 @@
 									</n-form>
 								</div>
 								<div class="p-6 border-b border-white/10">
-									<div
-										class="grid grid-cols-1 lg:grid-cols-3 gap-6 child:child:text-center">
-										<div>
-											<div class="text-white/40 text-xs">
-												Profit
-											</div>
-											<div class="text-white text-xl">
-												{{
-													formatNumber(
-														costOverview.totalProfit
-													)
-												}}
-											</div>
-											<div class="text-white/40 text-xs">
-												{{
-													formatNumber(
-														(costOverview.totalProfit /
-															costOverview.totalRevenue) *
-															100
-													)
-												}}
-												%
-											</div>
-										</div>
-										<div>
-											<div class="text-white/40 text-xs">
-												Revenue
-											</div>
-											<div class="text-white text-xl">
-												{{
-													formatNumber(
-														costOverview.totalRevenue
-													)
-												}}
-											</div>
-										</div>
-										<div>
-											<div class="text-white/40 text-xs">
-												Cost
-											</div>
-											<div class="text-white text-xl">
-												{{
-													formatNumber(
-														costOverview.totalCost
-													)
-												}}
-											</div>
-											<div class="text-white/40 text-xs">
-												{{
-													formatNumber(
-														(costOverview.totalCost /
-															costOverview.totalRevenue) *
-															100
-													)
-												}}
-												%
-											</div>
-										</div>
-									</div>
+									<AsyncEmpireCostOverview
+										:cost-overview="costOverview" />
 								</div>
 								<div class="p-6 border-b border-white/10">
 									<Suspense>

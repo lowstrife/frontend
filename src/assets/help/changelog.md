@@ -2,6 +2,9 @@
 
 - Add user preference for XIT "Buy from CX" (by `lilbit-prun`) [#164](https://github.com/PRUNplanner/frontend/pull/164)
 - Improve Material Tiles with fixed width/height, text and gradient colors mirroring prun/rprun and text shadow (by `Razenpok`) [#163](https://github.com/PRUNplanner/frontend/pull/163)
+- Refactor multiple filter parts of views into separate components
+- Adjust text-wrapping and column widths on Empire and Management tables
+- Allow filtering of assignment table records on Management
 
 # 2025-08-13
 
