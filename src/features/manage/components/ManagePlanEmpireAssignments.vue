@@ -29,6 +29,7 @@
 
 	// Components
 	import SharingButton from "@/features/sharing/components/SharingButton.vue";
+	import ManageAssignmentFilters from "@/features/manage/components/ManageAssignmentFilters.vue";
 
 	// UI
 	import { useDialog, NCheckbox, NButton, NIcon } from "naive-ui";
@@ -42,6 +43,7 @@
 		AddCircleOutlineSharp,
 		CircleOutlined,
 	} from "@vicons/material";
+	import { SelectMixedOption } from "naive-ui/es/select/src/interface";
 
 	const props = defineProps({
 		empires: {
@@ -78,8 +80,41 @@
 	const refIsCloning: Ref<string | undefined> = ref(undefined);
 	const refIsDeleting: Ref<string | undefined> = ref(undefined);
 
+	const filterPlanNames: Ref<string[]> = ref([]);
+	const filterEmpires: Ref<string[]> = ref([]);
+	const filterOptionsPlanNames: ComputedRef<SelectMixedOption[]> = computed(
+		() => localPlans.value.map((e) => ({ label: e.name, value: e.uuid }))
+	);
+	const filterOptionsEmpires: ComputedRef<SelectMixedOption[]> = computed(
+		() => localEmpires.value.map((e) => ({ label: e.name, value: e.uuid }))
+	);
+
 	// generate initial matrix upon props passing
 	generateMatrix();
+
+	const filteredMatrix = computed(() => {
+		let filtered = matrix.value;
+
+		// filter plan names
+		if (filterPlanNames.value.length > 0) {
+			filtered = filtered.filter((f) =>
+				filterPlanNames.value.includes(f.planUuid)
+			);
+		}
+
+		// filter for active in empire
+		if (filterEmpires.value.length > 0) {
+			filtered = filtered.filter((f) =>
+				Object.entries(f.empires)
+					// eslint-disable-next-line @typescript-eslint/no-unused-vars
+					.filter(([_, value]) => value === true)
+					.map(([key]) => key)
+					.find((e) => filterEmpires.value.includes(e))
+			);
+		}
+
+		return filtered;
+	});
 
 	function generateMatrix(): void {
 		// reset matrix and empires
@@ -130,7 +165,18 @@
 
 	function changeAllToEmpire(empireUuid: string, value: boolean): void {
 		matrix.value.forEach((mv) => {
-			mv.empires[empireUuid] = value;
+			// check if part of filtered view
+			if (filteredMatrix.value.length != matrix.value.length) {
+				if (
+					filteredMatrix.value
+						.map((e) => e.planUuid)
+						.includes(mv.planUuid)
+				) {
+					mv.empires[empireUuid] = value;
+				}
+			} else {
+				mv.empires[empireUuid] = value;
+			}
 		});
 	}
 
@@ -249,10 +295,20 @@
 		empire, corporation production chains or future expansion plans.
 	</div>
 
-	<x-n-data-table :data="matrix" striped>
+	<ManageAssignmentFilters
+		v-model:filter-plan-names="filterPlanNames"
+		v-model:filter-empires="filterEmpires"
+		:options-plan-names="filterOptionsPlanNames"
+		:options-empires="filterOptionsEmpires"
+		@apply:filter="generateMatrix" />
+	<x-n-data-table
+		:data="filteredMatrix"
+		striped
+		:single-line="false"
+		:pagination="{ pageSize: 50 }">
 		<x-n-data-table-column key="planName" title="Plan" sorter="default">
 			<template #render-cell="{ rowData }">
-				<div class="max-w-[250px]">
+				<div class="w-[175px] text-wrap">
 					<router-link
 						:to="`/plan/${rowData.planetId}/${rowData.planUuid}`"
 						class="text-link-primary font-bold hover:underline">
@@ -263,7 +319,9 @@
 		</x-n-data-table-column>
 		<x-n-data-table-column key="planetId" title="Planet" sorter="default">
 			<template #render-cell="{ rowData }">
-				{{ getPlanetName(rowData.planetId) }}
+				<div class="w-[175px] text-wrap">
+					{{ getPlanetName(rowData.planetId) }}
+				</div>
 			</template>
 		</x-n-data-table-column>
 
@@ -293,10 +351,13 @@
 		<!-- Empire Columns -->
 		<x-n-data-table-column v-for="e in matrixEmpires" :key="e.empireUuid">
 			<template #title>
-				<div class="text-center">
-					<div class="text-center pb-1">{{ e.empireName }}</div>
-
-					<div class="flex justify-center gap-x-1">
+				<div class="max-w-[100px] text-wrap">
+					{{ e.empireName }}
+				</div>
+			</template>
+			<x-n-data-table-column :key="`ASSIGN#${e.empireUuid}`">
+				<template #title>
+					<div class="py-1 flex flex-row justify-center gap-1">
 						<n-icon
 							color="rgba(192,226,24,1)"
 							size="16"
@@ -310,14 +371,15 @@
 							<CircleOutlined />
 						</n-icon>
 					</div>
-				</div>
-			</template>
-			<template #render-cell="{ rowData }">
-				<div class="text-center">
-					<n-checkbox
-						v-model:checked="rowData.empires[e.empireUuid]" />
-				</div>
-			</template>
+				</template>
+				<template #render-cell="{ rowData }">
+					<div class="text-center">
+						<n-checkbox
+							:key="`CHECKBOX#${e.empireUuid}#${rowData.planUuid}`"
+							v-model:checked="rowData.empires[e.empireUuid]" />
+					</div>
+				</template>
+			</x-n-data-table-column>
 		</x-n-data-table-column>
 		<template #empty>
 			<div class="flex flex-col gap-y-3">
