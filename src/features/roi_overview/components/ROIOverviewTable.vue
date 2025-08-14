@@ -20,6 +20,7 @@
 	// Components
 	import MaterialTile from "@/features/material_tile/components/MaterialTile.vue";
 	import COGMButton from "@/features/roi_overview/components/COGMButton.vue";
+	import ROIOverviewTableFilters from "@/features/roi_overview/components/ROIOverviewTableFilters.vue";
 
 	// Types & Interfaces
 	import { IPlan } from "@/stores/planningStore.types";
@@ -27,7 +28,7 @@
 	import { SelectMixedOption } from "naive-ui/es/select/src/interface";
 
 	// UI
-	import { NSpin, NSelect, NCheckbox } from "naive-ui";
+	import { NSpin } from "naive-ui";
 	import { XNDataTable, XNDataTableColumn } from "@skit/x.naive-ui";
 
 	const props = defineProps({
@@ -160,50 +161,16 @@
 		</div>
 	</div>
 	<div v-else>
-		<div
-			class="border border-b-0 rounded-[3px] border-white/20 p-3 flex flex-row gap-3 flex-wrap">
-			<div class="my-auto font-bold pr-3">Filter</div>
-			<div class="flex flex-row gap-x-3 child:my-auto">
-				<div>Building</div>
-				<n-select
-					v-model:value="filterBuilding"
-					:options="filterOptionBuilding"
-					size="small"
-					filterable
-					clearable />
-			</div>
-			<div class="flex flex-row gap-x-3 child:my-auto">
-				<div>COGC</div>
-				<n-select
-					v-model:value="filterCOGC"
-					:options="filterOptionCOGC"
-					size="small"
-					filterable
-					clearable />
-			</div>
-			<div class="flex flex-row gap-x-3 child:my-auto">
-				<div>Output</div>
-				<n-select
-					v-model:value="filterOutputMaterial"
-					:options="filterOptionOutputMaterial"
-					size="small"
-					filterable
-					clearable />
-			</div>
-			<div class="flex flex-row gap-x-3 child:my-auto">
-				<div>Input</div>
-				<n-select
-					v-model:value="filterInputMaterial"
-					:options="filterOptionInputMaterial"
-					size="small"
-					filterable
-					clearable />
-			</div>
-			<div class="flex flex-row gap-x-3 child:my-auto">
-				<div class="text-nowrap">Positive ROI</div>
-				<n-checkbox v-model:checked="filterPostiveROI" />
-			</div>
-		</div>
+		<ROIOverviewTableFilters
+			v-model:filter-building="filterBuilding"
+			v-model:filter-cogc="filterCOGC"
+			v-model:filter-output-material="filterOutputMaterial"
+			v-model:filter-input-material="filterInputMaterial"
+			v-model:filter-positive-r-o-i="filterPostiveROI"
+			:building-options="filterOptionBuilding"
+			:cogc-options="filterOptionCOGC"
+			:output-material-options="filterOptionOutputMaterial"
+			:input-material-options="filterOptionInputMaterial" />
 		<XNDataTable
 			:data="filteredResult"
 			striped
