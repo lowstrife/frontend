@@ -1,3 +1,7 @@
+# 2025-08-14
+
+- Add user preference for XIT "Buy from CX" (by `lilbit-prun`) [#164](https://github.com/PRUNplanner/frontend/pull/164)
+
 # 2025-08-13
 
 - Fixed an issue where production building recipe selection did not take into account the buildings efficiency on revenue / day and roi metrics (by `lilbit-prun`)
