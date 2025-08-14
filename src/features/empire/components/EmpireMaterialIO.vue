@@ -2,6 +2,7 @@
 	import { PropType, ref, Ref, watch } from "vue";
 
 	// Components
+	import EmpireMaterialIOFilters from "@/features/empire/components/EmpireMaterialIOFilters.vue";
 	import MaterialTile from "@/features/material_tile/components/MaterialTile.vue";
 
 	// Composables
@@ -18,14 +19,7 @@
 	import { WORKFORCE_CONSUMPTION_MAP } from "@/features/planning/calculations/workforceCalculations";
 
 	// UI
-	import {
-		NForm,
-		NFormItem,
-		NTooltip,
-		NSelect,
-		NButton,
-		NButtonGroup,
-	} from "naive-ui";
+	import { NTooltip } from "naive-ui";
 	import { XNDataTable, XNDataTableColumn } from "@skit/x.naive-ui";
 
 	const props = defineProps({
@@ -161,89 +155,15 @@
 </script>
 
 <template>
-	<div class="mb-3 pt-3 pb-2 px-3 border rounded-[3px] border-white/10">
-		<n-form
-			label-placement="left"
-			label-width="auto"
-			label-align="left"
-			size="small">
-			<div class="flex flex-row gap-6 flex-wrap">
-				<div>
-					<n-form-item label="Display">
-						<n-button-group>
-							<n-button
-								:secondary="refFilterLoadbalance"
-								@click="
-									() => {
-										refFilterLoadbalance =
-											!refFilterLoadbalance;
-										applyFilter();
-									}
-								">
-								All
-							</n-button>
-							<n-button
-								:secondary="!refFilterLoadbalance"
-								@click="
-									() => {
-										refFilterLoadbalance =
-											!refFilterLoadbalance;
-										applyFilter();
-									}
-								">
-								Loadbalance
-							</n-button>
-						</n-button-group>
-					</n-form-item>
-					<n-form-item label="Consumables">
-						<n-button-group>
-							<n-button
-								:secondary="refFilterHideConsumables"
-								@click="
-									() => {
-										refFilterHideConsumables =
-											!refFilterHideConsumables;
-										applyFilter();
-									}
-								">
-								Show
-							</n-button>
-							<n-button
-								:secondary="!refFilterHideConsumables"
-								@click="
-									() => {
-										refFilterHideConsumables =
-											!refFilterHideConsumables;
-										applyFilter();
-									}
-								">
-								Hide
-							</n-button>
-						</n-button-group>
-					</n-form-item>
-				</div>
-				<div class="flex-grow">
-					<n-form-item label="Materials">
-						<n-select
-							v-model:value="refFilterMaterials"
-							multiple
-							filterable
-							clearable
-							:options="refMaterialSelectOptions"
-							@update:value="applyFilter" />
-					</n-form-item>
-					<n-form-item label="Planets">
-						<n-select
-							v-model:value="refFilterPlanets"
-							multiple
-							filterable
-							clearable
-							:options="refPlanetSelectOptions"
-							@update:value="applyFilter" />
-					</n-form-item>
-				</div>
-			</div>
-		</n-form>
+	<div class="border border-b-0 rounded-[3px] border-white/15 p-3">
+		<EmpireMaterialIOFilters
+			v-model:load-balance="refFilterLoadbalance"
+			v-model:hide-consumables="refFilterHideConsumables"
+			v-model:filter-materials="refFilterMaterials"
+			v-model:filter-planets="refFilterPlanets"
+			:material-options="refMaterialSelectOptions"
+			:planet-options="refPlanetSelectOptions"
+			@apply-filter="applyFilter" />
 	</div>
 	<x-n-data-table :data="filteredMaterialIO" striped>
 		<x-n-data-table-column key="ticker" title="Ticker" sorter="default">
