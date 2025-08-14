@@ -56,6 +56,21 @@ export function usePreferences() {
 	});
 
 	/**
+	 * Writable computed for the users default "Buy Items From CX" setting
+	 *
+	 * @author lilbit
+	 *
+	 * @type {WritableComputedRef<boolean, boolean>}
+	 */
+	const defaultBuyItemsFromCX: WritableComputedRef<
+		boolean,
+		boolean
+	> = computed<boolean>({
+		get: () => userStore.preferences.defaultBuyItemsFromCX ?? true,
+		set: (v) => userStore.setPreference("defaultBuyItemsFromCX", v),
+	});
+
+	/**
 	 * Writable computed for the users RED alert on burn views
 	 *
 	 * @author jplacht
@@ -224,6 +239,7 @@ export function usePreferences() {
 	return {
 		// preferences
 		defaultCXUuid,
+		defaultBuyItemsFromCX,
 		defaultEmpireUuid,
 		burnDaysRed,
 		burnDaysYellow,

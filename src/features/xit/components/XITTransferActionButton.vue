@@ -5,7 +5,7 @@
 	import { useXITAction } from "@/features/xit/useXITAction";
 	const { transferJSON } = useXITAction();
 	import { usePreferences } from "@/features/preferences/usePreferences";
-	const { burnOrigin } = usePreferences();
+	const { burnOrigin, defaultBuyItemsFromCX } = usePreferences();
 
 	// Components
 	import MaterialTile from "@/features/material_tile/components/MaterialTile.vue";
@@ -70,7 +70,6 @@
 	// Drawer Display
 	const loadDrawer: Ref<boolean> = ref(false);
 	const showDrawer: Ref<boolean> = ref(false);
-	const xitBuyFromCX: Ref<boolean> = ref(true);
 
 	function show(): void {
 		if (!showDrawer.value) {
@@ -101,7 +100,7 @@
 				</n-form-item>
 				<n-form-item label="Buy Items From CX">
 					<n-checkbox
-						v-model:checked="xitBuyFromCX"
+						v-model:checked="defaultBuyItemsFromCX"
 						:disabled="burnOrigin === 'Configure on Execution'" />
 
 					<p
@@ -116,7 +115,7 @@
 							transferJSON(elements, {
 								name: 'Supply',
 								origin: burnOrigin,
-								buy: xitBuyFromCX,
+								buy: defaultBuyItemsFromCX,
 							}).value
 						"
 						size="small"
@@ -129,7 +128,7 @@
 								transferJSON(elements, {
 									name: 'Supply',
 									origin: burnOrigin,
-									buy: xitBuyFromCX,
+									buy: defaultBuyItemsFromCX,
 								}).value
 							)
 						">

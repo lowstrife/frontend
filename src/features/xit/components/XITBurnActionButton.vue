@@ -6,7 +6,7 @@
 	import { useXITAction } from "@/features/xit/useXITAction";
 	import { usePreferences } from "@/features/preferences/usePreferences";
 
-	const { burnResupplyDays, burnOrigin, getBurnDisplayClass } =
+	const { burnResupplyDays, burnOrigin, getBurnDisplayClass, defaultBuyItemsFromCX } =
 		usePreferences();
 	const { transferJSON } = useXITAction();
 
@@ -74,7 +74,6 @@
 	// Drawer Display
 	const loadDrawer: Ref<boolean> = ref(false);
 	const showDrawer: Ref<boolean> = ref(false);
-	const xitBuyFromCX = ref(true);
 
 	function show(): void {
 		if (!showDrawer.value) {
@@ -136,7 +135,7 @@
 							</p>
 							<n-checkbox
 								v-else
-								v-model:checked="xitBuyFromCX"
+								v-model:checked="defaultBuyItemsFromCX"
 								:disabled="
 									burnOrigin === 'Configure on Execution'
 								" />
@@ -166,7 +165,7 @@
 								{
 									name: 'Burn Supply',
 									origin: burnOrigin,
-									buy: xitBuyFromCX,
+									buy: defaultBuyItemsFromCX,
 								}
 							).value
 						"
@@ -193,7 +192,7 @@
 									{
 										name: 'Burn Supply',
 										origin: burnOrigin,
-										buy: xitBuyFromCX,
+										buy: defaultBuyItemsFromCX,
 									}
 								).value
 							)

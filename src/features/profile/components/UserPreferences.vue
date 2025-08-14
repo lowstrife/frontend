@@ -17,7 +17,14 @@
 	import CXPreferenceSelector from "@/features/exchanges/components/CXPreferenceSelector.vue";
 
 	// UI
-	import { NTable, NForm, NFormItem, NSelect, NInputNumber } from "naive-ui";
+	import {
+		NTable,
+		NForm,
+		NFormItem,
+		NSelect,
+		NInputNumber,
+		NCheckbox,
+	} from "naive-ui";
 
 	const planningStore = usePlanningStore();
 
@@ -29,7 +36,8 @@
 		planSettingsOverview,
 		cleanPlanPreferences,
 	} = usePreferences();
-	let { defaultEmpireUuid, defaultCXUuid } = usePreferences();
+	let { defaultEmpireUuid, defaultCXUuid, defaultBuyItemsFromCX } =
+		usePreferences();
 
 	const empireOptions: Ref<SelectMixedOption[]> = ref(
 		Object.values(planningStore.empires).map((e) => {
@@ -118,6 +126,9 @@
 				v-model:value="burnOrigin"
 				:options="XITSTATIONWAREHOUSES"
 				class="w-full" />
+		</n-form-item>
+		<n-form-item label="XIT Buy from CX">
+			<n-checkbox v-model:checked="defaultBuyItemsFromCX" />
 		</n-form-item>
 	</n-form>
 

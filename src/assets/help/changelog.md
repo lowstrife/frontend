@@ -1,5 +1,6 @@
-# 2025-08-17
+# 2025-08-14
 
+- Add user preference for XIT "Buy from CX" (by `lilbit-prun`) [#164](https://github.com/PRUNplanner/frontend/pull/164)
 - Improve Material Tiles with fixed width/height, text and gradient colors mirroring prun/rprun and text shadow (by `Razenpok`) [#163](https://github.com/PRUNplanner/frontend/pull/163)
 
 # 2025-08-13
