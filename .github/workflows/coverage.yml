@@ -5,6 +5,7 @@ on:
   - pull_request
 jobs:
   test:
+    if: github.repository == 'PRUNplanner/frontend'
     runs-on: ubuntu-latest
     strategy:
       matrix:
