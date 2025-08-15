@@ -38,6 +38,11 @@
 			type: Array as PropType<IXITTransferMaterial[]>,
 			required: true,
 		},
+		transferName: {
+			type: String,
+			required: false,
+			default: "Transfer",
+		},
 		// Button Definitions
 		buttonText: {
 			type: String,
@@ -113,7 +118,7 @@
 					<n-input
 						v-model:value="
 							transferJSON(elements, {
-								name: 'Supply',
+								name: transferName,
 								origin: burnOrigin,
 								buy: defaultBuyItemsFromCX,
 							}).value
@@ -126,7 +131,7 @@
 						@click="
 							copyToClipboard(
 								transferJSON(elements, {
-									name: 'Supply',
+									name: transferName,
 									origin: burnOrigin,
 									buy: defaultBuyItemsFromCX,
 								}).value

@@ -239,6 +239,7 @@
 			</template>
 			<XITTransferActionButton
 				:elements="xitTransferElements"
+				transfer-name="Supply Cart"
 				:drawer-width="400" />
 		</div>
 	</div>

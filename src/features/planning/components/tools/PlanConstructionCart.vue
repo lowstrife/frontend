@@ -163,6 +163,7 @@
 		<div class="flex flex-row gap-x-3 child:!my-auto">
 			<XITTransferActionButton
 				:elements="xitTransferElements"
+				transfer-name="Contruct"
 				:drawer-width="400" />
 			<n-button size="tiny" secondary @click="emit('close')">
 				<template #icon><CloseSharp /></template>
