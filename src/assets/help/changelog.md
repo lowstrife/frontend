@@ -1,3 +1,7 @@
+# 2025-08-15
+
+- Fix an issue where XIT actions on Construction and Supply Cart have wrong action names
+
 # 2025-08-14
 
 - Add user preference for XIT "Buy from CX" (by `lilbit-prun`) [#164](https://github.com/PRUNplanner/frontend/pull/164)
