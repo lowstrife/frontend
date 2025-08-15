@@ -30,9 +30,10 @@
 	// Components
 	import SharingButton from "@/features/sharing/components/SharingButton.vue";
 	import ManageAssignmentFilters from "@/features/manage/components/ManageAssignmentFilters.vue";
+	import SimpleCheckbox from "@/layout/components/SimpleCheckbox.vue";
 
 	// UI
-	import { useDialog, NCheckbox, NButton, NIcon } from "naive-ui";
+	import { useDialog, NButton, NIcon } from "naive-ui";
 	const dialog = useDialog();
 	import { XNDataTable, XNDataTableColumn } from "@skit/x.naive-ui";
 	import {
@@ -373,9 +374,8 @@
 					</div>
 				</template>
 				<template #render-cell="{ rowData }">
-					<div class="text-center">
-						<n-checkbox
-							:key="`CHECKBOX#${e.empireUuid}#${rowData.planUuid}`"
+					<div class="flex flex-col items-center">
+						<SimpleCheckbox
 							v-model:checked="rowData.empires[e.empireUuid]" />
 					</div>
 				</template>
