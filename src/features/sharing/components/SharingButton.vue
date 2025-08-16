@@ -8,7 +8,8 @@
 	import { copyToClipboard } from "@/util/data";
 
 	// UI
-	import { NModal, NButton } from "naive-ui";
+	import { NModal } from "naive-ui";
+	import { PButton } from "@/ui";
 	import { LinkSharp, RemoveRedEyeSharp } from "@vicons/material";
 
 	const props = defineProps({
@@ -17,9 +18,9 @@
 			required: true,
 		},
 		buttonSize: {
-			type: String as PropType<"tiny" | "small" | "medium" | "large">,
+			type: String as PropType<"sm" | "md">,
 			required: false,
-			default: "tiny",
+			default: "md",
 		},
 		load: {
 			type: Boolean,
@@ -85,45 +86,42 @@
 			</div>
 		</template>
 		<template v-if="!isShared" #action>
-			<n-button
-				size="small"
-				:loading="isCreating"
-				@click="doCreateSharing">
+			<PButton size="sm" :loading="isCreating" @click="doCreateSharing">
 				Create Sharing Link
-			</n-button>
+			</PButton>
 		</template>
 		<template v-else #action>
 			<div class="flex justify-between">
-				<n-button
+				<PButton
 					v-if="url"
-					size="small"
+					size="sm"
 					type="success"
 					@click="copyToClipboard(url)">
 					Copy URL
-				</n-button>
-				<n-button
-					size="small"
+				</PButton>
+				<PButton
+					size="sm"
 					type="error"
 					:loading="isDeleting"
 					@click="stopSharing">
 					Stop Sharing
-				</n-button>
+				</PButton>
 			</div>
 		</template>
 	</n-modal>
 
-	<n-button
-		:size="buttonSize"
-		:type="isShared ? 'success' : 'default'"
+	<PButton
+		size="sm"
+		:type="isShared ? 'success' : 'primary'"
 		@click="() => (showModal = !showModal)">
 		<template v-if="isShared" #icon><RemoveRedEyeSharp /></template>
 		<template v-else #icon><LinkSharp /></template>
 
 		<template v-if="isShared">{{ viewCount }}</template>
 
-		<template v-if="buttonSize !== 'tiny'">
+		<template v-if="buttonSize !== 'md'">
 			<template v-if="isShared"> Views</template>
 			<template v-else>Share</template>
 		</template>
-	</n-button>
+	</PButton>
 </template>

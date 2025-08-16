@@ -1,5 +1,4 @@
 <script setup lang="ts">
-	// Naive-UI Checkbox kills performance if it is rendered hundreds of times. This is lightweight.
 	const checked = defineModel<boolean>("checked");
 </script>
 

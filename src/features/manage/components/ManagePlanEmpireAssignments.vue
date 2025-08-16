@@ -14,7 +14,6 @@
 	const { getPlanetName } = usePlanetData();
 	import { useQuery } from "@/lib/query_cache/useQuery";
 	import { useQueryRepository } from "@/lib/query_cache/queryRepository";
-
 	// Util
 	import { inertClone } from "@/util/data";
 
@@ -30,10 +29,10 @@
 	// Components
 	import SharingButton from "@/features/sharing/components/SharingButton.vue";
 	import ManageAssignmentFilters from "@/features/manage/components/ManageAssignmentFilters.vue";
-	import SimpleCheckbox from "@/layout/components/SimpleCheckbox.vue";
 
 	// UI
-	import { useDialog, NButton, NIcon } from "naive-ui";
+	import { PCheckbox, PButton } from "@/ui";
+	import { useDialog, NIcon } from "naive-ui";
 	const dialog = useDialog();
 	import { XNDataTable, XNDataTableColumn } from "@skit/x.naive-ui";
 	import {
@@ -277,17 +276,14 @@
 	<div class="flex flex-row flex-wrap gap-3 justify-between">
 		<h2 class="text-xl font-bold my-auto">Plan ↔ Empire Assignments</h2>
 		<div class="flex gap-x-3">
-			<n-button
-				size="small"
-				:loading="refIsPatching"
-				@click="patchJunctions">
+			<PButton :loading="refIsPatching" @click="patchJunctions">
 				<template #icon><SaveSharp /></template>
 				Update Plan Assignments
-			</n-button>
-			<n-button size="small" @click="reload">
+			</PButton>
+			<PButton @click="reload">
 				<template #icon><ChangeCircleOutlined /></template>
 				Reload
-			</n-button>
+			</PButton>
 		</div>
 	</div>
 	<div class="py-3 text-white/60">
@@ -329,19 +325,19 @@
 		<x-n-data-table-column key="options" title="Configuration">
 			<template #render-cell="{ rowData }">
 				<div class="flex flex-row flex-wrap gap-1">
-					<n-button
-						size="tiny"
+					<PButton
+						size="sm"
 						type="error"
 						:loading="refIsDeleting === rowData.planUuid"
 						@click="handleDeleteConfirm(rowData.planUuid)">
 						<template #icon><ClearSharp /></template>
-					</n-button>
-					<n-button
-						size="tiny"
+					</PButton>
+					<PButton
+						size="sm"
 						:loading="refIsCloning === rowData.planUuid"
 						@click="clonePlan(rowData.planUuid, rowData.planName)">
 						<template #icon><ContentCopySharp /></template>
-					</n-button>
+					</PButton>
 					<SharingButton
 						:key="rowData.planUuid"
 						:plan-uuid="rowData.planUuid" />
@@ -375,7 +371,7 @@
 				</template>
 				<template #render-cell="{ rowData }">
 					<div class="flex flex-col items-center">
-						<SimpleCheckbox
+						<PCheckbox
 							v-model:checked="rowData.empires[e.empireUuid]" />
 					</div>
 				</template>
