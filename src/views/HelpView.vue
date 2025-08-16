@@ -26,7 +26,7 @@
 
 	onMounted(async () => (markdownContent.value = await loadMarkdown()));
 
-	import { PButton } from "@/ui";
+	import { PButton, PTooltip } from "@/ui";
 	import { ClearSharp } from "@vicons/material";
 	import { NButton } from "naive-ui";
 
@@ -44,6 +44,15 @@
 			class="flex-grow grid grid-cols-1 lg:grid-cols-[60%_auto] gap-3 divide-x divide-white/10 child:px-6 child:py-3">
 			<div>
 				<h2 class="text-xl font-bold pb-3">Help</h2>
+				<PTooltip>
+					<div>meow</div>
+					<template #trigger>
+						<PButton>Tooltipfoo</PButton>
+					</template>
+				</PTooltip>
+				<br />
+				<br />
+				<br />
 				<PButton
 					size="sm"
 					:loading="isLoading"

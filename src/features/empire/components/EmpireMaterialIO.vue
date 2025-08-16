@@ -167,9 +167,7 @@
 	<x-n-data-table :data="filteredMaterialIO" striped>
 		<x-n-data-table-column key="ticker" title="Ticker" sorter="default">
 			<template #render-cell="{ rowData }">
-				<MaterialTile
-					:ticker="rowData.ticker"
-					:enable-popover="false" />
+				<MaterialTile :ticker="rowData.ticker" />
 			</template>
 		</x-n-data-table-column>
 		<x-n-data-table-column key="delta" title="Delta" sorter="default">

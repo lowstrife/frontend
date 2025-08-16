@@ -14,13 +14,8 @@
 	import MaterialCXOverviewTable from "@/features/cx/components/MaterialCXOverviewTable.vue";
 
 	// UI
-	import {
-		NDrawer,
-		NDrawerContent,
-		NTable,
-		NSelect,
-		NTooltip,
-	} from "naive-ui";
+	import { PTooltip } from "@/ui";
+	import { NDrawer, NDrawerContent, NTable, NSelect } from "naive-ui";
 
 	// Util
 	import { formatNumber } from "@/util/numbers";
@@ -155,23 +150,24 @@
 					}
 				}
 			">
-			<n-tooltip
-				v-if="refExchangeOverview !== undefined && enablePopover">
+			<PTooltip v-if="refExchangeOverview !== undefined && enablePopover">
 				<template #trigger>
 					<div
-						class="flex flex-row w-full justify-center"
+						class="h-[24px] flex flex-row w-full justify-center items-center"
 						:class="{ 'px-2': !!amount }">
 						<div v-if="amount" class="pr-1">
 							{{ formatNumber(amount) }}x
 						</div>
-						<div class="font-bold text-nowrap">{{ ticker }}</div>
+						<div class="font-bold text-nowrap">
+							{{ ticker }}
+						</div>
 					</div>
 				</template>
 				<MaterialCXOverviewTable
 					v-if="refExchangeOverview"
 					:ticker="ticker"
 					:overview-data="refExchangeOverview" />
-			</n-tooltip>
+			</PTooltip>
 			<template v-else>
 				<div
 					class="flex flex-row w-full justify-center"
@@ -182,7 +178,7 @@
 					<div class="font-bold text-nowrap">{{ ticker }}</div>
 				</div>
 			</template>
-			<n-tooltip v-if="max">
+			<PTooltip v-if="max">
 				<template #trigger>
 					<div
 						class="!w-[7px] !my-0 border-white/50"
@@ -209,7 +205,7 @@
 						</tr>
 					</tbody>
 				</n-table>
-			</n-tooltip>
+			</PTooltip>
 		</div>
 	</div>
 

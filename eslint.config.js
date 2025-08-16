@@ -17,6 +17,7 @@ export default [
 			ecmaVersion: "latest",
 			globals: {
 				window: "readonly",
+				browser: "readonly",
 				document: "readonly",
 				console: "readonly",
 				setTimeout: "readonly",
