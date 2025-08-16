@@ -17,3 +17,11 @@ export interface PButtonConfig {
 	defaultSize: SizeKey;
 	defaultColor: ColorKey;
 }
+
+export interface PCheckboxConfig {
+	container: string;
+	label: string;
+	input: string;
+	checkIcon: string;
+	checkIconSVG: string;
+}

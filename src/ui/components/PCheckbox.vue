@@ -1,19 +1,19 @@
 <script setup lang="ts">
+	import { checkboxConfig } from "@/ui/styles";
 	const checked = defineModel<boolean>("checked");
 </script>
 
 <template>
-	<div class="inline-flex items-center">
-		<label class="flex items-center cursor-pointer relative">
+	<div :class="checkboxConfig.container">
+		<label :class="checkboxConfig.label">
 			<input
 				v-model="checked"
 				type="checkbox"
-				class="peer h-4 w-4 cursor-pointer transition-all appearance-none rounded shadow hover:shadow-md border border-table-border checked:bg-[#2a61bd] checked:border-[#2a61bd]" />
-			<span
-				class="absolute text-white opacity-0 peer-checked:opacity-100 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+				:class="checkboxConfig.input" />
+			<span :class="checkboxConfig.checkIcon">
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
-					class="h-3.5 w-3.5"
+					:class="checkboxConfig.checkIconSVG"
 					viewBox="0 0 20 20"
 					fill="currentColor"
 					stroke="currentColor"

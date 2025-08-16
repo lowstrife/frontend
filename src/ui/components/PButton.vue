@@ -1,15 +1,18 @@
 <script setup lang="ts">
-	import { PropType } from "vue";
-
 	import { ColorKey, SizeKey } from "@/ui/ui.types";
 	import { buttonConfig } from "@/ui/styles";
 
-	const props = defineProps({
-		loading: { type: Boolean, default: false },
-		disabled: { type: Boolean, default: false },
-		size: { type: String as PropType<SizeKey>, default: "md" },
-		type: { type: String as PropType<ColorKey>, default: "primary" },
-	});
+	const {
+		loading = false,
+		disabled = false,
+		size = "md",
+		type = "primary",
+	} = defineProps<{
+		loading?: boolean;
+		disabled?: boolean;
+		size?: SizeKey;
+		type?: ColorKey;
+	}>();
 
 	defineEmits<{
 		(e: "click"): void;
@@ -17,15 +20,15 @@
 
 	const buttonBase: string = [
 		buttonConfig.base,
-		buttonConfig.sizes[props.size].base,
-		buttonConfig.colors[props.type].base,
-		buttonConfig.colors[props.type].hover,
-		buttonConfig.colors[props.type].disabled,
+		buttonConfig.sizes[size].base,
+		buttonConfig.colors[type].base,
+		buttonConfig.colors[type].hover,
+		buttonConfig.colors[type].disabled,
 	].join(" ");
 
 	const iconClass: string = [
 		buttonConfig.iconBase,
-		buttonConfig.sizes[props.size].icon,
+		buttonConfig.sizes[size].icon,
 	].join(" ");
 </script>
 
@@ -56,19 +59,17 @@
 			</svg>
 		</span>
 
+		<!-- icon slot -->
 		<span v-if="$slots.icon" key="icon" :class="iconClass">
 			<slot name="icon" />
 		</span>
 
-		<!-- default slot for content -->
+		<!-- default slot -->
 		<slot />
 	</button>
 </template>
 
 <style scoped>
-	/* Media container keeps layout consistent (icon/spinner) */
-
-	/* Spinner visuals */
 	.spinner {
 		animation: rotate 1s linear infinite;
 	}

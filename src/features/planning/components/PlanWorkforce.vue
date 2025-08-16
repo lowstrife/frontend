@@ -12,7 +12,8 @@
 	} from "@/features/planning/usePlanCalculation.types";
 
 	// UI
-	import { NTable, NButton } from "naive-ui";
+	import { PButton } from "@/ui";
+	import { NTable } from "naive-ui";
 	import { CheckSharp, RadioButtonUncheckedSharp } from "@vicons/material";
 
 	const props = defineProps({
@@ -68,11 +69,11 @@
 				<td :class="workforce.left === 0 ? '!text-white/50' : ''">
 					{{ formatAmount(workforce.left) }}
 				</td>
-				<td>
-					<n-button
+				<td class="text-center">
+					<PButton
 						v-if="workforce.lux1"
 						:disabled="disabled"
-						size="tiny"
+						size="sm"
 						type="success"
 						@click="
 							() =>
@@ -86,11 +87,11 @@
 						<template #icon>
 							<CheckSharp />
 						</template>
-					</n-button>
-					<n-button
+					</PButton>
+					<PButton
 						v-else
 						:disabled="disabled"
-						size="tiny"
+						size="sm"
 						type="error"
 						@click="
 							() =>
@@ -104,13 +105,13 @@
 						<template #icon>
 							<RadioButtonUncheckedSharp />
 						</template>
-					</n-button>
+					</PButton>
 				</td>
-				<td>
-					<n-button
+				<td class="text-center">
+					<PButton
 						v-if="workforce.lux2"
 						:disabled="disabled"
-						size="tiny"
+						size="sm"
 						type="success"
 						@click="
 							() =>
@@ -124,11 +125,11 @@
 						<template #icon>
 							<CheckSharp />
 						</template>
-					</n-button>
-					<n-button
+					</PButton>
+					<PButton
 						v-else
 						:disabled="disabled"
-						size="tiny"
+						size="sm"
 						type="error"
 						@click="
 							() =>
@@ -142,7 +143,7 @@
 						<template #icon>
 							<RadioButtonUncheckedSharp />
 						</template>
-					</n-button>
+					</PButton>
 				</td>
 				<td :class="workforce.efficiency === 0 ? '!text-white/50' : ''">
 					{{ formatNumber(workforce.efficiency * 100) }} %

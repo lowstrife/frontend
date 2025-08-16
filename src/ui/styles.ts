@@ -1,4 +1,4 @@
-import { PButtonConfig } from "@/ui/ui.types";
+import { PButtonConfig, PCheckboxConfig } from "@/ui/ui.types";
 
 export const buttonConfig: PButtonConfig = {
 	base: "inline-flex items-center leading-none rounded-sm cursor-pointer",
@@ -24,9 +24,9 @@ export const buttonConfig: PButtonConfig = {
 			disabled: "disabled:bg-blue-800/50 disabled:text-white/80",
 		},
 		success: {
-			base: "bg-green-600 text-white",
-			hover: "hover:bg-green-700",
-			disabled: "disabled:bg-green-600/50 disabled:text-white/80",
+			base: "bg-lime-500 text-black",
+			hover: "hover:bg-lime-700",
+			disabled: "disabled:bg-lime-500/50 disabled:text-white/80",
 		},
 		secondary: {
 			base: "bg-gray-600 text-white",
@@ -44,4 +44,13 @@ export const buttonConfig: PButtonConfig = {
 			disabled: "disabled:bg-gray-100/50 disabled:text-gray-900",
 		},
 	},
+};
+
+export const checkboxConfig: PCheckboxConfig = {
+	container: "inline-flex items-center",
+	label: "flex items-center cursor-pointer relative",
+	input: "peer h-4 w-4 cursor-pointer transition-all appearance-none rounded shadow hover:shadow-md border border-table-border checked:bg-blue-800 checked:border-blue-800",
+	checkIcon:
+		"absolute text-white opacity-0 peer-checked:opacity-100 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2",
+	checkIconSVG: "h-3.5 w-3.5",
 };
