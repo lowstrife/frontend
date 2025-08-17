@@ -26,7 +26,7 @@
 
 	onMounted(async () => (markdownContent.value = await loadMarkdown()));
 
-	import { PButton, PTooltip } from "@/ui";
+	import { PButton, PTooltip, PButtonGroup } from "@/ui";
 	import { ClearSharp } from "@vicons/material";
 	import { NButton } from "naive-ui";
 
@@ -53,82 +53,34 @@
 				<br />
 				<br />
 				<br />
-				<PButton
-					size="sm"
-					:loading="isLoading"
-					@click="isLoading = !isLoading">
-					foo
-				</PButton>
-				<br />
-				<PButton size="sm" :loading="isLoading">
-					<template #icon><ClearSharp /></template>
-				</PButton>
-				<br />
-				<PButton size="sm">
-					<template #icon><ClearSharp /></template>
-					foo
-				</PButton>
-				<br />
-				<PButton size="sm" :loading="true">foo</PButton> <br />
-				<PButton size="sm" disabled>foo</PButton> <br />
-				<br />
-				<PButton :loading="isLoading" @click="isLoading = !isLoading">
-					foo
-				</PButton>
-				<br />
-				<PButton :loading="isLoading">
-					<template #icon><ClearSharp /></template>
-				</PButton>
-				<br />
-				<PButton>
-					<template #icon><ClearSharp /></template>
-					foo
-				</PButton>
-				<br />
-				<PButton :loading="true">foo</PButton> <br />
-				<PButton disabled>foo</PButton> <br />
+				<PButtonGroup>
+					<PButton> foo </PButton>
+					<PButton type="error">
+						<template #icon><ClearSharp /></template>
+						Delete
+					</PButton>
+					<PButton
+						type="secondary"
+						:loading="isLoading"
+						@click="isLoading = !isLoading">
+						foo
+					</PButton>
+				</PButtonGroup>
 				<br />
 				<br />
-				<PButton type="secondary">foo</PButton> <br />
-				<PButton type="secondary">
-					<template #icon><ClearSharp /></template>
-					foo
-				</PButton>
-				<br />
-				<PButton type="secondary" :loading="true">foo</PButton> <br />
-				<PButton type="secondary" disabled>foo</PButton> <br />
-				<br />
-				<PButton type="success">foo</PButton> <br />
-				<PButton type="success" :loading="true">foo</PButton> <br />
-				<PButton type="success" disabled>foo</PButton> <br />
-				<br />
-				<PButton type="error">foo</PButton> <br />
-				<PButton type="error">
-					<template #icon><ClearSharp /></template>
-					foo
-				</PButton>
-				<br />
-				<PButton type="error" :loading="true">foo</PButton> <br />
-				<PButton type="error" disabled>foo</PButton> <br />
-				<br />
-				<PButton type="warning">foo</PButton> <br />
-				<PButton type="warning">
-					<template #icon><ClearSharp /></template>
-					foo
-				</PButton>
-				<br />
-				<PButton type="warning" :loading="true">foo</PButton> <br />
-				<PButton type="warning" disabled>foo</PButton> <br />
-				<br />
-				<br />
-				<NButton>foo</NButton><br />
-				<NButton>
-					<template #icon><ClearSharp /></template>
-					foo
-				</NButton>
-				<br />
-				<NButton loading>foo</NButton><br />
-				<NButton disabled>foo</NButton><br />
+				<PButtonGroup vertical>
+					<PButton size="sm"> foo </PButton>
+					<PButton type="error" size="sm">
+						<template #icon><ClearSharp /></template>
+						Delete
+					</PButton>
+					<PButton
+						size="sm"
+						:loading="isLoading"
+						@click="isLoading = !isLoading">
+						foo
+					</PButton>
+				</PButtonGroup>
 			</div>
 			<div>
 				<h2 class="text-xl font-bold pb-3">Changelog</h2>

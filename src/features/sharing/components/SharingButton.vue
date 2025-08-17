@@ -86,7 +86,10 @@
 			</div>
 		</template>
 		<template v-if="!isShared" #action>
-			<PButton size="sm" :loading="isCreating" @click="doCreateSharing">
+			<PButton
+				:size="buttonSize"
+				:loading="isCreating"
+				@click="doCreateSharing">
 				Create Sharing Link
 			</PButton>
 		</template>
@@ -94,13 +97,13 @@
 			<div class="flex justify-between">
 				<PButton
 					v-if="url"
-					size="sm"
+					:size="buttonSize"
 					type="success"
 					@click="copyToClipboard(url)">
 					Copy URL
 				</PButton>
 				<PButton
-					size="sm"
+					:size="buttonSize"
 					type="error"
 					:loading="isDeleting"
 					@click="stopSharing">
@@ -111,7 +114,7 @@
 	</n-modal>
 
 	<PButton
-		size="sm"
+		:size="buttonSize"
 		:type="isShared ? 'success' : 'primary'"
 		@click="() => (showModal = !showModal)">
 		<template v-if="isShared" #icon><RemoveRedEyeSharp /></template>
@@ -119,7 +122,7 @@
 
 		<template v-if="isShared">{{ viewCount }}</template>
 
-		<template v-if="buttonSize !== 'md'">
+		<template v-if="buttonSize !== 'sm'">
 			<template v-if="isShared"> Views</template>
 			<template v-else>Share</template>
 		</template>

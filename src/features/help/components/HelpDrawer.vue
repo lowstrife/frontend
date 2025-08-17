@@ -1,6 +1,7 @@
 <script setup lang="ts">
 	import { PropType, ref, Ref, watch } from "vue";
 
+	import { PButton } from "@/ui";
 	import { NDrawer, NDrawerContent, NButton } from "naive-ui";
 	import { VueShowdown } from "vue-showdown";
 
@@ -37,9 +38,9 @@
 			default: "Help",
 		},
 		buttonSize: {
-			type: String as PropType<"tiny" | "small" | "medium" | "large">,
+			type: String as PropType<"sm" | "md">,
 			required: false,
-			default: "small",
+			default: "md",
 		},
 		buttonClass: {
 			type: String,
@@ -62,12 +63,12 @@
 
 <template>
 	<div :class="buttonClass">
-		<n-button
+		<PButton
 			:size="buttonSize"
-			secondary
+			type="secondary"
 			@click="() => (showDrawer = !showDrawer)">
 			{{ buttonTitle }}
-		</n-button>
+		</PButton>
 	</div>
 	<n-drawer v-model:show="showDrawer" :width="drawerWidth" placement="right">
 		<n-drawer-content closable>

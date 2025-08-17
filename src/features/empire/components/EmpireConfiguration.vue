@@ -16,15 +16,8 @@
 	import { SelectMixedOption } from "naive-ui/es/select/src/interface";
 
 	// UI
-	import {
-		NForm,
-		NFormItem,
-		NInput,
-		NSelect,
-		NInputNumber,
-		NCheckbox,
-		NButton,
-	} from "naive-ui";
+	import { PButton, PCheckbox } from "@/ui";
+	import { NForm, NFormItem, NInput, NSelect, NInputNumber } from "naive-ui";
 	import { SaveSharp, ChangeCircleOutlined } from "@vicons/material";
 
 	const props = defineProps({
@@ -96,20 +89,18 @@
 </script>
 
 <template>
-	<div class="pb-3 flex justify-between">
-		<h2 class="flex-grow text-white/80 font-bold text-lg my-auto">
-			Configuration
-		</h2>
+	<div class="pb-3 flex justify-between child:my-auto">
+		<h2 class="flex-grow text-white/80 font-bold text-lg">Configuration</h2>
 
 		<div class="flex gap-x-3">
-			<n-button size="small" @click="save">
+			<PButton size="md" @click="save">
 				<template #icon><SaveSharp /></template>
 				Save
-			</n-button>
-			<n-button size="small" @click="reload">
+			</PButton>
+			<PButton size="md" @click="reload">
 				<template #icon><ChangeCircleOutlined /></template>
 				Reload
-			</n-button>
+			</PButton>
 		</div>
 	</div>
 	<n-form
@@ -140,7 +131,7 @@
 				class="w-full" />
 		</n-form-item>
 		<n-form-item label="Use FIO Storage?">
-			<n-checkbox v-model:checked="localData.use_fio_storage" />
+			<PCheckbox v-model:checked="localData.use_fio_storage" />
 		</n-form-item>
 	</n-form>
 </template>

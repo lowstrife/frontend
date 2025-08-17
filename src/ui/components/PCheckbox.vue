@@ -4,7 +4,7 @@
 </script>
 
 <template>
-	<div :class="checkboxConfig.container">
+	<div class="pcheckbox" :class="checkboxConfig.container">
 		<label :class="checkboxConfig.label">
 			<input
 				v-model="checked"

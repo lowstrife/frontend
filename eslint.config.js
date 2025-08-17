@@ -15,16 +15,10 @@ export default [
 	{
 		languageOptions: {
 			ecmaVersion: "latest",
-			globals: {
-				window: "readonly",
-				browser: "readonly",
-				document: "readonly",
-				console: "readonly",
-				setTimeout: "readonly",
-				clearTimeout: "readonly",
-				setInterval: "readonly",
-				clearInterval: "readonly",
-			},
+		},
+		env: {
+			browser: true,
+			es2021: true,
 		},
 	},
 

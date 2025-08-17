@@ -1,6 +1,7 @@
 <script setup lang="ts">
 	import { ColorKey, SizeKey } from "@/ui/ui.types";
 	import { buttonConfig } from "@/ui/styles";
+	import { computed } from "vue";
 
 	const {
 		loading = false,
@@ -18,30 +19,28 @@
 		(e: "click"): void;
 	}>();
 
-	const buttonBase: string = [
-		buttonConfig.base,
-		buttonConfig.sizes[size].base,
-		buttonConfig.colors[type].base,
-		buttonConfig.colors[type].hover,
-		buttonConfig.colors[type].disabled,
-	].join(" ");
-
-	const iconClass: string = [
-		buttonConfig.iconBase,
-		buttonConfig.sizes[size].icon,
-	].join(" ");
+	const buttonBase = computed(() =>
+		[
+			"pbutton",
+			buttonConfig.base,
+			buttonConfig.sizes[size].base,
+			buttonConfig.colors[type].base,
+			buttonConfig.colors[type].hover,
+			buttonConfig.colors[type].disabled,
+		].join(" ")
+	);
 </script>
 
 <template>
 	<button
-		:class="buttonBase"
+		:class="`${buttonBase} ${!$slots.icon ? 'pt-[9px]' : ''}`"
 		:disabled="disabled"
 		:aria-busy="loading ? 'true' : 'false'"
 		@click="$emit('click')">
 		<span
 			v-if="loading"
 			key="spinner"
-			:class="iconClass"
+			:class="buttonConfig.sizes[size].icon"
 			aria-hidden="true">
 			<svg
 				class="spinner"
@@ -59,12 +58,13 @@
 			</svg>
 		</span>
 
-		<!-- icon slot -->
-		<span v-if="$slots.icon" key="icon" :class="iconClass">
+		<span
+			v-if="$slots.icon && !loading"
+			key="icon"
+			:class="buttonConfig.sizes[size].icon">
 			<slot name="icon" />
 		</span>
 
-		<!-- default slot -->
 		<slot />
 	</button>
 </template>

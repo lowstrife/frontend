@@ -340,6 +340,8 @@
 					</PButton>
 					<SharingButton
 						:key="rowData.planUuid"
+						#
+						button-size="sm"
 						:plan-uuid="rowData.planUuid" />
 				</div>
 			</template>

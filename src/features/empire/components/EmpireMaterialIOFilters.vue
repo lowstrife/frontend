@@ -2,7 +2,8 @@
 	import { computed, PropType } from "vue";
 
 	// UI
-	import { NForm, NFormItem, NButtonGroup, NButton, NSelect } from "naive-ui";
+	import { PButton, PButtonGroup } from "@/ui";
+	import { NForm, NFormItem, NSelect } from "naive-ui";
 
 	// Types & Interfaces
 	import { SelectMixedOption } from "naive-ui/es/select/src/interface";
@@ -84,44 +85,48 @@
 		<div class="flex flex-row gap-6 flex-wrap">
 			<div>
 				<n-form-item label="Display">
-					<n-button-group>
-						<n-button
-							:secondary="localLoadBalance"
+					<PButtonGroup>
+						<PButton
+							:type="localLoadBalance ? 'secondary' : 'primary'"
 							@click="
 								() => (localLoadBalance = !localLoadBalance)
 							">
 							All
-						</n-button>
-						<n-button
-							:secondary="!localLoadBalance"
+						</PButton>
+						<PButton
+							:type="!localLoadBalance ? 'secondary' : 'primary'"
 							@click="
 								() => (localLoadBalance = !localLoadBalance)
 							">
 							Loadbalance
-						</n-button>
-					</n-button-group>
+						</PButton>
+					</PButtonGroup>
 				</n-form-item>
 				<n-form-item label="Consumables">
-					<n-button-group>
-						<n-button
-							:secondary="localHideConsumables"
+					<PButtonGroup>
+						<PButton
+							:type="
+								localHideConsumables ? 'secondary' : 'primary'
+							"
 							@click="
 								() =>
 									(localHideConsumables =
 										!localHideConsumables)
 							">
 							Show
-						</n-button>
-						<n-button
-							:secondary="!localHideConsumables"
+						</PButton>
+						<PButton
+							:type="
+								!localHideConsumables ? 'secondary' : 'primary'
+							"
 							@click="
 								() =>
 									(localHideConsumables =
 										!localHideConsumables)
 							">
 							Hide
-						</n-button>
-					</n-button-group>
+						</PButton>
+					</PButtonGroup>
 				</n-form-item>
 			</div>
 			<div class="flex-grow">

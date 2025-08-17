@@ -1,19 +1,22 @@
-import { PButtonConfig, PCheckboxConfig } from "@/ui/ui.types";
+import {
+	PButtonConfig,
+	PButtonGroupConfig,
+	PCheckboxConfig,
+} from "@/ui/ui.types";
 
 export const buttonConfig: PButtonConfig = {
-	base: "inline-flex items-center leading-none rounded-sm cursor-pointer",
-	iconBase: "inline-flex items-center justify-center",
+	base: "inline-flex items-center justify-center leading-none rounded-sm cursor-pointer child:my-auto",
 	defaultSize: "md",
 	defaultColor: "primary",
 	sizes: {
 		sm: {
-			base: "py-1 px-1 gap-1 text-xs",
+			base: "py-1 px-1 gap-1 text-xs h-[24px] min-w-[24px]",
 			icon: "w-[12px] h-[12px]",
 			spinner: "w-[12px] h-[12px]",
 		},
 		md: {
-			base: "py-1 px-2 gap-2 text-sm",
-			icon: "w-4 h-4",
+			base: "py-2 px-2 gap-2 text-sm h-[32px] min-w-[32px]",
+			icon: "w-[16px] h-[16px]",
 			spinner: "w-[16px] h-[16px]",
 		},
 	},
@@ -29,9 +32,9 @@ export const buttonConfig: PButtonConfig = {
 			disabled: "disabled:bg-lime-500/50 disabled:text-white/80",
 		},
 		secondary: {
-			base: "bg-gray-600 text-white",
+			base: "bg-gray-800 text-white",
 			hover: "hover:bg-gray-700",
-			disabled: "disabled:bg-gray-600/50 disabled:text-white/80",
+			disabled: "disabled:bg-gray-800/50 disabled:text-white/80",
 		},
 		error: {
 			base: "bg-red-600 text-white",
@@ -53,4 +56,11 @@ export const checkboxConfig: PCheckboxConfig = {
 	checkIcon:
 		"absolute text-white opacity-0 peer-checked:opacity-100 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2",
 	checkIconSVG: "h-3.5 w-3.5",
+};
+
+export const buttonGroupConfig: PButtonGroupConfig = {
+	horizontal:
+		"inline-flex child:rounded-none [&_button]:first:!rounded-l-sm [&_button]:last:!rounded-r-sm",
+	vertical:
+		"inline-flex flex-col child:rounded-none [&_button]:first:!rounded-t-sm [&_button]:last:!rounded-b-sm",
 };

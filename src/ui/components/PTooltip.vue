@@ -64,7 +64,7 @@
 		<div
 			v-if="isVisible"
 			ref="tooltipRef"
-			class="z-50 p-1 text-sm text-white bg-black rounded shadow-lg">
+			class="z-99 p-1 text-sm text-white bg-black/90 border border-white/20 rounded shadow-lg">
 			<slot />
 		</div>
 	</Teleport>

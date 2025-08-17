@@ -8,7 +8,6 @@ export type ColorKey =
 
 export interface PButtonConfig {
 	base: string;
-	iconBase: string;
 	sizes: Record<SizeKey, { base: string; icon: string; spinner: string }>;
 	colors: Record<
 		ColorKey,
@@ -24,4 +23,9 @@ export interface PCheckboxConfig {
 	input: string;
 	checkIcon: string;
 	checkIconSVG: string;
+}
+
+export interface PButtonGroupConfig {
+	horizontal: string;
+	vertical: string;
 }
