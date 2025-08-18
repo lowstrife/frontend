@@ -1,6 +1,7 @@
 import js from "@eslint/js";
 import vue from "eslint-plugin-vue";
 import ts from "typescript-eslint";
+import globals from "globals";
 
 export default [
 	{
@@ -15,10 +16,10 @@ export default [
 	{
 		languageOptions: {
 			ecmaVersion: "latest",
-		},
-		env: {
-			browser: true,
-			es2021: true,
+			globals: {
+				...globals.browser,
+				...globals.node,
+			},
 		},
 	},
 
