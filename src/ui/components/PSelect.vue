@@ -17,7 +17,7 @@
 	});
 
 	const {
-		options = [],
+		options,
 		searchable = false,
 		disabled = false,
 	} = defineProps<{
@@ -30,25 +30,47 @@
 	const searchString: Ref<string | null> = ref(null);
 	let popperInstance: Instance | null = null;
 
-	const displayValue: ComputedRef<string> = computed(
-		() =>
-			options.find((f) => f.value === value.value)?.label ??
+	const displayValue: ComputedRef<string> = computed(() => {
+		const allOptions: PSelectOption[] = [];
+
+		options.forEach((e) => {
+			if (!e.children) allOptions.push(e);
+			else {
+				e.children.forEach((c) => allOptions.push(c));
+			}
+		});
+
+		return (
+			allOptions.find((f) => f.value === value.value)?.label ??
 			"Please Select"
-	);
+		);
+	});
 
 	const filteredOptions: ComputedRef<PSelectOption[]> = computed(() => {
 		if (searchString.value === null || searchString.value === "")
 			return options;
-		else
-			return options.filter((f) =>
-				f.label
-					.toLowerCase()
-					.includes(searchString.value!.toLowerCase())
+		else {
+			return options.filter(
+				(f) =>
+					f.label
+						.toLowerCase()
+						.includes(searchString.value!.toLowerCase()) ||
+					f.children?.filter((c) =>
+						c.label
+							.toLowerCase()
+							.includes(searchString.value!.toLowerCase())
+					)
 			);
+		}
 	});
 
+	const useSearch: Ref<boolean> = ref(false);
+
 	function change(e: string | number) {
-		if (!disabled) value.value = e;
+		if (!disabled) {
+			value.value = e;
+		}
+		useSearch.value = false;
 	}
 
 	const triggerRef = ref<HTMLElement | null>(null);
@@ -58,6 +80,7 @@
 	const toggleOpen = async () => {
 		if (!disabled) {
 			open.value = !open.value;
+
 			await nextTick();
 
 			if (open.value && triggerRef.value && dropdownRef.value) {
@@ -108,14 +131,31 @@
 
 <template>
 	<div
-		class="pselect"
 		ref="triggerRef"
-		v-click-outside="() => (open = false)">
+		v-click-outside="
+			() => {
+				open = false;
+			}
+		"
+		class="pselect">
 		<label name="pselect">
 			<div
-				class="flex flex-row items-center cursor-pointer bg-white/5 text-white/80 rounded-sm py-1 px-2"
-				@click="toggleOpen">
-				<div class="flex-grow">{{ displayValue }}</div>
+				class="flex flex-row items-center cursor-pointer bg-white/5 text-white/80 rounded-sm px-2"
+				:class="!useSearch ? 'py-1 ' : ''"
+				@click="
+					() => {
+						toggleOpen();
+						searchable ? (useSearch = true) : {};
+					}
+				">
+				<div v-if="!useSearch" class="flex-grow px-2">
+					{{ displayValue }}
+				</div>
+				<div
+					v-else
+					class="flex-grow child:child:!bg-transparent py-0.5">
+					<PInput v-model:value="searchString" placeholder="Search" />
+				</div>
 				<div class="text-white w-[16px]">
 					<svg
 						viewBox="0 0 16 16"
@@ -137,10 +177,6 @@
 				:style="dropdownPosition">
 				<div
 					class="w-full flex flex-col bg-gray-900 child:py-1 child:px-2 child:hover:bg-gray-800 rounded-b-sm">
-					<div v-if="searchable" class="hover:!bg-gray-900">
-						<PInput v-model:value="searchString" />
-					</div>
-
 					<template
 						v-for="option in filteredOptions"
 						:key="option.value">
@@ -149,8 +185,8 @@
 								v-for="child in option.children"
 								:key="`${option.value}#${child.value}`">
 								<div
-									@click="change(child.value)"
-									class="flex flex-row items-center">
+									class="flex flex-row items-center"
+									@click="change(child.value)">
 									<div class="pl-3 flex-grow">
 										{{ child.label }}
 									</div>
@@ -178,8 +214,8 @@
 						</template>
 						<template v-else>
 							<div
-								@click="change(option.value)"
-								class="flex flex-row items-center">
+								class="flex flex-row items-center"
+								@click="change(option.value)">
 								<div class="flex-grow">{{ option.label }}</div>
 								<div
 									v-if="option.value === value"

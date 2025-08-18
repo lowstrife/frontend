@@ -25,23 +25,6 @@
 	const markdownContent: Ref<string> = ref("");
 
 	onMounted(async () => (markdownContent.value = await loadMarkdown()));
-
-	import { PSelect } from "@/ui";
-	import { NSelect } from "naive-ui";
-
-	const options = [
-		{ label: "foo", value: 1 },
-		{
-			label: "moo",
-			value: 2,
-			children: [
-				{ label: "child 1", value: "child1" },
-				{ label: "child 2", value: "child2" },
-			],
-		},
-		{ label: "looooo test fo fo fo", value: 3 },
-	];
-	const v = ref(null);
 </script>
 
 <template>
@@ -56,15 +39,6 @@
 			<div>
 				<h2 class="text-xl font-bold pb-3">Help</h2>
 				...
-				<br />
-				{{ v }}
-				<br />
-				<PSelect v-model:value="v" :options="options" />
-
-				<br />
-				<br />
-				<n-select v-model:value="v" :options="options" />
-				<br />
 			</div>
 			<div>
 				<h2 class="text-xl font-bold pb-3">Changelog</h2>

@@ -1,14 +1,5 @@
 <script setup lang="ts">
-	import {
-		computed,
-		ComputedRef,
-		PropType,
-		ref,
-		Ref,
-		watch,
-		h,
-		VNodeChild,
-	} from "vue";
+	import { computed, ComputedRef, PropType, ref, Ref, watch } from "vue";
 
 	// Composables
 	import { useQuery } from "@/lib/query_cache/useQuery";
@@ -291,14 +282,14 @@
 				<PForm>
 					<PFormItem label="Empire Name">
 						<PInput
-							class="w-full"
 							v-model:value="refCreateName"
+							class="w-full"
 							placeholder="Empire Name (max. 100 characters)" />
 					</PFormItem>
 					<PFormItem label="Faction">
 						<PSelect
-							class="w-full"
 							v-model:value="refCreateFaction"
+							class="w-full"
 							:options="factionOptions as PSelectOption[]" />
 					</PFormItem>
 					<PFormItem label="Permits Total">

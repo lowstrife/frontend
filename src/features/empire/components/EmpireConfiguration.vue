@@ -106,7 +106,7 @@
 		<h2 class="flex-grow text-white/80 font-bold text-lg">Configuration</h2>
 
 		<div class="flex gap-x-3">
-			<PButton size="md" @click="save" :loading="isLoading">
+			<PButton size="md" :loading="isLoading" @click="save">
 				<template #icon><SaveSharp /></template>
 				Save
 			</PButton>

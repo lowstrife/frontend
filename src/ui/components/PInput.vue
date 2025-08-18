@@ -30,9 +30,9 @@
 				:disabled="disabled"
 				type="text"
 				:value="value"
-				@input="onInput"
 				:placeholder="placeholder"
-				:class="`${inputConfig.sizes[size].input}`" />
+				:class="`${inputConfig.sizes[size].input}`"
+				@input="onInput" />
 		</div>
 	</div>
 </template>

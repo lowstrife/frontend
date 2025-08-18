@@ -33,8 +33,8 @@
 	<PForm>
 		<PFormItem label="Permits">
 			<PInputNumber
-				:disabled="disabled"
 				v-model:value="localPermits"
+				:disabled="disabled"
 				show-buttons
 				:min="1"
 				:max="3" />

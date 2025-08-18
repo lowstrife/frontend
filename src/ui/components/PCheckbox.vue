@@ -9,8 +9,8 @@
 	<div class="pcheckbox" :class="checkboxConfig.container">
 		<label :class="checkboxConfig.label">
 			<input
-				:disabled="disabled"
 				v-model="checked"
+				:disabled="disabled"
 				type="checkbox"
 				:class="checkboxConfig.input" />
 			<span :class="checkboxConfig.checkIcon">

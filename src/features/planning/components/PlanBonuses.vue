@@ -61,14 +61,14 @@
 <template>
 	<PForm>
 		<PFormItem label="Corp. HQ">
-			<PCheckbox :disabled="disabled" v-model:checked="localCorpHQ" />
+			<PCheckbox v-model:checked="localCorpHQ" :disabled="disabled" />
 		</PFormItem>
 
 		<PFormItem label="COGC">
 			<PSelect
+				v-model:value="localCOGC"
 				class="w-full"
 				:disabled="disabled"
-				v-model:value="localCOGC"
 				:options="cogcOptions" />
 		</PFormItem>
 	</PForm>
