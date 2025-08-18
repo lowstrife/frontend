@@ -12,8 +12,8 @@
 	import { inertClone } from "@/util/data";
 
 	// UI
-	import { PButton } from "@/ui";
-	import { useDialog, NInput, NTag } from "naive-ui";
+	import { PButton, PInput } from "@/ui";
+	import { useDialog, NTag } from "naive-ui";
 	const dialog = useDialog();
 	import { XNDataTable, XNDataTableColumn } from "@skit/x.naive-ui";
 	import { ClearSharp, PlusSharp } from "@vicons/material";
@@ -125,8 +125,7 @@
 		<div class="flex gap-x-3 py-2">
 			<div class="my-auto">CX Name</div>
 			<div class="flex-grow">
-				<n-input
-					size="small"
+				<PInput
 					v-model:value="refNewCXName"
 					placeholder="CX Name (max. 100 characters)" />
 			</div>

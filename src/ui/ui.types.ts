@@ -1,5 +1,3 @@
-import { string } from "zod";
-
 export type SizeKey = "sm" | "md";
 export type ColorKey =
 	| "primary"

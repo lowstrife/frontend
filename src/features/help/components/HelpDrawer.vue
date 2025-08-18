@@ -2,7 +2,7 @@
 	import { PropType, ref, Ref, watch } from "vue";
 
 	import { PButton } from "@/ui";
-	import { NDrawer, NDrawerContent, NButton } from "naive-ui";
+	import { NDrawer, NDrawerContent } from "naive-ui";
 	import { VueShowdown } from "vue-showdown";
 
 	const showDrawer: Ref<boolean> = ref(false);

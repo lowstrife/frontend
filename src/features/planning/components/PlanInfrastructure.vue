@@ -53,9 +53,9 @@
 		<template v-for="inf in infrastructureOrder" :key="inf">
 			<div>{{ inf }}</div>
 			<PInputNumber
+				v-model:value="localInfrastructureData[inf]"
 				:disabled="disabled"
 				show-buttons
-				v-model:value="localInfrastructureData[inf]"
 				:min="0"
 				class="w-full min-w-[80px]"
 				@update:value="

@@ -53,8 +53,8 @@
 				type="text"
 				inputmode="numeric"
 				:value="value"
-				@input="onInput"
-				:class="`${inputNumberConfig.input} ${inputNumberConfig.sizes[size].input}`" />
+				:class="`${inputNumberConfig.input} ${inputNumberConfig.sizes[size].input}`"
+				@input="onInput" />
 
 			<div
 				v-if="showButtons"

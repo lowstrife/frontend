@@ -14,7 +14,7 @@
 
 	// UI
 	import { PButton } from "@/ui";
-	import { NButton, NSpin } from "naive-ui";
+	import { NSpin } from "naive-ui";
 	import { CloseSharp } from "@vicons/material";
 
 	const props = defineProps({

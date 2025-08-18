@@ -396,7 +396,6 @@
 	// Route Guard
 	onBeforeRouteLeave(() => {
 		if (modified.value) {
-			// eslint-disable-next-line no-undef
 			const answer = confirm(
 				"Do you really want to leave? Unsaved changes will be lost."
 			);

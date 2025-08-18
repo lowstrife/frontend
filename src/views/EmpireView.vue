@@ -287,10 +287,10 @@
 									<PForm>
 										<PFormItem label="Switch Empire">
 											<PSelect
-												class="w-full"
 												v-model:value="
 													selectedEmpireUuid
 												"
+												class="w-full"
 												:options="empireOptions"
 												@update-value="
 													(value: string) => {

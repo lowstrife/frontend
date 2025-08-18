@@ -89,16 +89,16 @@
 	<PForm>
 		<PFormItem label="Name">
 			<PInput
+				v-model:value="localPlanName"
 				class="w-full"
 				:disabled="disabled"
-				v-model:value="localPlanName"
 				placeholder="Plan Name" />
 		</PFormItem>
 		<PFormItem label="Empire">
 			<PSelect
+				v-model:value="localActiveEmpireUuid"
 				class="w-full"
 				:disabled="disabled"
-				v-model:value="localActiveEmpireUuid"
 				:options="empireSelectOptions" />
 		</PFormItem>
 	</PForm>
