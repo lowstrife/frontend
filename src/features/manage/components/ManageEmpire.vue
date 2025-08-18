@@ -28,6 +28,7 @@
 	import { capitalizeString } from "@/util/text";
 
 	// UI
+	import { PButton } from "@/ui";
 	import {
 		useDialog,
 		NForm,
@@ -41,7 +42,12 @@
 	} from "naive-ui";
 	const dialog = useDialog();
 	import { XNDataTable, XNDataTableColumn } from "@skit/x.naive-ui";
-	import { ClearSharp, PlusSharp, SaveSharp } from "@vicons/material";
+	import {
+		ClearSharp,
+		PhoneBluetoothSpeakerRound,
+		PlusSharp,
+		SaveSharp,
+	} from "@vicons/material";
 
 	const props = defineProps({
 		empires: {
@@ -274,19 +280,16 @@
 	<div class="flex flex-row flex-wrap gap-3 justify-between">
 		<h2 class="text-xl font-bold my-auto">Empire Configuration</h2>
 		<div class="flex gap-x-3">
-			<n-button
-				size="small"
+			<PButton
 				:loading="refIsUpdatingJunctions"
 				@click="updateCXJunctions">
 				<template #icon><SaveSharp /></template>
 				Update CX Assignments
-			</n-button>
-			<n-button
-				size="small"
-				@click="refShowCreateEmpire = !refShowCreateEmpire">
+			</PButton>
+			<PButton @click="refShowCreateEmpire = !refShowCreateEmpire">
 				<template #icon><PlusSharp /></template>
 				New Empire
-			</n-button>
+			</PButton>
 		</div>
 	</div>
 	<div class="py-3 text-white/60">
@@ -338,13 +341,14 @@
 					</n-form-item>
 				</n-form>
 			</div>
-			<n-button
-				size="small"
-				:disabled="!compCanCreate"
-				:loading="refIsCreating"
-				@click="createEmpire">
-				Create
-			</n-button>
+			<div>
+				<PButton
+					:disabled="!compCanCreate"
+					:loading="refIsCreating"
+					@click="createEmpire">
+					Create
+				</PButton>
+			</div>
 		</div>
 	</div>
 	<x-n-data-table :data="localEmpires" striped class="pt-3">
@@ -402,13 +406,13 @@
 		<x-n-data-table-column key="configuration" title="">
 			<template #render-cell="{ rowData }">
 				<div class="justify-end flex gap-x-3">
-					<n-button
-						size="tiny"
+					<PButton
+						size="sm"
 						type="error"
 						:loading="refIsDeleting === rowData.uuid"
 						@click="handleDeleteConfirm(rowData.uuid)">
 						<template #icon><ClearSharp /></template>
-					</n-button>
+					</PButton>
 				</div>
 			</template>
 		</x-n-data-table-column>

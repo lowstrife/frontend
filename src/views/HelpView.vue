@@ -25,6 +25,10 @@
 	const markdownContent: Ref<string> = ref("");
 
 	onMounted(async () => (markdownContent.value = await loadMarkdown()));
+
+	import { PInputNumber } from "@/ui";
+	import { NInputNumber } from "naive-ui";
+	const n = ref(0);
 </script>
 
 <template>
@@ -38,7 +42,26 @@
 			class="flex-grow grid grid-cols-1 lg:grid-cols-[60%_auto] gap-3 divide-x divide-white/10 child:px-6 child:py-3">
 			<div>
 				<h2 class="text-xl font-bold pb-3">Help</h2>
-				To be written...
+				...
+
+				<br />
+				<br />
+				<PInputNumber v-model:value="n" :min="0" />
+				<br />
+				<PInputNumber v-model:value="n" :min="0" decimals />
+				<br />
+				<div class="w-[100px]">
+					<PInputNumber
+						v-model:value="n"
+						:min="0"
+						:max="10"
+						show-buttons />
+				</div>
+				<br />
+				<br />
+				<NInputNumber size="small" v-model:value="n" show-button />
+				<br />
+				<br />
 			</div>
 			<div>
 				<h2 class="text-xl font-bold pb-3">Changelog</h2>

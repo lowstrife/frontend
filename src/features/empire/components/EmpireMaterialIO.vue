@@ -19,7 +19,6 @@
 	import { WORKFORCE_CONSUMPTION_MAP } from "@/features/planning/calculations/workforceCalculations";
 
 	// UI
-	import { NTooltip } from "naive-ui";
 	import { XNDataTable, XNDataTableColumn } from "@skit/x.naive-ui";
 
 	const props = defineProps({
@@ -219,19 +218,14 @@
 				<div
 					v-for="p in rowData.outputPlanets"
 					:key="`${rowData.ticker}#output#${p.planUuid}`">
-					<n-tooltip trigger="hover">
-						<template #trigger>
-							<router-link
-								:to="`/plan/${p.planetId}/${p.planUuid}`"
-								class="hover:underline">
-								{{ getPlanetName(p.planetId) }}:
-								<strong>
-									{{ formatNumber(p.output) }}
-								</strong>
-							</router-link>
-						</template>
-						{{ p.planName }}
-					</n-tooltip>
+					<router-link
+						:to="`/plan/${p.planetId}/${p.planUuid}`"
+						class="hover:underline">
+						{{ getPlanetName(p.planetId) }}:
+						<strong>
+							{{ formatNumber(p.output) }}
+						</strong>
+					</router-link>
 				</div>
 			</template>
 		</x-n-data-table-column>
@@ -240,19 +234,14 @@
 				<div
 					v-for="p in rowData.inputPlanets"
 					:key="`${rowData.ticker}#input#${p.planUuid}`">
-					<n-tooltip trigger="hover">
-						<template #trigger>
-							<router-link
-								:to="`/plan/${p.planetId}/${p.planUuid}`"
-								class="hover:underline">
-								{{ getPlanetName(p.planetId) }}:
-								<strong>
-									{{ formatNumber(p.input) }}
-								</strong>
-							</router-link>
-						</template>
-						{{ p.planName }}
-					</n-tooltip>
+					<router-link
+						:to="`/plan/${p.planetId}/${p.planUuid}`"
+						class="hover:underline">
+						{{ getPlanetName(p.planetId) }}:
+						<strong>
+							{{ formatNumber(p.input) }}
+						</strong>
+					</router-link>
 				</div>
 			</template>
 		</x-n-data-table-column>

@@ -12,14 +12,8 @@
 	import { inertClone } from "@/util/data";
 
 	// UI
-	import {
-		useDialog,
-		NForm,
-		NFormItem,
-		NInput,
-		NTag,
-		NButton,
-	} from "naive-ui";
+	import { PButton } from "@/ui";
+	import { useDialog, NInput, NTag } from "naive-ui";
 	const dialog = useDialog();
 	import { XNDataTable, XNDataTableColumn } from "@skit/x.naive-ui";
 	import { ClearSharp, PlusSharp } from "@vicons/material";
@@ -112,10 +106,10 @@
 <template>
 	<div class="flex flex-row flex-wrap gap-3 justify-between">
 		<h2 class="text-xl font-bold my-auto">CX Configuration</h2>
-		<n-button size="small" @click="refShowCreateCX = !refShowCreateCX">
+		<PButton @click="refShowCreateCX = !refShowCreateCX">
 			<template #icon><PlusSharp /></template>
 			New CX
-		</n-button>
+		</PButton>
 	</div>
 	<div class="py-3 text-white/60">
 		Removing a CX preference will delete all its exchange and material
@@ -128,27 +122,20 @@
 			!refShowCreateCX ? 'opacity-0 overflow-hidden !h-0' : 'opacity-100'
 		"
 		class="transition-all duration-500 border-t border-b border-white/10">
-		<div class="flex gap-x-3 pt-3 pb-1">
+		<div class="flex gap-x-3 py-2">
+			<div class="my-auto">CX Name</div>
 			<div class="flex-grow">
-				<n-form
-					label-placement="left"
-					label-width="auto"
-					label-align="left"
-					size="small">
-					<n-form-item label="CX Name">
-						<n-input
-							v-model:value="refNewCXName"
-							placeholder="CX Name (max. 100 characters)" />
-					</n-form-item>
-				</n-form>
+				<n-input
+					size="small"
+					v-model:value="refNewCXName"
+					placeholder="CX Name (max. 100 characters)" />
 			</div>
-			<n-button
-				size="small"
+			<PButton
 				:loading="refIsCreating"
 				:disabled="!compCanCreate"
 				@click="createCX">
 				Create
-			</n-button>
+			</PButton>
 		</div>
 	</div>
 
@@ -184,13 +171,13 @@
 		<x-n-data-table-column key="configuration" title="">
 			<template #render-cell="{ rowData }">
 				<div class="text-end">
-					<n-button
-						size="tiny"
+					<PButton
+						size="sm"
 						type="error"
 						:loading="refIsDeleting === rowData.uuid ? true : false"
 						@click="handleDeleteConfirm(rowData.uuid)">
 						<template #icon><ClearSharp /></template>
-					</n-button>
+					</PButton>
 				</div>
 			</template>
 		</x-n-data-table-column>

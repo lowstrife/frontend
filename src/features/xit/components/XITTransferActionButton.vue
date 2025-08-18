@@ -21,9 +21,8 @@
 	import { IXITTransferMaterial } from "@/features/xit/xitAction.types";
 
 	// UI
+	import { PButton, PCheckbox } from "@/ui";
 	import {
-		NButton,
-		NCheckbox,
 		NDrawer,
 		NDrawerContent,
 		NTable,
@@ -50,9 +49,9 @@
 			default: "XIT",
 		},
 		buttonSize: {
-			type: String as PropType<"tiny" | "small" | "medium" | "large">,
+			type: String as PropType<"sm" | "md">,
 			required: false,
-			default: "small",
+			default: "md",
 		},
 		buttonSecondary: {
 			type: Boolean,
@@ -85,9 +84,12 @@
 </script>
 
 <template>
-	<n-button :size="buttonSize" :secondary="buttonSecondary" @click="show">
+	<PButton
+		:size="buttonSize"
+		:type="buttonSecondary ? 'secondary' : 'primary'"
+		@click="show">
 		{{ buttonText }}
-	</n-button>
+	</PButton>
 
 	<n-drawer v-if="loadDrawer" v-model:show="showDrawer" :width="drawerWidth">
 		<n-drawer-content closable body-class="bg-black">
@@ -104,7 +106,7 @@
 						:options="XITSTATIONWAREHOUSES" />
 				</n-form-item>
 				<n-form-item label="Buy Items From CX">
-					<n-checkbox
+					<PCheckbox
 						v-model:checked="defaultBuyItemsFromCX"
 						:disabled="burnOrigin === 'Configure on Execution'" />
 
@@ -125,8 +127,7 @@
 						"
 						size="small"
 						type="textarea" />
-					<n-button
-						size="small"
+					<PButton
 						class="!ml-1"
 						@click="
 							copyToClipboard(
@@ -138,7 +139,7 @@
 							)
 						">
 						Copy
-					</n-button>
+					</PButton>
 				</n-form-item>
 			</n-form>
 

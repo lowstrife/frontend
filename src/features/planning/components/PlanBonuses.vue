@@ -5,6 +5,7 @@
 	import { PLAN_COGCPROGRAM_TYPE } from "@/stores/planningStore.types";
 
 	// UI
+	import { PForm, PFormItem, PCheckbox } from "@/ui";
 	import { NForm, NFormItem, NCheckbox, NSelect } from "naive-ui";
 	import { SelectMixedOption } from "naive-ui/es/select/src/interface";
 
@@ -59,18 +60,17 @@
 </script>
 
 <template>
-	<n-form
-		:disabled="disabled"
-		label-placement="left"
-		label-width="auto"
-		label-align="left"
-		size="small">
-		<n-form-item label="Corp. HQ">
-			<n-checkbox v-model:checked="localCorpHQ" />
-		</n-form-item>
+	<PForm>
+		<PFormItem label="Corp. HQ">
+			<n-checkbox :disabled="disabled" v-model:checked="localCorpHQ" />
+		</PFormItem>
 
-		<n-form-item label="COGC">
-			<n-select v-model:value="localCOGC" :options="cogcOptions" />
-		</n-form-item>
-	</n-form>
+		<PFormItem label="COGC">
+			<n-select
+				size="small"
+				:disabled="disabled"
+				v-model:value="localCOGC"
+				:options="cogcOptions" />
+		</PFormItem>
+	</PForm>
 </template>

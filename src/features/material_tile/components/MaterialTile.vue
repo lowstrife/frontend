@@ -14,13 +14,8 @@
 	import MaterialCXOverviewTable from "@/features/cx/components/MaterialCXOverviewTable.vue";
 
 	// UI
-	import {
-		NDrawer,
-		NDrawerContent,
-		NTable,
-		NSelect,
-		NTooltip,
-	} from "naive-ui";
+	import { PTooltip } from "@/ui";
+	import { NDrawer, NDrawerContent, NTable, NSelect } from "naive-ui";
 
 	// Util
 	import { formatNumber } from "@/util/numbers";
@@ -91,10 +86,9 @@
 	});
 
 	const categoryCssClass: ComputedRef<string> = computed(() => {
-		const sanitizedName = material.value.CategoryName
-			.replaceAll(' ', '-')
-			.replaceAll('(', '')
-			.replaceAll(')', '');
+		const sanitizedName = material.value.CategoryName.replaceAll(" ", "-")
+			.replaceAll("(", "")
+			.replaceAll(")", "");
 		return `material-category-${sanitizedName}`;
 	});
 
@@ -144,10 +138,10 @@
 <template>
 	<div class="inline-block">
 		<div
-			class="flex flex-row child:my-auto w-full material-tile"
+			class="flex flex-col items-center justify-center w-full material-tile"
 			:class="[
 				categoryCssClass,
-				{ 'hover:cursor-pointer': !disableDrawer || enablePopover }
+				{ 'hover:cursor-pointer': !disableDrawer || enablePopover },
 			]"
 			@click="
 				() => {
@@ -156,57 +150,62 @@
 					}
 				}
 			">
-			<n-tooltip
-				:disabled="
-					refExchangeOverview === undefined || !enablePopover
-						? true
-						: false
-				">
+			<PTooltip v-if="refExchangeOverview !== undefined && enablePopover">
 				<template #trigger>
 					<div
-						class="flex flex-row w-full justify-center"
+						class="inline-flex justify-center items-center"
 						:class="{ 'px-2': !!amount }">
 						<div v-if="amount" class="pr-1">
 							{{ formatNumber(amount) }}x
 						</div>
-						<div class="font-bold text-nowrap">{{ ticker }}</div>
+						<div class="font-bold text-nowrap">
+							{{ ticker }}
+						</div>
 					</div>
 				</template>
 				<MaterialCXOverviewTable
 					v-if="refExchangeOverview"
 					:ticker="ticker"
 					:overview-data="refExchangeOverview" />
-			</n-tooltip>
-			<template v-if="max">
-				<n-tooltip>
-					<template #trigger>
-						<div
-							class="!w-[7px] !my-0 border-white/50"
-							:style="indicatorStyle">
-							&nbsp;
-						</div>
-					</template>
-					<n-table>
-						<tbody>
-							<tr>
-								<th>Value</th>
-								<td>{{ formatNumber(amount) }}</td>
-							</tr>
-							<tr>
-								<th>Maximum</th>
-								<td>{{ formatNumber(max) }}</td>
-							</tr>
-							<tr>
-								<th>% / Max</th>
-								<td>
-									{{ formatNumber(indicatorPercentage) }}
-									%
-								</td>
-							</tr>
-						</tbody>
-					</n-table>
-				</n-tooltip>
+			</PTooltip>
+			<template v-else>
+				<div
+					class="flex flex-row w-full justify-center items-center"
+					:class="{ 'px-2': !!amount }">
+					<div v-if="amount" class="pr-1">
+						{{ formatNumber(amount) }}x
+					</div>
+					<div class="font-bold text-nowrap">{{ ticker }}</div>
+				</div>
 			</template>
+			<PTooltip v-if="max">
+				<template #trigger>
+					<div
+						class="!w-[7px] !my-0 border-white/50"
+						:style="indicatorStyle">
+						&nbsp;
+					</div>
+				</template>
+				<n-table>
+					<tbody>
+						<tr>
+							<th>Value</th>
+							<td>{{ formatNumber(amount) }}</td>
+						</tr>
+						<tr>
+							<th>Maximum</th>
+							<td>{{ formatNumber(max) }}</td>
+						</tr>
+						<tr>
+							<th>% / Max</th>
+							<td>
+								{{ formatNumber(indicatorPercentage) }}
+								%
+							</td>
+						</tr>
+					</tbody>
+				</n-table>
+			</PTooltip>
 		</div>
 	</div>
 

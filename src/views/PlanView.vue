@@ -51,7 +51,8 @@
 	);
 
 	// UI
-	import { NButton, NIcon, NTooltip, NSpin } from "naive-ui";
+	import { PButton, PTooltip } from "@/ui";
+	import { NIcon, NSpin } from "naive-ui";
 	import {
 		AutoAwesomeMosaicOutlined,
 		AutoAwesomeMosaicFilled,
@@ -499,10 +500,9 @@
 							<div class="my-auto pr-3 font-bold">Resources</div>
 							<div
 								class="my-auto pr-3 flex flex-row flex-wrap gap-1">
-								<n-tooltip
+								<PTooltip
 									v-for="resource in planetData.Resources"
-									:key="`PLANET#RESOURCE#${resource.MaterialTicker}`"
-									trigger="hover">
+									:key="`PLANET#RESOURCE#${resource.MaterialTicker}`">
 									<template #trigger>
 										<div class="hover:cursor-help">
 											<MaterialTile
@@ -515,27 +515,27 @@
 															resource.DailyExtraction
 														)
 													)
-												" />
+												"
+												disable-drawer
+												:enable-popover="false" />
 										</div>
 									</template>
 									{{ resource.ResourceType }}
-								</n-tooltip>
+								</PTooltip>
 							</div>
 						</div>
-						<div class="flex flex-row flex-wrap gap-3">
-							<n-button
+						<div class="flex flex-row flex-wrap gap-1">
+							<PButton
 								v-if="saveable"
 								:loading="refIsSaving"
 								:type="modified ? 'error' : 'success'"
-								size="small"
 								:disabled="disabled"
 								@click="save">
 								<template #icon><SaveSharp /></template>
 								{{ existing ? "Save" : "Create" }}
-							</n-button>
-							<n-button
+							</PButton>
+							<PButton
 								v-if="existing"
-								size="small"
 								:disabled="disabled"
 								:loading="refIsReloading"
 								@click="reloadPlan">
@@ -543,11 +543,10 @@
 									<ChangeCircleOutlined />
 								</template>
 								Reload
-							</n-button>
+							</PButton>
 
 							<ShareButton
 								v-if="!disabled && refPlanData.uuid"
-								button-size="small"
 								:plan-uuid="refPlanData.uuid" />
 
 							<HelpDrawer file-name="plan" />
@@ -557,39 +556,32 @@
 			</div>
 			<div class="border-b border-white/10 p-3">
 				<div class="flex grow justify-end gap-x-3 my-auto">
-					<n-button size="small" secondary @click="openTool('popr')">
+					<PButton type="secondary" @click="openTool('popr')">
 						POPR
-					</n-button>
-					<n-button
-						size="small"
-						secondary
+					</PButton>
+					<PButton
+						type="secondary"
 						@click="openTool('visitation-frequency')">
 						Visitation Frequency
-					</n-button>
-					<n-button
-						size="small"
-						secondary
+					</PButton>
+					<PButton
+						type="secondary"
 						@click="openTool('construction-cart')">
 						Construction Cart
-					</n-button>
-					<n-button
-						size="small"
-						secondary
-						@click="openTool('supply-cart')">
+					</PButton>
+					<PButton type="secondary" @click="openTool('supply-cart')">
 						Supply Cart
-					</n-button>
-					<n-button
-						size="small"
-						secondary
+					</PButton>
+					<PButton
+						type="secondary"
 						@click="openTool('repair-analysis')">
 						Repair Analysis
-					</n-button>
-					<n-button
-						size="small"
-						secondary
+					</PButton>
+					<PButton
+						type="secondary"
 						@click="openTool('optimize-habitation')">
 						Habitation Optimization
-					</n-button>
+					</PButton>
 				</div>
 			</div>
 			<div
@@ -660,10 +652,10 @@
 							class="text-white/80 font-bold text-lg pb-3 flex justify-between child:my-auto">
 							<div>Material I/O</div>
 							<div class="flex gap-x-3">
-								<n-tooltip trigger="hover">
+								<PTooltip>
 									<template #trigger>
-										<n-button
-											size="tiny"
+										<PButton
+											size="sm"
 											secondary
 											@click="
 												refMaterialIOShowBasked =
@@ -676,15 +668,15 @@
 													" />
 												<AttachMoneySharp v-else />
 											</template>
-										</n-button>
+										</PButton>
 									</template>
 									Toggle Weight & Volume
-								</n-tooltip>
+								</PTooltip>
 
-								<n-tooltip trigger="hover">
+								<PTooltip>
 									<template #trigger>
-										<n-button
-											size="tiny"
+										<PButton
+											size="sm"
 											secondary
 											@click="
 												refMaterialIOSplitted =
@@ -697,10 +689,10 @@
 													" />
 												<DataSaverOffSharp v-else />
 											</template>
-										</n-button>
+										</PButton>
 									</template>
 									Toggle Production & Workforce Split
-								</n-tooltip>
+								</PTooltip>
 							</div>
 						</h2>
 						<template v-if="!refMaterialIOSplitted">

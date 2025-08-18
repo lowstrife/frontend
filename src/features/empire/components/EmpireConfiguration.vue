@@ -16,15 +16,8 @@
 	import { SelectMixedOption } from "naive-ui/es/select/src/interface";
 
 	// UI
-	import {
-		NForm,
-		NFormItem,
-		NInput,
-		NSelect,
-		NInputNumber,
-		NCheckbox,
-		NButton,
-	} from "naive-ui";
+	import { PButton, PCheckbox, PForm, PFormItem, PInputNumber } from "@/ui";
+	import { NInput, NSelect } from "naive-ui";
 	import { SaveSharp, ChangeCircleOutlined } from "@vicons/material";
 
 	const props = defineProps({
@@ -96,51 +89,44 @@
 </script>
 
 <template>
-	<div class="pb-3 flex justify-between">
-		<h2 class="flex-grow text-white/80 font-bold text-lg my-auto">
-			Configuration
-		</h2>
+	<div class="pb-3 flex justify-between child:my-auto">
+		<h2 class="flex-grow text-white/80 font-bold text-lg">Configuration</h2>
 
 		<div class="flex gap-x-3">
-			<n-button size="small" @click="save">
+			<PButton size="md" @click="save">
 				<template #icon><SaveSharp /></template>
 				Save
-			</n-button>
-			<n-button size="small" @click="reload">
+			</PButton>
+			<PButton size="md" @click="reload">
 				<template #icon><ChangeCircleOutlined /></template>
 				Reload
-			</n-button>
+			</PButton>
 		</div>
 	</div>
-	<n-form
-		label-placement="left"
-		label-width="auto"
-		label-align="left"
-		size="small">
-		<n-form-item label="Name">
-			<n-input v-model:value="localData.name" />
-		</n-form-item>
-		<n-form-item label="Faction">
+	<PForm>
+		<PFormItem label="Name">
+			<n-input size="small" v-model:value="localData.name" />
+		</PFormItem>
+		<PFormItem label="Faction">
 			<n-select
+				size="small"
 				v-model:value="localData.faction"
 				:options="factionOptions" />
-		</n-form-item>
-		<n-form-item label="Permits Total">
-			<n-input-number
+		</PFormItem>
+		<PFormItem label="Permits Total">
+			<PInputNumber
 				v-model:value="localData.permits_total"
-				show-button
-				:min="2"
-				class="w-full" />
-		</n-form-item>
-		<n-form-item label="Permits Used">
-			<n-input-number
+				show-buttons
+				:min="2" />
+		</PFormItem>
+		<PFormItem label="Permits Used">
+			<PInputNumber
 				v-model:value="localData.permits_used"
-				show-button
-				:min="1"
-				class="w-full" />
-		</n-form-item>
-		<n-form-item label="Use FIO Storage?">
-			<n-checkbox v-model:checked="localData.use_fio_storage" />
-		</n-form-item>
-	</n-form>
+				show-buttons
+				:min="1" />
+		</PFormItem>
+		<PFormItem label="Use FIO Storage?">
+			<PCheckbox v-model:checked="localData.use_fio_storage" />
+		</PFormItem>
+	</PForm>
 </template>
