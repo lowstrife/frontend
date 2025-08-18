@@ -33,6 +33,8 @@
 	}
 
 	function canChange(e: number): boolean {
+		if (disabled) return false;
+
 		if (value.value + e >= min && value.value + e <= max) return true;
 		return false;
 	}
@@ -43,47 +45,52 @@
 </script>
 
 <template>
-	<div
-		:class="`${inputNumberConfig.container} ${inputNumberConfig.sizes[size].container}`">
-		<input
-			type="text"
-			inputmode="numeric"
-			:value="value"
-			@input="onInput"
-			:class="`${inputNumberConfig.input} ${inputNumberConfig.sizes[size].input}`" />
-
+	<div>
 		<div
-			v-if="showButtons"
-			:class="`${inputNumberConfig.buttonContainer} ${inputNumberConfig.sizes[size].buttonContainer}`">
+			:class="`${inputNumberConfig.container} ${inputNumberConfig.sizes[size].container}`">
+			<input
+				:disabled="disabled"
+				type="text"
+				inputmode="numeric"
+				:value="value"
+				@input="onInput"
+				:class="`${inputNumberConfig.input} ${inputNumberConfig.sizes[size].input}`" />
+
 			<div
-				:class="
-					canChange(-1)
-						? inputNumberConfig.buttonChangeAllowed
-						: inputNumberConfig.buttonChangeUnallowed
-				"
-				@click="change(-1)">
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					xmlns:xlink="http://www.w3.org/1999/xlink"
-					viewBox="0 0 24 24">
-					<path d="M19 12.998H5v-2h14z" fill="currentColor"></path>
-				</svg>
-			</div>
-			<div
-				:class="
-					canChange(1)
-						? inputNumberConfig.buttonChangeAllowed
-						: inputNumberConfig.buttonChangeUnallowed
-				"
-				@click="change(1)">
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					xmlns:xlink="http://www.w3.org/1999/xlink"
-					viewBox="0 0 24 24">
-					<path
-						d="M19 12.998h-6v6h-2v-6H5v-2h6v-6h2v6h6z"
-						fill="currentColor"></path>
-				</svg>
+				v-if="showButtons"
+				:class="`${inputNumberConfig.buttonContainer} ${inputNumberConfig.sizes[size].buttonContainer}`">
+				<div
+					:class="
+						canChange(-1)
+							? inputNumberConfig.buttonChangeAllowed
+							: inputNumberConfig.buttonChangeUnallowed
+					"
+					@click="change(-1)">
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						xmlns:xlink="http://www.w3.org/1999/xlink"
+						viewBox="0 0 24 24">
+						<path
+							d="M19 12.998H5v-2h14z"
+							fill="currentColor"></path>
+					</svg>
+				</div>
+				<div
+					:class="
+						canChange(1)
+							? inputNumberConfig.buttonChangeAllowed
+							: inputNumberConfig.buttonChangeUnallowed
+					"
+					@click="change(1)">
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						xmlns:xlink="http://www.w3.org/1999/xlink"
+						viewBox="0 0 24 24">
+						<path
+							d="M19 12.998h-6v6h-2v-6H5v-2h6v-6h2v6h6z"
+							fill="currentColor"></path>
+					</svg>
+				</div>
 			</div>
 		</div>
 	</div>

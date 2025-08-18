@@ -7,7 +7,8 @@
 	import { SelectMixedOption } from "naive-ui/es/select/src/interface";
 
 	// UI
-	import { NForm, NFormItem, NInput, NSelect } from "naive-ui";
+	import { PForm, PFormItem } from "@/ui";
+	import { NInput, NSelect } from "naive-ui";
 
 	const props = defineProps({
 		disabled: {
@@ -85,19 +86,20 @@
 </script>
 
 <template>
-	<n-form
-		:disabled="disabled"
-		label-placement="left"
-		label-width="auto"
-		label-align="left"
-		size="small">
-		<n-form-item label="Name">
-			<n-input v-model:value="localPlanName" placeholder="Plan Name" />
-		</n-form-item>
-		<n-form-item label="Empire">
+	<PForm>
+		<PFormItem label="Name">
+			<n-input
+				size="small"
+				:disabled="disabled"
+				v-model:value="localPlanName"
+				placeholder="Plan Name" />
+		</PFormItem>
+		<PFormItem label="Empire">
 			<n-select
+				size="small"
+				:disabled="disabled"
 				v-model:value="localActiveEmpireUuid"
 				:options="empireSelectOptions" />
-		</n-form-item>
-	</n-form>
+		</PFormItem>
+	</PForm>
 </template>

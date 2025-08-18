@@ -1,12 +1,15 @@
 <script setup lang="ts">
 	import { checkboxConfig } from "@/ui/styles";
 	const checked = defineModel<boolean>("checked");
+
+	const { disabled = false } = defineProps<{ disabled?: boolean }>();
 </script>
 
 <template>
 	<div class="pcheckbox" :class="checkboxConfig.container">
 		<label :class="checkboxConfig.label">
 			<input
+				:disabled="disabled"
 				v-model="checked"
 				type="checkbox"
 				:class="checkboxConfig.input" />

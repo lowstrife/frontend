@@ -93,13 +93,13 @@ export const inputNumberConfig: PInputNumberConfig = {
 	buttonChangeUnallowed: "text-white/20 cursor-auto",
 	sizes: {
 		sm: {
-			container: "gap-3 child:py-1",
-			input: "pl-3 pr-2",
+			container: "gap-1 child:py-1",
+			input: "px-1",
 			buttonContainer: "pr-2 child:w-[20px] child:h-[20px]",
 		},
 		md: {
-			container: "gap-3 child:py-1",
-			input: "pl-3 pr-2",
+			container: "gap-1 child:py-1",
+			input: "px-2",
 			buttonContainer: "pr-2 child:w-[20px] child:h-[20px]",
 		},
 	},

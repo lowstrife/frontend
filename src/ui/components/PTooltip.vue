@@ -20,7 +20,7 @@
 
 		if (triggerRef.value && tooltipRef.value) {
 			popperInstance = createPopper(triggerRef.value, tooltipRef.value, {
-				placement: props.placement ?? "left",
+				placement: props.placement ?? "top",
 				modifiers: [
 					{
 						name: "offset",
@@ -28,7 +28,7 @@
 					},
 					{
 						name: "flip",
-						options: { fallbackPlacements: ["top", "bottom"] },
+						options: { fallbackPlacements: ["bottom", "left"] },
 					},
 					{ name: "preventOverflow", options: { padding: 8 } },
 				],

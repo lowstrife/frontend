@@ -17,7 +17,7 @@
 
 	// UI
 	import { PButton, PCheckbox, PForm, PFormItem, PInputNumber } from "@/ui";
-	import { NInput, NSelect, NInputNumber } from "naive-ui";
+	import { NInput, NSelect } from "naive-ui";
 	import { SaveSharp, ChangeCircleOutlined } from "@vicons/material";
 
 	const props = defineProps({

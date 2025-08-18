@@ -23,8 +23,8 @@
 	import PlanCOGM from "@/features/planning/components/tools/PlanCOGM.vue";
 
 	// UI
-	import { PButton } from "@/ui";
-	import { NModal, NInputNumber, NTable } from "naive-ui";
+	import { PButton, PInputNumber } from "@/ui";
+	import { NModal, NTable } from "naive-ui";
 	import { ClearSharp, AnalyticsOutlined } from "@vicons/material";
 
 	const props = defineProps({
@@ -86,13 +86,14 @@
 			v-if="localRecipeData.cogm"
 			:cogm-data="localRecipeData.cogm" />
 	</n-modal>
-	<div class="flex flex-col gap-3">
-		<n-input-number
-			v-model:value="localRecipeAmount"
-			:disabled="disabled"
-			size="small"
-			:min="0"
-			@update:value="
+	<div class="flex flex-col">
+		<div class="pb-1">
+			<PInputNumber
+				v-model:value="localRecipeAmount"
+				:disabled="disabled"
+				show-buttons
+				:min="0"
+				@update:value="
 				(value: number | null) => {
 					if (value !== null) {
 						emit(
@@ -102,7 +103,8 @@
 						);
 					}
 				}
-			" />
+				" />
+		</div>
 		<div
 			v-click-outside="
 				() => {
@@ -226,7 +228,7 @@
 			</n-table>
 		</div>
 
-		<div class="flex flex-row justify-between child:my-auto">
+		<div class="flex flex-row justify-between pt-1 child:my-auto">
 			<PButton
 				size="sm"
 				:disabled="

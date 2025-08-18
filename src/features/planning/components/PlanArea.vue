@@ -5,7 +5,7 @@
 	import { IAreaResult } from "@/features/planning/usePlanCalculation.types";
 
 	// UI
-	import { NForm, NFormItem, NInputNumber } from "naive-ui";
+	import { PForm, PFormItem, PInputNumber } from "@/ui";
 
 	const props = defineProps({
 		disabled: {
@@ -30,21 +30,16 @@
 </script>
 
 <template>
-	<n-form
-		:disabled="disabled"
-		label-placement="left"
-		label-width="auto"
-		label-align="left"
-		size="small">
-		<n-form-item label="Permits">
-			<n-input-number
+	<PForm>
+		<PFormItem label="Permits">
+			<PInputNumber
+				:disabled="disabled"
 				v-model:value="localPermits"
-				class="text-center"
-				button-placement="both"
+				show-buttons
 				:min="1"
 				:max="3" />
-		</n-form-item>
-		<n-form-item label="Area">
+		</PFormItem>
+		<PFormItem label="Area">
 			<div class="flex flex-row w-full">
 				<div class="flex-grow">
 					{{ areaData.areaUsed }} / {{ areaData.areaTotal }}
@@ -62,6 +57,6 @@
 					Free
 				</div>
 			</div>
-		</n-form-item>
-	</n-form>
+		</PFormItem>
+	</PForm>
 </template>

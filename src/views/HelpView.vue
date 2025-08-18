@@ -46,14 +46,14 @@
 
 				<br />
 				<br />
-				<PInputNumber v-model:value="n" :min="5" />
+				<PInputNumber v-model:value="n" :min="0" />
 				<br />
-				<PInputNumber v-model:value="n" :min="5" decimals />
+				<PInputNumber v-model:value="n" :min="0" decimals />
 				<br />
 				<div class="w-[100px]">
 					<PInputNumber
 						v-model:value="n"
-						:min="5"
+						:min="0"
 						:max="10"
 						show-buttons />
 				</div>

@@ -11,8 +11,7 @@
 	import { formatNumber } from "@/util/numbers";
 
 	// UI
-	import { PTooltip, PButton } from "@/ui";
-	import { NInputNumber, NButton, NTooltip } from "naive-ui";
+	import { PTooltip, PButton, PInputNumber } from "@/ui";
 	import { ClearSharp, PlusSharp } from "@vicons/material";
 
 	const props = defineProps({
@@ -66,12 +65,13 @@
 			<h3 class="text-2xl font-bold text-white">
 				{{ localBuildingData.name }}
 			</h3>
-			<div class="flex gap-x-3">
-				<n-input-number
+			<div class="flex flex-row flex-wrap gap-x-1">
+				<PInputNumber
 					v-model:value="localBuildingData.amount"
 					:disabled="disabled"
+					show-buttons
 					:min="0"
-					size="small"
+					class="max-w-[100px]"
 					@update:value="
 						(value: number | null) => {
 							if (value !== null) {
@@ -83,6 +83,7 @@
 							}
 						}
 					" />
+
 				<PButton
 					v-if="localBuildingData.recipeOptions.length > 0"
 					:disabled="disabled"
@@ -146,7 +147,7 @@
 		<div
 			class="p-3 border-pp-border border rounded-bl rounded-br bg-white/5 flex flex-row gap-x-3 justify-between">
 			<div>
-				<n-tooltip trigger="hover">
+				<PTooltip>
 					<template #trigger>
 						<div class="flex gap-x-3 hover:cursor-help">
 							<span>Efficiency</span>
@@ -168,7 +169,7 @@
 						<div>{{ element.efficiencyType }}</div>
 						<div>{{ formatNumber(element.value * 100) }} %</div>
 					</div>
-				</n-tooltip>
+				</PTooltip>
 			</div>
 			<div class="flex gap-x-3">
 				<span>Revenue</span>

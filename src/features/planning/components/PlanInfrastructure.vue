@@ -8,7 +8,7 @@
 	} from "@/features/planning/usePlanCalculation.types";
 
 	// UI
-	import { NInputNumber } from "naive-ui";
+	import { PInputNumber } from "@/ui";
 
 	const props = defineProps({
 		disabled: {
@@ -52,11 +52,13 @@
 		class="grid grid-cols-1 lg:grid-cols-[auto_auto_auto_auto] gap-3 child:my-auto">
 		<template v-for="inf in infrastructureOrder" :key="inf">
 			<div>{{ inf }}</div>
-			<n-input-number
+			<PInputNumber
+				:disabled="disabled"
+				show-buttons
 				v-model:value="localInfrastructureData[inf]"
+				:min="0"
 				class="w-full min-w-[80px]"
-				size="small"
-				:on-update:value="
+				@update:value="
 						(value: number | null) => {
 							if (value !== null) {
 								emit('update:infrastructure', inf, value);
