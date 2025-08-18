@@ -7,8 +7,8 @@
 	import { SelectMixedOption } from "naive-ui/es/select/src/interface";
 
 	// UI
-	import { PForm, PFormItem } from "@/ui";
-	import { NInput, NSelect } from "naive-ui";
+	import { PForm, PFormItem, PInput, PSelect } from "@/ui";
+	import { PSelectOption } from "@/ui/ui.types";
 
 	const props = defineProps({
 		disabled: {
@@ -80,23 +80,23 @@
 			set: (value: string) => emit("update:active-empire", value),
 		});
 
-	const empireSelectOptions: ComputedRef<SelectMixedOption[]> = computed(() =>
-		createEmpireOptions(props.empireOptions)
+	const empireSelectOptions: ComputedRef<PSelectOption[]> = computed(
+		() => createEmpireOptions(props.empireOptions) as PSelectOption[]
 	);
 </script>
 
 <template>
 	<PForm>
 		<PFormItem label="Name">
-			<n-input
-				size="small"
+			<PInput
+				class="w-full"
 				:disabled="disabled"
 				v-model:value="localPlanName"
 				placeholder="Plan Name" />
 		</PFormItem>
 		<PFormItem label="Empire">
-			<n-select
-				size="small"
+			<PSelect
+				class="w-full"
 				:disabled="disabled"
 				v-model:value="localActiveEmpireUuid"
 				:options="empireSelectOptions" />

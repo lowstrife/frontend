@@ -12,8 +12,8 @@
 	import { PLAN_COGCPROGRAM_TYPE } from "@/stores/planningStore.types";
 
 	// UI
-	import { PCheckbox } from "@/ui";
-	import { NSelect } from "naive-ui";
+	import { PCheckbox, PSelect } from "@/ui";
+	import { PSelectOption } from "@/ui/ui.types";
 
 	const props = defineProps({
 		disabled: {
@@ -76,21 +76,20 @@
 			<div class="text-sm">Match COGC</div>
 			<PCheckbox v-model:checked="localMatchCOGC" :disabled="disabled" />
 
-			<n-select
+			<PSelect
 				v-model:value="localSelectedBuilding"
 				:disabled="disabled"
-				filterable
-				size="small"
+				searchable
 				class="w-full lg:!w-[300px]"
 				:options="
 					getProductionBuildingOptions(
 						localProductionData.buildings.map((e) => e.name),
 						localMatchCOGC ? localCOGC : undefined
-					)
+					) as PSelectOption[]
 				"
 				@update:value="
-					(value: string) => {
-						emit('create:building', value);
+					(value) => {
+						emit('create:building', value as string);
 					}
 				" />
 		</div>

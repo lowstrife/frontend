@@ -5,3 +5,5 @@ export { default as PButtonGroup } from "@/ui/components/PButtonGroup.vue";
 export { default as PForm } from "@/ui/components/PForm.vue";
 export { default as PFormItem } from "@/ui/components/PFormItem.vue";
 export { default as PInputNumber } from "@/ui/components/PInputNumber.vue";
+export { default as PInput } from "@/ui/components/PInput.vue";
+export { default as PSelect } from "@/ui/components/PSelect.vue";
