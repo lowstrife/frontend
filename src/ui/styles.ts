@@ -2,20 +2,24 @@ import {
 	PButtonConfig,
 	PButtonGroupConfig,
 	PCheckboxConfig,
+	PFormConfig,
+	PFormItemConfig,
+	PInputNumberConfig,
+	PTooltipConfig,
 } from "@/ui/ui.types";
 
 export const buttonConfig: PButtonConfig = {
-	base: "inline-flex items-center justify-center leading-none rounded-sm cursor-pointer child:my-auto",
+	base: "inline-flex items-center justify-center leading-none rounded-sm cursor-pointer text-nowrap",
 	defaultSize: "md",
 	defaultColor: "primary",
 	sizes: {
 		sm: {
-			base: "py-1 px-1 gap-1 text-xs h-[24px] min-w-[24px]",
+			base: "py-1 px-1 gap-1 text-xs h-[21px] min-w-[22px]",
 			icon: "w-[12px] h-[12px]",
 			spinner: "w-[12px] h-[12px]",
 		},
 		md: {
-			base: "py-2 px-2 gap-2 text-sm h-[32px] min-w-[32px]",
+			base: "px-2 gap-2 text-sm h-[28px] min-w-[28px]",
 			icon: "w-[16px] h-[16px]",
 			spinner: "w-[16px] h-[16px]",
 		},
@@ -63,4 +67,40 @@ export const buttonGroupConfig: PButtonGroupConfig = {
 		"inline-flex child:rounded-none [&_button]:first:!rounded-l-sm [&_button]:last:!rounded-r-sm",
 	vertical:
 		"inline-flex flex-col child:rounded-none [&_button]:first:!rounded-t-sm [&_button]:last:!rounded-b-sm",
+};
+
+export const tooltipConfig: PTooltipConfig = {
+	trigger: "ptooltip flex-1",
+	tooltip:
+		"z-50 py-1 px-2 text-sm text-white bg-black/90 border border-white/20 rounded shadow-lg",
+};
+
+export const formConfig: PFormConfig = {
+	container: "grid grid-cols-[auto_1fr] child:mb-1",
+};
+
+export const formItemConfig: PFormItemConfig = {
+	label: "flex items-center h-full pr-4",
+	content: "flex items-center h-full",
+};
+
+export const inputNumberConfig: PInputNumberConfig = {
+	container:
+		"inline-flex w-full items-center leading-none rounded-sm text-nowrap bg-white/5 text-white/80",
+	input: "w-full outline-0 ",
+	buttonContainer: "flex flex-row ",
+	buttonChangeAllowed: "text-white/70 cursor-pointer",
+	buttonChangeUnallowed: "text-white/20 cursor-auto",
+	sizes: {
+		sm: {
+			container: "gap-3 child:py-1",
+			input: "pl-3 pr-2",
+			buttonContainer: "pr-2 child:w-[20px] child:h-[20px]",
+		},
+		md: {
+			container: "gap-3 child:py-1",
+			input: "pl-3 pr-2",
+			buttonContainer: "pr-2 child:w-[20px] child:h-[20px]",
+		},
+	},
 };

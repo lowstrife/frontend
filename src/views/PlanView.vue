@@ -524,7 +524,7 @@
 								</PTooltip>
 							</div>
 						</div>
-						<div class="flex flex-row flex-wrap gap-3">
+						<div class="flex flex-row flex-wrap gap-1">
 							<PButton
 								v-if="saveable"
 								:loading="refIsSaving"

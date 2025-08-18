@@ -1,0 +1,90 @@
+<script setup lang="ts">
+	import { SizeKey } from "@/ui/ui.types";
+	import { inputNumberConfig } from "@/ui/styles";
+
+	const value = defineModel<number>("value", {
+		required: true,
+		type: Number,
+	});
+
+	const {
+		disabled = false,
+		size = "md",
+		showButtons = false,
+		decimals = false,
+		min = -Infinity,
+		max = Infinity,
+	} = defineProps<{
+		disabled?: boolean;
+		size?: SizeKey;
+		showButtons?: boolean;
+		decimals?: boolean;
+		min?: number;
+		max?: number;
+	}>();
+
+	function onInput(e: Event) {
+		const target = e.target as HTMLInputElement;
+
+		// sanitize input
+		if (decimals) target.value = target.value.replace(/[^0-9.]/g, "");
+		else target.value = target.value.replace(/\D/g, "");
+		value.value = Number(target.value);
+	}
+
+	function canChange(e: number): boolean {
+		if (value.value + e >= min && value.value + e <= max) return true;
+		return false;
+	}
+
+	function change(e: number) {
+		if (canChange(e)) value.value += e;
+	}
+</script>
+
+<template>
+	<div
+		:class="`${inputNumberConfig.container} ${inputNumberConfig.sizes[size].container}`">
+		<input
+			type="text"
+			inputmode="numeric"
+			:value="value"
+			@input="onInput"
+			:class="`${inputNumberConfig.input} ${inputNumberConfig.sizes[size].input}`" />
+
+		<div
+			v-if="showButtons"
+			:class="`${inputNumberConfig.buttonContainer} ${inputNumberConfig.sizes[size].buttonContainer}`">
+			<div
+				:class="
+					canChange(-1)
+						? inputNumberConfig.buttonChangeAllowed
+						: inputNumberConfig.buttonChangeUnallowed
+				"
+				@click="change(-1)">
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					xmlns:xlink="http://www.w3.org/1999/xlink"
+					viewBox="0 0 24 24">
+					<path d="M19 12.998H5v-2h14z" fill="currentColor"></path>
+				</svg>
+			</div>
+			<div
+				:class="
+					canChange(1)
+						? inputNumberConfig.buttonChangeAllowed
+						: inputNumberConfig.buttonChangeUnallowed
+				"
+				@click="change(1)">
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					xmlns:xlink="http://www.w3.org/1999/xlink"
+					viewBox="0 0 24 24">
+					<path
+						d="M19 12.998h-6v6h-2v-6H5v-2h6v-6h2v6h6z"
+						fill="currentColor"></path>
+				</svg>
+			</div>
+		</div>
+	</div>
+</template>

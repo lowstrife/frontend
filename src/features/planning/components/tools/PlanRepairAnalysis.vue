@@ -17,7 +17,8 @@
 	import { Options } from "highcharts";
 
 	// UI
-	import { NForm, NFormItem, NButton, NSelect } from "naive-ui";
+	import { PButton } from "@/ui";
+	import { NForm, NFormItem, NSelect } from "naive-ui";
 	import { CloseSharp } from "@vicons/material";
 
 	const props = defineProps({
@@ -263,9 +264,9 @@
 <template>
 	<div class="pb-3 flex flex-row justify-between child:my-auto">
 		<h2 class="text-white/80 font-bold text-lg">Repair Analysis</h2>
-		<n-button size="tiny" secondary @click="emit('close')">
+		<PButton size="sm" type="secondary" @click="emit('close')">
 			<template #icon><CloseSharp /></template>
-		</n-button>
+		</PButton>
 	</div>
 	<div class="text-white/50 pb-3">
 		The Repair Analysis is based on the work of

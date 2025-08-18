@@ -23,7 +23,8 @@
 	import PlanCOGM from "@/features/planning/components/tools/PlanCOGM.vue";
 
 	// UI
-	import { NModal, NInputNumber, NButton, NTable } from "naive-ui";
+	import { PButton } from "@/ui";
+	import { NModal, NInputNumber, NTable } from "naive-ui";
 	import { ClearSharp, AnalyticsOutlined } from "@vicons/material";
 
 	const props = defineProps({
@@ -85,7 +86,7 @@
 			v-if="localRecipeData.cogm"
 			:cogm-data="localRecipeData.cogm" />
 	</n-modal>
-	<div>
+	<div class="flex flex-col gap-3">
 		<n-input-number
 			v-model:value="localRecipeAmount"
 			:disabled="disabled"
@@ -108,7 +109,7 @@
 					refShowRecipeOptions = false;
 				}
 			"
-			class="border border-pp-border my-3 p-3 flex flex-row justify-between child:my-auto hover:cursor-pointer"
+			class="border border-pp-border p-3 flex flex-row justify-between child:my-auto hover:cursor-pointer"
 			@click="refShowRecipeOptions = true">
 			<div class="flex flex-col gap-1">
 				<MaterialTile
@@ -225,17 +226,17 @@
 			</n-table>
 		</div>
 
-		<div class="mb-3 flex flex-row justify-between child:my-auto">
-			<n-button
-				size="tiny"
+		<div class="flex flex-row justify-between child:my-auto">
+			<PButton
+				size="sm"
 				:disabled="
 					localRecipeData.cogm && !localRecipeData.cogm.visible
 				"
 				@click="() => (refShowCOGM = true)">
 				<template #icon><AnalyticsOutlined /> </template>
-			</n-button>
-			<n-button
-				size="tiny"
+			</PButton>
+			<PButton
+				size="sm"
 				type="error"
 				@click="
 					() => {
@@ -243,7 +244,7 @@
 					}
 				">
 				<template #icon><ClearSharp /></template>
-			</n-button>
+			</PButton>
 		</div>
 	</div>
 </template>

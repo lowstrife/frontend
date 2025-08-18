@@ -12,7 +12,8 @@
 	import { PLAN_COGCPROGRAM_TYPE } from "@/stores/planningStore.types";
 
 	// UI
-	import { NSelect, NCheckbox } from "naive-ui";
+	import { PCheckbox } from "@/ui";
+	import { NSelect } from "naive-ui";
 
 	const props = defineProps({
 		disabled: {
@@ -73,10 +74,7 @@
 
 		<div class="flex child:my-auto gap-x-3">
 			<div class="text-sm">Match COGC</div>
-			<n-checkbox
-				v-model:checked="localMatchCOGC"
-				:disabled="disabled"
-				size="small" />
+			<PCheckbox v-model:checked="localMatchCOGC" :disabled="disabled" />
 
 			<n-select
 				v-model:value="localSelectedBuilding"

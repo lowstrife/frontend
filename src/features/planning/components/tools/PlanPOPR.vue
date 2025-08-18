@@ -13,6 +13,7 @@
 	import { IPopulationReport } from "@/features/api/gameData.types";
 
 	// UI
+	import { PButton } from "@/ui";
 	import { NButton, NSpin } from "naive-ui";
 	import { CloseSharp } from "@vicons/material";
 
@@ -57,9 +58,9 @@
 		<h2 class="text-white/80 font-bold text-lg">
 			Latest Population Report
 		</h2>
-		<n-button size="tiny" secondary @click="emit('close')">
+		<PButton size="sm" type="secondary" @click="emit('close')">
 			<template #icon><CloseSharp /></template>
-		</n-button>
+		</PButton>
 	</div>
 	<div v-if="hasError">
 		Error loading latest population report. The planet might not have

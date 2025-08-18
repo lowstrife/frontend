@@ -138,7 +138,7 @@
 <template>
 	<div class="inline-block">
 		<div
-			class="flex flex-row child:my-auto w-full material-tile"
+			class="flex flex-col items-center justify-center w-full material-tile"
 			:class="[
 				categoryCssClass,
 				{ 'hover:cursor-pointer': !disableDrawer || enablePopover },
@@ -153,7 +153,7 @@
 			<PTooltip v-if="refExchangeOverview !== undefined && enablePopover">
 				<template #trigger>
 					<div
-						class="h-[24px] flex flex-row w-full justify-center items-center"
+						class="inline-flex justify-center items-center"
 						:class="{ 'px-2': !!amount }">
 						<div v-if="amount" class="pr-1">
 							{{ formatNumber(amount) }}x
@@ -170,7 +170,7 @@
 			</PTooltip>
 			<template v-else>
 				<div
-					class="flex flex-row w-full justify-center"
+					class="flex flex-row w-full justify-center items-center"
 					:class="{ 'px-2': !!amount }">
 					<div v-if="amount" class="pr-1">
 						{{ formatNumber(amount) }}x

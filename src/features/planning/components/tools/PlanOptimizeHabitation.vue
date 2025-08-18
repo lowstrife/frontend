@@ -28,7 +28,8 @@
 	import { formatNumber, formatAmount } from "@/util/numbers";
 
 	// UI
-	import { NButton, NTable } from "naive-ui";
+	import { PButton } from "@/ui";
+	import { NTable } from "naive-ui";
 	import { CloseSharp } from "@vicons/material";
 
 	const props = defineProps({
@@ -139,15 +140,14 @@
 	<div class="pb-3 flex flex-row justify-between child:my-auto">
 		<h2 class="text-white/80 font-bold text-lg">Optimize Habitation</h2>
 		<div class="flex flex-row gap-3 child:!my-auto">
-			<n-button
-				size="small"
+			<PButton
 				:disabled="!payloadChanged"
 				@click="fetchData(optimizePayload)">
 				Recalculate
-			</n-button>
-			<n-button size="tiny" secondary @click="emit('close')">
+			</PButton>
+			<PButton size="sm" type="secondary" @click="emit('close')">
 				<template #icon><CloseSharp /></template>
-			</n-button>
+			</PButton>
 		</div>
 	</div>
 	<div>
@@ -247,8 +247,7 @@
 					<tr>
 						<td></td>
 						<td>
-							<n-button
-								size="small"
+							<PButton
 								@click="
 									() => {
 										if (!responseData) return;
@@ -263,11 +262,10 @@
 									}
 								">
 								Apply Area
-							</n-button>
+							</PButton>
 						</td>
 						<td>
-							<n-button
-								size="small"
+							<PButton
 								@click="
 									() => {
 										if (!responseData) return;
@@ -282,7 +280,7 @@
 									}
 								">
 								Apply Cost
-							</n-button>
+							</PButton>
 						</td>
 					</tr>
 				</tbody>

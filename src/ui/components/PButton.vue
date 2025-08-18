@@ -21,7 +21,6 @@
 
 	const buttonBase = computed(() =>
 		[
-			"pbutton",
 			buttonConfig.base,
 			buttonConfig.sizes[size].base,
 			buttonConfig.colors[type].base,
@@ -33,7 +32,8 @@
 
 <template>
 	<button
-		:class="`${buttonBase} ${!$slots.icon ? 'pt-[9px]' : ''}`"
+		class="pbutton"
+		:class="buttonBase"
 		:disabled="disabled"
 		:aria-busy="loading ? 'true' : 'false'"
 		@click="$emit('click')">

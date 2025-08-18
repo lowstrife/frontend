@@ -29,7 +29,8 @@
 	import { IMaterial } from "@/features/api/gameData.types";
 
 	// UI
-	import { NButton, NTable, NInputNumber } from "naive-ui";
+	import { PButton } from "@/ui";
+	import { NTable, NInputNumber } from "naive-ui";
 	import { CloseSharp } from "@vicons/material";
 
 	const props = defineProps({
@@ -165,9 +166,9 @@
 				:elements="xitTransferElements"
 				transfer-name="Contruct"
 				:drawer-width="400" />
-			<n-button size="tiny" secondary @click="emit('close')">
+			<PButton size="sm" type="secondary" @click="emit('close')">
 				<template #icon><CloseSharp /></template>
-			</n-button>
+			</PButton>
 		</div>
 	</div>
 	<div class="overflow-auto">

@@ -26,11 +26,9 @@
 
 	onMounted(async () => (markdownContent.value = await loadMarkdown()));
 
-	import { PButton, PTooltip, PButtonGroup } from "@/ui";
-	import { ClearSharp } from "@vicons/material";
-	import { NButton } from "naive-ui";
-
-	const isLoading = ref(false);
+	import { PInputNumber } from "@/ui";
+	import { NInputNumber } from "naive-ui";
+	const n = ref(0);
 </script>
 
 <template>
@@ -44,43 +42,26 @@
 			class="flex-grow grid grid-cols-1 lg:grid-cols-[60%_auto] gap-3 divide-x divide-white/10 child:px-6 child:py-3">
 			<div>
 				<h2 class="text-xl font-bold pb-3">Help</h2>
-				<PTooltip>
-					<div>meow</div>
-					<template #trigger>
-						<PButton>Tooltipfoo</PButton>
-					</template>
-				</PTooltip>
+				...
+
 				<br />
 				<br />
+				<PInputNumber v-model:value="n" :min="5" />
 				<br />
-				<PButtonGroup>
-					<PButton> foo </PButton>
-					<PButton type="error">
-						<template #icon><ClearSharp /></template>
-						Delete
-					</PButton>
-					<PButton
-						type="secondary"
-						:loading="isLoading"
-						@click="isLoading = !isLoading">
-						foo
-					</PButton>
-				</PButtonGroup>
+				<PInputNumber v-model:value="n" :min="5" decimals />
+				<br />
+				<div class="w-[100px]">
+					<PInputNumber
+						v-model:value="n"
+						:min="5"
+						:max="10"
+						show-buttons />
+				</div>
 				<br />
 				<br />
-				<PButtonGroup vertical>
-					<PButton size="sm"> foo </PButton>
-					<PButton type="error" size="sm">
-						<template #icon><ClearSharp /></template>
-						Delete
-					</PButton>
-					<PButton
-						size="sm"
-						:loading="isLoading"
-						@click="isLoading = !isLoading">
-						foo
-					</PButton>
-				</PButtonGroup>
+				<NInputNumber size="small" v-model:value="n" show-button />
+				<br />
+				<br />
 			</div>
 			<div>
 				<h2 class="text-xl font-bold pb-3">Changelog</h2>

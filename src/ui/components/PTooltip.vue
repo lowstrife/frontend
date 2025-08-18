@@ -1,5 +1,6 @@
 <script setup lang="ts">
 	import { ref, onBeforeUnmount, nextTick } from "vue";
+	import { tooltipConfig } from "@/ui/styles";
 	import { createPopper, Instance } from "@popperjs/core";
 
 	const props = defineProps<{
@@ -54,17 +55,14 @@
 <template>
 	<div
 		ref="triggerRef"
-		class="ptooltip flex flex-1"
+		:class="tooltipConfig.trigger"
 		@mouseenter="show"
 		@mouseleave="hide">
 		<slot name="trigger"></slot>
 	</div>
 
 	<Teleport to="body">
-		<div
-			v-if="isVisible"
-			ref="tooltipRef"
-			class="z-99 p-1 text-sm text-white bg-black/90 border border-white/20 rounded shadow-lg">
+		<div v-if="isVisible" ref="tooltipRef" :class="tooltipConfig.tooltip">
 			<slot />
 		</div>
 	</Teleport>

@@ -34,13 +34,8 @@
 	import { formatNumber, formatAmount, clamp } from "@/util/numbers";
 
 	// UI
-	import {
-		NButton,
-		NButtonGroup,
-		NInputNumber,
-		NSelect,
-		NIcon,
-	} from "naive-ui";
+	import { PButton, PButtonGroup } from "@/ui";
+	import { NInputNumber, NSelect, NIcon } from "naive-ui";
 	import {
 		XNDataTable,
 		XNDataTableColumn,
@@ -183,9 +178,9 @@
 <template>
 	<div class="pb-3 flex flex-row justify-between child:my-auto">
 		<h2 class="text-white/80 font-bold text-lg">Supply Cart</h2>
-		<n-button size="tiny" secondary @click="emit('close')">
+		<PButton size="sm" type="secondary" @click="emit('close')">
 			<template #icon><CloseSharp /></template>
-		</n-button>
+		</PButton>
 	</div>
 	<div class="text-white/50 pb-3">
 		The Supply Cart provides updates on your plans needs combined with
@@ -198,27 +193,27 @@
 	<div
 		class="border border-b-0 rounded-[3px] border-white/20 p-3 flex flex-row justify-between">
 		<div>
-			<n-button-group size="small">
-				<n-button
-					:type="refTypeFilter === 'all' ? 'success' : 'default'"
+			<PButtonGroup>
+				<PButton
+					:type="refTypeFilter === 'all' ? 'primary' : 'secondary'"
 					@click="refTypeFilter = 'all'">
 					All
-				</n-button>
-				<n-button
+				</PButton>
+				<PButton
 					:type="
-						refTypeFilter === 'workforce' ? 'success' : 'default'
+						refTypeFilter === 'workforce' ? 'primary' : 'secondary'
 					"
 					@click="refTypeFilter = 'workforce'">
 					Workforce
-				</n-button>
-				<n-button
+				</PButton>
+				<PButton
 					:type="
-						refTypeFilter === 'production' ? 'success' : 'default'
+						refTypeFilter === 'production' ? 'primary' : 'secondary'
 					"
 					@click="refTypeFilter = 'production'">
 					Production
-				</n-button>
-			</n-button-group>
+				</PButton>
+			</PButtonGroup>
 		</div>
 		<div class="flex flex-row flex-wrap gap-3">
 			<div class="my-auto font-bold">Stock Duration (days)</div>
@@ -239,8 +234,7 @@
 			</template>
 			<XITTransferActionButton
 				:elements="xitTransferElements"
-				transfer-name="Supply Cart"
-				:drawer-width="400" />
+				transfer-name="Supply Cart" />
 		</div>
 	</div>
 

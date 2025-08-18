@@ -11,6 +11,7 @@
 	import { formatNumber } from "@/util/numbers";
 
 	// UI
+	import { PTooltip, PButton } from "@/ui";
 	import { NInputNumber, NButton, NTooltip } from "naive-ui";
 	import { ClearSharp, PlusSharp } from "@vicons/material";
 
@@ -82,21 +83,19 @@
 							}
 						}
 					" />
-				<n-button
+				<PButton
 					v-if="localBuildingData.recipeOptions.length > 0"
 					:disabled="disabled"
-					size="small"
 					@click="emit('add:building:recipe', buildingIndex)">
 					<template #icon><PlusSharp /></template>
 					RECIPE
-				</n-button>
-				<n-button
+				</PButton>
+				<PButton
 					:disabled="disabled"
-					size="small"
 					type="error"
 					@click="emit('delete:building', buildingIndex)">
 					<template #icon><ClearSharp /></template>
-				</n-button>
+				</PButton>
 			</div>
 		</div>
 		<div class="p-3 border-pp-border border-l border-t border-r">
