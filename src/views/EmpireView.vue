@@ -54,7 +54,7 @@
 	} from "@/features/empire/empire.types";
 
 	// UI
-	import { NForm, NFormItem, NSelect } from "naive-ui";
+	import { PForm, PFormItem, PSelect } from "@/ui";
 	import { useQuery } from "@/lib/query_cache/useQuery";
 	import { useQueryRepository } from "@/lib/query_cache/queryRepository";
 
@@ -284,13 +284,10 @@
 							<div>
 								<div
 									class="px-6 pb-3 pt-4 border-b border-white/10 my-auto">
-									<n-form
-										label-placement="left"
-										label-width="auto"
-										label-align="left"
-										size="small">
-										<n-form-item label="Switch Empire">
-											<n-select
+									<PForm>
+										<PFormItem label="Switch Empire">
+											<PSelect
+												class="w-full"
 												v-model:value="
 													selectedEmpireUuid
 												"
@@ -303,8 +300,8 @@
 															value;
 													}
 												" />
-										</n-form-item>
-									</n-form>
+										</PFormItem>
+									</PForm>
 								</div>
 								<div class="p-6 border-b border-white/10">
 									<AsyncEmpireCostOverview

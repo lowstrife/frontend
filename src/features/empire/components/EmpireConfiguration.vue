@@ -16,9 +16,17 @@
 	import { SelectMixedOption } from "naive-ui/es/select/src/interface";
 
 	// UI
-	import { PButton, PCheckbox, PForm, PFormItem, PInputNumber } from "@/ui";
-	import { NInput, NSelect } from "naive-ui";
+	import {
+		PButton,
+		PCheckbox,
+		PForm,
+		PFormItem,
+		PInputNumber,
+		PInput,
+		PSelect,
+	} from "@/ui";
 	import { SaveSharp, ChangeCircleOutlined } from "@vicons/material";
+	import { PSelectOption } from "@/ui/ui.types";
 
 	const props = defineProps({
 		data: {
@@ -30,6 +38,8 @@
 	const emit = defineEmits<{
 		(e: "reload:empires"): void;
 	}>();
+
+	const isLoading: Ref<boolean> = ref(false);
 
 	// Local Data & Watcher
 	const localData: Ref<IPlanEmpireElement> = ref(inertClone(props.data));
@@ -68,6 +78,7 @@
 	 * @returns {Promise<void>}
 	 */
 	async function save(): Promise<void> {
+		isLoading.value = true;
 		const patchData: IEmpirePatchPayload = {
 			faction: localData.value.faction as PLAN_FACTION,
 			permits_used: localData.value.permits_used,
@@ -84,6 +95,8 @@
 			emit("reload:empires");
 		} catch (err) {
 			console.error("Error patching empire", err);
+		} finally {
+			isLoading.value = false;
 		}
 	}
 </script>
@@ -93,7 +106,7 @@
 		<h2 class="flex-grow text-white/80 font-bold text-lg">Configuration</h2>
 
 		<div class="flex gap-x-3">
-			<PButton size="md" @click="save">
+			<PButton size="md" @click="save" :loading="isLoading">
 				<template #icon><SaveSharp /></template>
 				Save
 			</PButton>
@@ -105,13 +118,13 @@
 	</div>
 	<PForm>
 		<PFormItem label="Name">
-			<n-input size="small" v-model:value="localData.name" />
+			<PInput v-model:value="localData.name" class="w-full" />
 		</PFormItem>
 		<PFormItem label="Faction">
-			<n-select
-				size="small"
+			<PSelect
 				v-model:value="localData.faction"
-				:options="factionOptions" />
+				class="w-full"
+				:options="factionOptions as PSelectOption[]" />
 		</PFormItem>
 		<PFormItem label="Permits Total">
 			<PInputNumber

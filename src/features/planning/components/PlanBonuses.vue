@@ -5,9 +5,8 @@
 	import { PLAN_COGCPROGRAM_TYPE } from "@/stores/planningStore.types";
 
 	// UI
-	import { PForm, PFormItem, PCheckbox } from "@/ui";
-	import { NForm, NFormItem, NCheckbox, NSelect } from "naive-ui";
-	import { SelectMixedOption } from "naive-ui/es/select/src/interface";
+	import { PForm, PFormItem, PCheckbox, PSelect } from "@/ui";
+	import { PSelectOption } from "@/ui/ui.types";
 
 	const props = defineProps({
 		disabled: {
@@ -40,7 +39,7 @@
 		set: (value: PLAN_COGCPROGRAM_TYPE) => emit("update:cogc", value),
 	});
 
-	const cogcOptions: SelectMixedOption[] = [
+	const cogcOptions: PSelectOption[] = [
 		{ value: "---", label: "None" },
 		{ value: "AGRICULTURE", label: "Agriculture" },
 		{ value: "CHEMISTRY", label: "Chemistry" },
@@ -62,12 +61,12 @@
 <template>
 	<PForm>
 		<PFormItem label="Corp. HQ">
-			<n-checkbox :disabled="disabled" v-model:checked="localCorpHQ" />
+			<PCheckbox :disabled="disabled" v-model:checked="localCorpHQ" />
 		</PFormItem>
 
 		<PFormItem label="COGC">
-			<n-select
-				size="small"
+			<PSelect
+				class="w-full"
 				:disabled="disabled"
 				v-model:value="localCOGC"
 				:options="cogcOptions" />

@@ -4,6 +4,7 @@ import {
 	PCheckboxConfig,
 	PFormConfig,
 	PFormItemConfig,
+	PInputConfig,
 	PInputNumberConfig,
 	PTooltipConfig,
 } from "@/ui/ui.types";
@@ -101,6 +102,20 @@ export const inputNumberConfig: PInputNumberConfig = {
 			container: "gap-1 child:py-1",
 			input: "px-2",
 			buttonContainer: "pr-2 child:w-[20px] child:h-[20px]",
+		},
+	},
+};
+
+export const inputConfig: PInputConfig = {
+	container: "rounded-sm leading-none bg-white/5 text-white/80",
+	sizes: {
+		sm: {
+			container: "child:py-1 child:px-2",
+			input: "w-full outline-0",
+		},
+		md: {
+			container: "child:py-1 child:px-2",
+			input: "w-full outline-0",
 		},
 	},
 };

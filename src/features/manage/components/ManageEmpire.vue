@@ -28,26 +28,20 @@
 	import { capitalizeString } from "@/util/text";
 
 	// UI
-	import { PButton } from "@/ui";
 	import {
-		useDialog,
-		NForm,
-		NFormItem,
-		NInput,
-		NInputNumber,
-		NSelect,
-		NTag,
-		NButton,
-		NCheckbox,
-	} from "naive-ui";
+		PForm,
+		PFormItem,
+		PButton,
+		PInput,
+		PInputNumber,
+		PSelect,
+		PCheckbox,
+	} from "@/ui";
+	import { PSelectOption } from "@/ui/ui.types";
+	import { useDialog, NTag } from "naive-ui";
 	const dialog = useDialog();
 	import { XNDataTable, XNDataTableColumn } from "@skit/x.naive-ui";
-	import {
-		ClearSharp,
-		PhoneBluetoothSpeakerRound,
-		PlusSharp,
-		SaveSharp,
-	} from "@vicons/material";
+	import { ClearSharp, PlusSharp, SaveSharp } from "@vicons/material";
 
 	const props = defineProps({
 		empires: {
@@ -146,19 +140,6 @@
 		});
 
 		refCXOptions.value = options;
-	}
-
-	function selectRenderLabelWithTooltip(
-		option: SelectMixedOption
-	): VNodeChild {
-		// Native UI tooltips do look nicer, but are annoying when trying to
-		// interact with the select. Instead, we'll wrap the label in a div with
-		// 'title' set on it so we get the browser native tooltips
-		return h(
-			"div",
-			{ title: option.label },
-			{ default: () => option.label }
-		);
 	}
 
 	const cxEmpireJunctions: ComputedRef<ICXEmpireJunction[]> = computed(() => {
@@ -307,39 +288,37 @@
 		class="transition-all duration-500 border-t border-b border-white/10">
 		<div class="flex gap-x-3 pt-3 w-1/2 min-w-[400px]">
 			<div class="flex-grow">
-				<n-form
-					label-placement="left"
-					label-width="auto"
-					label-align="left"
-					size="small">
-					<n-form-item label="Empire Name">
-						<n-input
+				<PForm>
+					<PFormItem label="Empire Name">
+						<PInput
+							class="w-full"
 							v-model:value="refCreateName"
 							placeholder="Empire Name (max. 100 characters)" />
-					</n-form-item>
-					<n-form-item label="Faction">
-						<n-select
+					</PFormItem>
+					<PFormItem label="Faction">
+						<PSelect
+							class="w-full"
 							v-model:value="refCreateFaction"
-							:options="factionOptions" />
-					</n-form-item>
-					<n-form-item label="Permits Total">
-						<n-input-number
+							:options="factionOptions as PSelectOption[]" />
+					</PFormItem>
+					<PFormItem label="Permits Total">
+						<PInputNumber
 							v-model:value="refCreatePermitsTotal"
-							show-button
+							show-buttons
 							:min="2"
 							class="w-full" />
-					</n-form-item>
-					<n-form-item label="Permits Used">
-						<n-input-number
+					</PFormItem>
+					<PFormItem label="Permits Used">
+						<PInputNumber
 							v-model:value="refCreatePermitsUsed"
-							show-button
+							show-buttons
 							:min="1"
 							class="w-full" />
-					</n-form-item>
-					<n-form-item label="Use FIO Storage?">
-						<n-checkbox v-model:checked="refCreateUseFioStorage" />
-					</n-form-item>
-				</n-form>
+					</PFormItem>
+					<PFormItem label="Use FIO Storage?">
+						<PCheckbox v-model:checked="refCreateUseFioStorage" />
+					</PFormItem>
+				</PForm>
 			</div>
 			<div>
 				<PButton
@@ -393,13 +372,10 @@
 		<x-n-data-table-column key="cx" title="CX" width="200">
 			<template #render-cell="{ rowData }">
 				<div class="max-w-[200px]">
-					<n-select
+					<PSelect
 						:key="`${rowData.uuid}#${refEmpireCXMap[rowData.uuid]}`"
 						v-model:value="refEmpireCXMap[rowData.uuid]"
-						size="small"
-						:options="refCXOptions"
-						:render-label="selectRenderLabelWithTooltip"
-						placeholder="None" />
+						:options="refCXOptions as PSelectOption[]" />
 				</div>
 			</template>
 		</x-n-data-table-column>

@@ -1,3 +1,5 @@
+import { string } from "zod";
+
 export type SizeKey = "sm" | "md";
 export type ColorKey =
 	| "primary"
@@ -54,4 +56,15 @@ export interface PInputNumberConfig {
 		SizeKey,
 		{ container: string; input: string; buttonContainer: string }
 	>;
+}
+
+export interface PInputConfig {
+	container: string;
+	sizes: Record<SizeKey, { container: string; input: string }>;
+}
+
+export interface PSelectOption {
+	label: string;
+	value: string | number;
+	children?: { label: string; value: string | number }[];
 }

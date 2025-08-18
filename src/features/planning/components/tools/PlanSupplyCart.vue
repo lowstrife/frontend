@@ -34,8 +34,8 @@
 	import { formatNumber, formatAmount, clamp } from "@/util/numbers";
 
 	// UI
-	import { PButton, PButtonGroup } from "@/ui";
-	import { NInputNumber, NSelect, NIcon } from "naive-ui";
+	import { PButton, PButtonGroup, PInputNumber, PSelect } from "@/ui";
+	import { NIcon } from "naive-ui";
 	import {
 		XNDataTable,
 		XNDataTableColumn,
@@ -48,6 +48,7 @@
 		RemoveCircleOutlineSharp,
 	} from "@vicons/material";
 	import { IXITTransferMaterial } from "@/features/xit/xitAction.types";
+	import { PSelectOption } from "@/ui/ui.types";
 
 	const props = defineProps({
 		planetNaturalId: {
@@ -217,19 +218,17 @@
 		</div>
 		<div class="flex flex-row flex-wrap gap-3">
 			<div class="my-auto font-bold">Stock Duration (days)</div>
-			<n-input-number
+			<PInputNumber
 				v-model:value="refStockRequirement"
-				size="small"
-				show-button
+				show-buttons
 				:min="0"
 				class="!w-[100px]" />
 			<template v-if="hasStorage">
 				<div class="my-auto font-bold">Storage</div>
-				<n-select
+				<PSelect
 					v-model:value="refSelectedStorage"
-					size="small"
-					filterable
-					:options="storageOptions"
+					searchable
+					:options="storageOptions as PSelectOption[]"
 					class="!w-[250px]" />
 			</template>
 			<XITTransferActionButton
