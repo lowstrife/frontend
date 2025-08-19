@@ -12,10 +12,10 @@
 
 	// Types & Interfaces
 	import { IResourceROIResult } from "@/features/resource_roi_overview/useResourceROIOverview.types";
+	import { PSelectOption } from "@/ui/ui.types";
 
 	// UI
 	import { XNDataTable, XNDataTableColumn } from "@skit/x.naive-ui";
-	import { SelectMixedOption } from "naive-ui/es/select/src/interface";
 
 	const props = defineProps({
 		searchedMaterial: {
@@ -32,14 +32,13 @@
 	const filterPostiveROI: Ref<boolean> = ref(false);
 	const filterPlanet: Ref<string | null> = ref(null);
 
-	const filterOptionBuilding: ComputedRef<SelectMixedOption[]> = computed(
-		() =>
-			Array.from(new Set(props.resultData.map((e) => e.buildingTicker)))
-				.sort()
-				.map((e) => ({ label: e, value: e }))
+	const filterOptionBuilding: ComputedRef<PSelectOption[]> = computed(() =>
+		Array.from(new Set(props.resultData.map((e) => e.buildingTicker)))
+			.sort()
+			.map((e) => ({ label: e, value: e }))
 	);
 
-	const filterOptionPlanet: ComputedRef<SelectMixedOption[]> = computed(() =>
+	const filterOptionPlanet: ComputedRef<PSelectOption[]> = computed(() =>
 		Array.from(new Set(props.resultData.map((e) => e.planetName)))
 			.sort()
 			.map((e) => ({ label: e, value: e }))

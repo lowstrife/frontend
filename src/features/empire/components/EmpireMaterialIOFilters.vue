@@ -2,11 +2,16 @@
 	import { computed, PropType } from "vue";
 
 	// UI
-	import { PButton, PButtonGroup } from "@/ui";
-	import { NForm, NFormItem, NSelect } from "naive-ui";
+	import {
+		PButton,
+		PButtonGroup,
+		PSelectMultiple,
+		PForm,
+		PFormItem,
+	} from "@/ui";
 
 	// Types & Interfaces
-	import { SelectMixedOption } from "naive-ui/es/select/src/interface";
+	import { PSelectOption } from "@/ui/ui.types";
 
 	const props = defineProps({
 		loadBalance: {
@@ -26,11 +31,11 @@
 			required: true,
 		},
 		materialOptions: {
-			type: Array as PropType<SelectMixedOption[]>,
+			type: Array as PropType<PSelectOption[]>,
 			required: true,
 		},
 		planetOptions: {
-			type: Array as PropType<SelectMixedOption[]>,
+			type: Array as PropType<PSelectOption[]>,
 			required: true,
 		},
 	});
@@ -77,14 +82,10 @@
 </script>
 
 <template>
-	<n-form
-		label-placement="left"
-		label-width="auto"
-		label-align="left"
-		size="small">
-		<div class="flex flex-row gap-6 flex-wrap">
-			<div>
-				<n-form-item label="Display">
+	<div class="grid grid-cols-1 xl:grid-cols-[max-content_auto] gap-6">
+		<div>
+			<PForm>
+				<PFormItem label="Display">
 					<PButtonGroup>
 						<PButton
 							:type="localLoadBalance ? 'secondary' : 'primary'"
@@ -101,8 +102,8 @@
 							Loadbalance
 						</PButton>
 					</PButtonGroup>
-				</n-form-item>
-				<n-form-item label="Consumables">
+				</PFormItem>
+				<PFormItem label="Consumables">
 					<PButtonGroup>
 						<PButton
 							:type="
@@ -127,26 +128,30 @@
 							Hide
 						</PButton>
 					</PButtonGroup>
-				</n-form-item>
-			</div>
-			<div class="flex-grow">
-				<n-form-item label="Materials">
-					<n-select
+				</PFormItem>
+			</PForm>
+		</div>
+		<div class="">
+			<PForm>
+				<PFormItem label="Materials">
+					<PSelectMultiple
 						v-model:value="localFilterMaterials"
 						multiple
 						filterable
 						clearable
+						class="w-full"
 						:options="materialOptions" />
-				</n-form-item>
-				<n-form-item label="Planets">
-					<n-select
+				</PFormItem>
+				<PFormItem label="Planets">
+					<PSelectMultiple
 						v-model:value="localFilterPlanets"
 						multiple
 						filterable
 						clearable
+						class="w-full"
 						:options="planetOptions" />
-				</n-form-item>
-			</div>
+				</PFormItem>
+			</PForm>
 		</div>
-	</n-form>
+	</div>
 </template>

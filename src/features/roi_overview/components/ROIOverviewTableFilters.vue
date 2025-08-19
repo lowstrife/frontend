@@ -2,10 +2,10 @@
 	import { computed, PropType } from "vue";
 
 	// Types & Interfaces
-	import { SelectMixedOption } from "naive-ui/es/select/src/interface";
+	import { PSelectOption } from "@/ui/ui.types";
 
 	// UI
-	import { NSelect, NCheckbox } from "naive-ui";
+	import { PSelect, PCheckbox } from "@/ui";
 
 	const props = defineProps({
 		filterBuilding: {
@@ -33,19 +33,19 @@
 			required: true,
 		},
 		buildingOptions: {
-			type: Array as PropType<SelectMixedOption[]>,
+			type: Array as PropType<PSelectOption[]>,
 			required: true,
 		},
 		cogcOptions: {
-			type: Array as PropType<SelectMixedOption[]>,
+			type: Array as PropType<PSelectOption[]>,
 			required: true,
 		},
 		outputMaterialOptions: {
-			type: Array as PropType<SelectMixedOption[]>,
+			type: Array as PropType<PSelectOption[]>,
 			required: true,
 		},
 		inputMaterialOptions: {
-			type: Array as PropType<SelectMixedOption[]>,
+			type: Array as PropType<PSelectOption[]>,
 			required: true,
 		},
 	});
@@ -86,43 +86,39 @@
 		<div class="my-auto font-bold pr-3">Filter</div>
 		<div class="flex flex-row gap-3 child:my-auto">
 			<div>Building</div>
-			<n-select
+			<PSelect
 				v-model:value="localFilterBuilding"
 				:options="buildingOptions"
-				size="small"
-				filterable
-				clearable />
+				searchable
+				class="w-[200px]" />
 		</div>
 		<div class="flex flex-row gap-3 child:my-auto">
 			<div>COGC</div>
-			<n-select
+			<PSelect
 				v-model:value="localFilterCogc"
 				:options="cogcOptions"
-				size="small"
-				filterable
-				clearable />
+				searchable
+				class="w-[200px]" />
 		</div>
 		<div class="flex flex-row gap-3 child:my-auto">
 			<div>Output</div>
-			<n-select
+			<PSelect
 				v-model:value="localFilterOutputMaterial"
 				:options="outputMaterialOptions"
-				size="small"
-				filterable
-				clearable />
+				searchable
+				class="w-[200px]" />
 		</div>
 		<div class="flex flex-row gap-3 child:my-auto">
 			<div>Input</div>
-			<n-select
+			<PSelect
 				v-model:value="localFilterInputMaterial"
 				:options="inputMaterialOptions"
-				size="small"
-				filterable
-				clearable />
+				searchable
+				class="w-[200px]" />
 		</div>
 		<div class="flex flex-row gap-3 child:my-auto">
 			<div>Positive ROI</div>
-			<n-checkbox v-model:checked="localFilterPositiveROI" />
+			<PCheckbox v-model:checked="localFilterPositiveROI" />
 		</div>
 	</div>
 </template>

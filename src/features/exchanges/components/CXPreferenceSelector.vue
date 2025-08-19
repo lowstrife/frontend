@@ -9,7 +9,8 @@
 	import { SelectMixedOption } from "naive-ui/es/select/src/interface";
 
 	// UI
-	import { NSelect } from "naive-ui";
+	import { PSelect } from "@/ui";
+	import { PSelectOption } from "@/ui/ui.types";
 
 	const props = defineProps({
 		cxUuid: {
@@ -48,9 +49,9 @@
 </script>
 
 <template>
-	<n-select
+	<PSelect
 		v-model:value="localCXUuid"
-		:options="preferenceOptions"
+		:options="preferenceOptions as PSelectOption[]"
 		clearable
 		filterable
 		:class="selectClass" />

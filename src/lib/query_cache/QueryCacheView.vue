@@ -2,7 +2,8 @@
 	import { computed } from "vue";
 	import { useQueryStore } from "@/lib/query_cache/queryStore";
 
-	import { NTable, NButton, NTag } from "naive-ui";
+	import { PButton, PTag } from "@/ui";
+	import { NTable } from "naive-ui";
 	import { QueryState } from "./queryCache.types";
 
 	// Grab the Pinia store
@@ -53,14 +54,13 @@
 						{{ entry.key }}
 					</td>
 					<td>
-						<n-tag
+						<PTag
 							v-if="entry.state.loading"
-							size="small"
 							:bordered="false"
 							type="success">
 							yes
-						</n-tag>
-						<n-tag v-else size="small" :bordered="false">no</n-tag>
+						</PTag>
+						<PTag v-else :bordered="false">no</PTag>
 					</td>
 					<td>
 						<span v-if="entry.state.error">{{
@@ -87,27 +87,20 @@
 						}}
 					</td>
 					<td>
-						<n-tag
+						<PTag
 							v-if="entry.state.definition?.autoRefetch"
-							size="small"
 							:bordered="false"
 							type="success">
 							yes
-						</n-tag>
-						<n-tag
-							v-else
-							size="small"
-							:bordered="false"
-							type="error">
-							no
-						</n-tag>
+						</PTag>
+						<PTag v-else :bordered="false" type="error"> no </PTag>
 					</td>
 					<td>
 						<pre>{{ entry.jsonData.length }}</pre>
 					</td>
 					<td>
-						<n-button
-							size="tiny"
+						<PButton
+							size="sm"
 							type="error"
 							@click="
 								async () => {
@@ -118,7 +111,7 @@
 								}
 							">
 							Invalidate
-						</n-button>
+						</PButton>
 					</td>
 				</tr>
 				<tr v-if="entries.length === 0">

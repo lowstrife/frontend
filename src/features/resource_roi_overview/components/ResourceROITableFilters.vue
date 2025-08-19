@@ -5,10 +5,10 @@
 	import MaterialTile from "@/features/material_tile/components/MaterialTile.vue";
 
 	// Types & Interfaces
-	import { SelectMixedOption } from "naive-ui/es/select/src/interface";
+	import { PSelectOption } from "@/ui/ui.types";
 
 	// UI
-	import { NCheckbox, NSelect } from "naive-ui";
+	import { PCheckbox, PSelect } from "@/ui";
 
 	const props = defineProps({
 		searchedMaterial: {
@@ -30,11 +30,11 @@
 			required: true,
 		},
 		planetOptions: {
-			type: Array as PropType<SelectMixedOption[]>,
+			type: Array as PropType<PSelectOption[]>,
 			required: true,
 		},
 		buildingOptions: {
-			type: Array as PropType<SelectMixedOption[]>,
+			type: Array as PropType<PSelectOption[]>,
 			required: true,
 		},
 	});
@@ -68,25 +68,23 @@
 			<div class="font-bold pr-3">Filter</div>
 			<div class="flex flex-row gap-3 child:my-auto">
 				<div>Planet</div>
-				<n-select
+				<PSelect
 					v-model:value="localFilterPlanet"
 					:options="planetOptions"
-					size="small"
-					filterable
-					clearable />
+					searchable
+					class="w-[200px]" />
 			</div>
 			<div class="flex flex-row gap-3 child:my-auto">
 				<div>Building</div>
-				<n-select
+				<PSelect
 					v-model:value="localFilterBuilding"
 					:options="buildingOptions"
-					size="small"
-					filterable
-					clearable />
+					searchable
+					class="w-[200px]" />
 			</div>
 			<div class="flex flex-row gap-3 child:my-auto">
 				<div>Positive ROI</div>
-				<n-checkbox v-model:checked="localFilterPositiveROI" />
+				<PCheckbox v-model:checked="localFilterPositiveROI" />
 			</div>
 		</div>
 		<div class="flex flex-row flex-wrap gap-3 pr-3">

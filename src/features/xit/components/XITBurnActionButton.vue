@@ -6,8 +6,12 @@
 	import { useXITAction } from "@/features/xit/useXITAction";
 	import { usePreferences } from "@/features/preferences/usePreferences";
 
-	const { burnResupplyDays, burnOrigin, getBurnDisplayClass, defaultBuyItemsFromCX } =
-		usePreferences();
+	const {
+		burnResupplyDays,
+		burnOrigin,
+		getBurnDisplayClass,
+		defaultBuyItemsFromCX,
+	} = usePreferences();
 	const { transferJSON } = useXITAction();
 
 	// Util
@@ -19,17 +23,15 @@
 
 	// UI
 	import {
-		NButton,
-		NDrawer,
-		NDrawerContent,
-		NTable,
-		NForm,
-		NFormItem,
-		NInputNumber,
-		NCheckbox,
-		NInput,
-		NSelect,
-	} from "naive-ui";
+		PButton,
+		PForm,
+		PFormItem,
+		PInputNumber,
+		PCheckbox,
+		PSelect,
+		PInput,
+	} from "@/ui";
+	import { NDrawer, NDrawerContent, NTable } from "naive-ui";
 
 	// Constants
 	import { XITSTATIONWAREHOUSES } from "@/features/xit/xitConstants";
@@ -49,14 +51,9 @@
 			default: "XIT",
 		},
 		buttonSize: {
-			type: String as PropType<"tiny" | "small" | "medium" | "large">,
+			type: String as PropType<"sm" | "md">,
 			required: false,
-			default: "small",
-		},
-		buttonSecondary: {
-			type: Boolean,
-			required: false,
-			default: false,
+			default: "md",
 		},
 		// Drawer Definitions
 		drawerTitle: {
@@ -101,9 +98,9 @@
 </script>
 
 <template>
-	<n-button :size="buttonSize" :secondary="buttonSecondary" @click="show">
+	<PButton :size="buttonSize" @click="show">
 		{{ buttonText }}
-	</n-button>
+	</PButton>
 
 	<n-drawer v-if="loadDrawer" v-model:show="showDrawer" :width="drawerWidth">
 		<n-drawer-content closable body-class="bg-black">
@@ -111,42 +108,39 @@
 
 			<div class="mb-3 grid grid-cols-1 xl:grid-cols-2 gap-3">
 				<div>
-					<n-form
-						label-placement="left"
-						label-width="auto"
-						label-align="left"
-						size="small">
-						<n-form-item label="Origin">
-							<n-select
+					<PForm>
+						<PFormItem label="Origin">
+							<PSelect
 								v-model:value="burnOrigin"
-								:options="XITSTATIONWAREHOUSES" />
-						</n-form-item>
-						<n-form-item label="Target Days">
-							<n-input-number
+								:options="XITSTATIONWAREHOUSES"
+								class="w-full" />
+						</PFormItem>
+						<PFormItem label="Target Days">
+							<PInputNumber
 								v-model:value="burnResupplyDays"
 								:min="0"
-								show-button />
-						</n-form-item>
-						<n-form-item label="Buy From CX">
+								show-buttons />
+						</PFormItem>
+						<PFormItem label="Buy From CX">
 							<p
 								v-if="burnOrigin === 'Configure on Execution'"
 								class="text-xs text-negative">
 								Only warehouse origin allows purchasing.
 							</p>
-							<n-checkbox
+							<PCheckbox
 								v-else
 								v-model:checked="defaultBuyItemsFromCX"
 								:disabled="
 									burnOrigin === 'Configure on Execution'
 								" />
-						</n-form-item>
-						<n-form-item label="Hide Infinite">
-							<n-checkbox v-model:checked="refHideInfinite" />
-						</n-form-item>
-					</n-form>
+						</PFormItem>
+						<PFormItem label="Hide Infinite">
+							<PCheckbox v-model:checked="refHideInfinite" />
+						</PFormItem>
+					</PForm>
 				</div>
 				<div class="flex flex-row gap-x-3 pb-3">
-					<n-input
+					<PInput
 						v-model:value="
 							transferJSON(
 								materialTable
@@ -169,10 +163,9 @@
 								}
 							).value
 						"
-						size="small"
-						type="textarea" />
-					<n-button
-						size="small"
+						type="textarea"
+						class="w-full" />
+					<PButton
 						@click="
 							copyToClipboard(
 								transferJSON(
@@ -198,7 +191,7 @@
 							)
 						">
 						Copy
-					</n-button>
+					</PButton>
 				</div>
 			</div>
 
@@ -217,10 +210,10 @@
 				<tbody>
 					<tr v-for="e in materialTable" :key="e.ticker">
 						<td>
-							<n-checkbox
+							<PCheckbox
 								v-model:checked="e.active"
-								:on-update:checked="
-									(value: boolean) => {
+								@update:checked="
+									(value) => {
 										if (value)
 											refMaterialInactives.delete(
 												e.ticker
@@ -247,11 +240,10 @@
 						</td>
 						<td>{{ formatAmount(e.total) }}</td>
 						<td>
-							<n-input-number
+							<PInputNumber
 								v-model:value="refMaterialOverrides[e.ticker]"
-								size="tiny"
+								size="sm"
 								:min="0"
-								placeholder="0"
 								class="max-w-[100px]" />
 						</td>
 					</tr>

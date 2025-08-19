@@ -136,7 +136,7 @@
 							{{ getPlanetName(rowData.planetId) }}
 						</span>
 					</div>
-					<div class="flex gap-x-3 child:my-auto">
+					<div class="flex flex-row items-center gap-x-3">
 						<div>
 							<span
 								class="py-1 px-2"
@@ -149,7 +149,6 @@
 						<div>
 							<XITBurnActionButton
 								:drawer-title="`XIT Resupply: ${rowData.planName}`"
-								:button-size="'tiny'"
 								:elements="
 									rowData.burnMaterials.map(
 										(e: IFIOBurnTableElementMaterial) => {

@@ -21,16 +21,15 @@
 	import { IXITTransferMaterial } from "@/features/xit/xitAction.types";
 
 	// UI
-	import { PButton, PCheckbox } from "@/ui";
 	import {
-		NDrawer,
-		NDrawerContent,
-		NTable,
-		NForm,
-		NFormItem,
-		NInput,
-		NSelect,
-	} from "naive-ui";
+		PButton,
+		PCheckbox,
+		PForm,
+		PFormItem,
+		PInput,
+		PSelect,
+	} from "@/ui";
+	import { NDrawer, NDrawerContent, NTable } from "naive-ui";
 
 	defineProps({
 		elements: {
@@ -95,53 +94,54 @@
 		<n-drawer-content closable body-class="bg-black">
 			<template #header> {{ drawerTitle }} </template>
 
-			<n-form
-				label-placement="left"
-				label-width="auto"
-				label-align="left"
-				size="small">
-				<n-form-item label="Origin">
-					<n-select
+			<PForm>
+				<PFormItem label="Origin">
+					<PSelect
 						v-model:value="burnOrigin"
 						:options="XITSTATIONWAREHOUSES" />
-				</n-form-item>
-				<n-form-item label="Buy Items From CX">
+				</PFormItem>
+				<PFormItem label="Buy From CX">
 					<PCheckbox
 						v-model:checked="defaultBuyItemsFromCX"
 						:disabled="burnOrigin === 'Configure on Execution'" />
 
-					<p
+					<div
 						v-if="burnOrigin === 'Configure on Execution'"
 						class="p-3">
 						Requires origin warehouse to purchase
-					</p>
-				</n-form-item>
-				<n-form-item label="JSON">
-					<n-input
-						v-model:value="
-							transferJSON(elements, {
-								name: transferName,
-								origin: burnOrigin,
-								buy: defaultBuyItemsFromCX,
-							}).value
-						"
-						size="small"
-						type="textarea" />
-					<PButton
-						class="!ml-1"
-						@click="
-							copyToClipboard(
-								transferJSON(elements, {
-									name: transferName,
-									origin: burnOrigin,
-									buy: defaultBuyItemsFromCX,
-								}).value
-							)
-						">
-						Copy
-					</PButton>
-				</n-form-item>
-			</n-form>
+					</div>
+				</PFormItem>
+				<PFormItem label="JSON">
+					<div class="w-full flex flex-row gap-1">
+						<div class="flex-grow">
+							<PInput
+								v-model:value="
+									transferJSON(elements, {
+										name: transferName,
+										origin: burnOrigin,
+										buy: defaultBuyItemsFromCX,
+									}).value
+								"
+								type="textarea"
+								class="w-full" />
+						</div>
+						<div>
+							<PButton
+								@click="
+									copyToClipboard(
+										transferJSON(elements, {
+											name: transferName,
+											origin: burnOrigin,
+											buy: defaultBuyItemsFromCX,
+										}).value
+									)
+								">
+								Copy
+							</PButton>
+						</div>
+					</div>
+				</PFormItem>
+			</PForm>
 
 			<n-table striped class="mt-3">
 				<thead>

@@ -25,7 +25,7 @@
 	// Types & Interfaces
 	import { IPlan } from "@/stores/planningStore.types";
 	import { IROIResult } from "@/features/roi_overview/useROIOverview.types";
-	import { SelectMixedOption } from "naive-ui/es/select/src/interface";
+	import { PSelectOption } from "@/ui/ui.types";
 
 	// UI
 	import { NSpin } from "naive-ui";
@@ -88,21 +88,20 @@
 		return filtered;
 	});
 
-	const filterOptionBuilding: ComputedRef<SelectMixedOption[]> = computed(
-		() =>
-			Array.from(new Set(result.value.map((e) => e.buildingTicker)))
-				.sort((a, b) => (a > b ? 1 : -1))
-				.map((e) => ({ label: e, value: e }))
+	const filterOptionBuilding: ComputedRef<PSelectOption[]> = computed(() =>
+		Array.from(new Set(result.value.map((e) => e.buildingTicker)))
+			.sort((a, b) => (a > b ? 1 : -1))
+			.map((e) => ({ label: e, value: e }))
 	);
 
-	const filterOptionCOGC: ComputedRef<SelectMixedOption[]> = computed(() =>
+	const filterOptionCOGC: ComputedRef<PSelectOption[]> = computed(() =>
 		Array.from(new Set(result.value.map((e) => e.cogc)))
 			.sort()
 			.map((e) => ({ label: capitalizeString(e), value: e }))
 	);
 
-	const filterOptionInputMaterial: ComputedRef<SelectMixedOption[]> =
-		computed(() =>
+	const filterOptionInputMaterial: ComputedRef<PSelectOption[]> = computed(
+		() =>
 			Array.from(
 				new Set(
 					result.value
@@ -112,10 +111,10 @@
 			)
 				.sort()
 				.map((e) => ({ label: e, value: e }))
-		);
+	);
 
-	const filterOptionOutputMaterial: ComputedRef<SelectMixedOption[]> =
-		computed(() =>
+	const filterOptionOutputMaterial: ComputedRef<PSelectOption[]> = computed(
+		() =>
 			Array.from(
 				new Set(
 					result.value
@@ -125,7 +124,7 @@
 			)
 				.sort()
 				.map((e) => ({ label: e, value: e }))
-		);
+	);
 
 	async function get() {
 		isCalculating.value = true;

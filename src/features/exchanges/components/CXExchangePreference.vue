@@ -9,7 +9,9 @@
 	import { ExchangeType, PreferenceType } from "../manageCX.types";
 
 	// UI
-	import { NSelect, NButton, NTable, NTag } from "naive-ui";
+	import { PSelect, PButton, PTag } from "@/ui";
+	import { PSelectOption } from "@/ui/ui.types";
+	import { NTable } from "naive-ui";
 	import { PlusSharp, ClearSharp } from "@vicons/material";
 
 	const props = defineProps({
@@ -43,32 +45,31 @@
 <template>
 	<div class="flex flex-row gap-x-1">
 		<div class="!min-w-[100px]">
-			<n-select
+			<PSelect
 				v-model:value="selectedType"
-				:options="typeOptions"
-				size="small"
-				placeholder="Preference Type"
+				:options="typeOptions as PSelectOption[]"
 				class="w-full" />
 		</div>
-		<n-select
+		<PSelect
 			v-model:value="selectedExchange"
-			:options="exchangeOptions"
-			size="small"
-			placeholder="Exchange" />
-		<n-button
-			size="small"
-			:disabled="
-				!canAddExchangePreference(localCXOptions, selectedType).value
-			"
-			@click="
-				localCXOptions = updateExchangePreference(
-					localCXOptions,
-					selectedType,
-					selectedExchange
-				)
-			">
-			<template #icon><PlusSharp /></template>
-		</n-button>
+			class="w-full"
+			:options="exchangeOptions as PSelectOption[]" />
+		<div>
+			<PButton
+				:disabled="
+					!canAddExchangePreference(localCXOptions, selectedType)
+						.value
+				"
+				@click="
+					localCXOptions = updateExchangePreference(
+						localCXOptions,
+						selectedType,
+						selectedExchange
+					)
+				">
+				<template #icon><PlusSharp /></template>
+			</PButton>
+		</div>
 	</div>
 	<div class="pt-3">
 		<n-table striped>
@@ -76,22 +77,21 @@
 				v-for="preference in localCXOptions"
 				:key="`${preference.type}#${preference.exchange}`">
 				<td class="w-[75px]">
-					<n-tag
-						size="small"
+					<PTag
 						:type="
 							preference.type === 'BUY'
 								? 'success'
 								: preference.type === 'SELL'
 								? 'error'
-								: 'info'
+								: 'primary'
 						">
 						{{ preference.type }}
-					</n-tag>
+					</PTag>
 				</td>
 				<td>{{ preference.exchange }}</td>
 				<td class="text-right">
-					<n-button
-						size="tiny"
+					<PButton
+						size="sm"
 						type="error"
 						@click="
 							localCXOptions = deleteExchangePreference(
@@ -100,7 +100,7 @@
 							)
 						">
 						<template #icon><ClearSharp /></template>
-					</n-button>
+					</PButton>
 				</td>
 			</tr>
 			<tr

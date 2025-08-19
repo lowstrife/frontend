@@ -20,14 +20,15 @@
 
 	// UI
 	import {
-		NButton,
-		NForm,
-		NFormItem,
-		NSelect,
-		NInputNumber,
-		NCheckbox,
-		NTable,
-	} from "naive-ui";
+		PButton,
+		PForm,
+		PFormItem,
+		PSelect,
+		PSelectMultiple,
+		PCheckbox,
+		PInputNumber,
+	} from "@/ui";
+	import { NTable } from "naive-ui";
 	import { SearchSharp } from "@vicons/material";
 
 	const refIsLoading: Ref<boolean> = ref(false);
@@ -150,66 +151,61 @@
 <template>
 	<div class="flex flex-row justify-between pb-3">
 		<h2 class="text-lg font-bold my-auto">Advanced Search</h2>
-		<n-button size="small" :loading="refIsLoading" @click="doSearch">
+		<PButton :loading="refIsLoading" @click="doSearch">
 			<template #icon><SearchSharp /></template>
 			Search
-		</n-button>
+		</PButton>
 	</div>
 
 	<div class="grid grid-cols-1 xl:grid-cols-[40%_auto] gap-x-6">
 		<div>
-			<n-form
-				label-placement="left"
-				label-width="auto"
-				label-align="left"
-				size="small">
-				<n-form-item label="Materials">
-					<n-select
+			<PForm>
+				<PFormItem label="Materials">
+					<PSelectMultiple
 						v-model:value="inputMaterials"
 						:options="PLANETSEARCHOPTIONMATERIALS"
-						multiple
 						clearable
-						filterable
+						searchable
+						class="w-full"
 						@update:value="
-							(value: string[]) => {
+							(value) => {
 								// limit to 4
 								if (Object.keys(inputMaterials).length > 4) {
 									value.pop();
 								}
 							}
 						" />
-				</n-form-item>
-				<n-form-item label="COGC">
-					<n-select
+				</PFormItem>
+				<PFormItem label="COGC">
+					<PSelectMultiple
 						v-model:value="inputCOGC"
 						:options="PLANETSEARCHCOGC"
-						multiple
 						clearable
-						filterable
-						class="child:child:child:child:child:!text-md" />
-				</n-form-item>
-				<n-form-item label="Planet Features">
-					<n-select
+						searchable
+						class="w-full" />
+				</PFormItem>
+				<PFormItem label="Planet Features">
+					<PSelectMultiple
 						v-model:value="inputInfrastructure"
 						:options="PLANETSEARCHINFRASTRUCTURE"
-						multiple
-						filterable
-						clearable />
-				</n-form-item>
-				<n-form-item label="System Distance">
-					<n-select
+						searchable
+						clearable
+						class="w-full" />
+				</PFormItem>
+				<PFormItem label="System Distance">
+					<PSelect
 						v-model:value="inputSystem"
 						:options="PLANETSEARCHSYSTEMS"
-						filterable
+						searchable
 						clearable
-						class="pr-3" />
-					<n-input-number
+						class="pr-3 w-full" />
+					<PInputNumber
 						v-model:value="inputSystemDistance"
-						show-button
+						show-buttons
 						:min="0"
 						:max="30" />
-				</n-form-item>
-			</n-form>
+				</PFormItem>
+			</PForm>
 		</div>
 		<div>
 			<h3 class="pb-3">Planet Environment</h3>
@@ -227,40 +223,38 @@
 							<td>
 								<div
 									class="flex flex-row gap-x-3 child:my-auto">
-									<n-checkbox
-										v-model:checked="inputIncludeRocky"
-										size="small" />
+									<PCheckbox
+										v-model:checked="inputIncludeRocky" />
 									Rocky
 								</div>
 							</td>
 							<td>
 								<div
 									class="flex flex-row gap-x-3 child:my-auto">
-									<n-checkbox
-										v-model:checked="inputIncludeLowGravity"
-										size="small" />
+									<PCheckbox
+										v-model:checked="
+											inputIncludeLowGravity
+										" />
 									Low
 								</div>
 							</td>
 							<td>
 								<div
 									class="flex flex-row gap-x-3 child:my-auto">
-									<n-checkbox
+									<PCheckbox
 										v-model:checked="
 											inputIncludeLowTemperature
-										"
-										size="small" />
+										" />
 									Low
 								</div>
 							</td>
 							<td>
 								<div
 									class="flex flex-row gap-x-3 child:my-auto">
-									<n-checkbox
+									<PCheckbox
 										v-model:checked="
 											inputIncludeLowPressure
-										"
-										size="small" />
+										" />
 									Low
 								</div>
 							</td>
@@ -269,42 +263,38 @@
 							<td>
 								<div
 									class="flex flex-row gap-x-3 child:my-auto">
-									<n-checkbox
-										v-model:checked="inputIncludeGaseous"
-										size="small" />
+									<PCheckbox
+										v-model:checked="inputIncludeGaseous" />
 									Gaseous
 								</div>
 							</td>
 							<td>
 								<div
 									class="flex flex-row gap-x-3 child:my-auto">
-									<n-checkbox
+									<PCheckbox
 										v-model:checked="
 											inputIncludeHighGravity
-										"
-										size="small" />
+										" />
 									High
 								</div>
 							</td>
 							<td>
 								<div
 									class="flex flex-row gap-x-3 child:my-auto">
-									<n-checkbox
+									<PCheckbox
 										v-model:checked="
 											inputIncludeHighTemperature
-										"
-										size="small" />
+										" />
 									High
 								</div>
 							</td>
 							<td>
 								<div
 									class="flex flex-row gap-x-3 child:my-auto">
-									<n-checkbox
+									<PCheckbox
 										v-model:checked="
 											inputIncludeHighPressure
-										"
-										size="small" />
+										" />
 									High
 								</div>
 							</td>
@@ -313,15 +303,12 @@
 				</n-table>
 
 				<div class="flex flex-col gap-y-3">
-					<n-button
-						size="small"
-						secondary
-						@click="environmentDefault">
+					<PButton secondary @click="environmentDefault">
 						Default
-					</n-button>
-					<n-button size="small" secondary @click="environmentAll">
+					</PButton>
+					<PButton secondary @click="environmentAll">
 						Select All
-					</n-button>
+					</PButton>
 				</div>
 			</div>
 		</div>

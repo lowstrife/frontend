@@ -8,7 +8,7 @@
 	import { formatAmount, formatNumber } from "@/util/numbers";
 
 	// Types & Interfaces
-	import { SelectMixedOption } from "naive-ui/es/select/src/interface";
+	import { PSelectOption } from "@/ui/ui.types";
 	import { IMaterialIO } from "@/features/planning/usePlanCalculation.types";
 
 	interface IShippingCalculation {
@@ -26,7 +26,8 @@
 	}
 
 	// UI
-	import { NButton, NTable, NSelect } from "naive-ui";
+	import { PButton, PSelectMultiple } from "@/ui";
+	import { NTable } from "naive-ui";
 	import { CloseSharp } from "@vicons/material";
 
 	const props = defineProps({
@@ -62,7 +63,7 @@
 		}
 	);
 
-	function getExclusionOptions(data: IMaterialIO[]): SelectMixedOption[] {
+	function getExclusionOptions(data: IMaterialIO[]): PSelectOption[] {
 		return data.map((d) => {
 			return {
 				label: d.ticker,
@@ -112,7 +113,7 @@
 	const localStoAmount: Ref<number> = ref(props.stoAmount);
 	const localMaterialIO: Ref<IMaterialIO[]> = ref(props.materialIO);
 
-	const refMaterialExclusionOption: Ref<SelectMixedOption[]> = ref(
+	const refMaterialExclusionOption: Ref<PSelectOption[]> = ref(
 		getExclusionOptions(props.materialIO)
 	);
 	const refMaterialExclusions: Ref<string[]> = ref(
@@ -209,9 +210,9 @@
 <template>
 	<div class="pb-3 flex flex-row justify-between child:my-auto">
 		<h2 class="text-white/80 font-bold text-lg">Visitation Frequency</h2>
-		<n-button size="tiny" secondary @click="emit('close')">
+		<PButton size="sm" type="secondary" @click="emit('close')">
 			<template #icon><CloseSharp /></template>
-		</n-button>
+		</PButton>
 	</div>
 
 	<div class="grid grid-cols-1 lg:grid-cols-[40%_auto] gap-3">
@@ -265,13 +266,12 @@
 				sales, purchases or contracts.
 			</p>
 
-			<n-select
+			<PSelectMultiple
 				v-model:value="refMaterialExclusions"
 				:disabled="disabled"
 				:options="refMaterialExclusionOption"
 				multiple
-				size="small"
-				filterable
+				searchable
 				@update-value="
 					(value: string[]) => {
 						if (planPrefs !== null) {

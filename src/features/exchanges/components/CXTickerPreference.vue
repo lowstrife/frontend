@@ -12,7 +12,9 @@
 	import { PreferenceType } from "../manageCX.types";
 
 	// UI
-	import { NSelect, NButton, NInputNumber, NTable, NTag } from "naive-ui";
+	import { PSelect, PButton, PInputNumber, PTag } from "@/ui";
+	import { PSelectOption } from "@/ui/ui.types";
+	import { NTable } from "naive-ui";
 	import { PlusSharp, ClearSharp } from "@vicons/material";
 	import { formatNumber } from "@/util/numbers";
 
@@ -54,44 +56,41 @@
 <template>
 	<div class="flex flex-row gap-x-1">
 		<div class="!max-w-[100px]">
-			<n-select
+			<PSelect
 				v-model:value="selectedType"
-				:options="typeOptions"
-				size="small"
-				placeholder="Preference Type" />
+				:options="typeOptions as PSelectOption[]" />
 		</div>
-		<n-select
+		<PSelect
 			v-model:value="selectedTicker"
-			:options="materialOptions"
+			:options="materialOptions as PSelectOption[]"
 			filterable
 			size="small"
 			placeholder="Material" />
-		<n-input-number
+		<PInputNumber
 			v-model:value="selectedValue"
 			:min="0"
-			:precision="2"
-			:show-button="false"
-			size="small"
+			decimals
 			class="!w-[300px]" />
-		<n-button
-			size="small"
-			:disabled="
-				!canAddTickerPreference(
-					localCXOptions,
-					selectedTicker,
-					selectedType
-				).value
-			"
-			@click="
-				localCXOptions = updateTickerPreference(
-					localCXOptions,
-					selectedTicker,
-					selectedType,
-					selectedValue
-				)
-			">
-			<template #icon><PlusSharp /></template>
-		</n-button>
+		<div>
+			<PButton
+				:disabled="
+					!canAddTickerPreference(
+						localCXOptions,
+						selectedTicker,
+						selectedType
+					).value
+				"
+				@click="
+					localCXOptions = updateTickerPreference(
+						localCXOptions,
+						selectedTicker,
+						selectedType,
+						selectedValue
+					)
+				">
+				<template #icon><PlusSharp /></template>
+			</PButton>
+		</div>
 	</div>
 	<div class="pt-3">
 		<n-table striped>
@@ -99,17 +98,16 @@
 				v-for="preference in sortedCXOptions"
 				:key="`${preference.type}#${preference.ticker}`">
 				<td class="w-[75px]">
-					<n-tag
-						size="small"
+					<PTag
 						:type="
 							preference.type === 'BUY'
 								? 'success'
 								: preference.type === 'SELL'
 								? 'error'
-								: 'info'
+								: 'primary'
 						">
 						{{ preference.type }}
-					</n-tag>
+					</PTag>
 				</td>
 				<td>
 					<MaterialTile
@@ -121,8 +119,8 @@
 					<span class="pl-1 font-light text-white/50">$</span>
 				</td>
 				<td class="text-right">
-					<n-button
-						size="tiny"
+					<PButton
+						size="sm"
 						type="error"
 						@click="
 							localCXOptions = deleteTickerPreference(
@@ -132,7 +130,7 @@
 							)
 						">
 						<template #icon><ClearSharp /></template>
-					</n-button>
+					</PButton>
 				</td>
 			</tr>
 			<tr

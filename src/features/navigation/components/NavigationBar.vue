@@ -19,7 +19,8 @@
 	import { IMenuSection } from "@/features/navigation/navigation.types";
 
 	// UI
-	import { NIcon, NTag, NTooltip } from "naive-ui";
+	import { PTag, PTooltip } from "@/ui";
+	import { NIcon } from "naive-ui";
 	import {
 		HomeSharp,
 		SearchRound,
@@ -365,16 +366,16 @@
 			</nav>
 		</div>
 		<div class="p-4 text-center child:my-auto">
-			<n-tooltip
+			<PTooltip
 				v-if="
 					userStore.hasFIO &&
 					storageTimestamp !== 0 &&
 					sitesTimestamp !== 0
 				">
 				<template #trigger>
-					<n-tag size="tiny" type="success" :bordered="false">
+					<PTag size="sm" type="success" :bordered="false">
 						FIO Active
-					</n-tag>
+					</PTag>
 				</template>
 				<div class="grid grid-cols-2">
 					<div>Storage</div>
@@ -386,10 +387,10 @@
 						{{ relativeFromDate(sitesTimestamp) }}
 					</div>
 				</div>
-			</n-tooltip>
-			<n-tag v-else size="tiny" type="warning" :bordered="false">
+			</PTooltip>
+			<PTag v-else size="sm" type="warning" :bordered="false">
 				FIO Inactive
-			</n-tag>
+			</PTag>
 		</div>
 	</div>
 </template>

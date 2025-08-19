@@ -5,7 +5,8 @@
 	import { SelectMixedOption } from "naive-ui/es/select/src/interface";
 
 	// UI
-	import { NSelect } from "naive-ui";
+	import { PSelectMultiple } from "@/ui";
+	import { PSelectOption } from "@/ui/ui.types";
 
 	const props = defineProps({
 		filterPlanNames: {
@@ -49,26 +50,22 @@
 		<div class="flex flex-row gap-3 child:my-auto">
 			<div>Plan</div>
 			<div>
-				<n-select
+				<PSelectMultiple
 					v-model:value="localFilterPlanNames"
-					:options="optionsPlanNames"
-					size="small"
-					filterable
+					:options="optionsPlanNames as PSelectOption[]"
+					searchable
 					clearable
-					multiple
 					class="!w-[400px]" />
 			</div>
 		</div>
 		<div class="flex flex-row gap-3 child:my-auto">
 			<div>Active Empire</div>
 			<div>
-				<n-select
+				<PSelectMultiple
 					v-model:value="localFilterEmpires"
-					:options="optionsEmpires"
-					size="small"
-					filterable
+					:options="optionsEmpires as PSelectOption[]"
+					searchable
 					clearable
-					multiple
 					class="!w-[400px]" />
 			</div>
 		</div>
