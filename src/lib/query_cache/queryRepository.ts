@@ -258,7 +258,7 @@ export function useQueryRepository() {
 			],
 			fetchFn: async (params: { sharedUuid: string }) => {
 				const data = await callDeleteSharing(params.sharedUuid);
-				queryStore.invalidateKey(["planningdata", "shared"], {
+				await queryStore.invalidateKey(["planningdata", "shared"], {
 					exact: false,
 					skipRefetch: true,
 				});
@@ -275,7 +275,7 @@ export function useQueryRepository() {
 				params.planUuid,
 			],
 			fetchFn: async (params: { planUuid: string }) => {
-				queryStore.invalidateKey(["planningdata", "shared"], {
+				await queryStore.invalidateKey(["planningdata", "shared"], {
 					exact: false,
 					skipRefetch: true,
 				});
@@ -288,7 +288,7 @@ export function useQueryRepository() {
 			key: () => ["planningdata", "empire", "create"],
 			fetchFn: async (params: { data: IEmpireCreatePayload }) => {
 				const data = await callCreateEmpire(params.data);
-				queryStore.invalidateKey(["planningdata", "empire"], {
+				await queryStore.invalidateKey(["planningdata", "empire"], {
 					exact: false,
 				});
 				return data;
@@ -305,7 +305,7 @@ export function useQueryRepository() {
 			],
 			fetchFn: async (params: { empireUuid: string }) => {
 				const data = await callDeleteEmpire(params.empireUuid);
-				queryStore.invalidateKey(["planningdata", "empire"], {
+				await queryStore.invalidateKey(["planningdata", "empire"], {
 					exact: false,
 				});
 				return data;
@@ -317,10 +317,10 @@ export function useQueryRepository() {
 			key: () => ["planningdata", "empire", "cx", "junctions"],
 			fetchFn: async (params: { junctions: ICXEmpireJunction[] }) => {
 				const data = await callUpdateCXJunctions(params.junctions);
-				queryStore.invalidateKey(["planningdata", "empire"], {
+				await queryStore.invalidateKey(["planningdata", "empire"], {
 					exact: false,
 				});
-				queryStore.invalidateKey(["planningdata", "cx"], {
+				await queryStore.invalidateKey(["planningdata", "cx"], {
 					exact: false,
 				});
 				return data;
@@ -337,9 +337,12 @@ export function useQueryRepository() {
 			],
 			fetchFn: async (params: { cxUuid: string; data: ICXData }) => {
 				const data = await callPatchCX(params.cxUuid, params.data);
-				queryStore.invalidateKey(["planningdata", "cx"], {
+				await queryStore.invalidateKey(["planningdata", "cx"], {
 					exact: false,
 				});
+
+				planningStore.setCX(params.cxUuid, data);
+
 				return data;
 			},
 			autoRefetch: false,
@@ -389,7 +392,7 @@ export function useQueryRepository() {
 					params.empireUuid,
 					params.data
 				);
-				queryStore.invalidateKey(["planningdata", "empire"], {
+				await queryStore.invalidateKey(["planningdata", "empire"], {
 					exact: false,
 				});
 				return data;
@@ -408,10 +411,10 @@ export function useQueryRepository() {
 				);
 
 				// invalidate empires + all plans as junctions might have changed
-				queryStore.invalidateKey(["planningdata", "empire"], {
+				await queryStore.invalidateKey(["planningdata", "empire"], {
 					exact: false,
 				});
-				queryStore.invalidateKey(["planningdata", "plan"], {
+				await queryStore.invalidateKey(["planningdata", "plan"], {
 					exact: false,
 				});
 
@@ -427,7 +430,7 @@ export function useQueryRepository() {
 			key: () => ["planningdata", "cx", "create"],
 			fetchFn: async (params: { cxName: string }) => {
 				const data = await callCreateCX(params.cxName);
-				queryStore.invalidateKey(["planningdata", "cx"], {
+				await queryStore.invalidateKey(["planningdata", "cx"], {
 					exact: false,
 				});
 				return data;
@@ -444,7 +447,7 @@ export function useQueryRepository() {
 			],
 			fetchFn: async (params: { cxUuid: string }) => {
 				const data = await callDeleteCX(params.cxUuid);
-				queryStore.invalidateKey(["planningdata", "cx"], {
+				await queryStore.invalidateKey(["planningdata", "cx"], {
 					exact: false,
 				});
 				return data;
@@ -504,11 +507,15 @@ export function useQueryRepository() {
 				return await callClonePlan(
 					params.planUuid,
 					params.cloneName
-				).then(() => {
-					queryStore.invalidateKey(["planningdata", "empire"], {
+				).then(async () => {
+					await queryStore.invalidateKey(["planningdata", "empire"], {
 						exact: false,
 					});
-					queryStore.invalidateKey(["planningdata", "plan", "list"]);
+					await queryStore.invalidateKey([
+						"planningdata",
+						"plan",
+						"list",
+					]);
 				});
 			},
 			autoRefetch: false,
@@ -525,12 +532,16 @@ export function useQueryRepository() {
 				params.planUuid,
 			],
 			fetchFn: async (params: { planUuid: string }) => {
-				return await callDeletePlan(params.planUuid).then(() => {
-					queryStore.invalidateKey(["planningdata", "empire"], {
+				return await callDeletePlan(params.planUuid).then(async () => {
+					await queryStore.invalidateKey(["planningdata", "empire"], {
 						exact: false,
 					});
-					queryStore.invalidateKey(["planningdata", "plan", "list"]);
-					queryStore.invalidateKey([
+					await queryStore.invalidateKey([
+						"planningdata",
+						"plan",
+						"list",
+					]);
+					await queryStore.invalidateKey([
 						"planningdata",
 						"plan",
 						params.planUuid,
@@ -545,10 +556,10 @@ export function useQueryRepository() {
 			key: () => ["planningdata", "plan", "create"],
 			fetchFn: async (params: { data: IPlanCreateData }) => {
 				const data = await callCreatePlan(params.data);
-				queryStore.invalidateKey(["planningdata", "plan"], {
+				await queryStore.invalidateKey(["planningdata", "plan"], {
 					exact: false,
 				});
-				queryStore.invalidateKey(["planningdata", "empire"], {
+				await queryStore.invalidateKey(["planningdata", "empire"], {
 					exact: false,
 				});
 				return data;
@@ -571,10 +582,10 @@ export function useQueryRepository() {
 				data: IPlanSaveData;
 			}) => {
 				const data = await callSavePlan(params.planUuid, params.data);
-				queryStore.invalidateKey(["planningdata", "plan"], {
+				await queryStore.invalidateKey(["planningdata", "plan"], {
 					exact: false,
 				});
-				queryStore.invalidateKey(["planningdata", "empire"], {
+				await queryStore.invalidateKey(["planningdata", "empire"], {
 					exact: false,
 				});
 				return data;
