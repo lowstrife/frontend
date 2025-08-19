@@ -8,7 +8,7 @@
 		ref,
 		watch,
 	} from "vue";
-	import { currentlyOpenId } from "@/ui/pSelectCurrentOpen";
+	import { currentlyOpenId } from "@/ui/stateCurrentOpen";
 	import { PSelectOption } from "@/ui/ui.types";
 	import { PInput, PSelectElement, PTag } from "@/ui";
 	import { createPopper, Instance } from "@popperjs/core";
