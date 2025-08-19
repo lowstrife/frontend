@@ -72,6 +72,7 @@
 					v-model:value="localFilterPlanet"
 					:options="planetOptions"
 					searchable
+					clearable
 					class="w-[200px]" />
 			</div>
 			<div class="flex flex-row gap-3 child:my-auto">
@@ -80,6 +81,7 @@
 					v-model:value="localFilterBuilding"
 					:options="buildingOptions"
 					searchable
+					clearable
 					class="w-[200px]" />
 			</div>
 			<div class="flex flex-row gap-3 child:my-auto">

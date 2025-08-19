@@ -22,10 +22,12 @@
 		options,
 		searchable = false,
 		disabled = false,
+		clearable = false,
 	} = defineProps<{
 		options: PSelectOption[];
 		searchable?: boolean;
 		disabled?: boolean;
+		clearable?: boolean;
 	}>();
 
 	const open = ref(false);
@@ -174,7 +176,7 @@
 					<PInput v-model:value="searchString" placeholder="Search" />
 				</div>
 				<div
-					v-if="value !== null"
+					v-if="value !== null && clearable"
 					class="text-white/60 w-[16px]"
 					@click="clear">
 					<ClearSharp />
