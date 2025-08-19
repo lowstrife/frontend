@@ -90,6 +90,7 @@
 				v-model:value="localFilterBuilding"
 				:options="buildingOptions"
 				searchable
+				clearable
 				class="w-[200px]" />
 		</div>
 		<div class="flex flex-row gap-3 child:my-auto">
@@ -98,6 +99,7 @@
 				v-model:value="localFilterCogc"
 				:options="cogcOptions"
 				searchable
+				clearable
 				class="w-[200px]" />
 		</div>
 		<div class="flex flex-row gap-3 child:my-auto">
@@ -106,6 +108,7 @@
 				v-model:value="localFilterOutputMaterial"
 				:options="outputMaterialOptions"
 				searchable
+				clearable
 				class="w-[200px]" />
 		</div>
 		<div class="flex flex-row gap-3 child:my-auto">
@@ -114,6 +117,7 @@
 				v-model:value="localFilterInputMaterial"
 				:options="inputMaterialOptions"
 				searchable
+				clearable
 				class="w-[200px]" />
 		</div>
 		<div class="flex flex-row gap-3 child:my-auto">

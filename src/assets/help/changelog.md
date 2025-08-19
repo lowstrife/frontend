@@ -1,3 +1,7 @@
+# 2025-08-19
+
+- Replaces many `naive-ui` components with an own implementation of UI components mainly to save rendering and calculation times.
+
 # 2025-08-15
 
 - Fix an issue where XIT actions on Construction and Supply Cart have wrong action names
