@@ -8,6 +8,8 @@
 	// Composables
 	import { useMaterialData } from "@/features/game_data/useMaterialData";
 	import { useExchangeData } from "@/features/game_data/useExchangeData";
+	import { usePostHog } from "@/lib/usePostHog";
+	const { capture } = usePostHog();
 
 	// Components
 	import MaterialDataChart from "@/features/market_exploration/components/MaterialDataChart.vue";
@@ -125,11 +127,19 @@
 		return style;
 	});
 
+	function toggleDrawer(): void {
+		if (!props.disableDrawer) {
+			refShowDrawer.value = !refShowDrawer.value;
+			capture("materialtile_market_drawer", { material: props.ticker });
+		}
+	}
+
 	onMounted(() => {
 		try {
-			refExchangeOverview.value = getMaterialExchangeOverview(
-				props.ticker
-			);
+			if (props.enablePopover)
+				refExchangeOverview.value = getMaterialExchangeOverview(
+					props.ticker
+				);
 		} catch {
 			refExchangeOverview.value = undefined;
 		}
@@ -144,13 +154,7 @@
 				categoryCssClass,
 				{ 'hover:cursor-pointer': !disableDrawer || enablePopover },
 			]"
-			@click="
-				() => {
-					if (!disableDrawer) {
-						refShowDrawer = !refShowDrawer;
-					}
-				}
-			">
+			@click="toggleDrawer">
 			<PTooltip v-if="refExchangeOverview !== undefined && enablePopover">
 				<template #trigger>
 					<div

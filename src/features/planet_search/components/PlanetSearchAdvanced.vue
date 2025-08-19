@@ -5,6 +5,10 @@
 	import { useQuery } from "@/lib/query_cache/useQuery";
 	import { useQueryRepository } from "@/lib/query_cache/queryRepository";
 
+	// Composables
+	import { usePostHog } from "@/lib/usePostHog";
+	const { capture } = usePostHog();
+
 	// Types & Interfaces
 	import {
 		IPlanet,
@@ -131,6 +135,11 @@
 
 	async function doSearch() {
 		refIsLoading.value = true;
+
+		capture("planet_search_advanced", {
+			materials: searchPayload.value.Materials,
+			cogc: searchPayload.value.COGC,
+		});
 
 		try {
 			const data: IPlanet[] = await useQuery(

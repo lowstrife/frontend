@@ -31,6 +31,8 @@ import { preferenceDefaults } from "@/features/preferences/userDefaults";
 export const useUserStore = defineStore(
 	"prunplanner_user",
 	() => {
+		const { posthog, setUserProp } = usePostHog();
+
 		// state
 		const accessToken: Ref<string | undefined> = ref(undefined);
 		const refreshToken: Ref<string | undefined> = ref(undefined);
@@ -121,7 +123,6 @@ export const useUserStore = defineStore(
 			$reset();
 
 			// reset posthog users
-			const { posthog } = usePostHog();
 			posthog.reset();
 
 			// reset related stores
@@ -200,10 +201,16 @@ export const useUserStore = defineStore(
 				try {
 					await callGetProfile().then((result: IUserProfile) => {
 						// identify users for posthog
-						const { posthog } = usePostHog();
 						posthog.identify(result.user_id.toString(), {
 							username: result.username,
 						});
+
+						if (
+							result.fio_apikey !== null &&
+							result.prun_username !== null
+						)
+							setUserProp({ fio_enabled: true });
+						else setUserProp({ fio_enabled: false });
 
 						profile.value = result;
 					});

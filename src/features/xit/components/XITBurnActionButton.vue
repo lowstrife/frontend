@@ -5,6 +5,8 @@
 	import { useBurnXITAction } from "@/features/xit/useBurnXITAction";
 	import { useXITAction } from "@/features/xit/useXITAction";
 	import { usePreferences } from "@/features/preferences/usePreferences";
+	import { usePostHog } from "@/lib/usePostHog";
+	const { capture } = usePostHog();
 
 	const {
 		burnResupplyDays,
@@ -74,6 +76,8 @@
 
 	function show(): void {
 		if (!showDrawer.value) {
+			capture("xit_burn_show");
+
 			loadDrawer.value = true;
 			nextTick().then(() => (showDrawer.value = true));
 		}
@@ -167,28 +171,32 @@
 						class="w-full" />
 					<PButton
 						@click="
-							copyToClipboard(
-								transferJSON(
-									materialTable
-										.filter(
-											(mt) =>
-												mt.total !== Infinity &&
-												mt.total > 0 &&
-												mt.active
-										)
-										.map((m) => {
-											return {
-												ticker: m.ticker,
-												value: m.total,
-											};
-										}),
-									{
-										name: 'Burn Supply',
-										origin: burnOrigin,
-										buy: defaultBuyItemsFromCX,
-									}
-								).value
-							)
+							() => {
+								capture('xit_burn_copy');
+
+								copyToClipboard(
+									transferJSON(
+										materialTable
+											.filter(
+												(mt) =>
+													mt.total !== Infinity &&
+													mt.total > 0 &&
+													mt.active
+											)
+											.map((m) => {
+												return {
+													ticker: m.ticker,
+													value: m.total,
+												};
+											}),
+										{
+											name: 'Burn Supply',
+											origin: burnOrigin,
+											buy: defaultBuyItemsFromCX,
+										}
+									).value
+								);
+							}
 						">
 						Copy
 					</PButton>

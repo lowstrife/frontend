@@ -8,6 +8,8 @@
 
 	// Composables
 	import { useResourceROIOverview } from "@/features/resource_roi_overview/useResourceROIOverview";
+	import { usePostHog } from "@/lib/usePostHog";
+	const { capture } = usePostHog();
 
 	// Components
 	import WrapperGameDataLoader from "@/features/wrapper/components/WrapperGameDataLoader.vue";
@@ -31,6 +33,10 @@
 
 	async function performSearchAndCalculation(): Promise<void> {
 		if (refSearchMaterial.value) {
+			capture("resource_roi_overview", {
+				material: refSearchMaterial.value,
+			});
+
 			refInitialized.value = true;
 			refIsLoading.value = true;
 			calculate(refSearchMaterial.value).finally(

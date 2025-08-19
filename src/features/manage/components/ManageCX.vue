@@ -4,6 +4,8 @@
 	// Composables
 	import { useQueryRepository } from "@/lib/query_cache/queryRepository";
 	import { useQuery } from "@/lib/query_cache/useQuery";
+	import { usePostHog } from "@/lib/usePostHog";
+	const { capture } = usePostHog();
 
 	// Types & Interfaces
 	import { ICX } from "@/stores/planningStore.types";
@@ -51,6 +53,8 @@
 		if (compCanCreate.value) {
 			refIsCreating.value = true;
 
+			capture("manage_cx_create");
+
 			await useQuery(useQueryRepository().repository.CreateCX, {
 				cxName: refNewCXName.value!,
 			}).execute();
@@ -84,6 +88,9 @@
 
 	async function deleteCX(cxUuid: string): Promise<void> {
 		refIsDeleting.value = cxUuid;
+
+		capture("manage_cx_delete", { cxUuid: cxUuid });
+
 		const deletionResult: boolean = await useQuery(
 			useQueryRepository().repository.DeleteCX,
 			{ cxUuid: cxUuid }

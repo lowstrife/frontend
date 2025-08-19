@@ -15,6 +15,8 @@
 
 	// Composables
 	import { useMarketExplorationChart } from "@/features/market_exploration/useMarketExplorationChart";
+	import { usePostHog } from "@/lib/usePostHog";
+	const { capture } = usePostHog();
 
 	// Types & Interfaces
 	import { SelectMixedOption } from "naive-ui/es/select/src/interface";
@@ -50,6 +52,14 @@
 		chartOptions,
 		dataChart,
 	} = useMarketExplorationChart(selectedExchange, selectedMaterial);
+
+	function fetch(): void {
+		capture("marketexploration_explore", {
+			exchange: selectedExchange.value,
+			material: selectedMaterial.value,
+		});
+		fetchData();
+	}
 </script>
 
 <template>
@@ -79,7 +89,7 @@
 						<n-button
 							size="small"
 							:loading="loading"
-							@click="fetchData">
+							@click="fetch">
 							Explore
 						</n-button>
 						<HelpDrawer file-name="tools_market_exploration" />
