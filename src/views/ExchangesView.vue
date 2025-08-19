@@ -14,6 +14,8 @@
 	// Composables
 	import { useQuery } from "@/lib/query_cache/useQuery";
 	import { useQueryRepository } from "@/lib/query_cache/queryRepository";
+	import { usePostHog } from "@/lib/usePostHog";
+	const { capture } = usePostHog();
 
 	// Util
 	import { inertClone } from "@/util/data";
@@ -152,6 +154,8 @@
 		if (selectedCX.value) {
 			isPatching.value = true;
 
+			capture("exchange_patch", { exchangeUuid: selectedCX.value.uuid });
+
 			await useQuery(useQueryRepository().repository.PatchCX, {
 				cxUuid: selectedCX.value.uuid,
 				data: data,
@@ -163,6 +167,7 @@
 	}
 
 	function reloadCXData(): void {
+		capture("exchange_reload");
 		selectedCX.value = inertClone(rawSelectedCX.value);
 		selectedName.value = selectedCX.value!.name;
 		generatePlanetMap(localPlanetList.value);

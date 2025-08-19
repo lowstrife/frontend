@@ -1,8 +1,11 @@
 <script setup lang="ts">
 	import { PropType, ref, Ref, watch } from "vue";
 
+	// Composables
 	import { useQuery } from "@/lib/query_cache/useQuery";
 	import { useQueryRepository } from "@/lib/query_cache/queryRepository";
+	import { usePostHog } from "@/lib/usePostHog";
+	const { capture } = usePostHog();
 
 	// Util
 	import { inertClone } from "@/util/data";
@@ -67,6 +70,7 @@
 	 * @returns {void}
 	 */
 	function reload(): void {
+		capture("empire_reload");
 		localData.value = inertClone(props.data);
 	}
 
@@ -79,6 +83,8 @@
 	 */
 	async function save(): Promise<void> {
 		isLoading.value = true;
+		capture("empire_patch", { empireUuid: localData.value.uuid });
+
 		const patchData: IEmpirePatchPayload = {
 			faction: localData.value.faction as PLAN_FACTION,
 			permits_used: localData.value.permits_used,

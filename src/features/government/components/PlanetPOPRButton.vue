@@ -4,6 +4,8 @@
 	// Composables
 	import { useQuery } from "@/lib/query_cache/useQuery";
 	import { useQueryRepository } from "@/lib/query_cache/queryRepository";
+	import { usePostHog } from "@/lib/usePostHog";
+	const { capture } = usePostHog();
 
 	// Components
 	import PlanetPOPRTable from "./PlanetPOPRTable.vue";
@@ -38,6 +40,8 @@
 
 	async function loadData(planetNaturalId: string): Promise<void> {
 		buttonLoading.value = true;
+
+		capture("popr_load", { planetId: planetNaturalId });
 
 		try {
 			await useQuery(useQueryRepository().repository.GetPlanetLastPOPR, {

@@ -29,6 +29,8 @@
 		reloadExistingPlan,
 		patchMaterialIO,
 	} = usePlan();
+	import { usePostHog } from "@/lib/usePostHog";
+	const { capture } = usePostHog();
 
 	// Util
 	import { inertClone } from "@/util/data";
@@ -169,6 +171,8 @@
 
 	function openTool(key: toolOptions): void {
 		refShowTool.value = null;
+
+		capture("plan_tool_view", { name: key });
 		nextTick(() => {
 			key != refShowTool.value
 				? (refShowTool.value = key)
@@ -339,6 +343,11 @@
 			// reset modified state
 			handleResetModified();
 
+			capture("plan_save", {
+				planUuid: refPlanData.value.uuid,
+				planetId: planetData.PlanetNaturalId,
+			});
+
 			refIsSaving.value = false;
 		} else {
 			await createNewPlan(backendData.value).then(
@@ -355,6 +364,10 @@
 
 						// reset modified state
 						handleResetModified();
+						capture("plan_create", {
+							planUuid: newUuid,
+							planetId: planetData.PlanetNaturalId,
+						});
 
 						router.push(
 							`/plan/${planetData.PlanetNaturalId}/${newUuid}`
@@ -378,6 +391,11 @@
 		await reloadExistingPlan(refPlanData.value.uuid).then(
 			(result: IPlan) => (refPlanData.value = result)
 		);
+
+		capture("plan_reload", {
+			planUuid: refPlanData.value.uuid,
+			planetId: planetData.PlanetNaturalId,
+		});
 		refIsReloading.value = false;
 	}
 
@@ -396,6 +414,11 @@
 	// Route Guard
 	onBeforeRouteLeave(() => {
 		if (modified.value) {
+			capture("plan_leave_changed", {
+				planUuid: refPlanData.value.uuid,
+				planetId: planetData.PlanetNaturalId,
+			});
+
 			const answer = confirm(
 				"Do you really want to leave? Unsaved changes will be lost."
 			);

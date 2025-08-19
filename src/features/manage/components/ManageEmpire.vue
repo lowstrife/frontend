@@ -4,6 +4,8 @@
 	// Composables
 	import { useQuery } from "@/lib/query_cache/useQuery";
 	import { useQueryRepository } from "@/lib/query_cache/queryRepository";
+	import { usePostHog } from "@/lib/usePostHog";
+	const { capture } = usePostHog();
 
 	// Types & Interfaces
 	import {
@@ -163,6 +165,8 @@
 		refIsUpdatingJunctions.value = true;
 
 		try {
+			capture("manage_empire_junctions_update");
+
 			await useQuery(
 				useQueryRepository().repository.PatchEmpireCXJunctions,
 				{
@@ -189,6 +193,8 @@
 
 		try {
 			if (compCanCreate.value) {
+				capture("manage_empire_create");
+
 				await useQuery(useQueryRepository().repository.CreateEmpire, {
 					data: {
 						faction: refCreateFaction.value,
@@ -230,6 +236,7 @@
 
 	async function deleteEmpire(empireUuid: string): Promise<void> {
 		refIsDeleting.value = empireUuid;
+		capture("manage_empire_delete", { empireUuid: empireUuid });
 		const deletionResult: boolean = await useQuery(
 			useQueryRepository().repository.DeleteEmpire,
 			{ empireUuid: empireUuid }

@@ -14,6 +14,8 @@
 	const { getPlanetName } = usePlanetData();
 	import { useQuery } from "@/lib/query_cache/useQuery";
 	import { useQueryRepository } from "@/lib/query_cache/queryRepository";
+	import { usePostHog } from "@/lib/usePostHog";
+	const { capture } = usePostHog();
 	// Util
 	import { inertClone } from "@/util/data";
 
@@ -159,11 +161,14 @@
 	}
 
 	function reload(): void {
+		capture("manage_plans_reload");
 		localEmpires.value = inertClone(props.empires);
 		generateMatrix();
 	}
 
 	function changeAllToEmpire(empireUuid: string, value: boolean): void {
+		capture("manage_plans_assign_all", { empireUuid: empireUuid });
+
 		matrix.value.forEach((mv) => {
 			// check if part of filtered view
 			if (filteredMatrix.value.length != matrix.value.length) {
@@ -221,6 +226,8 @@
 	async function patchJunctions(): Promise<void> {
 		refIsPatching.value = true;
 
+		capture("manage_plans_junctions_update");
+
 		useQuery(useQueryRepository().repository.PatchEmpirePlanJunctions, {
 			junctions: patchJunctionData.value,
 		})
@@ -234,6 +241,8 @@
 		planName: string
 	): Promise<void> {
 		refIsCloning.value = planUuid;
+
+		capture("manage_plans_clone", { planUuid: planUuid });
 
 		useQuery(useQueryRepository().repository.ClonePlan, {
 			planUuid: planUuid,
@@ -260,6 +269,8 @@
 
 	async function deletePlan(planUuid: string): Promise<void> {
 		refIsDeleting.value = planUuid;
+
+		capture("manage_plans_delete", { planUuid: planUuid });
 
 		useQuery(useQueryRepository().repository.DeletePlan, {
 			planUuid: planUuid,

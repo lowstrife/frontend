@@ -5,6 +5,10 @@
 	import { useQuery } from "@/lib/query_cache/useQuery";
 	import { useQueryRepository } from "@/lib/query_cache/queryRepository";
 
+	// Composables
+	import { usePostHog } from "@/lib/usePostHog";
+	const { capture } = usePostHog();
+
 	// Types & Interfaces
 	import { IPlanet } from "@/features/api/gameData.types";
 
@@ -26,6 +30,9 @@
 	async function doSearch() {
 		if (canSearch.value) {
 			isLoading.value = true;
+
+			capture("planet_search_basic");
+
 			try {
 				await useQuery(
 					useQueryRepository().repository.GetPlanetSearchSingle,

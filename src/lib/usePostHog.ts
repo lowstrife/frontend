@@ -13,7 +13,14 @@ export function usePostHog() {
 		"refresh_token",
 	];
 
-	if (posthogToken) {
+	function isClient() {
+		return typeof window !== "undefined";
+	}
+
+	// Queue, in case PostHog is not yet ready
+	const eventQueue: Array<[string, Properties | null | undefined]> = [];
+
+	if (posthogToken && isClient()) {
 		posthog.init(posthogToken, {
 			api_host: "https://squirrel.prunplanner.org/relay-DWJJ",
 			ui_host: "https://eu.posthog.com",
@@ -21,19 +28,34 @@ export function usePostHog() {
 			person_profiles: "identified_only",
 			name: posthogName ?? "localhost",
 		});
+
+		// flush event queue on load
+		posthog.onFeatureFlags(() => {
+			eventQueue.forEach(([event, props]) =>
+				posthog.capture(event, props)
+			);
+			eventQueue.length = 0;
+		});
 	}
 
 	function capture<T extends Properties | null | undefined>(
 		eventName: string,
-		props: T
+		props?: T
 	) {
-		if (posthog.__loaded) {
-			// redact props
-			if (props) props = redact(props, SENSITIVE_KEYS);
+		// redact props
+		const safeProps = props ? redact(props, SENSITIVE_KEYS) : props;
 
+		if (posthog.__loaded) {
 			posthog.capture(eventName, props);
+		} else {
+			// queue up
+			eventQueue.push([eventName, safeProps]);
 		}
 	}
 
-	return { posthog, capture };
+	function setUserProp(props: string | Properties) {
+		posthog.people.set(props);
+	}
+
+	return { posthog, capture, setUserProp };
 }
