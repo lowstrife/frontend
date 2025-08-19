@@ -6,6 +6,7 @@ import {
 	PFormItemConfig,
 	PInputConfig,
 	PInputNumberConfig,
+	PTagConfig,
 	PTooltipConfig,
 } from "@/ui/ui.types";
 
@@ -29,27 +30,32 @@ export const buttonConfig: PButtonConfig = {
 		primary: {
 			base: "bg-blue-800 text-white",
 			hover: "hover:bg-blue-700",
-			disabled: "disabled:bg-blue-800/50 disabled:text-white/80",
+			disabled:
+				"disabled:bg-blue-800/50 disabled:text-white/80 !cursor-auto",
 		},
 		success: {
 			base: "bg-lime-500 text-black",
 			hover: "hover:bg-lime-700",
-			disabled: "disabled:bg-lime-500/50 disabled:text-white/80",
+			disabled:
+				"disabled:bg-lime-500/50 disabled:text-white/80 !cursor-auto",
 		},
 		secondary: {
 			base: "bg-gray-800 text-white",
 			hover: "hover:bg-gray-700",
-			disabled: "disabled:bg-gray-800/50 disabled:text-white/80",
+			disabled:
+				"disabled:bg-gray-800/50 disabled:text-white/80 !cursor-auto",
 		},
 		error: {
 			base: "bg-red-600 text-white",
 			hover: "hover:bg-red-700",
-			disabled: "disabled:bg-red-600/50 disabled:text-white/80",
+			disabled:
+				"disabled:bg-red-600/50 disabled:text-white/80 !cursor-auto",
 		},
 		warning: {
 			base: "bg-gray-100 text-gray-900",
 			hover: "hover:bg-gray-200",
-			disabled: "disabled:bg-gray-100/50 disabled:text-gray-900",
+			disabled:
+				"disabled:bg-gray-100/50 disabled:text-gray-900 !cursor-auto",
 		},
 	},
 };
@@ -77,12 +83,13 @@ export const tooltipConfig: PTooltipConfig = {
 };
 
 export const formConfig: PFormConfig = {
-	container: "grid grid-cols-[auto_1fr] child:mb-1",
+	container:
+		"grid grid-cols-[max-content_1fr] max-w-full w-full overflow-hidden child:mb-1",
 };
 
 export const formItemConfig: PFormItemConfig = {
-	label: "flex items-center h-full pr-4",
-	content: "flex items-center h-full",
+	label: "flex items-center h-full pr-4 truncate",
+	content: "flex items-center h-full w-full truncate",
 };
 
 export const inputNumberConfig: PInputNumberConfig = {
@@ -99,7 +106,7 @@ export const inputNumberConfig: PInputNumberConfig = {
 			buttonContainer: "pr-2 child:w-[20px] child:h-[20px]",
 		},
 		md: {
-			container: "gap-1 child:py-1",
+			container: "gap-1 child:py-1 h-[28px]",
 			input: "px-2",
 			buttonContainer: "pr-2 child:w-[20px] child:h-[20px]",
 		},
@@ -114,8 +121,30 @@ export const inputConfig: PInputConfig = {
 			input: "w-full outline-0",
 		},
 		md: {
-			container: "child:py-1 child:px-2",
+			container: "child:py-1 child:px-2 h-[28px]",
 			input: "w-full outline-0",
+		},
+	},
+};
+
+export const tagConfig: PTagConfig = {
+	colors: {
+		primary: "bg-blue-900 border border-white/20 text-white",
+		success: "bg-lime-500/30 border border-white/20 text-white/90",
+		secondary: "bg-black/50 border border-white/20 text-white",
+		error: "bg-red-600/30 border border-white/20 text-white/90",
+		warning: "bg-gray-100 border border-white/20 text-gray-900",
+	},
+	sizes: {
+		sm: {
+			container:
+				"inline-flex text-xs items-center rounded-xs gap-x-0.5 py-0.25 px-1 mr-0.5",
+			icon: "w-[14px] hover:text-white text-white/50 hover:bg-gray-800",
+		},
+		md: {
+			container:
+				"inline-flex items-center text-xs rounded-xs gap-x-1 py-0.5 px-1 mr-1",
+			icon: "w-[16px] hover:text-white text-white/50 hover:bg-gray-800",
 		},
 	},
 };

@@ -53,6 +53,7 @@
 				type="text"
 				inputmode="numeric"
 				:value="value"
+				placeholder="Please Input"
 				:class="`${inputNumberConfig.input} ${inputNumberConfig.sizes[size].input}`"
 				@input="onInput" />
 

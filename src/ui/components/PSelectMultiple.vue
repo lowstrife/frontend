@@ -10,27 +10,35 @@
 	} from "vue";
 	import { currentlyOpenId } from "@/ui/pSelectCurrentOpen";
 	import { PSelectOption } from "@/ui/ui.types";
-	import { PInput, PSelectElement } from "@/ui";
+	import { PInput, PSelectElement, PTag } from "@/ui";
 	import { createPopper, Instance } from "@popperjs/core";
+	import { ClearSharp, ClearFilled } from "@vicons/material";
 
-	const value = defineModel<null | string | number | undefined>("value", {
-		required: true,
-	});
+	const value = defineModel<Array<null | string | number | undefined>>(
+		"value",
+		{
+			required: true,
+		}
+	);
 
 	const {
 		options,
 		searchable = false,
 		disabled = false,
+		clearable = true,
+		maxItems = Infinity,
 	} = defineProps<{
 		options: PSelectOption[];
 		searchable?: boolean;
 		disabled?: boolean;
+		clearable?: boolean;
+		maxItems?: number;
 	}>();
 
 	const open = ref(false);
 	const searchString: Ref<string | null> = ref(null);
 
-	const displayValue: ComputedRef<string> = computed(() => {
+	const displayValue: ComputedRef<string[]> = computed(() => {
 		const allOptions: PSelectOption[] = [];
 
 		options.forEach((e) => {
@@ -40,10 +48,13 @@
 			}
 		});
 
-		return (
-			allOptions.find((f) => f.value === value.value)?.label ??
-			"Please Select"
-		);
+		const displayOptions: string[] = [];
+
+		allOptions.forEach((a) => {
+			if (value.value.includes(a.value)) displayOptions.push(a.label);
+		});
+
+		return displayOptions;
 	});
 
 	const filteredOptions: ComputedRef<PSelectOption[]> = computed(() => {
@@ -64,13 +75,15 @@
 		}
 	});
 
-	const useSearch: Ref<boolean> = ref(false);
-
 	function change(e: string | number) {
-		if (!disabled) {
-			value.value = e;
+		if (
+			!disabled &&
+			!value.value.includes(e) &&
+			value.value.length + 1 <= maxItems
+		) {
+			value.value.push(e);
+			value.value = [...value.value];
 		}
-		useSearch.value = false;
 	}
 
 	let popperInstance: Instance | null = null;
@@ -118,6 +131,17 @@
 		}
 	};
 
+	function clear(): void {
+		value.value = [];
+	}
+
+	function removeElement(v: string | number): void {
+		if (!disabled) {
+			value.value.splice(value.value.indexOf(v, 0), 1);
+			value.value = [...value.value];
+		}
+	}
+
 	watch(open, (val) => {
 		if (!val && popperInstance) {
 			popperInstance.destroy();
@@ -144,29 +168,38 @@
 		ref="triggerRef"
 		v-click-outside="
 			() => {
-				open = false;
+				//open = false;
 			}
 		"
-		class="pselect leading-none">
-		<label name="pselect-label">
+		class="pselect-multiple leading-none">
+		<label name="pselect-multiple-label">
 			<div
-				class="flex flex-row items-center cursor-pointer bg-white/5 text-white/80 rounded-sm pr-2 h-[28px]"
-				:class="!useSearch ? 'py-1 ' : ''"
-				@click="
-					() => {
-						toggleOpen();
-						searchable ? (useSearch = true) : {};
-					}
-				">
-				<div v-if="!useSearch" class="flex-grow px-2">
-					{{ displayValue }}
-				</div>
+				class="flex flex-row items-center cursor-pointer bg-white/5 py-1 text-white/80 rounded-sm px-2 h-[28px]">
 				<div
-					v-else
-					class="flex-grow child:child:!bg-transparent py-0.5">
-					<PInput v-model:value="searchString" placeholder="Search" />
+					class="w-full max-w-full flex-grow px-2"
+					@click="toggleOpen">
+					<template v-if="displayValue.length > 0">
+						<div class="flex w-full max-w-full overflow-hidden">
+							<PTag
+								v-for="v in displayValue"
+								:key="v"
+								:value="v"
+								type="secondary"
+								@click="removeElement(v)">
+								<template #icon><ClearFilled /></template>
+							</PTag>
+						</div>
+					</template>
+					<template v-else> Select Options </template>
 				</div>
-				<div class="text-white w-[16px]">
+
+				<div
+					v-if="clearable"
+					class="text-white/60 w-[16px]"
+					@click="clear">
+					<ClearSharp />
+				</div>
+				<div class="text-white w-[16px]" @click="() => (open = false)">
 					<svg
 						viewBox="0 0 16 16"
 						fill="none"
@@ -187,6 +220,10 @@
 				:style="dropdownPosition">
 				<div
 					class="w-full flex flex-col bg-gray-900 child:py-1 child:px-2 child:hover:bg-gray-800 rounded-b-sm">
+					<PInput
+						v-if="searchable"
+						v-model:value="searchString"
+						placeholder="Search" />
 					<PSelectElement
 						v-for="option in filteredOptions"
 						:key="option.value"
