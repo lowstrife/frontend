@@ -117,7 +117,7 @@ export function usePlanCalculation(
 	});
 
 	const saveable: ComputedRef<boolean> = computed(() => {
-		return planName.value != undefined;
+		return planName.value != undefined && planName.value != "";
 	});
 
 	// pre-computations
@@ -464,7 +464,8 @@ export function usePlanCalculation(
 					 * 	- Building Daily Workforce Cost (lux1 + lux2)
 					 */
 
-					const maxDailyRuns: number = TOTALMSDAY / (br.TimeMs / totalEfficiency);
+					const maxDailyRuns: number =
+						TOTALMSDAY / (br.TimeMs / totalEfficiency);
 
 					const dailyRevenue: number =
 						dailyIncome * maxDailyRuns -
