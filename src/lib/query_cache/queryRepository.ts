@@ -188,6 +188,17 @@ export function useQueryRepository() {
 						params.planetNaturalIds
 					);
 					gameDataStore.setMultiplePlanets(data);
+
+					// set plans individually
+					data.forEach((p) => {
+						queryStore.addCacheState(
+							["gamedata", "planet", p.PlanetNaturalId],
+							queryRepository.GetPlanet,
+							{ planetNaturalId: p.PlanetNaturalId },
+							p
+						);
+					});
+
 					return data;
 				} catch {
 					return [];
@@ -369,6 +380,17 @@ export function useQueryRepository() {
 				try {
 					const data = await callGetEmpirePlans(params.empireUuid);
 					planningStore.setPlans(data);
+
+					// manually set individual plans
+					data.forEach((p) =>
+						queryStore.addCacheState(
+							["planningdata", "plan", p.uuid],
+							queryRepository.GetPlan,
+							{ planUuid: p.uuid! },
+							p
+						)
+					);
+
 					return data;
 				} catch {
 					return [];
@@ -485,6 +507,17 @@ export function useQueryRepository() {
 				try {
 					const data = await callGetPlanlist();
 					planningStore.setPlans(data);
+
+					// manually set individual plans
+					data.forEach((p) =>
+						queryStore.addCacheState(
+							["planningdata", "plan", p.uuid],
+							queryRepository.GetPlan,
+							{ planUuid: p.uuid! },
+							p
+						)
+					);
+
 					return data;
 				} catch {
 					return [];

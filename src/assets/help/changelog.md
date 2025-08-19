@@ -4,6 +4,7 @@
 - Fixes a bug where spaces in plan names were not working [#175](https://github.com/PRUNplanner/frontend/issues/175)
 - Fixes the visual bug on patching CX preferences not being displayed correctly [#135](https://github.com/PRUNplanner/frontend/issues/135)
 - Handle 404 / "No results found" on Planet Search [#179](https://github.com/PRUNplanner/frontend/issues/179)
+- Populates cached data from list results, e.g. all empire plans, fetching multiple planets to avoid another backend call on accessing individual data. This is experimental, but could lead to faster loading times for plans as their data and planet is already populated from accessing the empire overview.
 
 # 2025-08-15
 
