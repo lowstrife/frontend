@@ -3,6 +3,7 @@
 - Replaces many `naive-ui` components with an own implementation of UI components mainly to save rendering and calculation times.
 - Fixes a bug where spaces in plan names were not working [#175](https://github.com/PRUNplanner/frontend/issues/175)
 - Fixes the visual bug on patching CX preferences not being displayed correctly [#135](https://github.com/PRUNplanner/frontend/issues/135)
+- Handle 404 / "No results found" on Planet Search [#179](https://github.com/PRUNplanner/frontend/issues/179)
 
 # 2025-08-15
 
