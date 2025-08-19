@@ -133,18 +133,18 @@
 		refIsLoading.value = true;
 
 		try {
-			await useQuery(useQueryRepository().repository.PostPlanetSearch, {
-				searchData: searchPayload.value,
-			})
-				.execute()
-				.then((data: IPlanet[]) => {
-					emit("update:results", data);
-					emit("update:materials", inputMaterials.value);
-				})
-				.finally(() => (refIsLoading.value = false));
+			const data: IPlanet[] = await useQuery(
+				useQueryRepository().repository.PostPlanetSearch,
+				{
+					searchData: searchPayload.value,
+				}
+			).execute();
+			emit("update:results", data);
 		} catch {
 			emit("update:results", []);
 		}
+
+		refIsLoading.value = false;
 	}
 </script>
 
