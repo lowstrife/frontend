@@ -266,6 +266,47 @@ export const useQueryStore = defineStore("prunplanner_query_store", () => {
 	}
 
 	/**
+	 * Allows manually creating a cache state
+	 *
+	 * @author jplacht
+	 *
+	 * @async
+	 * @template TParams Params
+	 * @template TData Data
+	 * @param {JSONValue} key Key Value
+	 * @param {QueryDefinition<TParams, TData>} definition Query Definition
+	 * @param {TParams} params Query Params
+	 * @param {TData} data Result Data
+	 * @returns {Promise<void>} void
+	 */
+	async function addCacheState<TParams, TData>(
+		key: JSONValue,
+		definition: QueryDefinition<TParams, TData>,
+		params: TParams,
+		data: TData
+	): Promise<void> {
+		const keyHash: string = toCacheKey(key);
+
+		// do not overwrite existing state for key
+		if (!cache.get(keyHash)) {
+			cache.set(keyHash, {
+				definition: null,
+				params: null,
+				data: data,
+				loading: false,
+				error: null,
+				timestamp: Date.now(),
+				expireTime: undefined,
+			});
+
+			const state = cache.get(keyHash)! as QueryState<TParams, TData>;
+			state.definition = definition;
+			state.params = params;
+			state.expireTime = definition.expireTime;
+		}
+	}
+
+	/**
 	 * True, if any cache state is currently loading
 	 * @author jplacht
 	 *
@@ -332,6 +373,7 @@ export const useQueryStore = defineStore("prunplanner_query_store", () => {
 		peekQueryState,
 		executeQuery,
 		invalidateKey,
+		addCacheState,
 		isAnythingLoading,
 		// only exposed for testing
 		checkEntryStatusAndRefresh,
