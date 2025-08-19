@@ -9,7 +9,7 @@
 	import { IPlanet } from "@/features/api/gameData.types";
 
 	// UI
-	import { NForm, NFormItem, NInput, NButton } from "naive-ui";
+	import { PForm, PFormItem, PInput, PButton } from "@/ui";
 	import { SearchSharp } from "@vicons/material";
 
 	const refSearchId: Ref<string | null> = ref(null);
@@ -46,14 +46,10 @@
 <template>
 	<div class="flex flex-row flex-wrap gap-3 justify-between">
 		<h2 class="text-lg font-bold my-auto">Plan Name or ID</h2>
-		<n-button
-			size="small"
-			:loading="isLoading"
-			:disabled="!canSearch"
-			@click="doSearch">
+		<PButton :loading="isLoading" :disabled="!canSearch" @click="doSearch">
 			<template #icon><SearchSharp /></template>
 			Search
-		</n-button>
+		</PButton>
 	</div>
 
 	<div class="py-3 text-white/60">
@@ -61,15 +57,9 @@
 		"Montem", "OT-"" or "580".
 	</div>
 
-	<n-form
-		inline
-		label-placement="left"
-		label-width="auto"
-		label-align="left"
-		class="flex-grow"
-		size="small">
-		<n-form-item class="!w-full">
-			<n-input v-model:value="refSearchId" />
-		</n-form-item>
-	</n-form>
+	<PForm>
+		<PFormItem label="ID">
+			<PInput v-model:value="refSearchId" class="w-full" />
+		</PFormItem>
+	</PForm>
 </template>

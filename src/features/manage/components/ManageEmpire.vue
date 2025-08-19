@@ -27,9 +27,10 @@
 		PInputNumber,
 		PSelect,
 		PCheckbox,
+		PTag,
 	} from "@/ui";
 	import { PSelectOption } from "@/ui/ui.types";
-	import { useDialog, NTag } from "naive-ui";
+	import { useDialog } from "naive-ui";
 	const dialog = useDialog();
 	import { XNDataTable, XNDataTableColumn } from "@skit/x.naive-ui";
 	import { ClearSharp, PlusSharp, SaveSharp } from "@vicons/material";
@@ -348,16 +349,13 @@
 		</x-n-data-table-column>
 		<x-n-data-table-column key="fio" title="FIO">
 			<template #render-cell="{ rowData }">
-				<n-tag
+				<PTag
 					v-if="rowData.use_fio_storage"
-					size="small"
 					:bordered="false"
 					type="success">
 					Yes
-				</n-tag>
-				<n-tag v-else size="small" :bordered="false" type="error">
-					No
-				</n-tag>
+				</PTag>
+				<PTag v-else :bordered="false" type="error"> No </PTag>
 			</template>
 		</x-n-data-table-column>
 		<x-n-data-table-column key="cx" title="CX" width="200">

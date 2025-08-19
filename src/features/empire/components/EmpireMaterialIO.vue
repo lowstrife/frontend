@@ -15,7 +15,7 @@
 
 	// Types & Interfaces
 	import { IEmpireMaterialIO } from "@/features/empire/empire.types";
-	import { SelectMixedOption } from "naive-ui/es/select/src/interface";
+	import { PSelectOption } from "@/ui/ui.types";
 	import { WORKFORCE_CONSUMPTION_MAP } from "@/features/planning/calculations/workforceCalculations";
 
 	// UI
@@ -42,9 +42,9 @@
 	];
 
 	const filteredMaterialIO: Ref<IEmpireMaterialIO[]> = ref([]);
-	const refMaterialSelectOptions: Ref<SelectMixedOption[]> = ref([]);
+	const refMaterialSelectOptions: Ref<PSelectOption[]> = ref([]);
 	const refFilterMaterials: Ref<string[]> = ref([]);
-	const refPlanetSelectOptions: Ref<SelectMixedOption[]> = ref([]);
+	const refPlanetSelectOptions: Ref<PSelectOption[]> = ref([]);
 	const refFilterPlanets: Ref<string[]> = ref([]);
 	const refFilterLoadbalance: Ref<boolean> = ref(false);
 	const refFilterHideConsumables: Ref<boolean> = ref(false);

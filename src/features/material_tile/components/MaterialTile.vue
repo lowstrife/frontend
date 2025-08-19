@@ -14,8 +14,9 @@
 	import MaterialCXOverviewTable from "@/features/cx/components/MaterialCXOverviewTable.vue";
 
 	// UI
-	import { PTooltip } from "@/ui";
-	import { NDrawer, NDrawerContent, NTable, NSelect } from "naive-ui";
+	import { PTooltip, PSelect } from "@/ui";
+	import { PSelectOption } from "@/ui/ui.types";
+	import { NDrawer, NDrawerContent, NTable } from "naive-ui";
 
 	// Util
 	import { formatNumber } from "@/util/numbers";
@@ -254,11 +255,11 @@
 					<h3 class="font-bold text-lg">Market History</h3>
 				</div>
 				<div>
-					<n-select
+					<PSelect
 						v-model:value="refChartValue"
 						class="!w-[200px]"
-						size="tiny"
-						:options="refChartValueOptions" />
+						size="sm"
+						:options="refChartValueOptions as PSelectOption[]" />
 				</div>
 			</div>
 

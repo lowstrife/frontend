@@ -12,8 +12,8 @@
 	import { inertClone } from "@/util/data";
 
 	// UI
-	import { PButton, PInput } from "@/ui";
-	import { useDialog, NTag } from "naive-ui";
+	import { PButton, PInput, PTag } from "@/ui";
+	import { useDialog } from "naive-ui";
 	const dialog = useDialog();
 	import { XNDataTable, XNDataTableColumn } from "@skit/x.naive-ui";
 	import { ClearSharp, PlusSharp } from "@vicons/material";
@@ -154,16 +154,10 @@
 			</template>
 			<template #render-cell="{ rowData }">
 				<div class="text-center">
-					<n-tag
-						v-if="rowData.empires.length > 0"
-						size="small"
-						:bordered="false"
-						type="success">
+					<PTag v-if="rowData.empires.length > 0" type="success">
 						Yes ({{ rowData.empires.length }})
-					</n-tag>
-					<n-tag v-else size="small" :bordered="false" type="error">
-						No
-					</n-tag>
+					</PTag>
+					<PTag v-else type="error"> No </PTag>
 				</div>
 			</template>
 		</x-n-data-table-column>

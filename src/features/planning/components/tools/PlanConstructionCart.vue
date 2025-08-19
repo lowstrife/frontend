@@ -29,8 +29,8 @@
 	import { IMaterial } from "@/features/api/gameData.types";
 
 	// UI
-	import { PButton } from "@/ui";
-	import { NTable, NInputNumber } from "naive-ui";
+	import { PButton, PInputNumber } from "@/ui";
+	import { NTable } from "naive-ui";
 	import { CloseSharp } from "@vicons/material";
 
 	const props = defineProps({
@@ -191,12 +191,10 @@
 					:key="`CONSTRUCTIONCART#ROW#${building}`">
 					<th>{{ building }}</th>
 					<th class="!border-r">
-						<n-input-number
+						<PInputNumber
 							v-model:value="localBuildingAmount[building]"
-							show-button
-							:min="0"
-							size="small"
-							class="child:!bg-black min-w-[75px] max-w-[100px]" />
+							show-buttons
+							:min="0" />
 					</th>
 					<td
 						v-for="mat in uniqueMaterials"

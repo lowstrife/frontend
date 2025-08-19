@@ -66,3 +66,8 @@ export interface PSelectOption {
 	value: string | number;
 	children?: { label: string; value: string | number }[];
 }
+
+export interface PTagConfig {
+	colors: Record<ColorKey, string>;
+	sizes: Record<SizeKey, { container: string; icon: string }>;
+}

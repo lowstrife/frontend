@@ -13,10 +13,10 @@
 	import MaterialTile from "@/features/material_tile/components/MaterialTile.vue";
 
 	// Types & Interfaces
-	import { ICXPlanetMap } from "../manageCX.types";
+	import { ICXPlanetMap } from "@/features/exchanges/manageCX.types";
 
 	// UI
-	import { NButton, NTag } from "naive-ui";
+	import { PButton, PTag } from "@/ui";
 	import { XNDataTable, XNDataTableColumn } from "@skit/x.naive-ui";
 	import { EditSharp } from "@vicons/material";
 
@@ -66,12 +66,12 @@
 	<XNDataTable :data="Object.values(localMap)" striped>
 		<XNDataTableColumn key="buttons" title="" width="50">
 			<template #render-cell="{ rowData }">
-				<n-button
-					size="tiny"
+				<PButton
+					size="sm"
 					:type="
 						selectedPlanet === rowData.planet
 							? 'success'
-							: 'default'
+							: 'primary'
 					"
 					@click="
 						selectedPlanet === rowData.planet
@@ -79,7 +79,7 @@
 							: (selectedPlanet = rowData.planet)
 					">
 					<template #icon><EditSharp /></template>
-				</n-button>
+				</PButton>
 			</template>
 		</XNDataTableColumn>
 		<XNDataTableColumn key="planet" title="Planet" sorter="default">
@@ -93,18 +93,17 @@
 					<div
 						v-for="exchange in rowData.exchanges"
 						:key="`${rowData.planet}#${exchange.type}#${exchange.exchange}`">
-						<n-tag
-							size="small"
+						<PTag
 							:type="
 								exchange.type === 'BUY'
 									? 'success'
 									: exchange.type === 'SELL'
 									? 'error'
-									: 'info'
+									: 'primary'
 							">
 							{{ exchange.type }}:
 							<strong>{{ exchange.exchange }}</strong>
-						</n-tag>
+						</PTag>
 					</div>
 				</div>
 			</template>
@@ -117,19 +116,18 @@
 						:key="`${rowData.planet}#${ticker.type}#${ticker.value}`"
 						class="flex flex-row gap-x-1">
 						<MaterialTile :ticker="ticker.ticker" />
-						<n-tag
-							size="small"
+						<PTag
 							:type="
 								ticker.type === 'BUY'
 									? 'success'
 									: ticker.type === 'SELL'
 									? 'error'
-									: 'info'
+									: 'primary'
 							">
 							{{ ticker.type }}:
 							<strong>{{ formatNumber(ticker.value) }}</strong>
 							<span class="pl-1 font-light opacity-50">$</span>
-						</n-tag>
+						</PTag>
 					</div>
 				</div>
 			</template>

@@ -12,13 +12,12 @@
 		IPlanRepairAnalysisDataProp,
 		IPlanRepairAnalysisElement,
 	} from "@/features/planning/components/tools/planRepairAnalysis.types";
-	import { SelectMixedOption } from "naive-ui/es/select/src/interface";
+	import { PSelectOption } from "@/ui/ui.types";
 	import { IMaterialIOMinimal } from "@/features/planning/usePlanCalculation.types";
 	import { Options } from "highcharts";
 
 	// UI
-	import { PButton } from "@/ui";
-	import { NForm, NFormItem, NSelect } from "naive-ui";
+	import { PButton, PForm, PFormItem, PSelect } from "@/ui";
 	import { CloseSharp } from "@vicons/material";
 
 	const props = defineProps({
@@ -72,7 +71,7 @@
 		}
 	);
 
-	const selectionOptions: Ref<SelectMixedOption[]> = ref(
+	const selectionOptions: Ref<PSelectOption[]> = ref(
 		localData.value.map((b, i) => {
 			return { label: b.name, value: i };
 		})
@@ -280,17 +279,14 @@
 		optimal intersection of profitability and repair cost.
 	</div>
 	<div class="w-1/2 min-w-[400px] pb-3">
-		<n-form
-			label-placement="left"
-			label-width="auto"
-			label-align="left"
-			size="small">
-			<n-form-item label="Building">
-				<n-select
+		<PForm>
+			<PFormItem label="Building">
+				<PSelect
 					v-model:value="selectedBuilding"
-					:options="selectionOptions" />
-			</n-form-item>
-		</n-form>
+					:options="selectionOptions"
+					class="w-full" />
+			</PFormItem>
+		</PForm>
 	</div>
 	<template v-if="selectionOptions.length > 0">
 		<div class="grid grid-cols-1 lg:grid-cols-2 gap-3">

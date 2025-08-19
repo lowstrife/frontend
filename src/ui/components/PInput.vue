@@ -9,10 +9,14 @@
 		disabled = false,
 		size = "md",
 		placeholder = "Please Input",
+		rows = 5,
+		type = "input",
 	} = defineProps<{
 		disabled?: boolean;
 		size?: SizeKey;
 		placeholder?: string;
+		rows?: number;
+		type?: "input" | "textarea";
 	}>();
 
 	function onInput(e: Event) {
@@ -26,10 +30,21 @@
 		<div
 			:class="`${inputConfig.container} ${inputConfig.sizes[size].container}`">
 			<input
-				name="pinput"
+				v-if="type === 'input'"
+				name="pinput-input"
 				:disabled="disabled"
 				type="text"
 				:value="value"
+				:placeholder="placeholder"
+				:class="`${inputConfig.sizes[size].input}`"
+				@input="onInput" />
+			<textarea
+				v-if="type === 'textarea'"
+				name="pinput-textarea"
+				:disabled="disabled"
+				type="text"
+				:value="value"
+				:rows="rows"
 				:placeholder="placeholder"
 				:class="`${inputConfig.sizes[size].input}`"
 				@input="onInput" />
