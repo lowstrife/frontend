@@ -12,6 +12,7 @@
 	import { PSelectOption } from "@/ui/ui.types";
 	import { PInput, PSelectElement } from "@/ui";
 	import { createPopper, Instance } from "@popperjs/core";
+	import { ClearSharp } from "@vicons/material";
 
 	const value = defineModel<null | string | number | undefined>("value", {
 		required: true,
@@ -68,8 +69,14 @@
 
 	function change(e: string | number) {
 		if (!disabled) {
-			value.value = e;
+			if (value.value === e) value.value = null;
+			else value.value = e;
 		}
+		useSearch.value = false;
+	}
+
+	function clear(): void {
+		value.value = null;
 		useSearch.value = false;
 	}
 
@@ -166,6 +173,12 @@
 					class="flex-grow child:child:!bg-transparent py-0.5">
 					<PInput v-model:value="searchString" placeholder="Search" />
 				</div>
+				<div
+					v-if="value !== null"
+					class="text-white/60 w-[16px]"
+					@click="clear">
+					<ClearSharp />
+				</div>
 				<div class="text-white w-[16px]">
 					<svg
 						viewBox="0 0 16 16"
@@ -183,7 +196,7 @@
 			<div
 				v-if="open"
 				ref="dropdownRef"
-				class="z-50 p-1 bg-gray-900 text-white rounded-sm shadow-lg max-h-[300px] overflow-auto"
+				class="z-5000 p-1 bg-gray-900 text-white rounded-sm shadow-lg max-h-[300px] overflow-auto"
 				:style="dropdownPosition">
 				<div
 					class="w-full flex flex-col bg-gray-900 child:py-1 child:px-2 child:hover:bg-gray-800 rounded-b-sm">

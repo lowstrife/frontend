@@ -29,11 +29,17 @@
 			<div
 				class="flex flex-row items-center"
 				@click="emit('click', child.value)">
-				<div class="pl-3 flex-grow">
+				<div
+					class="pl-3 flex-grow"
+					:class="
+						isSelected(child.value)
+							? 'text-link-primary font-bold'
+							: ''
+					">
 					{{ child.label }}
 				</div>
 				<div
-					v-if="child.value === selectedValue"
+					v-if="isSelected(child.value)"
 					class="text-white fill-white h-[16px] w-[16px]">
 					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
 						<g fill="none">
@@ -56,7 +62,15 @@
 		<div
 			class="flex flex-row items-center"
 			@click="emit('click', option.value)">
-			<div class="flex-grow">{{ option.label }}</div>
+			<div
+				class="flex-grow"
+				:class="
+					isSelected(option.value)
+						? 'text-link-primary font-bold'
+						: ''
+				">
+				{{ option.label }}
+			</div>
 			<div
 				v-if="isSelected(option.value)"
 				class="text-white fill-white h-[16px] w-[16px]">

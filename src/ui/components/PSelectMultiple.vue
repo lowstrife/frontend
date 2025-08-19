@@ -12,7 +12,7 @@
 	import { PSelectOption } from "@/ui/ui.types";
 	import { PInput, PSelectElement, PTag } from "@/ui";
 	import { createPopper, Instance } from "@popperjs/core";
-	import { ClearSharp, ClearFilled } from "@vicons/material";
+	import { ClearSharp } from "@vicons/material";
 
 	const value = defineModel<Array<null | string | number | undefined>>(
 		"value",
@@ -186,7 +186,7 @@
 								:value="v"
 								type="secondary"
 								@click="removeElement(v)">
-								<template #icon><ClearFilled /></template>
+								<template #icon><ClearSharp /></template>
 							</PTag>
 						</div>
 					</template>
@@ -194,7 +194,7 @@
 				</div>
 
 				<div
-					v-if="clearable"
+					v-if="clearable && value.length !== 0"
 					class="text-white/60 w-[16px]"
 					@click="clear">
 					<ClearSharp />
@@ -216,7 +216,7 @@
 			<div
 				v-if="open"
 				ref="dropdownRef"
-				class="z-50 p-1 bg-gray-900 text-white rounded-sm shadow-lg max-h-[300px] overflow-auto"
+				class="z-5000 p-1 bg-gray-900 text-white rounded-sm shadow-lg max-h-[300px] overflow-auto"
 				:style="dropdownPosition">
 				<div
 					class="w-full flex flex-col bg-gray-900 child:py-1 child:px-2 child:hover:bg-gray-800 rounded-b-sm">
