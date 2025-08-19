@@ -155,17 +155,10 @@
 			await useQuery(useQueryRepository().repository.PatchCX, {
 				cxUuid: selectedCX.value.uuid,
 				data: data,
-			})
-				.execute()
-				.then(async () => {
-					await useQuery(
-						useQueryRepository().repository.GetAllCX
-					).execute();
-				})
-				.finally(() => {
-					initialize(selectedCX.value!.uuid);
-					isPatching.value = false;
-				});
+			}).execute();
+
+			initialize(selectedCX.value!.uuid);
+			isPatching.value = false;
 		}
 	}
 

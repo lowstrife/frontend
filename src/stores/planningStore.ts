@@ -7,6 +7,7 @@ import { inertClone } from "@/util/data";
 // Types & Interfaces
 import {
 	ICX,
+	ICXData,
 	ICXRecord,
 	IEmpireRecord,
 	IPlan,
@@ -98,10 +99,15 @@ export const usePlanningStore = defineStore(
 		 */
 		function setCXs(data: ICX[]): void {
 			cxs.value = {};
+
 			// store by CX.uuid
 			data.forEach((c) => {
 				cxs.value[c.uuid] = inertClone(c);
 			});
+		}
+
+		function setCX(cxUuid: string, data: ICXData): void {
+			cxs.value[cxUuid].cx_data = data;
 		}
 
 		/**
@@ -199,6 +205,7 @@ export const usePlanningStore = defineStore(
 			setPlan,
 			setPlans,
 			setCXs,
+			setCX,
 			setSharedList,
 			deleteShared,
 			deletePlan,
