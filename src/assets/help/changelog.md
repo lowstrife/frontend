@@ -1,6 +1,7 @@
 # 2025-08-19
 
 - Replaces many `naive-ui` components with an own implementation of UI components mainly to save rendering and calculation times.
+- Fixes a bug where spaces in plan names were not working [#175](https://github.com/PRUNplanner/frontend/issues/175)
 
 # 2025-08-15
 

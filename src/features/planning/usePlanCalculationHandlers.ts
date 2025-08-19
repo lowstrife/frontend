@@ -388,9 +388,7 @@ export function usePlanCalculationHandlers(
 	 */
 	function handleChangePlanName(value: string): void {
 		const transfValue: string = value.trimStart().trimEnd();
-
-		if (transfValue !== "") planName.value = transfValue;
-
+		planName.value = transfValue;
 		modified.value = true;
 	}
 
