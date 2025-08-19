@@ -174,12 +174,10 @@
 		class="pselect-multiple leading-none">
 		<label name="pselect-multiple-label">
 			<div
-				class="flex flex-row items-center cursor-pointer bg-white/5 py-1 text-white/80 rounded-sm px-2 h-[28px]">
-				<div
-					class="w-full max-w-full flex-grow px-2"
-					@click="toggleOpen">
+				class="flex flex-row items-center cursor-pointer bg-white/5 py-1 text-white/80 rounded-sm px-2">
+				<div class="w-full max-w-full flex-grow" @click="toggleOpen">
 					<template v-if="displayValue.length > 0">
-						<div class="flex w-full max-w-full overflow-hidden">
+						<div class="flex w-full max-w-full flex-wrap gap-y-1">
 							<PTag
 								v-for="v in displayValue"
 								:key="v"

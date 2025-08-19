@@ -84,12 +84,13 @@ export const tooltipConfig: PTooltipConfig = {
 
 export const formConfig: PFormConfig = {
 	container:
-		"grid grid-cols-[max-content_1fr] max-w-full w-full overflow-hidden child:mb-1",
+		"grid grid-cols-[auto_1fr] max-w-full w-full overflow-hidden child:mb-1",
 };
 
 export const formItemConfig: PFormItemConfig = {
-	label: "flex items-center h-full pr-4 truncate",
-	content: "flex items-center h-full w-full truncate",
+	label: "flex-none flex items-center h-full overflow-hidden whitespace-nowrap text-ellipsis pr-4",
+	content:
+		"flex-none flex items-center h-full overflow-hidden whitespace-nowrap text-ellipsis",
 };
 
 export const inputNumberConfig: PInputNumberConfig = {
