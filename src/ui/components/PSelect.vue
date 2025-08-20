@@ -159,7 +159,7 @@
 		class="pselect leading-none">
 		<label name="pselect-label">
 			<div
-				class="flex flex-row items-center cursor-pointer bg-white/5 text-white/80 rounded-sm pr-2 h-[28px]"
+				class="flex flex-row items-center cursor-pointer bg-white/5 text-white/80 rounded-sm pr-2 min-h-[28px]"
 				:class="!useSearch ? 'py-1 ' : ''"
 				@click="
 					() => {

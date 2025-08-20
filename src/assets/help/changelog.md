@@ -2,6 +2,7 @@
 
 - Improve Vite build and chunking
 - Fix zero material elements on XIT Transfer as it breaks the Action [#183](https://github.com/PRUNplanner/frontend/issues/183)
+- Introduce a `version.json` in Vite build, notify users on new versions to reload page
 
 # 2025-08-19
 

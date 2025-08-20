@@ -1,7 +1,6 @@
 import { defineConfig } from "vite";
 import path from "path";
 import vue from "@vitejs/plugin-vue";
-import fs from "node:fs";
 import tailwindcss from "@tailwindcss/vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 import { compression } from "vite-plugin-compression2";
@@ -56,19 +55,6 @@ export default defineConfig({
 			brotliSize: true,
 			open: process.env.ANALYZE === "true",
 		}),
-		{
-			name: "generate-version-file",
-			closeBundle() {
-				const versionData = {
-					version: process.env.npm_package_version,
-					buildTime: new Date().toISOString(),
-				};
-				fs.writeFileSync(
-					path.resolve(__dirname, "dist/version.json"),
-					JSON.stringify(versionData, null, 2)
-				);
-			},
-		},
 	],
 	resolve: {
 		alias: {
