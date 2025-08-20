@@ -56,5 +56,5 @@ export function useVersionCheck(interval = 60_000) {
 		setInterval(checkVersion, interval);
 	});
 
-	return { currentVersion, updateAvailable, markUpdated };
+	return { currentVersion, updateAvailable, markUpdated, checkVersion };
 }
