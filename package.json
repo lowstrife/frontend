@@ -5,7 +5,7 @@
 	"type": "module",
 	"scripts": {
 		"dev": "vite",
-		"build": "vue-tsc --noEmit && vite build",
+		"build": "vue-tsc --noEmit && vite build && node scripts/write-version.js",
 		"tsc": "vue-tsc --project tsconfig.app.json",
 		"tsc:watch": "vue-tsc --project tsconfig.app.json --watch",
 		"preview": "vite preview",

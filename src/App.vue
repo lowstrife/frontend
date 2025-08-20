@@ -12,6 +12,14 @@
 		() => import("@/features/navigation/components/MobileToggle.vue")
 	);
 
+	const VersionUpdateNotification = defineAsyncComponent(
+		() => import("@/layout/components/VersionUpdateNotification.vue")
+	);
+
+	// Composables
+	import { useVersionCheck } from "@/lib/useVersionCheck";
+	const { updateAvailable } = useVersionCheck();
+
 	// Stores
 	import { useUserStore } from "@/stores/userStore";
 	const userStore = useUserStore();
@@ -34,6 +42,8 @@
 </script>
 
 <template>
+	<VersionUpdateNotification v-if="updateAvailable" />
+
 	<main class="flex h-view w-full bg-[rgb(3,7,7)] text-white/80">
 		<template v-if="userStore.isLoggedIn">
 			<NavigationBar />
