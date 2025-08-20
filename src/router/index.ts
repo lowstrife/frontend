@@ -125,6 +125,11 @@ const router = createRouter({
 			component: () =>
 				import("@/views/tools/ResourceROIOverviewView.vue"),
 		},
+		{
+			name: "government",
+			path: "/government",
+			component: () => import("@/views/tools/GovernmentView.vue"),
+		},
 	],
 });
 

@@ -131,24 +131,24 @@
 					icon: CandlestickChartSharp,
 					children: [
 						{
-							label: "Market Exploration",
+							label: "Exploration",
 							display: true,
 							routerLink: "/market-exploration",
 						},
 						{
-							label: "ROI Overview",
+							label: "ROI",
 							display: true,
 							routerLink: "/roi-overview",
 						},
 						{
-							label: "Resource ROI Overview",
+							label: "Resource ROI",
 							display: true,
 							routerLink: "/resource-roi-overview",
 						},
 					],
 				},
 				{
-					label: "HQ Upgrade Calculator",
+					label: "HQ Upgrades",
 					display: true,
 					routerLink: "/hq-upgrade-calculator",
 					icon: ProductionQuantityLimitsSharp,
@@ -168,7 +168,7 @@
 				{
 					label: "Government",
 					display: true,
-					routerLink: "/not-implemented",
+					routerLink: "/government",
 					icon: StarsSharp,
 				},
 				{
@@ -242,7 +242,7 @@
 	<input id="menu-toggle" type="checkbox" class="hidden peer" />
 	<!-- Sidebar -->
 	<div
-		class="hidden peer-checked:flex md:flex border-r border-white/5 flex-col w-60 bg-gray-dark transition-all duration-300 ease-in-out">
+		class="hidden peer-checked:flex md:flex border-r border-white/5 flex-col w-50 bg-gray-dark transition-all duration-300 ease-in-out">
 		<div class="items-center justify-between h-16 px-4 sm:hidden md:flex">
 			<div class="flex w-full">
 				<div class="flex-grow text-prunplanner text-xl font-light">
