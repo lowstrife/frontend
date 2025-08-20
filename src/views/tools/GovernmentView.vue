@@ -6,6 +6,10 @@
 	import WrapperPlanningDataLoader from "@/features/wrapper/components/WrapperPlanningDataLoader.vue";
 	import HelpDrawer from "@/features/help/components/HelpDrawer.vue";
 	import CXPreferenceSelector from "@/features/exchanges/components/CXPreferenceSelector.vue";
+	import GovernmentUpkeepPrices from "@/features/government/components/GovernmentUpkeepPrices.vue";
+
+	// UI
+	import { PForm, PFormItem } from "@/ui";
 
 	const refSelectedCXUuid: Ref<string | undefined> = ref(undefined);
 </script>
@@ -21,25 +25,22 @@
 				class="px-6 py-3 border-b border-white/10 flex flex-row justify-between">
 				<h1 class="text-2xl font-bold my-auto">Government</h1>
 				<div class="flex flex-row gap-x-3">
-					<n-form
-						size="small"
-						label-placement="left"
-						label-width="auto"
-						label-align="left">
-						<n-form-item label="CX Preference">
+					<PForm>
+						<PFormItem label="CX Preference">
 							<CXPreferenceSelector
+								class="w-[250px]"
 								:cx-uuid="refSelectedCXUuid"
 								@update:cxuuid="
 									(value) => (refSelectedCXUuid = value)
 								" />
-						</n-form-item>
-					</n-form>
+						</PFormItem>
+					</PForm>
 					<HelpDrawer file-name="tools_government" />
 				</div>
 			</div>
 
 			<div class="px-6 py-3">
-				{{ refSelectedCXUuid }}
+				<GovernmentUpkeepPrices :cx-uuid="refSelectedCXUuid" />
 			</div>
 		</div>
 	</WrapperGameDataLoader>
