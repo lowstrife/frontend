@@ -1,5 +1,5 @@
 <script setup lang="ts">
-	import { nextTick, PropType, ref, Ref } from "vue";
+	import { computed, ComputedRef, nextTick, PropType, ref, Ref } from "vue";
 
 	// Composables
 	import { useXITAction } from "@/features/xit/useXITAction";
@@ -33,7 +33,7 @@
 	} from "@/ui";
 	import { NDrawer, NDrawerContent, NTable } from "naive-ui";
 
-	defineProps({
+	const props = defineProps({
 		elements: {
 			type: Array as PropType<IXITTransferMaterial[]>,
 			required: true,
@@ -71,6 +71,11 @@
 			default: 650,
 		},
 	});
+
+	// local elements
+	const localElements: ComputedRef<IXITTransferMaterial[]> = computed(() =>
+		props.elements.filter((f) => f.value > 0)
+	);
 
 	// Drawer Display
 	const loadDrawer: Ref<boolean> = ref(false);
@@ -119,7 +124,7 @@
 						<div class="flex-grow">
 							<PInput
 								v-model:value="
-									transferJSON(elements, {
+									transferJSON(localElements, {
 										name: transferName,
 										origin: burnOrigin,
 										buy: defaultBuyItemsFromCX,
@@ -134,7 +139,7 @@
 									() => {
 										capture('xit_transfer_copy');
 										copyToClipboard(
-											transferJSON(elements, {
+											transferJSON(localElements, {
 												name: transferName,
 												origin: burnOrigin,
 												buy: defaultBuyItemsFromCX,
@@ -158,7 +163,7 @@
 				</thead>
 				<tbody>
 					<tr
-						v-for="element in elements"
+						v-for="element in localElements"
 						:key="`TRANSFER#${element.ticker}`">
 						<td><MaterialTile :ticker="element.ticker" /></td>
 						<td>{{ formatAmount(element.value) }}</td>

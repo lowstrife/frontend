@@ -1,3 +1,8 @@
+# 2025-08-20
+
+- Improve Vite build and chunking
+- Fix zero material elements on XIT Transfer as it breaks the Action [#183](https://github.com/PRUNplanner/frontend/issues/183)
+
 # 2025-08-19
 
 - Replaces many `naive-ui` components with an own implementation of UI components mainly to save rendering and calculation times.
