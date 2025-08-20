@@ -3,6 +3,8 @@ import { loadEnv } from "vite";
 import { defineConfig } from "vitest/config";
 import vue from "@vitejs/plugin-vue";
 
+const alias = { "@": path.resolve(__dirname, "./src") };
+
 export default defineConfig({
 	test: {
 		globals: true,
@@ -39,9 +41,7 @@ export default defineConfig({
 		},
 	},
 	resolve: {
-		alias: {
-			"@": path.resolve(__dirname, "./src"),
-		},
+		alias,
 	},
 	plugins: [vue()],
 });

@@ -7,8 +7,11 @@
 		"src/**/*.json",
 	],
 	"exclude": [
+		"dist/**/*",
+		"coverage/**/*",
+		".vscode/**/*",
+		".github/**/*",
 		"src/tests/**/*",
-		".dist/**/*",
 	],
 	"compilerOptions": {
 		"target": "ESNext",
