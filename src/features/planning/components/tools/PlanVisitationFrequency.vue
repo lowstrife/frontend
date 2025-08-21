@@ -272,13 +272,15 @@
 				:options="refMaterialExclusionOption"
 				multiple
 				searchable
-				@update-value="
-					(value: string[]) => {
+				@update:value="
+					(value) => {
+						// only keep string values
+						const stringsOnly = value.filter((v): v is string => typeof v === 'string');
 						if (planPrefs !== null) {
 							planPrefs.visitationMaterialExclusions.value =
-								value;
+								stringsOnly;
 						}
-						refMaterialExclusions = value;
+						refMaterialExclusions = stringsOnly;
 					}
 				" />
 		</div>
