@@ -1,6 +1,7 @@
 /**
  * Small helper script executed on build to create
- * a version.json file containing the build date.
+ * a version.json file containing the build date
+ * or Netlify commit reference.
  *
  * @author jplacht
  */
