@@ -5,6 +5,10 @@
 	import { useQuery } from "@/lib/query_cache/useQuery";
 	import { useQueryRepository } from "@/lib/query_cache/queryRepository";
 
+	// Composables
+	import { usePostHog } from "@/lib/usePostHog";
+	const { capture } = usePostHog();
+
 	// UI
 	import { PForm, PFormItem, PInput, PButton } from "@/ui";
 
@@ -28,6 +32,8 @@
 
 	async function patchPassword(): Promise<void> {
 		isChanging.value = true;
+
+		capture("user_password_change");
 
 		await useQuery(
 			useQueryRepository().repository.PatchUserChangePassword,

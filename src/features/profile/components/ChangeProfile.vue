@@ -5,6 +5,10 @@
 	import { useQuery } from "@/lib/query_cache/useQuery";
 	import { useQueryRepository } from "@/lib/query_cache/queryRepository";
 
+	// Composables
+	import { usePostHog } from "@/lib/usePostHog";
+	const { capture } = usePostHog();
+
 	// Stores
 	import { useUserStore } from "@/stores/userStore";
 
@@ -35,6 +39,8 @@
 	);
 
 	async function patchProfile(): Promise<void> {
+		capture("user_profile_change");
+
 		isUpdating.value = true;
 
 		try {
@@ -53,6 +59,8 @@
 	}
 
 	async function requestVerification(): Promise<void> {
+		capture("user_request_email_verification");
+
 		try {
 			await useQuery(
 				useQueryRepository().repository.PostUserResendEmailVerification,

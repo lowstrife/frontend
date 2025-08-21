@@ -1,8 +1,16 @@
 <script setup lang="ts">
+	import { computed, ComputedRef, ref, Ref } from "vue";
+
+	// API
 	import { useQueryRepository } from "@/lib/query_cache/queryRepository";
 	import { useQuery } from "@/lib/query_cache/useQuery";
+
+	// Composables
+	import { usePostHog } from "@/lib/usePostHog";
+	const { capture } = usePostHog();
+
+	// UI
 	import { PInput, PButton } from "@/ui";
-	import { computed, ComputedRef, ref, Ref } from "vue";
 
 	const refVerificationCode: Ref<string> = ref("");
 	const isVerifying: Ref<boolean> = ref(false);
@@ -26,6 +34,8 @@
 			.execute()
 			.then((result: boolean) => {
 				verifyStatus.value = result;
+
+				capture("user_verify_email", { status: result });
 			})
 			.finally(() => {
 				isVerifying.value = false;
