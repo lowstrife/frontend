@@ -38,6 +38,7 @@
 		<XNDataTableColumn key="ticker" title="Ticker" sorter="default">
 			<template #render-cell="{ rowData }">
 				<MaterialTile
+					:key="`MATERIALIO#MATERIALTILE#${rowData.ticker}`"
 					:ticker="rowData.ticker"
 					:disable-drawer="false" />
 			</template>
