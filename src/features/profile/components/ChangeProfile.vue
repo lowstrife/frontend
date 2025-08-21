@@ -115,7 +115,9 @@
 						disabled
 						class="w-full min-w-[200px] max-w-[50%] child:my-auto" />
 
-					<div class="flex flex-row flex-wrap gap-3">
+					<div
+						v-if="!localProfile.email_verified"
+						class="flex flex-row flex-wrap gap-3">
 						<div>
 							<router-link
 								to="/verify-email"
@@ -125,20 +127,12 @@
 						</div>
 						<div>
 							<span
-								v-if="
-									!localProfile.email_verified &&
-									!codeResendRequested
-								"
+								v-if="!codeResendRequested"
 								class="text-link-primary hover:cursor-pointer hover:underline"
 								@click="requestVerification">
 								Resend Code
 							</span>
-							<span
-								v-else-if="
-									!localProfile.email_verified &&
-									codeResendRequested
-								"
-								class="text-lime-600">
+							<span v-else class="text-lime-600">
 								Code requested.
 							</span>
 						</div>
