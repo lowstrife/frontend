@@ -51,7 +51,7 @@ export function usePostHog() {
 		const safeProps = props ? redact(props, SENSITIVE_KEYS) : props;
 
 		if (posthog.__loaded) {
-			posthog.capture(eventName, props);
+			posthog.capture(eventName, safeProps);
 		} else {
 			// queue up
 			eventQueue.push([eventName, safeProps]);
