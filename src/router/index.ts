@@ -112,18 +112,26 @@ const router = createRouter({
 		{
 			name: "help",
 			path: "/help",
+			meta: { requiresAuth: true },
 			component: () => import("@/views/HelpView.vue"),
 		},
 		{
 			name: "roi-overview",
 			path: "/roi-overview",
+			meta: { requiresAuth: true },
 			component: () => import("@/views/tools/ROIOverviewView.vue"),
 		},
 		{
 			name: "resource-roi-overview",
 			path: "/resource-roi-overview",
+			meta: { requiresAuth: true },
 			component: () =>
 				import("@/views/tools/ResourceROIOverviewView.vue"),
+		},
+		{
+			name: "verify-email",
+			path: "/verify-email",
+			component: () => import("@/views/VerifyEmailView.vue"),
 		},
 	],
 });

@@ -37,3 +37,12 @@ export interface IUserChangePasswordPayload {
 export interface IUserChangePasswordResponse {
 	message: string;
 }
+
+export interface IUserVerifyEmailPayload {
+	code: string;
+}
+
+export interface IUserVerifyEmailResponse {
+	status_code: number;
+	message: string;
+}

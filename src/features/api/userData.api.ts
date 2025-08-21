@@ -17,6 +17,10 @@ import {
 	UserChangePasswordPayloadSchema,
 	UserChangePasswordResponseSchema,
 	UserChangePasswordResponseType,
+	UserVerifyEmailPayloadType,
+	UserVerifyEmailResponseType,
+	UserVerifyEmailPayloadSchema,
+	UserVerifyEmailResponseSchema,
 } from "@/features/api/schemas/user.schemas";
 
 // Types & Interfaces
@@ -26,6 +30,8 @@ import {
 	IUserProfile,
 	IUserProfilePatch,
 	IUserTokenResponse,
+	IUserVerifyEmailPayload,
+	IUserVerifyEmailResponse,
 } from "@/features/api/userData.types";
 
 /**
@@ -158,5 +164,30 @@ export async function callChangePassword(
 		patchPassword,
 		UserChangePasswordPayloadSchema,
 		UserChangePasswordResponseSchema
+	);
+}
+
+/**
+ * Calls the backend and transmits an email verification code which is
+ * then checked and the check status returned.
+ *
+ * @author jplacht
+ *
+ * @export
+ * @async
+ * @param {IUserVerifyEmailPayload} postCode Verification code
+ * @returns {Promise<IUserVerifyEmailResponse>} Verification status
+ */
+export async function callVerifyEmail(
+	postCode: IUserVerifyEmailPayload
+): Promise<IUserVerifyEmailResponse> {
+	return apiService.post<
+		UserVerifyEmailPayloadType,
+		UserVerifyEmailResponseType
+	>(
+		"/user/verify_email",
+		postCode,
+		UserVerifyEmailPayloadSchema,
+		UserVerifyEmailResponseSchema
 	);
 }

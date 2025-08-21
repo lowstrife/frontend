@@ -1,4 +1,10 @@
 <script setup lang="ts">
+	import { useHead } from "@unhead/vue";
+
+	useHead({
+		title: "Profile | PRUNplanner",
+	});
+
 	// Components
 	import WrapperPlanningDataLoader from "@/features/wrapper/components/WrapperPlanningDataLoader.vue";
 	import UserPreferences from "@/features/profile/components/UserPreferences.vue";

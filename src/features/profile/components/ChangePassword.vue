@@ -1,10 +1,12 @@
 <script setup lang="ts">
 	import { ComputedRef, computed, Ref, ref } from "vue";
 
-	// UI
-	import { PForm, PFormItem, PInput, PButton } from "@/ui";
+	// API
 	import { useQuery } from "@/lib/query_cache/useQuery";
 	import { useQueryRepository } from "@/lib/query_cache/queryRepository";
+
+	// UI
+	import { PForm, PFormItem, PInput, PButton } from "@/ui";
 
 	const refCurrentPassword: Ref<string> = ref("");
 	const refNewPassword: Ref<string> = ref("");
@@ -18,7 +20,9 @@
 				refCurrentPassword.value &&
 				refCurrentPassword.value !== "" &&
 				refNewPassword.value &&
-				refNewPassword.value !== ""
+				refNewPassword.value !== "" &&
+				refCurrentPassword.value.length >= 8 &&
+				refNewPassword.value.length >= 8
 			)
 	);
 
@@ -66,7 +70,7 @@
 				class="mb-3 py-1 px-2 bg-prunplanner text-black">
 				Password changed.
 			</div>
-			<div v-else class="mb-3 py-1 px-2 bg-red-600 text-black">
+			<div v-else class="mb-3 py-1 px-2 bg-red-600 text-white">
 				Password changed failed.
 			</div>
 		</template>

@@ -65,6 +65,15 @@ export const UserChangePasswordResponseSchema = z.object({
 	message: z.string(),
 });
 
+export const UserVerifyEmailPayloadSchema = z.object({
+	code: z.string(),
+});
+
+export const UserVerifyEmailResponseSchema = z.object({
+	status_code: z.int(),
+	message: z.string(),
+});
+
 export type LoginPayloadType = z.infer<typeof LoginPayloadSchema>;
 export type TokenResponseType = z.infer<typeof TokenResponseSchema>;
 export type RefreshPayloadType = z.infer<typeof RefreshPayloadSchema>;
@@ -77,4 +86,10 @@ export type UserChangePasswordPayloadType = z.infer<
 >;
 export type UserChangePasswordResponseType = z.infer<
 	typeof UserChangePasswordResponseSchema
+>;
+export type UserVerifyEmailPayloadType = z.infer<
+	typeof UserVerifyEmailPayloadSchema
+>;
+export type UserVerifyEmailResponseType = z.infer<
+	typeof UserVerifyEmailResponseSchema
 >;

@@ -112,11 +112,13 @@ import {
 	callChangePassword,
 	callPatchProfile,
 	callResendEmailVerification,
+	callVerifyEmail,
 } from "@/features/api/userData.api";
 import {
 	IUserChangePasswordPayload,
 	IUserProfile,
 	IUserProfilePatch,
+	IUserVerifyEmailPayload,
 } from "@/features/api/userData.types";
 
 export function useQueryRepository() {
@@ -774,6 +776,20 @@ export function useQueryRepository() {
 			autoRefetch: false,
 			persist: false,
 		} as QueryDefinition<IUserChangePasswordPayload, boolean>,
+		PostUserVerifyEmail: {
+			key: () => ["user", "verification", "check"],
+			fetchFn: async (params: IUserVerifyEmailPayload) => {
+				try {
+					const response = await callVerifyEmail(params);
+					if (response.status_code === 200) return true;
+					return false;
+				} catch {
+					return false;
+				}
+			},
+			autoRefetch: false,
+			persist: false,
+		} as QueryDefinition<IUserVerifyEmailPayload, boolean>,
 	};
 
 	function get(id: keyof QueryRepositoryType) {

@@ -52,6 +52,7 @@ import {
 	IUserChangePasswordPayload,
 	IUserProfile,
 	IUserProfilePatch,
+	IUserVerifyEmailPayload,
 } from "@/features/api/userData.types";
 
 export type QueryRepositoryType = {
@@ -139,4 +140,5 @@ export type QueryRepositoryType = {
 		IUserChangePasswordPayload,
 		boolean
 	>;
+	PostUserVerifyEmail: QueryDefinition<IUserVerifyEmailPayload, boolean>;
 };

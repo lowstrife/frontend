@@ -1,5 +1,5 @@
 <script setup lang="ts">
-	import { reactive, watch, Ref, ref } from "vue";
+	import { reactive, watch, Ref, ref, onMounted } from "vue";
 
 	// API
 	import { useQuery } from "@/lib/query_cache/useQuery";
@@ -28,6 +28,10 @@
 		() => localProfile,
 		() => (wasSaved.value = false),
 		{ deep: true }
+	);
+
+	onMounted(() =>
+		userStore.performGetProfile().then(() => (wasSaved.value = true))
 	);
 
 	async function patchProfile(): Promise<void> {

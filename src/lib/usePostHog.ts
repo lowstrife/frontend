@@ -15,6 +15,7 @@ export function usePostHog() {
 		"email",
 		"old",
 		"new",
+		"code",
 	];
 
 	function isClient() {
