@@ -41,7 +41,25 @@ export const UserProfilePayloadSchema = z.object({
 	last_action: z.coerce.date().optional(),
 });
 
+export const UserProfilePatchSchema = z.object({
+	fio_apikey: z
+		.string()
+		.transform((val) => (val === "" || !val ? null : val))
+		.nullable(),
+	prun_username: z
+		.string()
+		.transform((val) => (val === "" || !val ? null : val))
+		.nullable(),
+	email: z
+		.string()
+		.transform((val) => (val === "" || !val ? null : val))
+		.nullable(),
+});
+
 export type LoginPayloadType = z.infer<typeof LoginPayloadSchema>;
 export type TokenResponseType = z.infer<typeof TokenResponseSchema>;
 export type RefreshPayloadType = z.infer<typeof RefreshPayloadSchema>;
 export type UserProfilePayloadType = z.infer<typeof UserProfilePayloadSchema>;
+export type UserProfilePatchPayloadType = z.infer<
+	typeof UserProfilePatchSchema
+>;

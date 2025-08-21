@@ -10,11 +10,14 @@ import {
 	RefreshPayloadSchema,
 	UserProfilePayloadType,
 	UserProfilePayloadSchema,
+	UserProfilePatchPayloadType,
+	UserProfilePatchSchema,
 } from "@/features/api/schemas/user.schemas";
 
 // Types & Interfaces
 import {
 	IUserProfile,
+	IUserProfilePatch,
 	IUserTokenResponse,
 } from "@/features/api/userData.types";
 
@@ -79,6 +82,30 @@ export async function callRefreshToken(
 export async function callGetProfile(): Promise<IUserProfile> {
 	return apiService.get<UserProfilePayloadType>(
 		"/user/profile",
+		UserProfilePayloadSchema
+	);
+}
+
+/**
+ * Calls the backend Profile endpoint to patch user profile data
+ *
+ * @author jplacht
+ *
+ * @export
+ * @async
+ * @param {IUserProfilePatch} patchProfile Patched profile
+ * @returns {Promise<IUserProfile>} Updated user profile
+ */
+export async function callPatchProfile(
+	patchProfile: IUserProfilePatch
+): Promise<IUserProfile> {
+	return apiService.patch<
+		UserProfilePatchPayloadType,
+		UserProfilePayloadType
+	>(
+		"/user/profile",
+		patchProfile,
+		UserProfilePatchSchema,
 		UserProfilePayloadSchema
 	);
 }

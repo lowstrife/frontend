@@ -12,19 +12,21 @@
 
 	// Types & Interfaces
 	import { SelectMixedOption } from "naive-ui/es/select/src/interface";
+	import { PSelectOption } from "@/ui/ui.types";
 
 	// Components
 	import CXPreferenceSelector from "@/features/exchanges/components/CXPreferenceSelector.vue";
 
 	// UI
 	import {
-		NTable,
-		NForm,
-		NFormItem,
-		NSelect,
-		NInputNumber,
-		NCheckbox,
-	} from "naive-ui";
+		PForm,
+		PFormItem,
+		PFormSeperator,
+		PSelect,
+		PInputNumber,
+		PCheckbox,
+	} from "@/ui";
+	import { NTable } from "naive-ui";
 
 	const planningStore = usePlanningStore();
 
@@ -76,61 +78,66 @@
 		with the backend yet. Use this panel to review and customize your
 		PRUNplanner settings.
 	</div>
-	<h3 class="font-bold pb-3">Tool Preferences</h3>
-	<n-form
-		label-placement="left"
-		label-width="auto"
-		label-align="left"
-		size="small">
-		<n-form-item label="Default Empire">
-			<n-select
+
+	<PForm>
+		<PFormSeperator>
+			<h3 class="font-bold pb-3">Tool Preferences</h3>
+		</PFormSeperator>
+		<PFormItem label="Default Empire">
+			<PSelect
 				v-model:value="defaultEmpireUuid"
-				:options="empireOptions"
+				:options="empireOptions as PSelectOption[]"
+				class="w-full"
 				@update:value="
-					(value: string | undefined) => {
-						if (value) {
+					(value) => {
+						if (value && typeof value === 'string') {
 							defaultEmpireUuid = value;
 						}
 					}
 				" />
-		</n-form-item>
-		<n-form-item label="Default CX">
+		</PFormItem>
+		<PFormItem label="Default CX">
 			<CXPreferenceSelector
 				:cx-uuid="defaultCXUuid"
-				:add-undefined-c-x="false" />
-		</n-form-item>
-		<h4 class="font-bold pb-3">FIO Burn</h4>
-		<n-form-item label="Red Threshold">
-			<n-input-number
+				:add-undefined-c-x="false"
+				class="w-full" />
+		</PFormItem>
+
+		<PFormSeperator>
+			<h4 class="font-bold py-1">FIO Burn</h4>
+		</PFormSeperator>
+
+		<PFormItem label="Red Threshold">
+			<PInputNumber
 				v-model:value="burnDaysRed"
 				show-button
 				:min="1"
 				class="w-full" />
-		</n-form-item>
-		<n-form-item label="Yellow Threshold">
-			<n-input-number
+		</PFormItem>
+		<PFormItem label="Yellow Threshold">
+			<PInputNumber
 				v-model:value="burnDaysYellow"
 				show-button
 				:min="1"
 				class="w-full" />
-		</n-form-item>
-		<n-form-item label="Resupply Days">
-			<n-input-number
+		</PFormItem>
+		<PFormItem label="Resupply Days">
+			<PInputNumber
 				v-model:value="burnResupplyDays"
 				show-button
 				:min="1"
 				class="w-full" />
-		</n-form-item>
-		<n-form-item label="XIT Origin">
-			<n-select
+		</PFormItem>
+		<PFormItem label="XIT Origin">
+			<PSelect
 				v-model:value="burnOrigin"
 				:options="XITSTATIONWAREHOUSES"
 				class="w-full" />
-		</n-form-item>
-		<n-form-item label="XIT Buy from CX">
-			<n-checkbox v-model:checked="defaultBuyItemsFromCX" />
-		</n-form-item>
-	</n-form>
+		</PFormItem>
+		<PFormItem label="XIT Buy from CX">
+			<PCheckbox v-model:checked="defaultBuyItemsFromCX" />
+		</PFormItem>
+	</PForm>
 
 	<h3 class="font-bold py-3">Plan-Specific Settings</h3>
 	<div class="pb-3 text-white/60">

@@ -11,6 +11,8 @@ export function usePostHog() {
 		"password",
 		"access_token",
 		"refresh_token",
+		"fio_apikey",
+		"email",
 	];
 
 	function isClient() {

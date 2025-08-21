@@ -7,6 +7,7 @@ import config from "@/lib/config";
 import { useQueryStore } from "@/lib/query_cache/queryStore";
 import { useGameDataStore } from "@/stores/gameDataStore";
 import { usePlanningStore } from "@/stores/planningStore";
+import { useUserStore } from "@/stores/userStore";
 
 // API Calls
 import {
@@ -107,11 +108,14 @@ import {
 	IOptimizeHabitationResponse,
 } from "@/features/api/schemas/optimize.schemas";
 import { callOptimizeHabitation } from "@/features/api/optimize.api";
+import { callPatchProfile } from "@/features/api/userData.api";
+import { IUserProfile, IUserProfilePatch } from "@/features/api/userData.types";
 
 export function useQueryRepository() {
 	const queryStore = useQueryStore();
 	const gameDataStore = useGameDataStore();
 	const planningStore = usePlanningStore();
+	const userStore = useUserStore();
 
 	const queryRepository: QueryRepositoryType = {
 		GetMaterials: {
@@ -730,6 +734,16 @@ export function useQueryRepository() {
 			IOptimizeHabitationPayload,
 			IOptimizeHabitationResponse
 		>,
+		PatchUserProfile: {
+			key: () => ["user", "profile", "patch"],
+			fetchFn: async (params: IUserProfilePatch) => {
+				const data = await callPatchProfile(params);
+				await userStore.performGetProfile();
+				return data;
+			},
+			autoRefetch: false,
+			persist: false,
+		} as QueryDefinition<IUserProfilePatch, IUserProfile>,
 	};
 
 	function get(id: keyof QueryRepositoryType) {

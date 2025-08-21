@@ -48,6 +48,7 @@ import {
 	IOptimizeHabitationPayload,
 	IOptimizeHabitationResponse,
 } from "@/features/api/schemas/optimize.schemas";
+import { IUserProfile, IUserProfilePatch } from "@/features/api/userData.types";
 
 export type QueryRepositoryType = {
 	GetMaterials: QueryDefinition<void, IMaterial[]>;
@@ -128,4 +129,5 @@ export type QueryRepositoryType = {
 		IOptimizeHabitationPayload,
 		IOptimizeHabitationResponse
 	>;
+	PatchUserProfile: QueryDefinition<IUserProfilePatch, IUserProfile>;
 };

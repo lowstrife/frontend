@@ -22,3 +22,9 @@ export interface IUserProfile {
 	last_login?: Date;
 	last_action?: Date;
 }
+
+export interface IUserProfilePatch {
+	fio_apikey: string | null;
+	prun_username: string | null;
+	email: string | null;
+}

@@ -16,7 +16,7 @@
 		size?: SizeKey;
 		placeholder?: string;
 		rows?: number;
-		type?: "input" | "textarea";
+		type?: "input" | "textarea" | "password";
 	}>();
 
 	function onInput(e: Event) {
@@ -38,8 +38,17 @@
 				:placeholder="placeholder"
 				:class="`${inputConfig.sizes[size].input}`"
 				@input="onInput" />
+			<input
+				v-else-if="type === 'password'"
+				name="pinput-input"
+				:disabled="disabled"
+				type="password"
+				:value="value"
+				:placeholder="placeholder"
+				:class="`${inputConfig.sizes[size].input}`"
+				@input="onInput" />
 			<textarea
-				v-if="type === 'textarea'"
+				v-else-if="type === 'textarea'"
 				name="pinput-textarea"
 				:disabled="disabled"
 				type="text"
