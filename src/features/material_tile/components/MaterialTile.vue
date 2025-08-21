@@ -147,7 +147,7 @@
 </script>
 
 <template>
-	<div class="inline-block">
+	<div class="inline-block" :class="`material-tile#${ticker}`">
 		<div
 			class="flex flex-row items-center justify-center w-full material-tile"
 			:class="[
@@ -170,6 +170,7 @@
 				</template>
 				<MaterialCXOverviewTable
 					v-if="refExchangeOverview"
+					:key="`material-tile#CXOverview#${ticker}`"
 					:ticker="ticker"
 					:overview-data="refExchangeOverview" />
 			</PTooltip>
@@ -223,8 +224,8 @@
 			<div class="flex gap-x-5">
 				<div class="flex items-center">
 					<div
-						:class="`Material-${ticker}`"
-						class="text-nowrap p-2 px-4 text-2xl">
+						:class="categoryCssClass"
+						class="text-nowrap p-2 px-4 text-2xl text-shadow-[0_1px_1px_rgb(34,34,34)]">
 						{{ getMaterial(ticker).Ticker }}
 					</div>
 				</div>
