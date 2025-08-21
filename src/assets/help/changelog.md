@@ -1,3 +1,7 @@
+# 2025-08-21
+
+- Reenables moduleSideEffect treeshaking to properly have Highcharts render Stockcharts [#190](https://github.com/PRUNplanner/frontend/issues/190)
+
 # 2025-08-20
 
 - Improve Vite build and chunking

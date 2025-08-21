@@ -85,7 +85,7 @@ export default defineConfig({
 			cache: false,
 			watch: false,
 			treeshake: {
-				moduleSideEffects: false,
+				moduleSideEffects: true,
 			},
 			output: {
 				entryFileNames: "assets/[name].[hash].js",
