@@ -48,7 +48,11 @@ import {
 	IOptimizeHabitationPayload,
 	IOptimizeHabitationResponse,
 } from "@/features/api/schemas/optimize.schemas";
-import { IUserProfile, IUserProfilePatch } from "@/features/api/userData.types";
+import {
+	IUserChangePasswordPayload,
+	IUserProfile,
+	IUserProfilePatch,
+} from "@/features/api/userData.types";
 
 export type QueryRepositoryType = {
 	GetMaterials: QueryDefinition<void, IMaterial[]>;
@@ -131,4 +135,8 @@ export type QueryRepositoryType = {
 	>;
 	PatchUserProfile: QueryDefinition<IUserProfilePatch, IUserProfile>;
 	PostUserResendEmailVerification: QueryDefinition<null, boolean>;
+	PatchUserChangePassword: QueryDefinition<
+		IUserChangePasswordPayload,
+		boolean
+	>;
 };

@@ -28,3 +28,12 @@ export interface IUserProfilePatch {
 	prun_username: string | null;
 	email: string | null;
 }
+
+export interface IUserChangePasswordPayload {
+	old: string;
+	new: string;
+}
+
+export interface IUserChangePasswordResponse {
+	message: string;
+}

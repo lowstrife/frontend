@@ -13,10 +13,16 @@ import {
 	UserProfilePayloadSchema,
 	UserProfilePatchPayloadType,
 	UserProfilePatchSchema,
+	UserChangePasswordPayloadType,
+	UserChangePasswordPayloadSchema,
+	UserChangePasswordResponseSchema,
+	UserChangePasswordResponseType,
 } from "@/features/api/schemas/user.schemas";
 
 // Types & Interfaces
 import {
+	IUserChangePasswordPayload,
+	IUserChangePasswordResponse,
 	IUserProfile,
 	IUserProfilePatch,
 	IUserTokenResponse,
@@ -127,5 +133,30 @@ export async function callResendEmailVerification(): Promise<boolean> {
 		null,
 		z.null(),
 		z.boolean()
+	);
+}
+
+/**
+ * Calls the backend with the current (old) and to be updated
+ * password (new) to change the users password.
+ *
+ * @author jplacht
+ *
+ * @export
+ * @async
+ * @param {IUserChangePasswordPayload} patchPassword Old and New password
+ * @returns {Promise<IUserChangePasswordResponse>} Update status message
+ */
+export async function callChangePassword(
+	patchPassword: IUserChangePasswordPayload
+): Promise<IUserChangePasswordResponse> {
+	return apiService.patch<
+		UserChangePasswordPayloadType,
+		UserChangePasswordResponseType
+	>(
+		"/user/changepassword",
+		patchPassword,
+		UserChangePasswordPayloadSchema,
+		UserChangePasswordResponseSchema
 	);
 }

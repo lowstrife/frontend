@@ -13,6 +13,8 @@ export function usePostHog() {
 		"refresh_token",
 		"fio_apikey",
 		"email",
+		"old",
+		"new",
 	];
 
 	function isClient() {

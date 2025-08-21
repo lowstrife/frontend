@@ -56,10 +56,25 @@ export const UserProfilePatchSchema = z.object({
 		.nullable(),
 });
 
+export const UserChangePasswordPayloadSchema = z.object({
+	old: z.string(),
+	new: z.string(),
+});
+
+export const UserChangePasswordResponseSchema = z.object({
+	message: z.string(),
+});
+
 export type LoginPayloadType = z.infer<typeof LoginPayloadSchema>;
 export type TokenResponseType = z.infer<typeof TokenResponseSchema>;
 export type RefreshPayloadType = z.infer<typeof RefreshPayloadSchema>;
 export type UserProfilePayloadType = z.infer<typeof UserProfilePayloadSchema>;
 export type UserProfilePatchPayloadType = z.infer<
 	typeof UserProfilePatchSchema
+>;
+export type UserChangePasswordPayloadType = z.infer<
+	typeof UserChangePasswordPayloadSchema
+>;
+export type UserChangePasswordResponseType = z.infer<
+	typeof UserChangePasswordResponseSchema
 >;

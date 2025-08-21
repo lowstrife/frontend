@@ -109,10 +109,15 @@ import {
 } from "@/features/api/schemas/optimize.schemas";
 import { callOptimizeHabitation } from "@/features/api/optimize.api";
 import {
+	callChangePassword,
 	callPatchProfile,
 	callResendEmailVerification,
 } from "@/features/api/userData.api";
-import { IUserProfile, IUserProfilePatch } from "@/features/api/userData.types";
+import {
+	IUserChangePasswordPayload,
+	IUserProfile,
+	IUserProfilePatch,
+} from "@/features/api/userData.types";
 
 export function useQueryRepository() {
 	const queryStore = useQueryStore();
@@ -755,6 +760,20 @@ export function useQueryRepository() {
 			autoRefetch: false,
 			persist: false,
 		} as QueryDefinition<null, boolean>,
+		PatchUserChangePassword: {
+			key: () => ["user", "password", "patch"],
+			fetchFn: async (params: IUserChangePasswordPayload) => {
+				// we skip the actual message just to have a boolean
+				try {
+					await callChangePassword(params);
+					return true;
+				} catch {
+					return false;
+				}
+			},
+			autoRefetch: false,
+			persist: false,
+		} as QueryDefinition<IUserChangePasswordPayload, boolean>,
 	};
 
 	function get(id: keyof QueryRepositoryType) {
