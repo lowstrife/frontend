@@ -11,6 +11,11 @@ export function usePostHog() {
 		"password",
 		"access_token",
 		"refresh_token",
+		"fio_apikey",
+		"email",
+		"old",
+		"new",
+		"code",
 	];
 
 	function isClient() {
@@ -46,7 +51,7 @@ export function usePostHog() {
 		const safeProps = props ? redact(props, SENSITIVE_KEYS) : props;
 
 		if (posthog.__loaded) {
-			posthog.capture(eventName, props);
+			posthog.capture(eventName, safeProps);
 		} else {
 			// queue up
 			eventQueue.push([eventName, safeProps]);

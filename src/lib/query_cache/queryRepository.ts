@@ -7,6 +7,7 @@ import config from "@/lib/config";
 import { useQueryStore } from "@/lib/query_cache/queryStore";
 import { useGameDataStore } from "@/stores/gameDataStore";
 import { usePlanningStore } from "@/stores/planningStore";
+import { useUserStore } from "@/stores/userStore";
 
 // API Calls
 import {
@@ -107,11 +108,24 @@ import {
 	IOptimizeHabitationResponse,
 } from "@/features/api/schemas/optimize.schemas";
 import { callOptimizeHabitation } from "@/features/api/optimize.api";
+import {
+	callChangePassword,
+	callPatchProfile,
+	callResendEmailVerification,
+	callVerifyEmail,
+} from "@/features/api/userData.api";
+import {
+	IUserChangePasswordPayload,
+	IUserProfile,
+	IUserProfilePatch,
+	IUserVerifyEmailPayload,
+} from "@/features/api/userData.types";
 
 export function useQueryRepository() {
 	const queryStore = useQueryStore();
 	const gameDataStore = useGameDataStore();
 	const planningStore = usePlanningStore();
+	const userStore = useUserStore();
 
 	const queryRepository: QueryRepositoryType = {
 		GetMaterials: {
@@ -730,6 +744,52 @@ export function useQueryRepository() {
 			IOptimizeHabitationPayload,
 			IOptimizeHabitationResponse
 		>,
+		PatchUserProfile: {
+			key: () => ["user", "profile", "patch"],
+			fetchFn: async (params: IUserProfilePatch) => {
+				const data = await callPatchProfile(params);
+				await userStore.performGetProfile();
+				return data;
+			},
+			autoRefetch: false,
+			persist: false,
+		} as QueryDefinition<IUserProfilePatch, IUserProfile>,
+		PostUserResendEmailVerification: {
+			key: () => ["user", "verification", "resend"],
+			fetchFn: async () => {
+				return await callResendEmailVerification();
+			},
+			autoRefetch: false,
+			persist: false,
+		} as QueryDefinition<null, boolean>,
+		PatchUserChangePassword: {
+			key: () => ["user", "password", "patch"],
+			fetchFn: async (params: IUserChangePasswordPayload) => {
+				// we skip the actual message just to have a boolean
+				try {
+					await callChangePassword(params);
+					return true;
+				} catch {
+					return false;
+				}
+			},
+			autoRefetch: false,
+			persist: false,
+		} as QueryDefinition<IUserChangePasswordPayload, boolean>,
+		PostUserVerifyEmail: {
+			key: () => ["user", "verification", "check"],
+			fetchFn: async (params: IUserVerifyEmailPayload) => {
+				try {
+					const response = await callVerifyEmail(params);
+					if (response.status_code === 200) return true;
+					return false;
+				} catch {
+					return false;
+				}
+			},
+			autoRefetch: false,
+			persist: false,
+		} as QueryDefinition<IUserVerifyEmailPayload, boolean>,
 	};
 
 	function get(id: keyof QueryRepositoryType) {

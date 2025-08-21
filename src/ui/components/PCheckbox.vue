@@ -7,7 +7,12 @@
 
 <template>
 	<div class="pcheckbox" :class="checkboxConfig.container">
-		<label :class="checkboxConfig.label">
+		<label
+			:class="
+				!disabled
+					? checkboxConfig.label
+					: `${checkboxConfig.label} !cursor-auto`
+			">
 			<input
 				v-model="checked"
 				:disabled="disabled"

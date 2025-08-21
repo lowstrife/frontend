@@ -254,4 +254,31 @@ describe("queryStore", () => {
 
 		expect(store.peekQueryState({ id: 1 })).toBeUndefined();
 	});
+
+	it("$reset", async () => {
+		store.$reset();
+		expect(store.cache.size).toBe(0);
+	});
+
+	it("addCacheState", async () => {
+		expect(store.cache.size).toBe(0);
+
+		store.addCacheState(
+			["foo"],
+			{
+				// @ts-expect-error mock definition
+				definition: null,
+				params: null,
+				data: null,
+				loading: false,
+				error: null,
+				timestamp: 0,
+				expireTime: 0,
+			},
+			null,
+			null
+		);
+
+		expect(store.cache.size).toBe(1);
+	});
 });

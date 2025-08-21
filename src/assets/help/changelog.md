@@ -2,6 +2,7 @@
 
 - Reenables moduleSideEffect treeshaking to properly have Highcharts render Stockcharts [#190](https://github.com/PRUNplanner/frontend/issues/190)
 - Fixes the issue where Exchange information on Material Tiles did not get properly updated in the DOM
+- Adds Profile Updating & Password Change [#13](https://github.com/PRUNplanner/frontend/issues/13)
 
 # 2025-08-20
 

@@ -1,6 +1,7 @@
 import { apiService } from "@/lib/apiService";
 
 // Schemas
+import { z } from "zod";
 import {
 	LoginPayloadSchema,
 	LoginPayloadType,
@@ -10,12 +11,27 @@ import {
 	RefreshPayloadSchema,
 	UserProfilePayloadType,
 	UserProfilePayloadSchema,
+	UserProfilePatchPayloadType,
+	UserProfilePatchSchema,
+	UserChangePasswordPayloadType,
+	UserChangePasswordPayloadSchema,
+	UserChangePasswordResponseSchema,
+	UserChangePasswordResponseType,
+	UserVerifyEmailPayloadType,
+	UserVerifyEmailResponseType,
+	UserVerifyEmailPayloadSchema,
+	UserVerifyEmailResponseSchema,
 } from "@/features/api/schemas/user.schemas";
 
 // Types & Interfaces
 import {
+	IUserChangePasswordPayload,
+	IUserChangePasswordResponse,
 	IUserProfile,
+	IUserProfilePatch,
 	IUserTokenResponse,
+	IUserVerifyEmailPayload,
+	IUserVerifyEmailResponse,
 } from "@/features/api/userData.types";
 
 /**
@@ -80,5 +96,98 @@ export async function callGetProfile(): Promise<IUserProfile> {
 	return apiService.get<UserProfilePayloadType>(
 		"/user/profile",
 		UserProfilePayloadSchema
+	);
+}
+
+/**
+ * Calls the backend Profile endpoint to patch user profile data
+ *
+ * @author jplacht
+ *
+ * @export
+ * @async
+ * @param {IUserProfilePatch} patchProfile Patched profile
+ * @returns {Promise<IUserProfile>} Updated user profile
+ */
+export async function callPatchProfile(
+	patchProfile: IUserProfilePatch
+): Promise<IUserProfile> {
+	return apiService.patch<
+		UserProfilePatchPayloadType,
+		UserProfilePayloadType
+	>(
+		"/user/profile",
+		patchProfile,
+		UserProfilePatchSchema,
+		UserProfilePayloadSchema
+	);
+}
+
+/**
+ * Calls the backend to trigger another send of the email
+ * verification email containing the verification code
+ *
+ * @author jplacht
+ *
+ * @export
+ * @async
+ * @returns {Promise<boolean>} Request Status
+ */
+export async function callResendEmailVerification(): Promise<boolean> {
+	return apiService.post<null, boolean>(
+		"/user/resend_email_verification",
+		null,
+		z.null(),
+		z.boolean()
+	);
+}
+
+/**
+ * Calls the backend with the current (old) and to be updated
+ * password (new) to change the users password.
+ *
+ * @author jplacht
+ *
+ * @export
+ * @async
+ * @param {IUserChangePasswordPayload} patchPassword Old and New password
+ * @returns {Promise<IUserChangePasswordResponse>} Update status message
+ */
+export async function callChangePassword(
+	patchPassword: IUserChangePasswordPayload
+): Promise<IUserChangePasswordResponse> {
+	return apiService.patch<
+		UserChangePasswordPayloadType,
+		UserChangePasswordResponseType
+	>(
+		"/user/changepassword",
+		patchPassword,
+		UserChangePasswordPayloadSchema,
+		UserChangePasswordResponseSchema
+	);
+}
+
+/**
+ * Calls the backend and transmits an email verification code which is
+ * then checked and the check status returned.
+ *
+ * @author jplacht
+ *
+ * @export
+ * @async
+ * @param {IUserVerifyEmailPayload} postCode Verification code
+ * @returns {Promise<IUserVerifyEmailResponse>} Verification status
+ */
+export async function callVerifyEmail(
+	postCode: IUserVerifyEmailPayload
+): Promise<IUserVerifyEmailResponse> {
+	return apiService.post<
+		UserVerifyEmailPayloadType,
+		UserVerifyEmailResponseType
+	>(
+		"/user/verify_email",
+		postCode,
+		UserVerifyEmailPayloadSchema,
+		UserVerifyEmailResponseSchema
 	);
 }
