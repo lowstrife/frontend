@@ -108,7 +108,10 @@ import {
 	IOptimizeHabitationResponse,
 } from "@/features/api/schemas/optimize.schemas";
 import { callOptimizeHabitation } from "@/features/api/optimize.api";
-import { callPatchProfile } from "@/features/api/userData.api";
+import {
+	callPatchProfile,
+	callResendEmailVerification,
+} from "@/features/api/userData.api";
 import { IUserProfile, IUserProfilePatch } from "@/features/api/userData.types";
 
 export function useQueryRepository() {
@@ -744,6 +747,14 @@ export function useQueryRepository() {
 			autoRefetch: false,
 			persist: false,
 		} as QueryDefinition<IUserProfilePatch, IUserProfile>,
+		PostUserResendEmailVerification: {
+			key: () => ["user", "verification", "resend"],
+			fetchFn: async () => {
+				return await callResendEmailVerification();
+			},
+			autoRefetch: false,
+			persist: false,
+		} as QueryDefinition<null, boolean>,
 	};
 
 	function get(id: keyof QueryRepositoryType) {

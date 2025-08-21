@@ -1,6 +1,7 @@
 import { apiService } from "@/lib/apiService";
 
 // Schemas
+import { z } from "zod";
 import {
 	LoginPayloadSchema,
 	LoginPayloadType,
@@ -107,5 +108,24 @@ export async function callPatchProfile(
 		patchProfile,
 		UserProfilePatchSchema,
 		UserProfilePayloadSchema
+	);
+}
+
+/**
+ * Calls the backend to trigger another send of the email
+ * verification email containing the verification code
+ *
+ * @author jplacht
+ *
+ * @export
+ * @async
+ * @returns {Promise<boolean>} Request Status
+ */
+export async function callResendEmailVerification(): Promise<boolean> {
+	return apiService.post<null, boolean>(
+		"/user/resend_email_verification",
+		null,
+		z.null(),
+		z.boolean()
 	);
 }

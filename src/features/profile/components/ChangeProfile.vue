@@ -17,6 +17,7 @@
 	const localProfile = reactive({ ...userStore.profile });
 	const isUpdating: Ref<boolean> = ref(false);
 	const wasSaved: Ref<boolean> = ref(true);
+	const codeResendRequested: Ref<boolean> = ref(false);
 
 	watch(
 		() => userStore.profile,
@@ -44,6 +45,19 @@
 			console.error("Error patching user profile", err);
 		} finally {
 			isUpdating.value = false;
+		}
+	}
+
+	async function requestVerification(): Promise<void> {
+		try {
+			await useQuery(
+				useQueryRepository().repository.PostUserResendEmailVerification,
+				null
+			).execute();
+		} catch (err) {
+			console.error("Error resending verification code", err);
+		} finally {
+			codeResendRequested.value = true;
 		}
 	}
 </script>
@@ -83,9 +97,41 @@
 					class="w-full min-w-[200px] max-w-[50%]" />
 			</PFormItem>
 			<PFormItem label="Email Verified">
-				<PCheckbox
-					v-model:checked="localProfile.email_verified"
-					disabled />
+				<div class="w-full flex flex-row flex-wrap gap-3">
+					<PCheckbox
+						v-model:checked="localProfile.email_verified"
+						disabled
+						class="w-full min-w-[200px] max-w-[50%] child:my-auto" />
+
+					<div class="flex flex-row flex-wrap gap-3">
+						<div>
+							<router-link
+								to="/verify-email"
+								class="text-link-primary hover:cursor-pointer hover:underline">
+								Verify Email
+							</router-link>
+						</div>
+						<div>
+							<span
+								v-if="
+									!localProfile.email_verified &&
+									!codeResendRequested
+								"
+								class="text-link-primary hover:cursor-pointer hover:underline"
+								@click="requestVerification">
+								Resend Code
+							</span>
+							<span
+								v-else-if="
+									!localProfile.email_verified &&
+									codeResendRequested
+								"
+								class="text-lime-600">
+								Code requested.
+							</span>
+						</div>
+					</div>
+				</div>
 			</PFormItem>
 		</PForm>
 	</div>

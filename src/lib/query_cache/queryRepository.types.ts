@@ -130,4 +130,5 @@ export type QueryRepositoryType = {
 		IOptimizeHabitationResponse
 	>;
 	PatchUserProfile: QueryDefinition<IUserProfilePatch, IUserProfile>;
+	PostUserResendEmailVerification: QueryDefinition<null, boolean>;
 };
