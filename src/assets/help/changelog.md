@@ -1,3 +1,10 @@
+# 2025-08-22
+
+- Fixes a bug where Planet Search material results were not sortable. This also identified a potential backend issue where searching for more than 2 materials returns results that actually don't hold the materials searched for. Currently the frontend limits to search for maximum of 2 resources until the API handling of the search query was investigated and potentially fixed.
+- Selection dropdowns now close on any outside click and reset their search value on close
+- Removes more unused naive-ui types and components from various views
+- Fixes a bug on COGM calculation where the recipe runtime depended on the amount the recipe did run in a building instead of its regular runtime on current efficiency
+
 # 2025-08-21
 
 - Reenables moduleSideEffect treeshaking to properly have Highcharts render Stockcharts [#190](https://github.com/PRUNplanner/frontend/issues/190)
