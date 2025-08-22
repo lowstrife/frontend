@@ -4,6 +4,7 @@
 - Selection dropdowns now close on any outside click and reset their search value on close
 - Removes more unused naive-ui types and components from various views
 - Fixes a bug on COGM calculation where the recipe runtime depended on the amount the recipe did run in a building instead of its regular runtime on current efficiency
+- Adds Help text to Market Exploration (by `lowstrife`)
 
 # 2025-08-21
 
