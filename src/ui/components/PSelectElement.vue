@@ -1,7 +1,11 @@
 <script setup lang="ts">
 	import { PSelectOption } from "../ui.types";
 
-	const { option, selectedValue } = defineProps<{
+	const {
+		option,
+		selectedValue,
+		highlighted = false,
+	} = defineProps<{
 		option: PSelectOption;
 		selectedValue:
 			| Array<null | string | number | undefined>
@@ -9,6 +13,7 @@
 			| string
 			| number
 			| undefined;
+		highlighted?: boolean;
 	}>();
 
 	const emit = defineEmits<{
@@ -32,14 +37,14 @@
 			:key="`${option.value}#${child.value}`">
 			<div
 				class="flex flex-row items-center"
+				:class="[
+					highlighted ? 'bg-gray-700' : '',
+					isSelected(option.value)
+						? 'text-link-primary font-bold'
+						: '',
+				]"
 				@click="emit('click', child.value)">
-				<div
-					class="pl-3 flex-grow hover:cursor-pointer"
-					:class="
-						isSelected(child.value)
-							? 'text-link-primary font-bold'
-							: ''
-					">
+				<div class="pl-3 flex-grow hover:cursor-pointer">
 					{{ child.label }}
 				</div>
 				<div
@@ -65,14 +70,12 @@
 	<template v-else>
 		<div
 			class="flex flex-row items-center"
+			:class="[
+				highlighted ? 'bg-gray-700' : '',
+				isSelected(option.value) ? 'text-link-primary font-bold' : '',
+			]"
 			@click="emit('click', option.value)">
-			<div
-				class="flex-grow hover:cursor-pointer"
-				:class="
-					isSelected(option.value)
-						? 'text-link-primary font-bold'
-						: ''
-				">
+			<div class="flex-grow hover:cursor-pointer">
 				{{ option.label }}
 			</div>
 			<div

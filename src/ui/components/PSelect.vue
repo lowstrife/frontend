@@ -156,6 +156,7 @@
 			!dropdownRef.value?.contains(e.target as Node)
 		) {
 			open.value = false;
+			searchString.value = null;
 		}
 	}
 
