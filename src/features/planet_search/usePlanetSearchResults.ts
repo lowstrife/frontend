@@ -32,6 +32,8 @@ export function usePlanetSearchResults(
 	 * @type {ComputedRef<IPlanetSearchResult[]>}
 	 */
 	const results: ComputedRef<IPlanetSearchResult[]> = computed(() => {
+		if (searchData.length === 0) return [];
+
 		const r: IPlanetSearchResult[] = searchData.map((e) => {
 			// handle resources
 			const searchResources: Record<string, IPlanetSearchResultResource> =

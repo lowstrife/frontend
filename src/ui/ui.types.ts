@@ -63,8 +63,8 @@ export interface PInputConfig {
 
 export interface PSelectOption {
 	label: string;
-	value: string | number;
-	children?: { label: string; value: string | number }[];
+	value: string | number | undefined;
+	children?: { label: string; value: string | number | undefined }[];
 }
 
 export interface PTagConfig {

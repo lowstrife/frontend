@@ -18,7 +18,7 @@ import {
 	IRecipe,
 	PLANET_RESOURCETYPE_TYPE,
 } from "@/features/api/gameData.types";
-import { SelectMixedOption } from "naive-ui/es/select/src/interface";
+import { PSelectOption } from "@/ui/ui.types";
 import {
 	IMaterialIOMinimal,
 	IWorkforceRecord,
@@ -73,13 +73,13 @@ export function useBuildingData() {
 	 *
 	 * @param {string[]} [existing=[]] Buildingticker to be excluded
 	 * @param {(PLAN_COGCPROGRAM_TYPE | undefined)} [cogc=undefined] COGC to match against
-	 * @returns {SelectMixedOption[]} {label: string, value: string}[]
+	 * @returns {PSelectOption[]} {label: string, value: string}[]
 	 */
 	function getProductionBuildingOptions(
 		existing: string[] = [],
 		cogc: PLAN_COGCPROGRAM_TYPE | undefined = undefined
-	): SelectMixedOption[] {
-		const options: SelectMixedOption[] = [];
+	): PSelectOption[] {
+		const options: PSelectOption[] = [];
 
 		Object.values(gameDataStore.buildings)
 			.filter(

@@ -137,7 +137,7 @@
 					<PSelectMultiple
 						v-model:value="localFilterMaterials"
 						multiple
-						filterable
+						searchable
 						clearable
 						class="w-full"
 						:options="materialOptions" />
@@ -146,7 +146,7 @@
 					<PSelectMultiple
 						v-model:value="localFilterPlanets"
 						multiple
-						filterable
+						searchable
 						clearable
 						class="w-full"
 						:options="planetOptions" />

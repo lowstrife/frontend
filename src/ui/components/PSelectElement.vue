@@ -12,7 +12,7 @@
 	}>();
 
 	const emit = defineEmits<{
-		(e: "click", value: string | number): void;
+		(e: "click", value: string | number | undefined): void;
 	}>();
 
 	function isSelected(v: null | string | number | undefined): boolean {
@@ -23,6 +23,10 @@
 
 <template>
 	<template v-if="option.children">
+		<div
+			class="border-t border-b border-white/20 bg-white/5 hover:!bg-white/5 font-bold">
+			{{ option.label }}
+		</div>
 		<template
 			v-for="child in option.children"
 			:key="`${option.value}#${child.value}`">
@@ -30,7 +34,7 @@
 				class="flex flex-row items-center"
 				@click="emit('click', child.value)">
 				<div
-					class="pl-3 flex-grow"
+					class="pl-3 flex-grow hover:cursor-pointer"
 					:class="
 						isSelected(child.value)
 							? 'text-link-primary font-bold'
@@ -63,7 +67,7 @@
 			class="flex flex-row items-center"
 			@click="emit('click', option.value)">
 			<div
-				class="flex-grow"
+				class="flex-grow hover:cursor-pointer"
 				:class="
 					isSelected(option.value)
 						? 'text-link-primary font-bold'

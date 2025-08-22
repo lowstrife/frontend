@@ -14,7 +14,7 @@
 		PLAN_FACTION,
 	} from "@/stores/planningStore.types";
 	import { ICXEmpireJunction } from "@/features/manage/manage.types";
-	import { SelectMixedOption } from "naive-ui/es/select/src/interface";
+	import { PSelectOption } from "@/ui/ui.types";
 
 	// Util
 	import { inertClone } from "@/util/data";
@@ -31,7 +31,6 @@
 		PCheckbox,
 		PTag,
 	} from "@/ui";
-	import { PSelectOption } from "@/ui/ui.types";
 	import { useDialog } from "naive-ui";
 	const dialog = useDialog();
 	import { XNDataTable, XNDataTableColumn } from "@skit/x.naive-ui";
@@ -64,7 +63,7 @@
 		(e: "update:empireList", value: IPlanEmpireElement[]): void;
 	}>();
 
-	const refCXOptions: Ref<SelectMixedOption[]> = ref([]);
+	const refCXOptions: Ref<PSelectOption[]> = ref([]);
 	const refEmpireCXMap: Ref<Record<string, string | undefined>> = ref({});
 	const refIsUpdatingJunctions: Ref<boolean> = ref(false);
 	const refShowCreateEmpire: Ref<boolean> = ref(false);
@@ -89,7 +88,7 @@
 		return false;
 	});
 
-	const factionOptions: SelectMixedOption[] = [
+	const factionOptions: PSelectOption[] = [
 		{ label: "No Faction", value: "NONE" },
 		{ label: "Antares", value: "ANTARES" },
 		{ label: "Benten", value: "BENTEN" },
@@ -119,7 +118,7 @@
 	}
 
 	function generateCXOptions(): void {
-		const options: SelectMixedOption[] = [
+		const options: PSelectOption[] = [
 			{
 				value: undefined,
 				label: "None",
@@ -298,7 +297,7 @@
 						<PSelect
 							v-model:value="refCreateFaction"
 							class="w-full"
-							:options="factionOptions as PSelectOption[]" />
+							:options="factionOptions" />
 					</PFormItem>
 					<PFormItem label="Permits Total">
 						<PInputNumber
@@ -371,7 +370,7 @@
 					<PSelect
 						:key="`${rowData.uuid}#${refEmpireCXMap[rowData.uuid]}`"
 						v-model:value="refEmpireCXMap[rowData.uuid]"
-						:options="refCXOptions as PSelectOption[]" />
+						:options="refCXOptions" />
 				</div>
 			</template>
 		</x-n-data-table-column>

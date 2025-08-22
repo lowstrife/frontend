@@ -13,7 +13,6 @@
 
 	// UI
 	import { PSelect, PButton, PInputNumber, PTag } from "@/ui";
-	import { PSelectOption } from "@/ui/ui.types";
 	import { NTable } from "naive-ui";
 	import { PlusSharp, ClearSharp } from "@vicons/material";
 	import { formatNumber } from "@/util/numbers";
@@ -56,21 +55,20 @@
 <template>
 	<div class="flex flex-row gap-x-1">
 		<div class="!max-w-[100px]">
-			<PSelect
-				v-model:value="selectedType"
-				:options="typeOptions as PSelectOption[]" />
+			<PSelect v-model:value="selectedType" :options="typeOptions" />
 		</div>
 		<PSelect
 			v-model:value="selectedTicker"
-			:options="materialOptions as PSelectOption[]"
-			filterable
+			:options="materialOptions"
+			searchable
 			size="small"
-			placeholder="Material" />
+			placeholder="Material"
+			class="w-full" />
 		<PInputNumber
 			v-model:value="selectedValue"
 			:min="0"
 			decimals
-			class="!w-[300px]" />
+			class="!w-[250px]" />
 		<div>
 			<PButton
 				:disabled="

@@ -15,11 +15,6 @@
 	import MaterialDataChart from "@/features/market_exploration/components/MaterialDataChart.vue";
 	import MaterialCXOverviewTable from "@/features/cx/components/MaterialCXOverviewTable.vue";
 
-	// UI
-	import { PTooltip, PSelect } from "@/ui";
-	import { PSelectOption } from "@/ui/ui.types";
-	import { NDrawer, NDrawerContent, NTable } from "naive-ui";
-
 	// Util
 	import { formatNumber } from "@/util/numbers";
 	import { capitalizeString } from "@/util/text";
@@ -27,7 +22,11 @@
 	// Interfaces & Types
 	import { IMaterial } from "@/features/api/gameData.types";
 	import { IMaterialExchangeOverview } from "@/features/game_data/useMaterialData.types";
-	import { SelectMixedOption } from "naive-ui/es/select/src/interface";
+	import { PSelectOption } from "@/ui/ui.types";
+
+	// UI
+	import { PTooltip, PSelect } from "@/ui";
+	import { NDrawer, NDrawerContent, NTable } from "naive-ui";
 
 	// Props
 	const props = defineProps({
@@ -65,7 +64,7 @@
 		ref(undefined);
 
 	const refChartValue: Ref<string> = ref("volume_max");
-	const refChartValueOptions: Ref<SelectMixedOption[]> = ref([
+	const refChartValueOptions: Ref<PSelectOption[]> = ref([
 		{
 			label: "Traded Volume",
 			value: "volume_max",
@@ -264,7 +263,7 @@
 						v-model:value="refChartValue"
 						class="!w-[200px]"
 						size="sm"
-						:options="refChartValueOptions as PSelectOption[]" />
+						:options="refChartValueOptions" />
 				</div>
 			</div>
 

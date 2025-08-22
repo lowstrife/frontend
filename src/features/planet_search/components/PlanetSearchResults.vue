@@ -1,5 +1,5 @@
 <script setup lang="ts">
-	import { computed, ComputedRef, PropType } from "vue";
+	import { computed, ComputedRef, PropType, ref, Ref, watch } from "vue";
 
 	// Composables
 	import { usePlanetSearchResults } from "../usePlanetSearchResults";
@@ -36,24 +36,36 @@
 	const localSearchMaterials: ComputedRef<string[]> = computed(
 		() => props.searchMaterials
 	);
+	const localResults: ComputedRef<IPlanet[]> = computed(() => props.results);
 
-	const planetSearch: ComputedRef<{
-		results: ComputedRef<IPlanetSearchResult[]>;
-		hasCheckDistance: ComputedRef<string | null>;
-	}> = computed(() =>
-		usePlanetSearchResults(props.results, localSearchMaterials.value)
-	);
+	// Table Data
+	const tableResults: Ref<IPlanetSearchResult[]> = ref([]);
+	const tableSearchMaterials: Ref<string[]> = ref([]);
+	const tableCheckDistances: Ref<string | null> = ref(null);
 
-	const localResults: ComputedRef<IPlanetSearchResult[]> = computed(
-		() => planetSearch.value.results.value
-	);
-	const localCheckDistances: ComputedRef<string | null> = computed(
-		() => planetSearch.value.hasCheckDistance.value
+	function prepareTableData(): void {
+		tableSearchMaterials.value = [...props.searchMaterials];
+
+		tableResults.value = usePlanetSearchResults(
+			localResults.value,
+			localSearchMaterials.value
+		).results.value;
+		tableCheckDistances.value = usePlanetSearchResults(
+			localResults.value,
+			localSearchMaterials.value
+		).hasCheckDistance.value;
+	}
+
+	watch(
+		() => localResults.value,
+		(newResults: IPlanet[]) => {
+			if (newResults.length > 0) prepareTableData();
+		}
 	);
 </script>
 
 <template>
-	<XNDataTable :data="localResults" striped :pagination="{ pageSize: 50 }">
+	<XNDataTable :data="tableResults" striped :pagination="{ pageSize: 50 }">
 		<XNDataTableColumn key="Plan" title="Plan" width="50">
 			<template #render-cell="{ rowData }">
 				<router-link :to="`/plan/${rowData.planetId}`">
@@ -86,7 +98,7 @@
 			</template>
 		</XNDataTableColumn>
 		<XNDataTableColumn
-			v-for="sm in localSearchMaterials"
+			v-for="sm in tableSearchMaterials"
 			:key="`Search#${sm}`"
 			:title="sm"
 			:sorter="{
@@ -188,9 +200,9 @@
 			</template>
 		</XNDataTableColumn>
 		<XNDataTableColumn
-			v-if="localCheckDistances !== null"
+			v-if="tableCheckDistances !== null"
 			key="checkDistance"
-			:title="`Distance ${localCheckDistances}`"
+			:title="`Distance ${tableCheckDistances}`"
 			sorter="default" />
 		<XNDataTableColumn key="distanceAI1" title="AI1" sorter="default" />
 		<XNDataTableColumn key="distanceCI1" title="CI1" sorter="default" />

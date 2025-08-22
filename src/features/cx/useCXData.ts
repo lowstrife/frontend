@@ -1,7 +1,7 @@
 import { usePlanningStore } from "@/stores/planningStore";
 
 // Types & Interfaces
-import { SelectMixedOption } from "naive-ui/es/select/src/interface";
+import { PSelectOption } from "@/ui/ui.types";
 
 export function useCXData() {
 	const planningStore = usePlanningStore();
@@ -34,12 +34,12 @@ export function useCXData() {
 	 * @author jplacht
 	 *
 	 * @param {boolean} [includeNone=false] Should include a undefined
-	 * @returns {SelectMixedOption[]} Select Options
+	 * @returns {PSelectOption[]} Select Options
 	 */
 	function getPreferenceOptions(
 		includeNone: boolean = false
-	): SelectMixedOption[] {
-		const options: SelectMixedOption[] = [];
+	): PSelectOption[] {
+		const options: PSelectOption[] = [];
 
 		// usePrice has a PP30D Universe default, if no cxuuid is given
 		if (includeNone) {

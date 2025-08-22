@@ -14,7 +14,7 @@ import {
 	IHQMaterial,
 	IHQMaterialData,
 } from "@/features/hq_upgrade_calculator/useHQUpgradeCalculator.types";
-import { SelectMixedOption } from "naive-ui/es/select/src/interface";
+import { PSelectOption } from "@/ui/ui.types";
 
 // Static data
 import hqLevels from "@/features/hq_upgrade_calculator/hq_levels.json";
@@ -35,9 +35,9 @@ export function useHQUpgradeCalculator(
 	 * All HQ level options according to JSON data
 	 * @author jplacht
 	 *
-	 * @type {SelectMixedOption[]}
+	 * @type {PSelectOption[]}
 	 */
-	const levelOptions: SelectMixedOption[] = Object.keys(data).map((e) => ({
+	const levelOptions: PSelectOption[] = Object.keys(data).map((e) => ({
 		label: e,
 		value: parseInt(e),
 	}));
@@ -46,9 +46,9 @@ export function useHQUpgradeCalculator(
 	 * Level Options greater or equal to start value
 	 * @author jplacht
 	 *
-	 * @type {ComputedRef<SelectMixedOption[]>}
+	 * @type {ComputedRef<PSelectOption[]>}
 	 */
-	const levelOptionsTo: ComputedRef<SelectMixedOption[]> = computed(() =>
+	const levelOptionsTo: ComputedRef<PSelectOption[]> = computed(() =>
 		levelOptions.filter((f) => (f.value as number) >= start.value)
 	);
 

@@ -23,11 +23,13 @@
 		searchable = false,
 		disabled = false,
 		clearable = false,
+		placeholder = "Please Select",
 	} = defineProps<{
 		options: PSelectOption[];
 		searchable?: boolean;
 		disabled?: boolean;
 		clearable?: boolean;
+		placeholder?: string;
 	}>();
 
 	const open = ref(false);
@@ -45,7 +47,7 @@
 
 		return (
 			allOptions.find((f) => f.value === value.value)?.label ??
-			"Please Select"
+			placeholder
 		);
 	});
 
@@ -69,7 +71,7 @@
 
 	const useSearch: Ref<boolean> = ref(false);
 
-	function change(e: string | number) {
+	function change(e: string | number | undefined) {
 		if (!disabled) {
 			if (value.value === e) value.value = null;
 			else value.value = e;
@@ -80,6 +82,7 @@
 	function clear(): void {
 		value.value = null;
 		useSearch.value = false;
+		searchString.value = null;
 	}
 
 	let popperInstance: Instance | null = null;
@@ -127,10 +130,25 @@
 		}
 	};
 
+	function handleClickOutside(e: MouseEvent) {
+		if (
+			!triggerRef.value?.contains(e.target as Node) &&
+			!dropdownRef.value?.contains(e.target as Node)
+		) {
+			open.value = false;
+		}
+	}
+
 	watch(open, (val) => {
 		if (!val && popperInstance) {
 			popperInstance.destroy();
 			popperInstance = null;
+		}
+
+		if (val) {
+			document.addEventListener("click", handleClickOutside);
+		} else {
+			document.removeEventListener("click", handleClickOutside);
 		}
 	});
 
@@ -145,18 +163,13 @@
 		}
 
 		if (currentlyOpenId.value === componentId) currentlyOpenId.value = null;
+
+		document.removeEventListener("click", handleClickOutside);
 	});
 </script>
 
 <template>
-	<div
-		ref="triggerRef"
-		v-click-outside="
-			() => {
-				open = false;
-			}
-		"
-		class="pselect leading-none">
+	<div ref="triggerRef" class="pselect leading-none">
 		<label name="pselect-label">
 			<div
 				class="flex flex-row items-center cursor-pointer bg-white/5 text-white/80 rounded-sm pr-2 min-h-[28px]"
@@ -176,7 +189,7 @@
 					<PInput v-model:value="searchString" placeholder="Search" />
 				</div>
 				<div
-					v-if="value !== null && clearable"
+					v-if="value && value !== null && clearable"
 					class="text-white/60 w-[16px]"
 					@click="clear">
 					<ClearSharp />
