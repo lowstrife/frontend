@@ -80,6 +80,7 @@
 	function clear(): void {
 		value.value = null;
 		useSearch.value = false;
+		searchString.value = null;
 	}
 
 	let popperInstance: Instance | null = null;

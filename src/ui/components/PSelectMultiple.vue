@@ -134,6 +134,7 @@
 
 	function clear(): void {
 		value.value = [];
+		searchString.value = null;
 	}
 
 	function removeElement(v: string | number): void {
