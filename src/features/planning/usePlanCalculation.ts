@@ -513,7 +513,8 @@ export function usePlanCalculation(
 			 */
 
 			activeRecipes.forEach((ar) => {
-				const runtimeShare: number = ar.time / TOTALMSDAY;
+				const runtimeShare: number =
+					ar.recipe.TimeMs / totalEfficiency / TOTALMSDAY;
 				const degradation: number = (constructionCost * -1) / 180;
 				const degradationShare: number = degradation * runtimeShare;
 				const workforceCostTotal: number = workforceDailyCost * -1;
@@ -562,7 +563,7 @@ export function usePlanCalculation(
 
 				ar.cogm = {
 					visible: cxUuid.value !== undefined,
-					runtime: ar.time,
+					runtime: ar.recipe.TimeMs / totalEfficiency,
 					runtimeShare,
 					efficiency: totalEfficiency,
 					degradation,
