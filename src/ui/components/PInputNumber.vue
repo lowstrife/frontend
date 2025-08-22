@@ -14,6 +14,7 @@
 		decimals = false,
 		min = -Infinity,
 		max = Infinity,
+		placeholder = "Please Input",
 	} = defineProps<{
 		disabled?: boolean;
 		size?: SizeKey;
@@ -21,6 +22,7 @@
 		decimals?: boolean;
 		min?: number;
 		max?: number;
+		placeholder?: string;
 	}>();
 
 	function onInput(e: Event) {
@@ -53,7 +55,7 @@
 				type="text"
 				inputmode="numeric"
 				:value="value"
-				placeholder="Please Input"
+				:placeholder="placeholder"
 				:class="`${inputNumberConfig.input} ${inputNumberConfig.sizes[size].input}`"
 				@input="onInput" />
 

@@ -13,7 +13,6 @@
 
 	// UI
 	import { PCheckbox, PSelect } from "@/ui";
-	import { PSelectOption } from "@/ui/ui.types";
 
 	const props = defineProps({
 		disabled: {
@@ -85,7 +84,7 @@
 					getProductionBuildingOptions(
 						localProductionData.buildings.map((e) => e.name),
 						localMatchCOGC ? localCOGC : undefined
-					) as PSelectOption[]
+					)
 				"
 				@update:value="
 					(value) => {

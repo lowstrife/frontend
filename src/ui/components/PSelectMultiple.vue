@@ -75,7 +75,7 @@
 		}
 	});
 
-	function change(e: string | number) {
+	function change(e: string | number | undefined) {
 		if (
 			!disabled &&
 			!value.value.includes(e) &&

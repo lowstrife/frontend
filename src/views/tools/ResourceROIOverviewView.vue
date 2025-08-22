@@ -22,7 +22,8 @@
 	import { PLANETSEARCHOPTIONMATERIALS } from "@/features/planet_search/searchConstants";
 
 	// UI
-	import { NForm, NFormItem, NSelect, NButton, NSpin } from "naive-ui";
+	import { PSelect, PButton } from "@/ui";
+	import { NSpin } from "naive-ui";
 
 	const refInitialized: Ref<boolean> = ref(false);
 	const refSelectedCXUuid: Ref<string | undefined> = ref(undefined);
@@ -58,45 +59,32 @@
 			<div class="min-h-screen flex flex-col">
 				<div
 					class="px-6 py-3 border-b border-white/10 flex flex-row justify-between">
-					<h1 class="text-2xl font-bold my-auto">
+					<h1 class="text-2xl font-bold my-auto flex-grow">
 						Resource ROI Overview
 					</h1>
-					<div>
-						<n-form
-							inline
-							size="small"
-							label-placement="left"
-							label-width="auto"
-							label-align="left">
-							<n-form-item label="Select Resource">
-								<n-select
-									v-model:value="refSearchMaterial"
-									:options="PLANETSEARCHOPTIONMATERIALS"
-									placeholder=""
-									filterable
-									size="small"
-									class="max-w-[100px]" />
-							</n-form-item>
-							<n-form-item label="CX Preference">
-								<CXPreferenceSelector
-									:cx-uuid="refSelectedCXUuid"
-									@update:cxuuid="
-										(value) => (refSelectedCXUuid = value)
-									" />
-							</n-form-item>
-							<n-form-item>
-								<n-button
-									:disabled="!refSearchMaterial"
-									:loading="refIsLoading"
-									@click="performSearchAndCalculation">
-									Search & Calculate
-								</n-button>
-							</n-form-item>
-							<n-form-item>
-								<HelpDrawer
-									file-name="tools_resource_roi_overview" />
-							</n-form-item>
-						</n-form>
+					<div
+						class="flex flex-row flex-wrap gap-3 my-auto child:my-auto">
+						<div>Select Resource</div>
+						<PSelect
+							v-model:value="refSearchMaterial"
+							:options="PLANETSEARCHOPTIONMATERIALS"
+							placeholder=""
+							searchable
+							class="w-[200px]" />
+						<div>CX Preference</div>
+						<CXPreferenceSelector
+							:cx-uuid="refSelectedCXUuid"
+							class="w-[200px]"
+							@update:cxuuid="
+								(value) => (refSelectedCXUuid = value)
+							" />
+						<PButton
+							:disabled="!refSearchMaterial"
+							:loading="refIsLoading"
+							@click="performSearchAndCalculation">
+							Search & Calculate
+						</PButton>
+						<HelpDrawer file-name="tools_resource_roi_overview" />
 					</div>
 				</div>
 

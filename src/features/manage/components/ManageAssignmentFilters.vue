@@ -2,11 +2,10 @@
 	import { computed, PropType } from "vue";
 
 	// Types & Interfaces
-	import { SelectMixedOption } from "naive-ui/es/select/src/interface";
+	import { PSelectOption } from "@/ui/ui.types";
 
 	// UI
 	import { PSelectMultiple } from "@/ui";
-	import { PSelectOption } from "@/ui/ui.types";
 
 	const props = defineProps({
 		filterPlanNames: {
@@ -18,11 +17,11 @@
 			required: true,
 		},
 		optionsPlanNames: {
-			type: Array as PropType<SelectMixedOption[]>,
+			type: Array as PropType<PSelectOption[]>,
 			required: true,
 		},
 		optionsEmpires: {
-			type: Array as PropType<SelectMixedOption[]>,
+			type: Array as PropType<PSelectOption[]>,
 			required: true,
 		},
 	});
@@ -52,7 +51,7 @@
 			<div>
 				<PSelectMultiple
 					v-model:value="localFilterPlanNames"
-					:options="optionsPlanNames as PSelectOption[]"
+					:options="optionsPlanNames"
 					searchable
 					clearable
 					class="!w-[400px]" />
@@ -63,7 +62,7 @@
 			<div>
 				<PSelectMultiple
 					v-model:value="localFilterEmpires"
-					:options="optionsEmpires as PSelectOption[]"
+					:options="optionsEmpires"
 					searchable
 					clearable
 					class="!w-[400px]" />

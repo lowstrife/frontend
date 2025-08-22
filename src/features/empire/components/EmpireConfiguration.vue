@@ -16,7 +16,7 @@
 		PLAN_FACTION,
 	} from "@/stores/planningStore.types";
 	import { IEmpirePatchPayload } from "@/features/empire/empire.types";
-	import { SelectMixedOption } from "naive-ui/es/select/src/interface";
+	import { PSelectOption } from "@/ui/ui.types";
 
 	// UI
 	import {
@@ -29,7 +29,6 @@
 		PSelect,
 	} from "@/ui";
 	import { SaveSharp, ChangeCircleOutlined } from "@vicons/material";
-	import { PSelectOption } from "@/ui/ui.types";
 
 	const props = defineProps({
 		data: {
@@ -54,7 +53,7 @@
 		{ deep: true }
 	);
 
-	const factionOptions: SelectMixedOption[] = [
+	const factionOptions: PSelectOption[] = [
 		{ label: "No Faction", value: "NONE" },
 		{ label: "Antares", value: "ANTARES" },
 		{ label: "Benten", value: "BENTEN" },
@@ -130,7 +129,7 @@
 			<PSelect
 				v-model:value="localData.faction"
 				class="w-full"
-				:options="factionOptions as PSelectOption[]" />
+				:options="factionOptions" />
 		</PFormItem>
 		<PFormItem label="Permits Total">
 			<PInputNumber

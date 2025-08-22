@@ -27,6 +27,7 @@
 		IPlanEmpireMatrix,
 		IPlanEmpireMatrixEmpires,
 	} from "@/features/manage/manage.types";
+	import { PSelectOption } from "@/ui/ui.types";
 
 	// Components
 	import SharingButton from "@/features/sharing/components/SharingButton.vue";
@@ -45,7 +46,6 @@
 		AddCircleOutlineSharp,
 		CircleOutlined,
 	} from "@vicons/material";
-	import { SelectMixedOption } from "naive-ui/es/select/src/interface";
 
 	const props = defineProps({
 		empires: {
@@ -84,11 +84,14 @@
 
 	const filterPlanNames: Ref<string[]> = ref([]);
 	const filterEmpires: Ref<string[]> = ref([]);
-	const filterOptionsPlanNames: ComputedRef<SelectMixedOption[]> = computed(
-		() => localPlans.value.map((e) => ({ label: e.name, value: e.uuid }))
+	const filterOptionsPlanNames: ComputedRef<PSelectOption[]> = computed(() =>
+		localPlans.value.map((e) => ({
+			label: e.name ?? "Missing Plan Name",
+			value: e.uuid,
+		}))
 	);
-	const filterOptionsEmpires: ComputedRef<SelectMixedOption[]> = computed(
-		() => localEmpires.value.map((e) => ({ label: e.name, value: e.uuid }))
+	const filterOptionsEmpires: ComputedRef<PSelectOption[]> = computed(() =>
+		localEmpires.value.map((e) => ({ label: e.name, value: e.uuid }))
 	);
 
 	// generate initial matrix upon props passing

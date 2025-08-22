@@ -4,7 +4,7 @@ import { computed, ComputedRef } from "vue";
 import { useGameDataStore } from "@/stores/gameDataStore";
 
 // Types & Interfaces
-import { SelectGroupOption, SelectOption } from "naive-ui";
+import { PSelectOption } from "@/ui/ui.types";
 import {
 	IFIOStorageItem,
 	IFIOStoragePlanet,
@@ -22,69 +22,63 @@ export function useFIOStorage() {
 	 *
 	 * @author jplacht
 	 *
-	 * @type {ComputedRef<(SelectGroupOption | SelectOption)[]>}
+	 * @type {ComputedRef<PSelectOption[]>}
 	 */
-	const storageOptions: ComputedRef<(SelectGroupOption | SelectOption)[]> =
-		computed(() => {
-			const options: Array<SelectOption | SelectGroupOption> = [
-				{
-					label: "None",
-					value: undefined,
-				},
-			];
+	const storageOptions: ComputedRef<PSelectOption[]> = computed(() => {
+		const options: PSelectOption[] = [
+			{
+				label: "No FIO Storage",
+				value: undefined,
+			},
+		];
 
-			const planets: string[] = Object.keys(
-				gameDataStore.fio_storage_planets
-			);
+		const planets: string[] = Object.keys(
+			gameDataStore.fio_storage_planets
+		);
 
-			if (planets.length > 0) {
-				options.push({
-					type: "group",
-					label: "Planets",
-					key: "planets",
-					children: planets.map((elem) => ({
-						label: elem,
-						value: `PLANET#${elem}`,
-					})),
-				});
-			}
+		if (planets.length > 0) {
+			options.push({
+				label: "Planets",
+				value: "planets",
+				children: planets.map((elem) => ({
+					label: elem,
+					value: `PLANET#${elem}`,
+				})),
+			});
+		}
 
-			const warehouses: string[] = Object.keys(
-				gameDataStore.fio_storage_warehouses
-			);
-			if (warehouses.length > 0) {
-				options.push({
-					type: "group",
-					label: "Warehouses",
-					key: "warehouses",
-					children: warehouses.map((elem) => ({
-						label:
-							gameDataStore.fio_storage_warehouses[elem]
-								.LocationName ?? elem,
-						value: `WAR#${elem}`,
-					})),
-				});
-			}
+		const warehouses: string[] = Object.keys(
+			gameDataStore.fio_storage_warehouses
+		);
+		if (warehouses.length > 0) {
+			options.push({
+				label: "Warehouses",
+				value: "warehouses",
+				children: warehouses.map((elem) => ({
+					label:
+						gameDataStore.fio_storage_warehouses[elem]
+							.LocationName ?? elem,
+					value: `WAR#${elem}`,
+				})),
+			});
+		}
 
-			const ships: string[] = Object.keys(
-				gameDataStore.fio_storage_ships
-			);
-			if (ships.length > 0) {
-				options.push({
-					type: "group",
-					label: "Ships",
-					key: "ships",
-					children: ships.map((elem) => ({
-						label:
-							gameDataStore.fio_storage_ships[elem].Name ??
-							gameDataStore.fio_storage_ships[elem].AddressableId,
-						value: `SHIP#${elem}`,
-					})),
-				});
-			}
+		const ships: string[] = Object.keys(gameDataStore.fio_storage_ships);
+		if (ships.length > 0) {
+			options.push({
+				label: "Ships",
+				value: "ships",
+				children: ships.map((elem) => ({
+					label:
+						gameDataStore.fio_storage_ships[elem].Name ??
+						gameDataStore.fio_storage_ships[elem].AddressableId,
+					value: `SHIP#${elem}`,
+				})),
+			});
+		}
 
-			return options;
-		});
+		return options;
+	});
 
 	/**
 	 * Indicates if a user has storage, needs to be checked to have more

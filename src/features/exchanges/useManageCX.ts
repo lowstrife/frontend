@@ -12,18 +12,18 @@ import {
 	ExchangeType,
 	PreferenceType,
 } from "@/features/exchanges/manageCX.types";
-import { SelectMixedOption } from "naive-ui/es/select/src/interface";
+import { PSelectOption } from "@/ui/ui.types";
 
 export function useCXManagement() {
 	const gameDataStore = useGameDataStore();
 
-	const typeOptions: SelectMixedOption[] = [
+	const typeOptions: PSelectOption[] = [
 		{ label: "BOTH" as PreferenceType, value: "BOTH" },
 		{ label: "BUY" as PreferenceType, value: "BUY" },
 		{ label: "SELL" as PreferenceType, value: "SELL" },
 	];
 
-	const exchangeOptions: SelectMixedOption[] = [
+	const exchangeOptions: PSelectOption[] = [
 		{ label: "AI1 BUY" as ExchangeType, value: "AI1_BUY" },
 		{ label: "AI1 SELL" as ExchangeType, value: "AI1_SELL" },
 		{ label: "AI1 AVG" as ExchangeType, value: "AI1_AVG" },
@@ -58,7 +58,7 @@ export function useCXManagement() {
 		{ label: "PP30D UNIVERSE" as ExchangeType, value: "PP30D_UNIVERSE" },
 	];
 
-	const materialOptions: SelectMixedOption[] = gameDataStore
+	const materialOptions: PSelectOption[] = gameDataStore
 		.getMaterials()
 		.map((e) => ({ label: e.Ticker, value: e.Ticker }));
 

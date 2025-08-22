@@ -24,13 +24,7 @@
 	import { IFIOFindMaterialLocation } from "@/features/fio/useFIOStorage.types";
 
 	// UI
-	import {
-		NForm,
-		NFormItem,
-		NInputNumber,
-		NCheckbox,
-		NSelect,
-	} from "naive-ui";
+	import { PForm, PFormItem, PInputNumber, PCheckbox, PSelect } from "@/ui";
 	import { XNDataTable, XNDataTableColumn } from "@skit/x.naive-ui";
 
 	const selectedStart: Ref<number> = ref(1);
@@ -71,48 +65,40 @@
 					<div
 						class="px-6 py-3 grid grid-cols-1 xl:grid-cols-2 gap-3">
 						<div>
-							<n-form
-								size="small"
-								label-placement="left"
-								label-width="auto"
-								label-align="left">
-								<n-form-item label="From HQ Level">
-									<n-select
+							<PForm>
+								<PFormItem label="From HQ Level">
+									<PSelect
 										v-model:value="selectedStart"
 										:options="levelOptions"
-										filterable
+										searchable
 										class="max-w-[150px]" />
-								</n-form-item>
-								<n-form-item label="To HQ Level">
-									<n-select
+								</PFormItem>
+								<PFormItem label="To HQ Level">
+									<PSelect
 										v-model:value="selectedTo"
 										:options="levelOptionsTo"
-										filterable
+										searchable
 										class="max-w-[150px]" />
-								</n-form-item>
-							</n-form>
+								</PFormItem>
+							</PForm>
 						</div>
 						<div>
-							<n-form
-								size="small"
-								label-placement="left"
-								label-width="auto"
-								label-align="left">
-								<n-form-item label="CX Preference">
+							<PForm>
+								<PFormItem label="CX Preference">
 									<CXPreferenceSelector
 										:cx-uuid="refSelectedCXUuid"
 										@update:cxuuid="
 											(value) =>
 												(refSelectedCXUuid = value)
 										" />
-								</n-form-item>
-								<n-form-item label="Show Locations">
-									<n-checkbox
+								</PFormItem>
+								<PFormItem label="Show Locations">
+									<PCheckbox
 										v-model:checked="
 											selectedShowLocations
 										" />
-								</n-form-item>
-							</n-form>
+								</PFormItem>
+							</PForm>
 						</div>
 					</div>
 					<div
@@ -191,15 +177,14 @@
 							key="override"
 							title="Override Stock">
 							<template #render-cell="{ rowData }">
-								<n-input-number
+								<PInputNumber
 									:key="`OVERRIDE#${rowData.ticker}`"
 									v-model:value="
-										selectedOverride[rowData.ticker]
+										selectedOverride[rowData.ticker]!
 									"
 									:min="0"
 									clearable
-									show-button
-									size="small"
+									show-buttons
 									placeholder=""
 									class="max-w-[150px]" />
 							</template>

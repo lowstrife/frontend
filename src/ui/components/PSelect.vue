@@ -23,11 +23,13 @@
 		searchable = false,
 		disabled = false,
 		clearable = false,
+		placeholder = "Please Select",
 	} = defineProps<{
 		options: PSelectOption[];
 		searchable?: boolean;
 		disabled?: boolean;
 		clearable?: boolean;
+		placeholder?: string;
 	}>();
 
 	const open = ref(false);
@@ -45,7 +47,7 @@
 
 		return (
 			allOptions.find((f) => f.value === value.value)?.label ??
-			"Please Select"
+			placeholder
 		);
 	});
 
@@ -69,7 +71,7 @@
 
 	const useSearch: Ref<boolean> = ref(false);
 
-	function change(e: string | number) {
+	function change(e: string | number | undefined) {
 		if (!disabled) {
 			if (value.value === e) value.value = null;
 			else value.value = e;

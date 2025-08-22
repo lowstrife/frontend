@@ -48,6 +48,7 @@
 				:value="value"
 				:placeholder="placeholder"
 				:class="`${inputConfig.sizes[size].input}`"
+				autocomplete="off"
 				@input="onInput" />
 			<input
 				v-else-if="type === 'password'"
@@ -58,6 +59,7 @@
 				:value="value"
 				:placeholder="placeholder"
 				:class="`${inputConfig.sizes[size].input}`"
+				autocomplete="off"
 				@input="onInput" />
 			<textarea
 				v-else-if="type === 'textarea'"
@@ -69,6 +71,7 @@
 				:rows="rows"
 				:placeholder="placeholder"
 				:class="`${inputConfig.sizes[size].input}`"
+				autocomplete="off"
 				@input="onInput" />
 		</div>
 	</div>
