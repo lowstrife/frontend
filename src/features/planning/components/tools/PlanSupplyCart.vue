@@ -16,7 +16,7 @@
 	import { useFIOStorage } from "@/features/fio/useFIOStorage";
 
 	// Types & Interfaces
-	import { IMaterialIO } from "../../usePlanCalculation.types";
+	import { IMaterialIO } from "@/features/planning/usePlanCalculation.types";
 
 	interface ISupplyCartElement extends IMaterialIO {
 		workforce: boolean;
@@ -48,7 +48,6 @@
 		RemoveCircleOutlineSharp,
 	} from "@vicons/material";
 	import { IXITTransferMaterial } from "@/features/xit/xitAction.types";
-	import { PSelectOption } from "@/ui/ui.types";
 
 	const props = defineProps({
 		planetNaturalId: {
@@ -228,7 +227,7 @@
 				<PSelect
 					v-model:value="refSelectedStorage"
 					searchable
-					:options="storageOptions as PSelectOption[]"
+					:options="storageOptions"
 					class="!w-[250px]" />
 			</template>
 			<XITTransferActionButton

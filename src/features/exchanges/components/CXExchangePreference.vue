@@ -10,7 +10,6 @@
 
 	// UI
 	import { PSelect, PButton, PTag } from "@/ui";
-	import { PSelectOption } from "@/ui/ui.types";
 	import { NTable } from "naive-ui";
 	import { PlusSharp, ClearSharp } from "@vicons/material";
 
@@ -47,13 +46,14 @@
 		<div class="!min-w-[100px]">
 			<PSelect
 				v-model:value="selectedType"
-				:options="typeOptions as PSelectOption[]"
+				:options="typeOptions"
 				class="w-full" />
 		</div>
 		<PSelect
 			v-model:value="selectedExchange"
 			class="w-full"
-			:options="exchangeOptions as PSelectOption[]" />
+			searchable
+			:options="exchangeOptions" />
 		<div>
 			<PButton
 				:disabled="

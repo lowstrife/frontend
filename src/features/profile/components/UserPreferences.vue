@@ -11,7 +11,6 @@
 	import { XITSTATIONWAREHOUSES } from "@/features/xit/xitConstants";
 
 	// Types & Interfaces
-	import { SelectMixedOption } from "naive-ui/es/select/src/interface";
 	import { PSelectOption } from "@/ui/ui.types";
 
 	// Components
@@ -41,7 +40,7 @@
 	let { defaultEmpireUuid, defaultCXUuid, defaultBuyItemsFromCX } =
 		usePreferences();
 
-	const empireOptions: Ref<SelectMixedOption[]> = ref(
+	const empireOptions: Ref<PSelectOption[]> = ref(
 		Object.values(planningStore.empires).map((e) => {
 			return {
 				label: e.name,
@@ -86,7 +85,7 @@
 		<PFormItem label="Default Empire">
 			<PSelect
 				v-model:value="defaultEmpireUuid"
-				:options="empireOptions as PSelectOption[]"
+				:options="empireOptions"
 				class="w-full"
 				@update:value="
 					(value) => {

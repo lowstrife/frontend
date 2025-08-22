@@ -149,8 +149,10 @@
 				}
 			).execute();
 			emit("update:results", data);
+			emit("update:materials", inputMaterials.value);
 		} catch {
 			emit("update:results", []);
+			emit("update:materials", []);
 		}
 
 		refIsLoading.value = false;
@@ -178,8 +180,11 @@
 						class="w-full"
 						@update:value="
 							(value) => {
-								// limit to 4
-								if (Object.keys(inputMaterials).length > 4) {
+								// NOTE: There is apparently a bug where search returns planets for 3+ materials
+								// but the materials do not actually exist on the planets. Backend issue.
+
+								// limit to 2
+								if (Object.keys(inputMaterials).length > 2) {
 									value.pop();
 								}
 							}

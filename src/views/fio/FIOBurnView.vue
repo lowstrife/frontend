@@ -43,7 +43,7 @@
 	} from "@/features/fio/useFIOBurn.types";
 
 	// UI
-	import { NSelect, NForm, NFormItem, NInputNumber } from "naive-ui";
+	import { PSelect, PForm, PFormItem, PInputNumber } from "@/ui";
 
 	const refIsCalculating: Ref<boolean> = ref(false);
 	const refSelectedEmpireUuid: Ref<string | undefined> =
@@ -123,7 +123,7 @@
 										Empire
 									</h2>
 
-									<n-select
+									<PSelect
 										v-model:value="refSelectedEmpireUuid"
 										:options="
 											refEmpireList.map((e) => {
@@ -133,7 +133,6 @@
 												};
 											})
 										"
-										size="small"
 										@update-value="
 									(value: string) => {
 										refSelectedEmpireUuid = value;
@@ -147,26 +146,22 @@
 										Burn Thresholds
 									</h2>
 
-									<n-form
-										label-placement="left"
-										label-width="auto"
-										label-align="left"
-										size="small">
-										<n-form-item label="Red">
-											<n-input-number
+									<PForm>
+										<PFormItem label="Red">
+											<PInputNumber
 												v-model:value="burnDaysRed"
-												show-button
+												show-buttons
 												:min="1"
 												class="w-full max-w-[400px]" />
-										</n-form-item>
-										<n-form-item label="Yellow">
-											<n-input-number
+										</PFormItem>
+										<PFormItem label="Yellow">
+											<PInputNumber
 												v-model:value="burnDaysYellow"
-												show-button
+												show-buttons
 												:min="1"
 												class="w-full max-w-[400px]" />
-										</n-form-item>
-									</n-form>
+										</PFormItem>
+									</PForm>
 								</div>
 							</div>
 

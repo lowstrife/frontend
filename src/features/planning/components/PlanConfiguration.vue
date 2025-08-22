@@ -3,12 +3,10 @@
 
 	// Types & Interfaces
 	import { IPlanEmpire } from "@/stores/planningStore.types";
-
-	import { SelectMixedOption } from "naive-ui/es/select/src/interface";
+	import { PSelectOption } from "@/ui/ui.types";
 
 	// UI
 	import { PForm, PFormItem, PInput, PSelect } from "@/ui";
-	import { PSelectOption } from "@/ui/ui.types";
 
 	const props = defineProps({
 		disabled: {
@@ -38,10 +36,10 @@
 
 	function createEmpireOptions(
 		data: IPlanEmpire[] | undefined
-	): SelectMixedOption[] {
+	): PSelectOption[] {
 		if (!data) return [];
 
-		const selectOptions: SelectMixedOption[] = [];
+		const selectOptions: PSelectOption[] = [];
 
 		data.forEach((e: IPlanEmpire) => {
 			// check if the option is also assigned to the plan
@@ -80,8 +78,8 @@
 			set: (value: string) => emit("update:active-empire", value),
 		});
 
-	const empireSelectOptions: ComputedRef<PSelectOption[]> = computed(
-		() => createEmpireOptions(props.empireOptions) as PSelectOption[]
+	const empireSelectOptions: ComputedRef<PSelectOption[]> = computed(() =>
+		createEmpireOptions(props.empireOptions)
 	);
 </script>
 

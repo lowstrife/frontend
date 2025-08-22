@@ -75,7 +75,7 @@
 		}
 	});
 
-	function change(e: string | number) {
+	function change(e: string | number | undefined) {
 		if (
 			!disabled &&
 			!value.value.includes(e) &&
@@ -89,6 +89,7 @@
 	let popperInstance: Instance | null = null;
 	const triggerRef = ref<HTMLElement | null>(null);
 	const dropdownRef = ref<HTMLElement | null>(null);
+	const searchInputRef = ref<{ focus: () => void } | null>(null);
 	const componentId = `select-${Math.random().toString(36).substring(2, 9)}`;
 	const dropdownPosition = ref({ top: "0px", left: "0px", width: "100px" });
 
@@ -133,6 +134,7 @@
 
 	function clear(): void {
 		value.value = [];
+		searchString.value = null;
 	}
 
 	function removeElement(v: string | number): void {
@@ -142,10 +144,34 @@
 		}
 	}
 
+	function handleClickOutside(e: MouseEvent) {
+		if (
+			!triggerRef.value?.contains(e.target as Node) &&
+			!dropdownRef.value?.contains(e.target as Node)
+		) {
+			open.value = false;
+		}
+	}
+
+	watch(open, async (val) => {
+		if (val) {
+			await nextTick();
+			if (searchable && searchInputRef.value) {
+				searchInputRef.value.focus();
+			}
+		}
+	});
+
 	watch(open, (val) => {
 		if (!val && popperInstance) {
 			popperInstance.destroy();
 			popperInstance = null;
+		}
+
+		if (val) {
+			document.addEventListener("click", handleClickOutside);
+		} else {
+			document.removeEventListener("click", handleClickOutside);
 		}
 	});
 
@@ -160,18 +186,13 @@
 		}
 
 		if (currentlyOpenId.value === componentId) currentlyOpenId.value = null;
+
+		document.removeEventListener("click", handleClickOutside);
 	});
 </script>
 
 <template>
-	<div
-		ref="triggerRef"
-		v-click-outside="
-			() => {
-				//open = false;
-			}
-		"
-		class="pselect-multiple leading-none">
+	<div ref="triggerRef" class="pselect-multiple leading-none">
 		<label name="pselect-multiple-label">
 			<div
 				class="flex flex-row items-center cursor-pointer bg-white/5 py-1 text-white/80 rounded-sm px-2 min-h-[28px]">
@@ -220,6 +241,7 @@
 					class="w-full flex flex-col bg-gray-900 child:py-1 child:px-2 child:hover:bg-gray-800 rounded-b-sm">
 					<PInput
 						v-if="searchable"
+						ref="searchInputRef"
 						v-model:value="searchString"
 						placeholder="Search" />
 					<PSelectElement

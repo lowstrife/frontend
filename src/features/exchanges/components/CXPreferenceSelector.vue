@@ -6,11 +6,10 @@
 	import { usePreferences } from "@/features/preferences/usePreferences";
 
 	// Types & Interfaces
-	import { SelectMixedOption } from "naive-ui/es/select/src/interface";
+	import { PSelectOption } from "@/ui/ui.types";
 
 	// UI
 	import { PSelect } from "@/ui";
-	import { PSelectOption } from "@/ui/ui.types";
 
 	const props = defineProps({
 		cxUuid: {
@@ -44,15 +43,16 @@
 		},
 	});
 
-	const preferenceOptions: SelectMixedOption[] =
-		useCXData().getPreferenceOptions(props.addUndefinedCX);
+	const preferenceOptions: PSelectOption[] = useCXData().getPreferenceOptions(
+		props.addUndefinedCX
+	);
 </script>
 
 <template>
 	<PSelect
 		v-model:value="localCXUuid"
-		:options="preferenceOptions as PSelectOption[]"
+		:options="preferenceOptions"
 		clearable
-		filterable
+		searchable
 		:class="selectClass" />
 </template>
