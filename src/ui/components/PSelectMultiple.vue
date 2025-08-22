@@ -37,6 +37,14 @@
 
 	const open = ref(false);
 	const searchString: Ref<string | null> = ref(null);
+	const highlightedIndex = ref(0);
+
+	let popperInstance: Instance | null = null;
+	const triggerRef = ref<HTMLElement | null>(null);
+	const dropdownRef = ref<HTMLElement | null>(null);
+	const searchInputRef = ref<{ focus: () => void } | null>(null);
+	const componentId = `select-${Math.random().toString(36).substring(2, 9)}`;
+	const dropdownPosition = ref({ top: "0px", left: "0px", width: "100px" });
 
 	const displayValue: ComputedRef<string[]> = computed(() => {
 		const allOptions: PSelectOption[] = [];
@@ -76,22 +84,19 @@
 	});
 
 	function change(e: string | number | undefined) {
-		if (
-			!disabled &&
-			!value.value.includes(e) &&
-			value.value.length + 1 <= maxItems
-		) {
-			value.value.push(e);
-			value.value = [...value.value];
-		}
-	}
+		if (disabled) return;
+		if (!(value.value.length + 1 <= maxItems)) return;
 
-	let popperInstance: Instance | null = null;
-	const triggerRef = ref<HTMLElement | null>(null);
-	const dropdownRef = ref<HTMLElement | null>(null);
-	const searchInputRef = ref<{ focus: () => void } | null>(null);
-	const componentId = `select-${Math.random().toString(36).substring(2, 9)}`;
-	const dropdownPosition = ref({ top: "0px", left: "0px", width: "100px" });
+		const index = value.value.indexOf(e);
+
+		// not in value, add it
+		if (index === -1) {
+			value.value.push(e);
+		} else {
+			value.value.splice(index, 1);
+		}
+		value.value = [...value.value];
+	}
 
 	const toggleOpen = async () => {
 		if (disabled) return;
@@ -144,6 +149,25 @@
 		}
 	}
 
+	function onKeyDown(e: KeyboardEvent) {
+		if (!open.value) return;
+
+		if (e.key === "ArrowDown") {
+			e.preventDefault();
+			highlightedIndex.value = Math.min(
+				highlightedIndex.value + 1,
+				filteredOptions.value.length - 1
+			);
+		} else if (e.key === "ArrowUp") {
+			e.preventDefault();
+			highlightedIndex.value = Math.max(highlightedIndex.value - 1, 0);
+		} else if (e.key === "Enter") {
+			e.preventDefault();
+			const option = filteredOptions.value[highlightedIndex.value];
+			if (option) change(option.value);
+		}
+	}
+
 	function handleClickOutside(e: MouseEvent) {
 		if (
 			!triggerRef.value?.contains(e.target as Node) &&
@@ -192,7 +216,11 @@
 </script>
 
 <template>
-	<div ref="triggerRef" class="pselect-multiple leading-none">
+	<div
+		ref="triggerRef"
+		class="pselect-multiple leading-none outline-none"
+		tabindex="0"
+		@keydown="onKeyDown">
 		<label name="pselect-multiple-label">
 			<div
 				class="flex flex-row items-center cursor-pointer bg-white/5 py-1 text-white/80 rounded-sm px-2 min-h-[28px]">
@@ -243,12 +271,14 @@
 						v-if="searchable"
 						ref="searchInputRef"
 						v-model:value="searchString"
-						placeholder="Search" />
+						placeholder="Search"
+						@keydown="onKeyDown" />
 					<PSelectElement
-						v-for="option in filteredOptions"
+						v-for="(option, idx) in filteredOptions"
 						:key="option.value"
 						:option="option"
 						:selected-value="value"
+						:highlighted="idx === highlightedIndex"
 						@click="(v) => change(v)" />
 
 					<template v-if="filteredOptions.length === 0">
