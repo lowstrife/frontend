@@ -4,25 +4,26 @@
 
 	import { PButton, PTag } from "@/ui";
 	import { NTable } from "naive-ui";
-	import { QueryState } from "./queryCache.types";
 
 	// Grab the Pinia store
 	const queryStore = useQueryStore();
 
 	// Build a list of all cache entries
 	const entries = computed(() => {
-		return Array.from(queryStore.cache.entries()).map(([key, state]) => ({
-			key,
-			state: state as QueryState<unknown, unknown>,
-			// Prettify JSON or show placeholder
-			jsonData:
-				state.data !== null
-					? JSON.stringify(state.data, null, 2)
-					: "null",
-			expireAt: state.expireTime
-				? state.timestamp + state.expireTime
-				: null,
-		}));
+		return Array.from(queryStore.cacheState.entries()).map(
+			([key, state]) => ({
+				key,
+				state,
+				// Prettify JSON or show placeholder
+				jsonData:
+					state.data !== null
+						? JSON.stringify(state.data, null, 2)
+						: "null",
+				expireAt: state.expireTime
+					? state.timestamp + state.expireTime
+					: null,
+			})
+		);
 	});
 </script>
 
@@ -88,7 +89,7 @@
 					</td>
 					<td>
 						<PTag
-							v-if="entry.state.definition?.autoRefetch"
+							v-if="entry.state.autoRefetch"
 							:bordered="false"
 							type="success">
 							yes
