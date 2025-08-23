@@ -10,20 +10,18 @@
 
 	// Build a list of all cache entries
 	const entries = computed(() => {
-		return Array.from(queryStore.cacheState.entries()).map(
-			([key, state]) => ({
-				key,
-				state,
-				// Prettify JSON or show placeholder
-				jsonData:
-					state.data !== null
-						? JSON.stringify(state.data, null, 2)
-						: "null",
-				expireAt: state.expireTime
-					? state.timestamp + state.expireTime
-					: null,
-			})
-		);
+		return Object.entries(queryStore.cacheState).map(([key, state]) => ({
+			key,
+			state,
+			// Prettify JSON or show placeholder
+			jsonData:
+				state.data !== null
+					? JSON.stringify(state.data, null, 2)
+					: "null",
+			expireAt: state.expireTime
+				? state.timestamp + state.expireTime
+				: null,
+		}));
 	});
 </script>
 
