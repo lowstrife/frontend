@@ -24,12 +24,12 @@ function safeStructuredClone<T>(value: T) {
 }
 
 /** Return true for plain `{}` objects (not arrays, not class instances) */
-function isPlainObject(v: any): v is Record<string, any> {
+function isPlainObject(v: unknown): v is Record<string, any> {
 	return Object.prototype.toString.call(v) === "[object Object]";
 }
 
 /** Shallow equality for arrays (fast path) */
-function arraysEqual(a: any[], b: any[]) {
+function arraysEqual(a: unknown[], b: any[]) {
 	if (a === b) return true;
 	if (a.length !== b.length) return false;
 	for (let i = 0; i < a.length; i++) {
@@ -48,7 +48,7 @@ function arraysEqual(a: any[], b: any[]) {
  *
  * Returns the value that should be assigned to the store field (often the same `current` reference).
  */
-function updateReactiveState(current: any, incoming: any): any {
+function updateReactiveState(current: unknown, incoming: any): any {
 	// fast reference equality -> nothing to do
 	if (current === incoming) return current;
 
@@ -112,9 +112,12 @@ function updateReactiveState(current: any, incoming: any): any {
 	return incoming;
 }
 
-function debouncePerPath(fn: (key: string, value: any) => void, delay = 50) {
+function debouncePerPath(
+	fn: (key: string, value: unknown) => void,
+	delay: number
+) {
 	const timers = new Map<string, number>();
-	return (key: string, value: any) => {
+	return (key: string, value: unknown) => {
 		const t = timers.get(key);
 		if (t !== undefined) window.clearTimeout(t);
 		const id = window.setTimeout(() => {
@@ -172,7 +175,7 @@ export function createBroadcastChannelPlugin(globalOptions?: {
 		// store serialized last values for simple change detection
 		const lastValues = new Map<string, string>();
 
-		const broadcaster = (path: string, value: any) => {
+		const broadcaster = (path: string, value: unknown) => {
 			const clonedValue = safeStructuredClone(value);
 			const msg = {
 				storeId: store.$id,
@@ -197,7 +200,7 @@ export function createBroadcastChannelPlugin(globalOptions?: {
 			}
 		};
 
-		const applyer = (path: string, payloadValue: any) => {
+		const applyer = (path: string, payloadValue: unknown) => {
 			try {
 				isApplyingRemote = true;
 				store.$state[path] = updateReactiveState(
@@ -228,7 +231,7 @@ export function createBroadcastChannelPlugin(globalOptions?: {
 			if (isApplyingRemote) return;
 			try {
 				for (const path of paths) {
-					const val = (state as any)[path];
+					const val = state[path];
 					const cloned = safeStructuredClone(val);
 					const serialized = serializeForComparison(cloned);
 					const prevSerialized = lastValues.get(path);
