@@ -416,5 +416,10 @@ export const useQueryStore = defineStore(
 		persist: {
 			pick: ["cacheState"],
 		},
+		broadcastWatch: {
+			pick: ["cacheState"],
+			debounce: 500,
+			channel: "pinia_query_cache",
+		},
 	}
 );

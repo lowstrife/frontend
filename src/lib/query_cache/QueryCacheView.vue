@@ -95,7 +95,7 @@
 						<PTag v-else :bordered="false" type="error"> no </PTag>
 					</td>
 					<td>
-						<pre>{{ entry.jsonData.length }}</pre>
+						<pre>{{ entry.jsonData?.length }}</pre>
 					</td>
 					<td>
 						<PButton
