@@ -11,13 +11,16 @@ declare module "pinia" {
 	}
 }
 
-function safeStructuredClone(value: any) {
+function safeStructuredClone<T>(value: T) {
 	const raw = toRaw(value);
 	try {
-		return structuredClone(raw);
+		if (typeof (globalThis as any).structuredClone === "function")
+			return (globalThis as any).structuredClone(raw);
 	} catch {
-		return JSON.parse(JSON.stringify(raw));
+		// ignore
 	}
+	// JSON fallback
+	return JSON.parse(JSON.stringify(raw));
 }
 
 /** Return true for plain `{}` objects (not arrays, not class instances) */
@@ -130,20 +133,17 @@ function makeClientId() {
 	);
 }
 
-function serializeForComparison(v: any) {
+function serializeForComparison<T>(v: T) {
 	try {
-		return JSON.stringify(v);
+		if (typeof (globalThis as any).structuredClone === "function")
+			return (globalThis as any).structuredClone(v);
 	} catch {
-		// fallback coarse stringify
-		try {
-			return String(v);
-		} catch {
-			return "";
-		}
+		// ignore
 	}
+	return JSON.stringify(v);
 }
 
-export function createBroadcastChannelDiffPlugin(globalOptions?: {
+export function createBroadcastChannelPlugin(globalOptions?: {
 	channel?: string;
 	debounce?: number;
 }) {

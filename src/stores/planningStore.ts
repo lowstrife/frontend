@@ -107,7 +107,7 @@ export const usePlanningStore = defineStore(
 		}
 
 		function setCX(cxUuid: string, data: ICXData): void {
-			cxs.value[cxUuid].cx_data = data;
+			if (cxs.value[cxUuid]) cxs.value[cxUuid].cx_data = data;
 		}
 
 		/**
