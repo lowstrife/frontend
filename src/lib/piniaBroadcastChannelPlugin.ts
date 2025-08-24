@@ -48,7 +48,7 @@ function arraysEqual(a: any[], b: any[]) {
  *
  * Returns the value that should be assigned to the store field (often the same `current` reference).
  */
-export function updateReactiveState(current: any, incoming: any): any {
+function updateReactiveState(current: any, incoming: any): any {
 	// fast reference equality -> nothing to do
 	if (current === incoming) return current;
 
